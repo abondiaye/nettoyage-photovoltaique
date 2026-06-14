@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}SolarClean — Nettoyage de panneaux photovoltaïques{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    {% block stylesheets %}
+    <style>
+        :root {
+            --bleu-nuit: #0B1F33;
+            --bleu-panneau: #1E5F8C;
+            --jaune-solaire: #F4B731;
+            --gris-verre: #F0F4F7;
+            --blanc: #FFFFFF;
+            --texte: #1A2733;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--texte);
+            background: var(--blanc);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, .display {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        a { color: inherit; }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        header.site {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: var(--bleu-nuit);
+            color: var(--blanc);
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 24px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: var(--blanc);
+        }
+
+        .logo-mark {
+            display: inline-grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 2px;
+            width: 22px;
+            height: 22px;
+        }
+        .logo-mark span {
+            background: var(--jaune-solaire);
+            border-radius: 2px;
+        }
+        .logo-mark span:nth-child(2),
+        .logo-mark span:nth-child(3) { background: var(--bleu-panneau); }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: rgba(255,255,255,0.85);
+            transition: color 0.15s ease;
+        }
+        .nav-links a:hover { color: var(--jaune-solaire); }
+
+        .btn {
+            display: inline-block;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .btn-primary {
+            background: var(--jaune-solaire);
+            color: var(--bleu-nuit);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(244,183,49,0.35);
+        }
+        .btn-outline {
+            border: 1px solid rgba(255,255,255,0.4);
+            color: var(--blanc);
+        }
+        .btn-outline:hover { border-color: var(--jaune-solaire); color: var(--jaune-solaire); }
+
+        /* Footer */
+        footer.site {
+            background: var(--bleu-nuit);
+            color: rgba(255,255,255,0.7);
+            margin-top: 80px;
+        }
+        footer.site .container {
+            padding: 48px 24px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 32px;
+            font-size: 0.9rem;
+        }
+        footer.site h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--blanc);
+            margin-bottom: 12px;
+            font-size: 1rem;
+        }
+        footer.site a { text-decoration: none; color: inherit; }
+        footer.site a:hover { color: var(--jaune-solaire); }
+        .footer-bottom {
+            text-align: center;
+            font-size: 0.8rem;
+            padding: 16px 0 32px;
+            color: rgba(255,255,255,0.4);
+        }
+
+        @media (max-width: 720px) {
+            .nav-links { display: none; }
+        }
+    </style>
+    {% endblock %}
+</head>
+<body>
+    <header class="site">
+        <nav class="nav">
+            <a href="{{ path('app_home') }}" class="logo">
+                <span class="logo-mark">
+                    <span></span><span></span><span></span><span></span>
+                </span>
+                SolarClean
+            </a>
+            <div class="nav-links">
+                <a href="{{ path('app_home') }}#services">Services</a>
+                <a href="{{ path('app_home') }}#avantages">Pourquoi nous</a>
+                <a href="{{ path('app_devis') }}">Demander un devis</a>
+            </div>
+            <a href="{{ path('app_devis') }}" class="btn btn-primary" style="font-size:0.9rem; padding:10px 20px;">Devis gratuit</a>
+        </nav>
+    </header>
+
+    <main>
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="flash flash-{{ label }} container" style="margin-top:24px;">
+                    <div style="background:#E7F6EC; border:1px solid #34A85333; color:#1F7A3F; padding:16px 20px; border-radius:8px; font-weight:500;">
+                        {{ message }}
+                    </div>
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        {% block body %}{% endblock %}
+    </main>
+
+    <footer class="site">
+        <div class="container">
+            <div>
+                <h4>SolarClean</h4>
+                <p>Nettoyage professionnel de panneaux photovoltaïques pour particuliers, agriculteurs et entreprises.</p>
+            </div>
+            <div>
+                <h4>Navigation</h4>
+                <p><a href="{{ path('app_home') }}">Accueil</a></p>
+                <p><a href="{{ path('app_home') }}#services">Nos services</a></p>
+                <p><a href="{{ path('app_devis') }}">Demander un devis</a></p>
+            </div>
+            <div>
+                <h4>Contact</h4>
+                <p>contact@solarclean.fr</p>
+                <p>06 00 00 00 00</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © {{ "now"|date("Y") }} SolarClean — Tous droits réservés.
+        </div>
+    </footer>
+</body>
+</html>

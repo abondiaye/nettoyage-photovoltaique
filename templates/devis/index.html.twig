@@ -1,0 +1,195 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Demander un devis — SolarClean{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .devis-hero {
+            background: var(--bleu-nuit);
+            color: var(--blanc);
+            padding: 56px 0 64px;
+        }
+        .devis-hero h1 { font-size: clamp(1.8rem, 3.5vw, 2.6rem); margin-bottom: 12px; }
+        .devis-hero p { color: rgba(255,255,255,0.75); max-width: 540px; }
+
+        .devis-wrapper {
+            max-width: 720px;
+            margin: -32px auto 80px;
+            background: var(--blanc);
+            border-radius: 14px;
+            border: 1px solid #E1E8EE;
+            box-shadow: 0 12px 32px rgba(11,31,51,0.08);
+            padding: 40px;
+        }
+
+        .form-section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--bleu-panneau);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin: 32px 0 16px;
+        }
+        .form-section-title:first-of-type { margin-top: 0; }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .form-row.full { grid-template-columns: 1fr; }
+
+        .field { margin-bottom: 16px; }
+        .field label {
+            display: block;
+            font-size: 0.88rem;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: #2E3D4B;
+        }
+        .field input,
+        .field select,
+        .field textarea {
+            width: 100%;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            padding: 11px 14px;
+            border: 1px solid #D5DEE6;
+            border-radius: 8px;
+            background: var(--gris-verre);
+            color: var(--texte);
+            transition: border-color 0.15s ease, background 0.15s ease;
+        }
+        .field input:focus,
+        .field select:focus,
+        .field textarea:focus {
+            outline: none;
+            border-color: var(--bleu-panneau);
+            background: var(--blanc);
+        }
+        .field .form-error {
+            color: #C0392B;
+            font-size: 0.82rem;
+            margin-top: 6px;
+        }
+
+        .submit-row {
+            margin-top: 24px;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .submit-row button {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            background: var(--jaune-solaire);
+            color: var(--bleu-nuit);
+            border: none;
+            border-radius: 8px;
+            padding: 14px 32px;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .submit-row button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(244,183,49,0.35);
+        }
+
+        @media (max-width: 640px) {
+            .form-row { grid-template-columns: 1fr; }
+            .devis-wrapper { margin: -24px 16px 64px; padding: 28px; }
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <section class="devis-hero">
+        <div class="container">
+            <h1>Demandez votre devis gratuit</h1>
+            <p>
+                Indiquez-nous quelques informations sur votre installation et vos coordonnées.
+                Nous vous recontactons sous 48h avec une proposition adaptée.
+            </p>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="devis-wrapper">
+            {{ form_start(form) }}
+
+                <div class="form-section-title">Vos coordonnées</div>
+                <div class="form-row">
+                    <div class="field">
+                        {{ form_label(form.clientPrenom) }}
+                        {{ form_widget(form.clientPrenom) }}
+                        <div class="form-error">{{ form_errors(form.clientPrenom) }}</div>
+                    </div>
+                    <div class="field">
+                        {{ form_label(form.clientNom) }}
+                        {{ form_widget(form.clientNom) }}
+                        <div class="form-error">{{ form_errors(form.clientNom) }}</div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="field">
+                        {{ form_label(form.clientEmail) }}
+                        {{ form_widget(form.clientEmail) }}
+                        <div class="form-error">{{ form_errors(form.clientEmail) }}</div>
+                    </div>
+                    <div class="field">
+                        {{ form_label(form.clientTelephone) }}
+                        {{ form_widget(form.clientTelephone) }}
+                        <div class="form-error">{{ form_errors(form.clientTelephone) }}</div>
+                    </div>
+                </div>
+                <div class="form-row full">
+                    <div class="field">
+                        {{ form_label(form.clientAdresse) }}
+                        {{ form_widget(form.clientAdresse) }}
+                        <div class="form-error">{{ form_errors(form.clientAdresse) }}</div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="field">
+                        {{ form_label(form.clientCodePostal) }}
+                        {{ form_widget(form.clientCodePostal) }}
+                        <div class="form-error">{{ form_errors(form.clientCodePostal) }}</div>
+                    </div>
+                    <div class="field">
+                        {{ form_label(form.clientVille) }}
+                        {{ form_widget(form.clientVille) }}
+                        <div class="form-error">{{ form_errors(form.clientVille) }}</div>
+                    </div>
+                </div>
+
+                <div class="form-section-title">Votre installation</div>
+                <div class="form-row">
+                    <div class="field">
+                        {{ form_label(form.typeInstallation) }}
+                        {{ form_widget(form.typeInstallation) }}
+                        <div class="form-error">{{ form_errors(form.typeInstallation) }}</div>
+                    </div>
+                    <div class="field">
+                        {{ form_label(form.nombrePanneaux) }}
+                        {{ form_widget(form.nombrePanneaux) }}
+                        <div class="form-error">{{ form_errors(form.nombrePanneaux) }}</div>
+                    </div>
+                </div>
+                <div class="form-row full">
+                    <div class="field">
+                        {{ form_label(form.message) }}
+                        {{ form_widget(form.message) }}
+                        <div class="form-error">{{ form_errors(form.message) }}</div>
+                    </div>
+                </div>
+
+                <div class="submit-row">
+                    <button type="submit">Envoyer ma demande</button>
+                </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

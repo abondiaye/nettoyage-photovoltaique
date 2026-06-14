@@ -1,0 +1,287 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SolarClean — Nettoyage de panneaux photovoltaïques{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        /* Hero */
+        .hero {
+            background: var(--bleu-nuit);
+            color: var(--blanc);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero .container {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 48px;
+            align-items: center;
+            padding: 80px 24px 96px;
+        }
+        .hero h1 {
+            font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+        .hero h1 .accent { color: var(--jaune-solaire); }
+        .hero p.lead {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.78);
+            max-width: 480px;
+            margin-bottom: 32px;
+        }
+        .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+
+        /* Panel grid signature */
+        .panel-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            gap: 6px;
+            aspect-ratio: 3/2;
+            border-radius: 12px;
+            overflow: hidden;
+            padding: 14px;
+            background: linear-gradient(135deg, #07141F, #102E47);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .panel-grid .cell {
+            border-radius: 3px;
+            background: #16324A;
+            transition: background 0.6s ease;
+            animation: clean-sweep 4.5s ease-in-out infinite;
+        }
+        @keyframes clean-sweep {
+            0%, 100% { background: #16324A; }
+            50% { background: #3E8FC2; }
+        }
+        /* staggered delays for a sweeping wave effect, left to right */
+        .panel-grid .cell:nth-child(6n+1) { animation-delay: 0s; }
+        .panel-grid .cell:nth-child(6n+2) { animation-delay: 0.15s; }
+        .panel-grid .cell:nth-child(6n+3) { animation-delay: 0.3s; }
+        .panel-grid .cell:nth-child(6n+4) { animation-delay: 0.45s; }
+        .panel-grid .cell:nth-child(6n+5) { animation-delay: 0.6s; }
+        .panel-grid .cell:nth-child(6n+6) { animation-delay: 0.75s; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .panel-grid .cell { animation: none; background: #1E5F8C; }
+        }
+
+        /* Stats bar */
+        .stats {
+            background: var(--gris-verre);
+            border-top: 1px solid #E1E8EE;
+            border-bottom: 1px solid #E1E8EE;
+        }
+        .stats .container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            padding: 36px 24px;
+            text-align: center;
+        }
+        .stats .stat-num {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 2rem;
+            color: var(--bleu-panneau);
+        }
+        .stats .stat-label {
+            font-size: 0.9rem;
+            color: #5B6B7A;
+        }
+
+        /* Sections */
+        section { padding: 80px 0; }
+        section.alt { background: var(--gris-verre); }
+
+        .section-eyebrow {
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--bleu-panneau);
+            margin-bottom: 10px;
+        }
+        .section-title {
+            font-size: clamp(1.6rem, 3vw, 2.2rem);
+            margin-bottom: 16px;
+        }
+        .section-intro {
+            max-width: 560px;
+            color: #4F5E6C;
+            margin-bottom: 48px;
+        }
+
+        /* Services grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+        }
+        .service-card {
+            background: var(--blanc);
+            border: 1px solid #E1E8EE;
+            border-radius: 10px;
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: border-color 0.15s ease, transform 0.15s ease;
+        }
+        .service-card:hover {
+            border-color: var(--bleu-panneau);
+            transform: translateY(-3px);
+        }
+        .service-card h3 { font-size: 1.15rem; }
+        .service-card p { color: #5B6B7A; font-size: 0.95rem; flex-grow: 1; }
+        .service-price {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            color: var(--bleu-panneau);
+            font-size: 0.95rem;
+            padding-top: 8px;
+            border-top: 1px solid #EEF2F5;
+        }
+
+        /* Avantages */
+        .avantages-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .avantage-item {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            background: var(--blanc);
+            border: 1px solid #E1E8EE;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .avantage-icon {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: var(--jaune-solaire);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--bleu-nuit);
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .avantage-text { font-size: 0.95rem; color: #2E3D4B; }
+
+        /* CTA band */
+        .cta-band {
+            background: var(--bleu-panneau);
+            color: var(--blanc);
+            border-radius: 14px;
+            margin: 0 24px;
+            padding: 48px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+        }
+        .cta-band h2 { font-size: 1.6rem; max-width: 480px; }
+        .cta-band .btn-primary { font-size: 1rem; }
+
+        @media (max-width: 800px) {
+            .hero .container { grid-template-columns: 1fr; padding-top: 56px; }
+            .stats .container { grid-template-columns: 1fr; }
+            .cta-band { margin: 0 16px; padding: 32px; }
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <section class="hero">
+        <div class="container">
+            <div>
+                <h1>Vos panneaux perdent <span class="accent">jusqu'à 25 %</span> de rendement sans que vous le voyiez.</h1>
+                <p class="lead">
+                    Poussière, pollen, fientes et résidus calcaires forment un film invisible qui réduit la production
+                    de votre installation photovoltaïque. Notre équipe nettoie vos panneaux à l'eau osmosée, sans
+                    produit chimique, pour leur redonner leur pleine capacité.
+                </p>
+                <div class="hero-actions">
+                    <a href="{{ path('app_devis') }}" class="btn btn-primary">Demander un devis gratuit</a>
+                    <a href="#services" class="btn btn-outline">Voir nos prestations</a>
+                </div>
+            </div>
+            <div class="panel-grid" aria-hidden="true">
+                {% for i in 1..24 %}
+                    <div class="cell"></div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <div class="stats">
+        <div class="container">
+            <div>
+                <div class="stat-num">+15 %</div>
+                <div class="stat-label">de production retrouvée en moyenne après nettoyage</div>
+            </div>
+            <div>
+                <div class="stat-num">100 %</div>
+                <div class="stat-label">eau osmosée, zéro produit chimique</div>
+            </div>
+            <div>
+                <div class="stat-num">48h</div>
+                <div class="stat-label">délai moyen de réponse à votre devis</div>
+            </div>
+        </div>
+    </div>
+
+    <section id="services">
+        <div class="container">
+            <div class="section-eyebrow">Nos prestations</div>
+            <h2 class="section-title">Un entretien adapté à chaque installation</h2>
+            <p class="section-intro">
+                Que vous soyez particulier, exploitant agricole ou gestionnaire de site industriel,
+                nous proposons une formule adaptée à la taille et à l'accessibilité de votre installation.
+            </p>
+            <div class="services-grid">
+                {% for service in services %}
+                    <div class="service-card">
+                        <h3>{{ service.titre }}</h3>
+                        <p>{{ service.description }}</p>
+                        <div class="service-price">{{ service.prix }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section id="avantages" class="alt">
+        <div class="container">
+            <div class="section-eyebrow">Pourquoi nous choisir</div>
+            <h2 class="section-title">Un savoir-faire technique, des résultats mesurables</h2>
+            <p class="section-intro">
+                Le nettoyage de panneaux n'est pas un simple lavage de vitres : c'est une intervention technique
+                qui demande du matériel adapté et une bonne connaissance des installations photovoltaïques.
+            </p>
+            <div class="avantages-list">
+                {% for avantage in avantages %}
+                    <div class="avantage-item">
+                        <div class="avantage-icon">✓</div>
+                        <div class="avantage-text">{{ avantage }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="cta-band">
+            <h2>Prêt à retrouver le plein rendement de votre installation ?</h2>
+            <a href="{{ path('app_devis') }}" class="btn btn-primary">Demander un devis gratuit</a>
+        </div>
+    </section>
+{% endblock %}
