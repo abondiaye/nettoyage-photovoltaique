@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}SolarClean — Nettoyage de panneaux photovoltaïques{% endblock %}</title>
+    <title>{% block title %}SyriusPro — Nettoyage de panneaux photovoltaïques{% endblock %}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    {% block stylesheets %}
+     <link rel="icon" href="{{ asset('images/panneaux-solaires-sous-la-pluie.png') }}">{% block stylesheets %}
     <style>
         :root {
             --bleu-nuit: #0B1F33;
@@ -56,8 +56,8 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 18px 24px;
-            max-width: 1100px;
+            padding: 18px 24px;           
+            max-width: 1100px;   
             margin: 0 auto;
         }
 
@@ -157,15 +157,15 @@
         }
     </style>
     {% endblock %}
-</head>
+ <link rel="icon" href="{{ asset('images/panneaux-solaires-sous-la-pluie.png') }}"></head>
 <body>
     <header class="site">
-        <nav class="nav">
+        <nav class="nav"> 
             <a href="{{ path('app_home') }}" class="logo">
                 <span class="logo-mark">
                     <span></span><span></span><span></span><span></span>
                 </span>
-                SolarClean
+                SyriusPro
             </a>
             <div class="nav-links">
                 <a href="{{ path('app_home') }}#services">Services</a>
@@ -193,7 +193,7 @@
     <footer class="site">
         <div class="container">
             <div>
-                <h4>SolarClean</h4>
+                <h4>SyriusPro</h4>
                 <p>Nettoyage professionnel de panneaux photovoltaïques pour particuliers, agriculteurs et entreprises.</p>
             </div>
             <div>
@@ -204,12 +204,12 @@
             </div>
             <div>
                 <h4>Contact</h4>
-                <p>contact@solarclean.fr</p>
-                <p>06 00 00 00 00</p>
+                <p>contact@SyriusPro.fr</p>
+                <p>06 00 00 00 00</p> 
             </div>
         </div>
         <div class="footer-bottom">
-            © {{ "now"|date("Y") }} SolarClean — Tous droits réservés.
+            © {{ "now"|date("Y") }} SyriusPro — Tous droits réservés.
         </div>
     </footer>
 </body>

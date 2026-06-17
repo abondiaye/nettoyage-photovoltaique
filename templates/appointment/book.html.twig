@@ -1,0 +1,142 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Book Appointment - Solar Cleaning{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .hero {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+            background: linear-gradient(
+                to bottom,
+                #87ceeb 0%,
+                #b8e6ff 40%,
+                #f5f5f5 100%
+            );
+        }
+
+        .sun {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: radial-gradient(
+                circle,
+                #fff8a0,
+                #ffd700,
+                #ff9900
+            );
+
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow:
+                0 0 30px #ffd700,
+                0 0 60px #ffd700,
+                0 0 100px #ff9900;
+
+            transition: transform 0.15s ease-out;
+        }
+
+        .mountains {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 40vh;
+        }
+
+        .mountains polygon {
+            fill: #2f4f4f;
+        }
+
+        .hero .content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding-top: 200px;
+        }
+
+        .hero .content h1 {
+            font-size: 4rem;
+            color: #fff;
+        }
+
+        .hero .content p {
+            color: #fff;
+            font-size: 1.5rem;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<section class="hero">
+    <div class="sun"></div>
+
+    <svg class="mountains" viewBox="0 0 1200 300" preserveAspectRatio="none">
+        <polygon points="0,300 200,100 400,300" />
+        <polygon points="250,300 500,50 750,300" />
+        <polygon points="600,300 850,80 1100,300" />
+        <polygon points="900,300 1200,120 1200,300" />
+    </svg>
+
+    <div class="content">
+        <h1>Énergie Solaire</h1>
+        <p>Installation de panneaux photovoltaïques</p>
+    </div>
+</section>
+
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-4xl font-bold text-bleu-nuit mb-8">Book an Appointment</h1>
+
+    <div class="max-w-2xl mx-auto bg-white rounded-lg shadow p-8">
+        <form method="POST" action="{{ path('app_appointment_book') }}">
+            <div class="mb-8">
+                <label for="date" class="block text-lg font-semibold text-bleu-nuit mb-4">Select Date</label>
+                <select name="date" id="date" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-jaune-solaire" required>
+                    <option value="">Choose a date...</option>
+                    {% for day in nextDays %}
+                        <option value="{{ day.format('Y-m-d') }}">{{ day.format('l, d F Y') }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-8" id="timeSlotContainer" style="display:none;">
+                <label for="timeSlot" class="block text-lg font-semibold text-bleu-nuit mb-4">Select Time Slot</label>
+                <select name="timeSlot" id="timeSlot" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-jaune-solaire" required>
+                    <option value="">Choose a time...</option>
+                </select>
+            </div>
+
+            <button type="submit" class="w-full bg-jaune-solaire text-bleu-nuit font-bold py-3 rounded-lg hover:bg-opacity-90 transition">
+                Confirm Appointment
+            </button>
+        </form>
+    </div>
+
+    <script>
+        const availableSlots = {{ availableSlots | json_encode | raw }};
+        const dateSelect = document.getElementById('date');
+        const timeSlotSelect = document.getElementById('timeSlot');
+        const timeSlotContainer = document.getElementById('timeSlotContainer');
+
+        dateSelect.addEventListener('change', function() {
+            const selectedDate = this.value;
+            timeSlotSelect.innerHTML = '<option value="">Choose a time...</option>';
+
+            if (selectedDate && availableSlots[selectedDate]) {
+                availableSlots[selectedDate].forEach(slot => {
+                    const option = document.createElement('option');
+                    option.value = slot.time;
+                    option.textContent = slot.time + ' (' + slot.available + ' spots available)';
+                    timeSlotSelect.appendChild(option);
+                });
+                timeSlotContainer.style.display = 'block';
+            } else {
+                timeSlotContainer.style.display = 'none';
+            }
+        });
+    </script>
+</div>
+{% endblock %}

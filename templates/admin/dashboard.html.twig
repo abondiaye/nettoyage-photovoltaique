@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin Dashboard - Solar Cleaning{% endblock %}
+
+{% block body %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-4xl font-bold text-bleu-nuit mb-8">Admin Dashboard</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+        <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-3xl font-bold text-bleu-panneau">{{ totalAppointments }}</h2>
+            <p class="text-gray-600">Total Appointments</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-3xl font-bold text-green-600">{{ completionRate }}%</h2>
+            <p class="text-gray-600">Completion Rate</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-3xl font-bold text-jaune-solaire">{{ totalMembers }}</h2>
+            <p class="text-gray-600">Active Members</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-3xl font-bold text-red-600">{{ pendingComments }}</h2>
+            <p class="text-gray-600">Pending Comments</p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-8">
+        <div class="bg-white rounded-lg shadow p-6">
+            <h3 class="text-2xl font-bold text-bleu-nuit mb-4">Quick Actions</h3>
+            <div class="flex gap-4">
+                <a href="{{ path('app_admin_appointments') }}" class="bg-bleu-panneau text-white py-2 px-4 rounded hover:bg-opacity-90">View All Appointments</a>
+                <a href="{{ path('app_admin_members') }}" class="bg-jaune-solaire text-bleu-nuit py-2 px-4 rounded hover:bg-opacity-90">Manage Members</a>
+                <a href="{{ path('app_admin_comments') }}" class="bg-green-600 text-white py-2 px-4 rounded hover:bg-opacity-90">Review Comments</a>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow p-6">
+            <h3 class="text-2xl font-bold text-bleu-nuit mb-4">Recent Appointments ({{ appointments | length }})</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-4 py-2 text-left">Member</th>
+                            <th class="px-4 py-2 text-left">Date</th>
+                            <th class="px-4 py-2 text-left">Time</th>
+                            <th class="px-4 py-2 text-left">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appointment in appointments | slice(0, 10) %}
+                            <tr class="border-b">
+                                <td class="px-4 py-2">{{ appointment.user.firstName }} {{ appointment.user.lastName }}</td>
+                                <td class="px-4 py-2">{{ appointment.date.format('d/m/Y') if appointment.date else 'N/A' }}</td>
+                                <td class="px-4 py-2">{{ appointment.timeSlot }}</td>
+                                <td class="px-4 py-2">
+                                    <span class="px-2 py-1 rounded text-white
+                                        {% if appointment.status == 'SCHEDULED' %}bg-blue-500
+                                        {% elseif appointment.status == 'COMPLETED' %}bg-green-500
+                                        {% else %}bg-red-500
+                                        {% endif %}">
+                                        {{ appointment.status }}
+                                    </span>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

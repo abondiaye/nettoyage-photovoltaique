@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register - Solar Cleaning{% endblock %}
+
+{% block body %}
+<div class="min-h-screen bg-gradient-to-br from-bleu-nuit to-bleu-panneau flex items-center justify-center px-4 py-8">
+    <div class="w-full max-w-md bg-white rounded-lg shadow-xl p-8">
+        <h1 class="text-3xl font-bold text-bleu-nuit mb-8 text-center">Create Account</h1>
+
+        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+            <div class="mb-6">
+                {{ form_label(form.email) }}
+                {{ form_widget(form.email, {'attr': {'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-jaune-solaire focus:border-transparent'}}) }}
+                {{ form_errors(form.email) }}
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div>
+                    {{ form_label(form.firstName) }}
+                    {{ form_widget(form.firstName, {'attr': {'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-jaune-solaire focus:border-transparent'}}) }}
+                    {{ form_errors(form.firstName) }}
+                </div>
+                <div>
+                    {{ form_label(form.lastName) }}
+                    {{ form_widget(form.lastName, {'attr': {'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-jaune-solaire focus:border-transparent'}}) }}
+                    {{ form_errors(form.lastName) }}
+                </div>
+            </div>
+
+            <div class="mb-6">
+                {{ form_label(form.phone) }}
+                {{ form_widget(form.phone, {'attr': {'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-jaune-solaire focus:border-transparent'}}) }}
+            </div>
+
+            <div class="mb-6">
+                {{ form_label(form.password.first) }}
+                {{ form_widget(form.password.first, {'attr': {'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-jaune-solaire focus:border-transparent'}}) }}
+                {{ form_errors(form.password.first) }}
+            </div>
+
+            <div class="mb-8">
+                {{ form_label(form.password.second) }}
+                {{ form_widget(form.password.second, {'attr': {'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-jaune-solaire focus:border-transparent'}}) }}
+                {{ form_errors(form.password.second) }}
+            </div>
+
+            <button type="submit" class="w-full bg-jaune-solaire text-bleu-nuit font-bold py-3 rounded-lg hover:bg-opacity-90 transition duration-300">
+                Register
+            </button>
+        {{ form_end(form) }}
+
+        <div class="mt-6 text-center">
+            <p class="text-sm text-gray-600">
+                Already have an account?
+                <a href="{{ path('app_login') }}" class="text-bleu-panneau font-semibold hover:underline">Login here</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
