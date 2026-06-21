@@ -1,20 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Admin - Members - Solar Cleaning{% endblock %}
+{% block title %}Admin - Membres - Solar Cleaning{% endblock %}
 
 {% block body %}
 <div class="container mx-auto px-4 py-8">
-    <h1 class="text-4xl font-bold text-bleu-nuit mb-8">Manage Members</h1>
+    <h1 class="text-4xl font-bold text-bleu-nuit mb-8">Gérer les membres</h1>
 
     <div class="bg-white rounded-lg shadow overflow-hidden">
         <table class="w-full">
             <thead class="bg-bleu-nuit text-white">
                 <tr>
-                    <th class="px-6 py-3 text-left">Name</th>
+                    <th class="px-6 py-3 text-left">Nom</th>
                     <th class="px-6 py-3 text-left">Email</th>
                     <th class="px-6 py-3 text-left">Points</th>
-                    <th class="px-6 py-3 text-left">Appointments</th>
-                    <th class="px-6 py-3 text-left">Joined</th>
+                    <th class="px-6 py-3 text-left">Rendez-vous</th>
+                    <th class="px-6 py-3 text-left">Inscrit le</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,7 +32,7 @@
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="5" class="px-6 py-4 text-center text-gray-500">No members found</td>
+                        <td colspan="5" class="px-6 py-4 text-center text-gray-500">Aucun membre trouvé</td>
                     </tr>
                 {% endfor %}
             </tbody>

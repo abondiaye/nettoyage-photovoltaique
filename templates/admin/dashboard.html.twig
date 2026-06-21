@@ -1,50 +1,50 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Admin Dashboard - Solar Cleaning{% endblock %}
+{% block title %}Tableau de bord Admin - Solar Cleaning{% endblock %}
 
 {% block body %}
 <div class="container mx-auto px-4 py-8">
-    <h1 class="text-4xl font-bold text-bleu-nuit mb-8">Admin Dashboard</h1>
+    <h1 class="text-4xl font-bold text-bleu-nuit mb-8">Tableau de bord Admin</h1>
 
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
         <div class="bg-white rounded-lg shadow p-6">
             <h2 class="text-3xl font-bold text-bleu-panneau">{{ totalAppointments }}</h2>
-            <p class="text-gray-600">Total Appointments</p>
+            <p class="text-gray-600">Total des rendez-vous</p>
         </div>
         <div class="bg-white rounded-lg shadow p-6">
             <h2 class="text-3xl font-bold text-green-600">{{ completionRate }}%</h2>
-            <p class="text-gray-600">Completion Rate</p>
+            <p class="text-gray-600">Taux de complétion</p>
         </div>
         <div class="bg-white rounded-lg shadow p-6">
             <h2 class="text-3xl font-bold text-jaune-solaire">{{ totalMembers }}</h2>
-            <p class="text-gray-600">Active Members</p>
+            <p class="text-gray-600">Membres actifs</p>
         </div>
         <div class="bg-white rounded-lg shadow p-6">
             <h2 class="text-3xl font-bold text-red-600">{{ pendingComments }}</h2>
-            <p class="text-gray-600">Pending Comments</p>
+            <p class="text-gray-600">Commentaires en attente</p>
         </div>
     </div>
 
     <div class="grid grid-cols-1 gap-8">
         <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-2xl font-bold text-bleu-nuit mb-4">Quick Actions</h3>
-            <div class="flex gap-4">
-                <a href="{{ path('app_admin_appointments') }}" class="bg-bleu-panneau text-white py-2 px-4 rounded hover:bg-opacity-90">View All Appointments</a>
-                <a href="{{ path('app_admin_members') }}" class="bg-jaune-solaire text-bleu-nuit py-2 px-4 rounded hover:bg-opacity-90">Manage Members</a>
-                <a href="{{ path('app_admin_comments') }}" class="bg-green-600 text-white py-2 px-4 rounded hover:bg-opacity-90">Review Comments</a>
+            <h3 class="text-2xl font-bold text-bleu-nuit mb-4">Actions rapides</h3>
+            <div style="display:flex; gap:16px; flex-wrap:wrap;">
+                <a href="{{ path('app_admin_appointments') }}" class="btn btn-secondary">Voir tous les rendez-vous</a>
+                <a href="{{ path('app_admin_members') }}" class="btn btn-primary">Gérer les membres</a>
+                <a href="{{ path('app_admin_comments') }}" class="btn btn-success">Examiner les commentaires</a>
             </div>
         </div>
 
         <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-2xl font-bold text-bleu-nuit mb-4">Recent Appointments ({{ appointments | length }})</h3>
+            <h3 class="text-2xl font-bold text-bleu-nuit mb-4">Rendez-vous récents ({{ appointments | length }})</h3>
             <div class="overflow-x-auto">
                 <table class="w-full text-sm">
                     <thead class="bg-gray-100">
                         <tr>
-                            <th class="px-4 py-2 text-left">Member</th>
+                            <th class="px-4 py-2 text-left">Membre</th>
                             <th class="px-4 py-2 text-left">Date</th>
-                            <th class="px-4 py-2 text-left">Time</th>
-                            <th class="px-4 py-2 text-left">Status</th>
+                            <th class="px-4 py-2 text-left">Heure</th>
+                            <th class="px-4 py-2 text-left">Statut</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -59,7 +59,7 @@
                                         {% elseif appointment.status == 'COMPLETED' %}bg-green-500
                                         {% else %}bg-red-500
                                         {% endif %}">
-                                        {{ appointment.status }}
+                                        {{ {'SCHEDULED': 'Prévu', 'COMPLETED': 'Terminé', 'CANCELLED': 'Annulé'}[appointment.status] ?? appointment.status }}
                                     </span>
                                 </td>
                             </tr>

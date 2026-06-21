@@ -101,6 +101,163 @@
             .form-row { grid-template-columns: 1fr; }
             .devis-wrapper { margin: -24px 16px 64px; padding: 28px; }
         }
+
+        /* --- Calculateur d'estimation --- */
+        .calc-wrapper {
+            max-width: 720px;
+            margin: -32px auto 32px;
+            background: var(--bleu-nuit);
+            color: var(--blanc);
+            border-radius: 14px;
+            box-shadow: 0 12px 32px rgba(11,31,51,0.25);
+            padding: 32px 40px;
+        }
+        .calc-wrapper h2 {
+            font-size: 1.3rem;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .calc-wrapper > p.calc-sub {
+            color: rgba(255,255,255,0.65);
+            font-size: 0.9rem;
+            margin-bottom: 24px;
+        }
+        .calc-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .calc-field label {
+            display: block;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 6px;
+        }
+        .calc-field select,
+        .calc-field input[type="number"] {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.18);
+            background: rgba(255,255,255,0.06);
+            color: var(--blanc);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.15s ease, background 0.15s ease;
+        }
+        .calc-field select:focus,
+        .calc-field input[type="number"]:focus {
+            border-color: var(--jaune-solaire);
+            background: rgba(255,255,255,0.1);
+        }
+        .calc-chips {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .calc-chip {
+            border-radius: 999px;
+            padding: 6px 14px;
+            font-size: 0.82rem;
+            border: 1px solid rgba(255,255,255,0.25);
+            color: rgba(255,255,255,0.75);
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.15s ease;
+        }
+        .calc-chip:hover { border-color: var(--jaune-solaire); color: var(--jaune-solaire); }
+        .calc-chip.active {
+            border-color: var(--jaune-solaire);
+            background: rgba(244,183,49,0.15);
+            color: var(--jaune-solaire);
+        }
+        .calc-option-line {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            margin: 18px 0;
+            color: rgba(255,255,255,0.85);
+        }
+        .calc-option-line input[type="checkbox"] {
+            width: 17px;
+            height: 17px;
+            accent-color: var(--jaune-solaire);
+        }
+        .calc-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.12);
+            margin: 20px 0;
+        }
+        .calc-result-main {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--jaune-solaire);
+        }
+        .calc-result-main small {
+            font-size: 1rem;
+            font-weight: 500;
+            color: rgba(255,255,255,0.6);
+        }
+        .calc-detail {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.7);
+            margin-top: 8px;
+            line-height: 1.6;
+        }
+        .calc-pill-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 14px;
+        }
+        .calc-pill {
+            font-size: 0.78rem;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.18);
+            color: rgba(255,255,255,0.8);
+        }
+        .calc-pill strong { color: var(--blanc); }
+        .calc-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 24px;
+        }
+        .calc-btn-fill {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            background: var(--jaune-solaire);
+            color: var(--bleu-nuit);
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .calc-btn-fill:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(244,183,49,0.35);
+        }
+        .calc-note {
+            font-size: 0.78rem;
+            color: rgba(255,255,255,0.45);
+            margin-top: 16px;
+        }
+
+        @media (max-width: 640px) {
+            .calc-wrapper { margin: -24px 16px 24px; padding: 24px; }
+            .calc-row { grid-template-columns: 1fr; }
+        }
     </style>
 {% endblock %}
 
@@ -116,6 +273,63 @@
     </section>
 
     <div class="container">
+        <div class="calc-wrapper">
+            <h2>🧮 Estimation rapide</h2>
+            <p class="calc-sub">Obtenez une estimation immédiate, puis pré-remplissez votre demande de devis ci-dessous.</p>
+
+            <div class="calc-row">
+                <div class="calc-field">
+                    <label>Type d'installation</label>
+                    <select id="calcType">
+                        <option value="residentiel">Résidentiel</option>
+                        <option value="agricole">Agricole</option>
+                        <option value="industriel">Industriel / Tertiaire</option>
+                    </select>
+                </div>
+                <div class="calc-field">
+                    <label>Nombre de panneaux</label>
+                    <input type="number" id="calcNbPanneaux" value="20" min="1" step="1">
+                </div>
+            </div>
+
+            <div class="calc-row">
+                <div class="calc-field">
+                    <label>Difficulté d'accès</label>
+                    <div class="calc-chips" id="calcAcces">
+                        <div class="calc-chip active" data-val="1">Standard</div>
+                        <div class="calc-chip" data-val="1.2">Toiture en pente</div>
+                        <div class="calc-chip" data-val="1.4">Hauteur / difficile</div>
+                    </div>
+                </div>
+                <div class="calc-field">
+                    <label>Fréquence</label>
+                    <div class="calc-chips" id="calcFrequence">
+                        <div class="calc-chip active" data-val="1">Ponctuel</div>
+                        <div class="calc-chip" data-val="0.85">Abonnement annuel (-15%)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="calc-option-line">
+                <input type="checkbox" id="calcDeplacement" checked>
+                <span>Forfait déplacement (30 € TTC)</span>
+            </div>
+
+            <div class="calc-divider"></div>
+
+            <div id="calcResult">
+                <div class="calc-result-main">0,00 € <small>TTC estimé</small></div>
+                <div class="calc-detail"></div>
+                <div class="calc-pill-row"></div>
+            </div>
+
+            <div class="calc-actions">
+                <button type="button" class="calc-btn-fill" id="calcBtnFill">Utiliser cette estimation ↓</button>
+            </div>
+
+            <p class="calc-note">Cette estimation est indicative et non contractuelle. Le devis final est confirmé après étude de votre installation.</p>
+        </div>
+
         <div class="devis-wrapper">
             {{ form_start(form) }}
 
@@ -192,4 +406,87 @@
             {{ form_end(form) }}
         </div>
     </div>
+
+    <script>
+        (function () {
+            const PRIX_PAR_PANNEAU = { residentiel: 8, agricole: 6, industriel: 5 };
+            const LABELS_TYPE = { residentiel: 'Résidentiel', agricole: 'Agricole', industriel: 'Industriel / Tertiaire' };
+            const FORFAIT_DEPLACEMENT = 30;
+
+            const calcType = document.getElementById('calcType');
+            const calcNbPanneaux = document.getElementById('calcNbPanneaux');
+            const calcAcces = document.getElementById('calcAcces');
+            const calcFrequence = document.getElementById('calcFrequence');
+            const calcDeplacement = document.getElementById('calcDeplacement');
+            const calcResult = document.getElementById('calcResult');
+            const calcBtnFill = document.getElementById('calcBtnFill');
+
+            let accesCoef = 1;
+            let frequenceCoef = 1;
+
+            function formatEuro(val) {
+                return val.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            }
+
+            function setActiveChip(group, chip) {
+                group.querySelectorAll('.calc-chip').forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+            }
+
+            function calc() {
+                const type = calcType.value;
+                const nb = Math.max(0, parseInt(calcNbPanneaux.value, 10) || 0);
+                const prixUnitaire = PRIX_PAR_PANNEAU[type] ?? 8;
+                const deplacement = calcDeplacement.checked ? FORFAIT_DEPLACEMENT : 0;
+
+                const basePrix = nb * prixUnitaire;
+                const prixAjuste = basePrix * accesCoef * frequenceCoef;
+                const total = prixAjuste + deplacement;
+
+                calcResult.querySelector('.calc-result-main').innerHTML =
+                    formatEuro(total) + ' € <small>TTC estimé</small>';
+
+                calcResult.querySelector('.calc-detail').innerHTML =
+                    nb + ' panneaux × ' + formatEuro(prixUnitaire) + ' €/panneau (' + LABELS_TYPE[type] + ')'
+                    + (accesCoef !== 1 ? ' × coefficient accès ' + accesCoef : '')
+                    + (frequenceCoef !== 1 ? ' × coefficient fréquence ' + frequenceCoef : '')
+                    + (deplacement > 0 ? ' + ' + formatEuro(deplacement) + ' € de déplacement' : '');
+
+                calcResult.querySelector('.calc-pill-row').innerHTML =
+                    '<div class="calc-pill"><strong>' + nb + '</strong> panneaux</div>'
+                    + '<div class="calc-pill"><strong>' + formatEuro(prixUnitaire) + ' €</strong> / panneau</div>'
+                    + (deplacement > 0 ? '<div class="calc-pill"><strong>Déplacement</strong> inclus</div>' : '');
+            }
+
+            calcType.addEventListener('change', calc);
+            calcNbPanneaux.addEventListener('input', calc);
+            calcDeplacement.addEventListener('change', calc);
+
+            calcAcces.addEventListener('click', (e) => {
+                const chip = e.target.closest('.calc-chip');
+                if (!chip) return;
+                accesCoef = parseFloat(chip.dataset.val);
+                setActiveChip(calcAcces, chip);
+                calc();
+            });
+
+            calcFrequence.addEventListener('click', (e) => {
+                const chip = e.target.closest('.calc-chip');
+                if (!chip) return;
+                frequenceCoef = parseFloat(chip.dataset.val);
+                setActiveChip(calcFrequence, chip);
+                calc();
+            });
+
+            calcBtnFill.addEventListener('click', () => {
+                const typeField = document.getElementById('{{ form.typeInstallation.vars.id }}');
+                const nbField = document.getElementById('{{ form.nombrePanneaux.vars.id }}');
+                if (typeField) typeField.value = calcType.value;
+                if (nbField) nbField.value = calcNbPanneaux.value;
+                document.querySelector('.devis-wrapper').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+
+            calc();
+        })();
+    </script>
 {% endblock %}
