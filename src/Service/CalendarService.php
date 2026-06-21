@@ -41,7 +41,7 @@ class CalendarService
         $end = new \DateTime($endTime);
 
         while ($start < $end) {
-            $next = $start->add(new \DateInterval('PT1H'));
+            $next = (clone $start)->add(new \DateInterval('PT1H'));
 
             $timeSlot = new TimeSlot();
             $timeSlot->setDayOfWeek($dayOfWeek);
@@ -50,6 +50,8 @@ class CalendarService
             $timeSlot->setMaxAppointments(4);
 
             $this->em->persist($timeSlot);
+
+            $start = $next;
         }
         $this->em->flush();
     }

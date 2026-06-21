@@ -50,20 +50,14 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     public function findByRole(string $role): array
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('JSON_CONTAINS(u.roles, :role) = 1')
-            ->setParameter('role', '"' . $role . '"')
-            ->getQuery()
-            ->getResult();
+        return array_values(array_filter(
+            $this->findAll(),
+            static fn (User $user): bool => in_array($role, $user->getRoles(), true)
+        ));
     }
 
     public function countByRole(string $role): int
     {
-        return (int) $this->createQueryBuilder('u')
-            ->select('COUNT(u.id)')
-            ->andWhere('JSON_CONTAINS(u.roles, :role) = 1')
-            ->setParameter('role', '"' . $role . '"')
-            ->getQuery()
-            ->getSingleScalarResult();
+        return count($this->findByRole($role));
     }
 }

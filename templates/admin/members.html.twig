@@ -28,7 +28,7 @@
                             </span>
                         </td>
                         <td class="px-6 py-3">{{ member.appointments | length }}</td>
-                        <td class="px-6 py-3 text-sm text-gray-500">{{ member.createdAt.format('d/m/Y') if member.createdAt else 'N/A' }}</td>
+                        <td class="px-6 py-3 text-sm text-gray-500">{{ member.createdAt ? member.createdAt.format('d/m/Y') : 'N/A' }}</td>
                     </tr>
                 {% else %}
                     <tr>

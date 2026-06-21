@@ -21,7 +21,7 @@
                 {% for appointment in appointments %}
                     <tr class="border-b hover:bg-gray-50">
                         <td class="px-6 py-3">{{ appointment.user.firstName }} {{ appointment.user.lastName }}</td>
-                        <td class="px-6 py-3">{{ appointment.date.format('d/m/Y') if appointment.date else 'N/A' }}</td>
+                        <td class="px-6 py-3">{{ appointment.date ? appointment.date.format('d/m/Y') : 'N/A' }}</td>
                         <td class="px-6 py-3">{{ appointment.timeSlot }}</td>
                         <td class="px-6 py-3">
                             <span class="px-3 py-1 rounded-full text-white text-sm font-semibold
@@ -32,7 +32,7 @@
                                 {{ appointment.status }}
                             </span>
                         </td>
-                        <td class="px-6 py-3 text-sm text-gray-500">{{ appointment.createdAt.format('d/m/Y H:i') if appointment.createdAt else 'N/A' }}</td>
+                        <td class="px-6 py-3 text-sm text-gray-500">{{ appointment.createdAt ? appointment.createdAt.format('d/m/Y H:i') : 'N/A' }}</td>
                     </tr>
                 {% else %}
                     <tr>

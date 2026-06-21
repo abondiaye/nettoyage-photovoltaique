@@ -51,7 +51,7 @@
                         {% for appointment in appointments | slice(0, 10) %}
                             <tr class="border-b">
                                 <td class="px-4 py-2">{{ appointment.user.firstName }} {{ appointment.user.lastName }}</td>
-                                <td class="px-4 py-2">{{ appointment.date.format('d/m/Y') if appointment.date else 'N/A' }}</td>
+                                <td class="px-4 py-2">{{ appointment.date ? appointment.date.format('d/m/Y') : 'N/A' }}</td>
                                 <td class="px-4 py-2">{{ appointment.timeSlot }}</td>
                                 <td class="px-4 py-2">
                                     <span class="px-2 py-1 rounded text-white

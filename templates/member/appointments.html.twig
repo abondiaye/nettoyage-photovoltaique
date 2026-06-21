@@ -23,7 +23,7 @@
                     <div class="flex justify-between items-start">
                         <div>
                             <h3 class="text-xl font-bold text-bleu-nuit">
-                                {{ appointment.date.format('l, d F Y') if appointment.date else 'N/A' }}
+                                {{ appointment.date ? appointment.date.format('l, d F Y') : 'N/A' }}
                             </h3>
                             <p class="text-gray-600">Time: {{ appointment.timeSlot }}</p>
                             <p class="text-sm text-gray-500 mt-2">{{ appointment.notes }}</p>
