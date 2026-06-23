@@ -14,11 +14,18 @@
                     <th class="px-6 py-3 text-left">Email</th>
                     <th class="px-6 py-3 text-left">Points</th>
                     <th class="px-6 py-3 text-left">Rendez-vous</th>
+                    <th class="px-6 py-3 text-left">{{ 'admin.members.next_appointment'|trans }}</th>
                     <th class="px-6 py-3 text-left">Inscrit le</th>
                 </tr>
             </thead>
             <tbody>
                 {% for member in members %}
+                    {% set nextAppointment = null %}
+                    {% for appointment in member.appointments %}
+                        {% if appointment.status == 'SCHEDULED' and (nextAppointment is null or appointment.date < nextAppointment.date) %}
+                            {% set nextAppointment = appointment %}
+                        {% endif %}
+                    {% endfor %}
                     <tr class="border-b hover:bg-gray-50">
                         <td class="px-6 py-3 font-semibold">{{ member.firstName }} {{ member.lastName }}</td>
                         <td class="px-6 py-3">{{ member.email }}</td>
@@ -28,15 +35,32 @@
                             </span>
                         </td>
                         <td class="px-6 py-3">{{ member.appointments | length }}</td>
+                        <td class="px-6 py-3">
+                            {% if nextAppointment %}
+                                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm font-semibold">
+                                    {{ nextAppointment.date.format('d/m/Y') }} — {{ nextAppointment.timeSlot }}
+                                </span>
+                            {% else %}
+                                <span class="text-gray-400 text-sm">{{ 'admin.members.no_appointment'|trans }}</span>
+                            {% endif %}
+                        </td>
                         <td class="px-6 py-3 text-sm text-gray-500">{{ member.createdAt ? member.createdAt.format('d/m/Y') : 'N/A' }}</td>
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="5" class="px-6 py-4 text-center text-gray-500">Aucun membre trouvé</td>
+                        <td colspan="6" class="px-6 py-4 text-center text-gray-500">Aucun membre trouvé</td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
+{% endblock %}
+
+{% block page_nav_prev %}
+    <a href="{{ path('app_admin_appointments') }}" class="page-nav-link">← {{ 'pagenav.admin_appointments'|trans }}</a>
+{% endblock %}
+
+{% block page_nav_next %}
+    <a href="{{ path('app_admin_comments') }}" class="page-nav-link">{{ 'pagenav.admin_comments'|trans }} →</a>
 {% endblock %}

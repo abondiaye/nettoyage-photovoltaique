@@ -490,3 +490,15 @@
         })();
     </script>
 {% endblock %}
+
+{% block page_nav_prev %}
+    <a href="{{ path('app_home') }}" class="page-nav-link">← {{ 'pagenav.home'|trans }}</a>
+{% endblock %}
+
+{% block page_nav_next %}
+    {% if is_granted('ROLE_MEMBER') %}
+        <a href="{{ path('app_appointment_book') }}" class="page-nav-link">{{ 'pagenav.book_appointment'|trans }} →</a>
+    {% elseif not is_granted('IS_AUTHENTICATED_FULLY') %}
+        <a href="{{ path('app_login') }}" class="page-nav-link">{{ 'pagenav.login'|trans }} →</a>
+    {% endif %}
+{% endblock %}

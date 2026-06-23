@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Login - Solar Cleaning{% endblock %}
+{% block title %}{{ 'login.title'|trans }} - SyriusPro{% endblock %}
 
 {% block body %}
 <div class="min-h-screen bg-gradient-to-br from-bleu-nuit to-bleu-panneau flex items-center justify-center px-4">
     <div class="w-full max-w-md bg-white rounded-lg shadow-xl p-8">
-        <h1 class="text-3xl font-bold text-bleu-nuit mb-8 text-center">Login</h1>
+        <h1 class="text-3xl font-bold text-bleu-nuit mb-8 text-center">{{ 'login.title'|trans }}</h1>
 
         {% if error %}
             <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
@@ -15,26 +15,34 @@
 
         <form method="post" action="{{ path('app_login') }}" novalidate>
             <div class="mb-6">
-                <label for="inputEmail" class="block text-sm font-medium text-bleu-nuit mb-2">Email</label>
+                <label for="inputEmail" class="block text-sm font-medium text-bleu-nuit mb-2">{{ 'login.email'|trans }}</label>
                 <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-jaune-solaire focus:border-transparent" required autofocus>
             </div>
 
             <div class="mb-8">
-                <label for="inputPassword" class="block text-sm font-medium text-bleu-nuit mb-2">Password</label>
+                <label for="inputPassword" class="block text-sm font-medium text-bleu-nuit mb-2">{{ 'login.password'|trans }}</label>
                 <input type="password" name="password" id="inputPassword" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-jaune-solaire focus:border-transparent" required>
             </div>
 
             <button type="submit" class="w-full bg-jaune-solaire text-bleu-nuit font-bold py-3 rounded-lg hover:bg-opacity-90 transition duration-300">
-                Login
+                {{ 'login.submit'|trans }}
             </button>
         </form>
 
         <div class="mt-6 text-center">
             <p class="text-sm text-gray-600">
-                Don't have an account?
-                <a href="{{ path('app_register') }}" class="text-bleu-panneau font-semibold hover:underline">Register here</a>
+                {{ 'login.no_account'|trans }}
+                <a href="{{ path('app_register') }}" class="text-bleu-panneau font-semibold hover:underline">{{ 'login.register_link'|trans }}</a>
             </p>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block page_nav_prev %}
+    <a href="{{ path('app_home') }}" class="page-nav-link">← {{ 'pagenav.home'|trans }}</a>
+{% endblock %}
+
+{% block page_nav_next %}
+    <a href="{{ path('app_register') }}" class="page-nav-link">{{ 'pagenav.register'|trans }} →</a>
 {% endblock %}

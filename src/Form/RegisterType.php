@@ -27,24 +27,24 @@ class RegisterType extends AbstractType
                 ],
             ])
             ->add('firstName', TextType::class, [
-                'label' => 'First Name',
+                'label' => 'Prénom',
                 'constraints' => [new NotBlank()],
             ])
             ->add('lastName', TextType::class, [
-                'label' => 'Last Name',
+                'label' => 'Nom',
                 'constraints' => [new NotBlank()],
             ])
             ->add('phone', TextType::class, [
-                'label' => 'Phone',
+                'label' => 'Téléphone',
                 'required' => false,
             ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'first_options' => ['label' => 'Password'],
-                'second_options' => ['label' => 'Confirm Password'],
+                'first_options' => ['label' => 'Mot de passe'],
+                'second_options' => ['label' => 'Confirmer le mot de passe'],
                 'constraints' => [
                     new NotBlank(),
-                    new Length(['min' => 6, 'minMessage' => 'Password must be at least 6 characters']),
+                    new Length(['min' => 6, 'minMessage' => 'Le mot de passe doit contenir au moins 6 caractères']),
                 ],
             ]);
     }

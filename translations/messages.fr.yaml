@@ -1,0 +1,79 @@
+nav:
+  services: Services
+  why_us: Pourquoi nous
+  quote: Demander un devis
+  admin: Admin
+  member_area: Espace Membre
+  logout: Déconnexion
+  login: Connexion
+  free_quote: Devis gratuit
+
+footer:
+  tagline: Nettoyage professionnel de panneaux photovoltaïques pour particuliers, agriculteurs et entreprises.
+  nav_title: Navigation
+  home: Accueil
+  services: Nos services
+  quote: Demander un devis
+  contact_title: Contact
+  rights: Tous droits réservés.
+
+pagenav:
+  previous: Précédent
+  next: Suivant
+  home: Accueil
+  quote: Devis
+  login: Connexion
+  register: Inscription
+  book_appointment: Prendre rendez-vous
+  member_dashboard: Mon espace
+  member_appointments: Mes rendez-vous
+  admin_dashboard: Tableau de bord
+  admin_appointments: Rendez-vous
+  admin_members: Membres
+  admin_comments: Commentaires
+
+status:
+  scheduled: Prévu
+  completed: Terminé
+  cancelled: Annulé
+
+login:
+  title: Connexion
+  email: Email
+  password: Mot de passe
+  submit: Se connecter
+  no_account: "Vous n'avez pas de compte ?"
+  register_link: Inscrivez-vous ici
+
+register:
+  title: Créer un compte
+  submit: S'inscrire
+  has_account: Vous avez déjà un compte ?
+  login_link: Connectez-vous ici
+
+member:
+  dashboard:
+    title: Mon espace membre
+    points_available: Points disponibles
+    active_discounts: Réductions actives
+    scheduled_appointments: Rendez-vous planifiés
+    points_history: Historique des points
+    available_discounts: Réductions disponibles
+    discount_label: "%percent%% de réduction"
+    created: Créée le
+    accumulate: Cumulez 100 points pour obtenir une réduction !
+    view_appointments: Voir mes rendez-vous
+    book_appointment: Prendre rendez-vous
+  appointments:
+    title: Mes rendez-vous
+    book_new: Prendre un nouveau rendez-vous
+    next_appointment: Prochain rendez-vous
+    time: "Heure :"
+    cancel: Annuler le rendez-vous
+    none: Aucun rendez-vous pour le moment.
+    book_first: Prenez votre premier rendez-vous
+
+admin:
+  members:
+    next_appointment: Prochain rendez-vous
+    no_appointment: Aucun rendez-vous

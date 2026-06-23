@@ -1,13 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Book Appointment - Solar Cleaning{% endblock %}
+{% block title %}Prendre rendez-vous - Solar Cleaning{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
     <style>
+        body.no-scroll { overflow: hidden; }
+
         .hero {
             position: relative;
-            height: 100vh;
+            height: 60vh;
             overflow: hidden;
             background: linear-gradient(
                 to bottom,
@@ -29,15 +31,13 @@
                 #ff9900
             );
 
-            top: 100px;
+            top: 80px;
             left: 50%;
             transform: translateX(-50%);
             box-shadow:
                 0 0 30px #ffd700,
                 0 0 60px #ffd700,
                 0 0 100px #ff9900;
-
-            transition: transform 0.15s ease-out;
         }
 
         .mountains {
@@ -55,18 +55,245 @@
             position: relative;
             z-index: 10;
             text-align: center;
-            padding-top: 200px;
+            padding-top: 130px;
         }
 
         .hero .content h1 {
-            font-size: 4rem;
+            font-size: 3rem;
             color: #fff;
         }
 
         .hero .content p {
             color: #fff;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
         }
+
+        /* ============== Calendrier en cubes 3D ============== */
+        .cubes-section {
+            --grid-columns: 6;
+            --cube-size: 90px;
+            --cube-depth: 45px;
+            --gap-size: 18px;
+            --transition-speed: 0.4s;
+
+            background: var(--bleu-nuit);
+            padding: 56px 0 72px;
+        }
+
+        @media (max-width: 800px) { .cubes-section { --grid-columns: 4; } }
+        @media (max-width: 550px) {
+            .cubes-section {
+                --grid-columns: 3;
+                --cube-size: 68px;
+                --cube-depth: 34px;
+                --gap-size: 12px;
+            }
+        }
+        @media (max-width: 380px) { .cubes-section { --grid-columns: 2; } }
+
+        .cubes-header {
+            text-align: center;
+            color: var(--blanc);
+            margin-bottom: 36px;
+        }
+        .cubes-header h2 {
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+        .cubes-header p {
+            opacity: 0.7;
+            font-style: italic;
+        }
+
+        .cubes-scene {
+            display: grid;
+            place-items: center;
+            perspective: 1000px;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(var(--grid-columns), var(--cube-size));
+            gap: var(--gap-size);
+            transform-style: preserve-3d;
+            --grid-rotate-x: 0deg;
+            --grid-rotate-y: 0deg;
+            transform: translateZ(-100px) rotateX(var(--grid-rotate-x)) rotateY(var(--grid-rotate-y));
+            transition: transform 0.1s ease-out;
+        }
+
+        .cube-wrapper {
+            width: var(--cube-size);
+            height: var(--cube-size);
+            position: relative;
+            cursor: pointer;
+            border-radius: 4px;
+            transform-style: preserve-3d;
+        }
+        .cube-wrapper:focus-visible {
+            outline: 2px solid var(--jaune-solaire);
+            outline-offset: 5px;
+        }
+        .cube-wrapper:not(.-disabled):hover .cube,
+        .cube-wrapper:not(.-disabled):focus-visible .cube,
+        .cube-wrapper.-isActive .cube {
+            translate: 0 0 calc(var(--cube-depth) * 1.5);
+            rotate: y 180deg;
+        }
+        .cube-wrapper:not(.-disabled):hover .face,
+        .cube-wrapper:not(.-disabled):focus-visible .face,
+        .cube-wrapper.-isActive .face {
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.25);
+        }
+        .cube-wrapper.-rotateX-cw:not(.-disabled):is(:hover, :focus-visible, .-isActive) .cube { rotate: x 180deg; }
+        .cube-wrapper.-rotateX-ccw:not(.-disabled):is(:hover, :focus-visible, .-isActive) .cube { rotate: x -180deg; }
+        .cube-wrapper.-rotateY-cw:not(.-disabled):is(:hover, :focus-visible, .-isActive) .cube { rotate: y 180deg; }
+        .cube-wrapper.-rotateY-ccw:not(.-disabled):is(:hover, :focus-visible, .-isActive) .cube { rotate: y -180deg; }
+        .cube-wrapper.-disabled {
+            cursor: not-allowed;
+        }
+        .cube-wrapper.-disabled .face {
+            background-color: #2b3242;
+            color: rgba(255,255,255,0.35);
+            box-shadow: none;
+        }
+        .cube-wrapper.-disabled:hover,
+        .cube-wrapper.-disabled:focus-visible {
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+
+        .cube {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            transform-style: preserve-3d;
+            transition: var(--transition-speed) ease-out;
+            transition-property: translate, rotate;
+        }
+
+        .face {
+            position: absolute;
+            width: var(--cube-size);
+            height: var(--cube-size);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--blanc);
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
+            backface-visibility: hidden;
+            background-color: var(--bleu-panneau);
+            font-size: 1.4rem;
+            border-radius: 4px;
+        }
+        .face .face-month {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            opacity: 0.75;
+            font-weight: 500;
+        }
+        .face.-front { transform: rotateY(0deg) translateZ(var(--cube-depth)); }
+        .face.-back {
+            transform: rotateY(180deg) translateZ(var(--cube-depth));
+            background-color: #0d2438;
+            color: var(--jaune-solaire);
+        }
+        .face.-right { transform: rotateY(90deg) translateZ(var(--cube-depth)); background-color: #184a6b; }
+        .face.-left  { transform: rotateY(-90deg) translateZ(var(--cube-depth)); background-color: #184a6b; }
+        .face.-top   { transform: rotateX(90deg) translateZ(var(--cube-depth)); background-color: #1c5278; }
+        .face.-bottom {
+            transform: rotateX(-90deg) translateZ(var(--cube-depth));
+            background-color: #0a1c2b;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .cube-wrapper.-disabled .face.-front,
+        .cube-wrapper.-disabled .face.-back,
+        .cube-wrapper.-disabled .face.-right,
+        .cube-wrapper.-disabled .face.-left,
+        .cube-wrapper.-disabled .face.-top,
+        .cube-wrapper.-disabled .face.-bottom {
+            background-color: #2b3242;
+        }
+
+        /* ============== Overlay de sélection de créneau ============== */
+        .slot-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(11,31,51,0.95);
+            z-index: 200;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .slot-overlay.-isVisible { opacity: 1; pointer-events: auto; }
+        .slot-overlay .overlay-inner {
+            max-width: 480px;
+            width: calc(100vw - 40px);
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+            background: var(--bleu-nuit);
+            border: 2px solid var(--jaune-solaire);
+            border-radius: 12px;
+            padding: 32px;
+            position: relative;
+            text-align: center;
+            transform: scale(0.85) translateY(30px);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .slot-overlay.-isVisible .overlay-inner { transform: scale(1) translateY(0); }
+        .slot-overlay .close-btn {
+            position: absolute;
+            top: 8px;
+            right: 14px;
+            background: transparent;
+            border: none;
+            color: var(--blanc);
+            font-size: 2rem;
+            cursor: pointer;
+            transition: color 0.2s, transform 0.2s;
+        }
+        .slot-overlay .close-btn:hover { color: var(--jaune-solaire); transform: rotate(90deg); }
+        .slot-overlay .overlay-date {
+            color: var(--jaune-solaire);
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+        .slot-list { display: flex; flex-direction: column; gap: 10px; }
+        .slot-btn {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 12px 18px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.18);
+            background: rgba(255,255,255,0.05);
+            color: var(--blanc);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: border-color 0.15s ease, background 0.15s ease;
+        }
+        .slot-btn:hover { border-color: var(--jaune-solaire); background: rgba(244,183,49,0.1); }
+        .slot-btn span.spots { font-size: 0.8rem; color: rgba(255,255,255,0.55); }
+        .slot-empty { color: rgba(255,255,255,0.6); font-style: italic; }
     </style>
 {% endblock %}
 
@@ -82,61 +309,192 @@
     </svg>
 
     <div class="content">
-        <h1>Énergie Solaire</h1>
-        <p>Installation de panneaux photovoltaïques</p>
+        <h1>Prenez rendez-vous</h1>
+        <p>Choisissez une date pour le nettoyage de vos panneaux</p>
     </div>
 </section>
 
-<div class="container mx-auto px-4 py-8">
-    <h1 class="text-4xl font-bold text-bleu-nuit mb-8">Book an Appointment</h1>
-
-    <div class="max-w-2xl mx-auto bg-white rounded-lg shadow p-8">
-        <form method="POST" action="{{ path('app_appointment_book') }}">
-            <div class="mb-8">
-                <label for="date" class="block text-lg font-semibold text-bleu-nuit mb-4">Select Date</label>
-                <select name="date" id="date" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-jaune-solaire" required>
-                    <option value="">Choose a date...</option>
-                    {% for day in nextDays %}
-                        <option value="{{ day.format('Y-m-d') }}">{{ day.format('l, d F Y') }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <div class="mb-8" id="timeSlotContainer" style="display:none;">
-                <label for="timeSlot" class="block text-lg font-semibold text-bleu-nuit mb-4">Select Time Slot</label>
-                <select name="timeSlot" id="timeSlot" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-jaune-solaire" required>
-                    <option value="">Choose a time...</option>
-                </select>
-            </div>
-
-            <button type="submit" class="w-full bg-jaune-solaire text-bleu-nuit font-bold py-3 rounded-lg hover:bg-opacity-90 transition">
-                Confirm Appointment
-            </button>
-        </form>
+<section class="cubes-section">
+    <div class="cubes-header">
+        <h2>Choisissez votre date</h2>
+        <p>Cliquez sur un jour disponible pour voir les créneaux horaires</p>
     </div>
 
-    <script>
-        const availableSlots = {{ availableSlots | json_encode | raw }};
-        const dateSelect = document.getElementById('date');
-        const timeSlotSelect = document.getElementById('timeSlot');
-        const timeSlotContainer = document.getElementById('timeSlotContainer');
+    <div class="cubes-scene">
+        <div id="calendar-grid" class="calendar-grid"></div>
+    </div>
+</section>
 
-        dateSelect.addEventListener('change', function() {
-            const selectedDate = this.value;
-            timeSlotSelect.innerHTML = '<option value="">Choose a time...</option>';
-
-            if (selectedDate && availableSlots[selectedDate]) {
-                availableSlots[selectedDate].forEach(slot => {
-                    const option = document.createElement('option');
-                    option.value = slot.time;
-                    option.textContent = slot.time + ' (' + slot.available + ' spots available)';
-                    timeSlotSelect.appendChild(option);
-                });
-                timeSlotContainer.style.display = 'block';
-            } else {
-                timeSlotContainer.style.display = 'none';
-            }
-        });
-    </script>
+<div id="slot-overlay" class="slot-overlay" aria-hidden="true">
+    <div class="overlay-inner">
+        <button id="slot-close-btn" class="close-btn" aria-label="Fermer">&times;</button>
+        <div class="overlay-date" id="overlay-date"></div>
+        <div class="slot-list" id="slot-list"></div>
+    </div>
 </div>
+
+<form method="POST" action="{{ path('app_appointment_book') }}" id="bookForm" style="display:none;">
+    <input type="hidden" name="date" id="formDate">
+    <input type="hidden" name="timeSlot" id="formTimeSlot">
+</form>
+
+<script>
+    const availableSlots = {{ availableSlots | json_encode | raw }};
+    const nextDays = {{ nextDays | map(d => d.format('Y-m-d')) | json_encode | raw }};
+
+    const gridContainer = document.getElementById('calendar-grid');
+    const overlay = document.getElementById('slot-overlay');
+    const overlayDate = document.getElementById('overlay-date');
+    const slotList = document.getElementById('slot-list');
+    const closeBtn = document.getElementById('slot-close-btn');
+    const formDate = document.getElementById('formDate');
+    const formTimeSlot = document.getElementById('formTimeSlot');
+    const bookForm = document.getElementById('bookForm');
+
+    const MOIS = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jui', 'Jui', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'];
+    const MOIS_LONG = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+    const JOURS_LONG = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
+
+    function formatDateLong(dateStr) {
+        const d = new Date(dateStr + 'T00:00:00');
+        return JOURS_LONG[d.getDay()] + ' ' + d.getDate() + ' ' + MOIS_LONG[d.getMonth()];
+    }
+
+    function createCube(dateStr) {
+        const d = new Date(dateStr + 'T00:00:00');
+        const dayNum = d.getDate();
+        const monthLabel = MOIS[d.getMonth()];
+        const slots = availableSlots[dateStr] || [];
+        const hasSlots = slots.length > 0;
+
+        const wrapper = document.createElement('div');
+        wrapper.classList.add('cube-wrapper');
+
+        const rotations = ['-rotateX-cw', '-rotateX-ccw', '-rotateY-cw', '-rotateY-ccw'];
+        wrapper.classList.add(rotations[Math.floor(Math.random() * rotations.length)]);
+
+        wrapper.setAttribute('role', 'button');
+        wrapper.setAttribute('tabindex', '0');
+
+        if (!hasSlots) {
+            wrapper.classList.add('-disabled');
+            wrapper.setAttribute('aria-disabled', 'true');
+            wrapper.setAttribute('aria-label', dayNum + ' ' + monthLabel + ' (complet)');
+        } else {
+            wrapper.setAttribute('aria-label', 'Voir les créneaux du ' + formatDateLong(dateStr));
+            const openHandler = () => openSlots(dateStr, wrapper);
+            wrapper.addEventListener('click', openHandler);
+            wrapper.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    openHandler();
+                }
+            });
+        }
+
+        const cube = document.createElement('div');
+        cube.classList.add('cube');
+
+        ['front', 'back', 'left', 'right', 'top', 'bottom'].forEach(faceName => {
+            const face = document.createElement('div');
+            face.classList.add('face', `-${faceName}`);
+            if (faceName === 'front' || faceName === 'back') {
+                const num = document.createElement('span');
+                num.textContent = dayNum;
+                const month = document.createElement('span');
+                month.classList.add('face-month');
+                month.textContent = monthLabel;
+                face.appendChild(num);
+                face.appendChild(month);
+            }
+            cube.appendChild(face);
+        });
+
+        wrapper.appendChild(cube);
+        return wrapper;
+    }
+
+    function renderGrid() {
+        gridContainer.innerHTML = '';
+        nextDays.forEach(dateStr => {
+            gridContainer.appendChild(createCube(dateStr));
+        });
+    }
+
+    let lastFocusedElement = null;
+
+    function openSlots(dateStr, triggerElement) {
+        overlayDate.textContent = formatDateLong(dateStr);
+        const slots = availableSlots[dateStr] || [];
+
+        slotList.innerHTML = '';
+        if (slots.length === 0) {
+            slotList.innerHTML = '<p class="slot-empty">Aucun créneau disponible ce jour-là.</p>';
+        } else {
+            slots.forEach(slot => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.classList.add('slot-btn');
+                btn.innerHTML = `<span>${slot.time}</span><span class="spots">${slot.available} place(s)</span>`;
+                btn.addEventListener('click', () => {
+                    formDate.value = dateStr;
+                    formTimeSlot.value = slot.time;
+                    bookForm.submit();
+                });
+                slotList.appendChild(btn);
+            });
+        }
+
+        lastFocusedElement = triggerElement;
+        triggerElement.classList.add('-isActive');
+
+        overlay.setAttribute('aria-hidden', 'false');
+        overlay.classList.add('-isVisible');
+        document.body.classList.add('no-scroll');
+
+        setTimeout(() => closeBtn.focus(), 100);
+    }
+
+    function closeOverlay() {
+        overlay.classList.remove('-isVisible');
+        overlay.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('no-scroll');
+
+        if (lastFocusedElement) {
+            lastFocusedElement.classList.remove('-isActive');
+            lastFocusedElement.focus();
+        }
+    }
+
+    closeBtn.addEventListener('click', closeOverlay);
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && overlay.classList.contains('-isVisible')) {
+            closeOverlay();
+        }
+    });
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closeOverlay();
+    });
+
+    const GRID_ROTATION_MAX = 7;
+    function updateGridRotation(rotateX, rotateY) {
+        gridContainer.style.setProperty('--grid-rotate-x', `${rotateX}deg`);
+        gridContainer.style.setProperty('--grid-rotate-y', `${rotateY}deg`);
+    }
+    document.addEventListener('mousemove', (e) => {
+        const x = (e.clientX / window.innerWidth) * 2 - 1;
+        const y = (e.clientY / window.innerHeight) * 2 - 1;
+        updateGridRotation(-y * GRID_ROTATION_MAX, x * GRID_ROTATION_MAX);
+    });
+
+    renderGrid();
+</script>
+{% endblock %}
+
+{% block page_nav_prev %}
+    <a href="{{ path('app_devis') }}" class="page-nav-link">← {{ 'pagenav.quote'|trans }}</a>
+{% endblock %}
+
+{% block page_nav_next %}
+    <a href="{{ path('app_member_appointments') }}" class="page-nav-link">{{ 'pagenav.member_appointments'|trans }} →</a>
 {% endblock %}

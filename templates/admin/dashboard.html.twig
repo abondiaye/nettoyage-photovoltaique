@@ -71,3 +71,7 @@
     </div>
 </div>
 {% endblock %}
+
+{% block page_nav_next %}
+    <a href="{{ path('app_admin_appointments') }}" class="page-nav-link">{{ 'pagenav.admin_appointments'|trans }} →</a>
+{% endblock %}

@@ -309,3 +309,7 @@ const sunY = H - bottomPx - sunW / 2;
 requestAnimationFrame(draw);
 </script>
 {% endblock %}
+
+{% block page_nav_next %}
+    <a href="{{ path('app_devis') }}" class="page-nav-link">{{ 'pagenav.quote'|trans }} →</a>
+{% endblock %}

@@ -159,6 +159,50 @@
         @media (max-width: 720px) {
             .nav-links { display: none; }
         }
+
+        .lang-switch {
+            display: flex;
+            gap: 4px;
+            margin-left: 20px;
+        }
+        .lang-switch a {
+            text-decoration: none;
+            color: rgba(255,255,255,0.6);
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid rgba(255,255,255,0.25);
+        }
+        .lang-switch a.-active {
+            color: var(--bleu-nuit);
+            background: var(--jaune-solaire);
+            border-color: var(--jaune-solaire);
+        }
+
+        .page-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            max-width: 1100px;
+            margin: 48px auto 0;
+            padding: 0 24px;
+        }
+        .page-nav .page-nav-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            color: var(--bleu-nuit);
+            background: var(--gris-verre);
+            padding: 12px 20px;
+            border-radius: 6px;
+            transition: transform 0.15s ease;
+        }
+        .page-nav .page-nav-link:hover { transform: translateY(-2px); }
+        .page-nav .page-nav-spacer { flex: 1; }
     </style>
     {% endblock %}
  <link rel="icon" href="{{ asset('images/panneaux-solaires-sous-la-pluie.png') }}"></head>
@@ -172,21 +216,25 @@
                 SyriusPro
             </a>
             <div class="nav-links">
-                <a href="{{ path('app_home') }}#services">Services</a>
-                <a href="{{ path('app_home') }}#avantages">Pourquoi nous</a>
-                <a href="{{ path('app_devis') }}">Demander un devis</a>
+                <a href="{{ path('app_home') }}#services">{{ 'nav.services'|trans }}</a>
+                <a href="{{ path('app_home') }}#avantages">{{ 'nav.why_us'|trans }}</a>
+                <a href="{{ path('app_devis') }}">{{ 'nav.quote'|trans }}</a>
                 {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ path('app_admin_dashboard') }}">Admin</a>
+                    <a href="{{ path('app_admin_dashboard') }}">{{ 'nav.admin'|trans }}</a>
                 {% elseif is_granted('ROLE_MEMBER') %}
-                    <a href="{{ path('app_member_dashboard') }}">Espace Membre</a>
+                    <a href="{{ path('app_member_dashboard') }}">{{ 'nav.member_area'|trans }}</a>
                 {% endif %}
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <a href="{{ path('app_logout') }}">Déconnexion</a>
+                    <a href="{{ path('app_logout') }}">{{ 'nav.logout'|trans }}</a>
                 {% else %}
-                    <a href="{{ path('app_login') }}">Connexion</a>
+                    <a href="{{ path('app_login') }}">{{ 'nav.login'|trans }}</a>
                 {% endif %}
             </div>
-            <a href="{{ path('app_devis') }}" class="btn btn-primary" style="font-size:0.9rem; padding:10px 20px;">Devis gratuit</a>
+            <div class="lang-switch">
+                <a href="{{ path('app_locale_switch', {locale: 'fr'}) }}" class="{{ app.request.locale == 'fr' ? '-active' : '' }}">FR</a>
+                <a href="{{ path('app_locale_switch', {locale: 'en'}) }}" class="{{ app.request.locale == 'en' ? '-active' : '' }}">EN</a>
+            </div>
+            <a href="{{ path('app_devis') }}" class="btn btn-primary" style="font-size:0.9rem; padding:10px 20px;">{{ 'nav.free_quote'|trans }}</a>
         </nav>
     </header>
 
@@ -202,28 +250,34 @@
         {% endfor %}
 
         {% block body %}{% endblock %}
+
+        <div class="page-nav">
+            {% block page_nav_prev %}{% endblock %}
+            <div class="page-nav-spacer"></div>
+            {% block page_nav_next %}{% endblock %}
+        </div>
     </main>
 
     <footer class="site">
         <div class="container">
             <div>
                 <h4>SyriusPro</h4>
-                <p>Nettoyage professionnel de panneaux photovoltaïques pour particuliers, agriculteurs et entreprises.</p>
+                <p>{{ 'footer.tagline'|trans }}</p>
             </div>
             <div>
-                <h4>Navigation</h4>
-                <p><a href="{{ path('app_home') }}">Accueil</a></p>
-                <p><a href="{{ path('app_home') }}#services">Nos services</a></p>
-                <p><a href="{{ path('app_devis') }}">Demander un devis</a></p>
+                <h4>{{ 'footer.nav_title'|trans }}</h4>
+                <p><a href="{{ path('app_home') }}">{{ 'footer.home'|trans }}</a></p>
+                <p><a href="{{ path('app_home') }}#services">{{ 'footer.services'|trans }}</a></p>
+                <p><a href="{{ path('app_devis') }}">{{ 'footer.quote'|trans }}</a></p>
             </div>
             <div>
-                <h4>Contact</h4>
+                <h4>{{ 'footer.contact_title'|trans }}</h4>
                 <p>contact@SyriusPro.fr</p>
-                <p>06 00 00 00 00</p> 
+                <p>06 00 00 00 00</p>
             </div>
         </div>
         <div class="footer-bottom">
-            © {{ "now"|date("Y") }} SyriusPro — Tous droits réservés.
+            © {{ "now"|date("Y") }} SyriusPro — {{ 'footer.rights'|trans }}
         </div>
     </footer>
 </body>

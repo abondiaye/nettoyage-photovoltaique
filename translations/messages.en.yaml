@@ -1,0 +1,79 @@
+nav:
+  services: Services
+  why_us: Why us
+  quote: Request a quote
+  admin: Admin
+  member_area: Member area
+  logout: Logout
+  login: Login
+  free_quote: Free quote
+
+footer:
+  tagline: Professional solar panel cleaning for homeowners, farmers and businesses.
+  nav_title: Navigation
+  home: Home
+  services: Our services
+  quote: Request a quote
+  contact_title: Contact
+  rights: All rights reserved.
+
+pagenav:
+  previous: Previous
+  next: Next
+  home: Home
+  quote: Quote
+  login: Login
+  register: Register
+  book_appointment: Book appointment
+  member_dashboard: My dashboard
+  member_appointments: My appointments
+  admin_dashboard: Dashboard
+  admin_appointments: Appointments
+  admin_members: Members
+  admin_comments: Comments
+
+status:
+  scheduled: Scheduled
+  completed: Completed
+  cancelled: Cancelled
+
+login:
+  title: Login
+  email: Email
+  password: Password
+  submit: Login
+  no_account: "Don't have an account?"
+  register_link: Register here
+
+register:
+  title: Create account
+  submit: Register
+  has_account: Already have an account?
+  login_link: Login here
+
+member:
+  dashboard:
+    title: Member dashboard
+    points_available: Points available
+    active_discounts: Active discounts
+    scheduled_appointments: Scheduled appointments
+    points_history: Points history
+    available_discounts: Available discounts
+    discount_label: "%percent%% discount"
+    created: Created on
+    accumulate: Accumulate 100 points to earn a discount!
+    view_appointments: View my appointments
+    book_appointment: Book appointment
+  appointments:
+    title: My appointments
+    book_new: Book new appointment
+    next_appointment: Next appointment
+    time: "Time:"
+    cancel: Cancel appointment
+    none: No appointments yet.
+    book_first: Book your first appointment
+
+admin:
+  members:
+    next_appointment: Next appointment
+    no_appointment: No appointment
