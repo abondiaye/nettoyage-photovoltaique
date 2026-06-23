@@ -11,44 +11,17 @@
             position: relative;
             height: 60vh;
             overflow: hidden;
-            background: linear-gradient(
-                to bottom,
-                #87ceeb 0%,
-                #b8e6ff 40%,
-                #f5f5f5 100%
-            );
+            background: var(--bleu-nuit);
         }
 
-        .sun {
+        .hero canvas#rays-canvas {
             position: absolute;
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: radial-gradient(
-                circle,
-                #fff8a0,
-                #ffd700,
-                #ff9900
-            );
-
-            top: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            box-shadow:
-                0 0 30px #ffd700,
-                0 0 60px #ffd700,
-                0 0 100px #ff9900;
-        }
-
-        .mountains {
-            position: absolute;
-            bottom: 0;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 40vh;
-        }
-
-        .mountains polygon {
-            fill: #2f4f4f;
+            height: 100%;
+            display: block;
+            cursor: default;
         }
 
         .hero .content {
@@ -299,14 +272,7 @@
 
 {% block body %}
 <section class="hero">
-    <div class="sun"></div>
-
-    <svg class="mountains" viewBox="0 0 1200 300" preserveAspectRatio="none">
-        <polygon points="0,300 200,100 400,300" />
-        <polygon points="250,300 500,50 750,300" />
-        <polygon points="600,300 850,80 1100,300" />
-        <polygon points="900,300 1200,120 1200,300" />
-    </svg>
+    <canvas id="rays-canvas"></canvas>
 
     <div class="content">
         <h1>Prenez rendez-vous</h1>
@@ -337,6 +303,129 @@
     <input type="hidden" name="date" id="formDate">
     <input type="hidden" name="timeSlot" id="formTimeSlot">
 </form>
+
+<script>
+    (function () {
+        const canvas = document.getElementById('rays-canvas');
+        const ctx = canvas.getContext('2d');
+        const hero = canvas.closest('.hero');
+
+        let w, h, mtn;
+        const per = { x: 0.5, y: 0.15 };
+        let mX = 0, mY = 0;
+        let trackMouse = false;
+
+        function resize() {
+            w = canvas.width = hero.clientWidth;
+            h = canvas.height = hero.clientHeight;
+            mtn = buildMountain();
+            if (!trackMouse) {
+                mX = w * per.x;
+                mY = h * per.y;
+            }
+        }
+
+        function buildMountain() {
+            const points = 60;
+            const baseline = h * 0.72;
+            const arr = [];
+            let prev = baseline;
+            for (let i = 0; i <= points; i++) {
+                const variance = (Math.random() - 0.5) * h * 0.16;
+                let y = prev * 0.6 + (baseline + variance) * 0.4;
+                y = Math.max(h * 0.45, Math.min(h * 0.95, y));
+                arr.push(y);
+                prev = y;
+            }
+            return arr;
+        }
+
+        function drawSky() {
+            const grad = ctx.createLinearGradient(0, 0, 0, h);
+            grad.addColorStop(0, '#1E5F8C');
+            grad.addColorStop(0.55, '#15334d');
+            grad.addColorStop(1, '#0B1F33');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, w, h);
+        }
+
+        function drawRays() {
+            const rayCount = 26;
+            ctx.save();
+            ctx.globalCompositeOperation = 'lighter';
+            const time = Date.now() / 2000;
+
+            for (let i = 0; i < rayCount; i++) {
+                const baseAngle = (i / rayCount) * Math.PI * 2;
+                const flicker = Math.sin(time + i) * 0.04;
+                const angle = baseAngle + flicker;
+                const length = w + h;
+                const x2 = mX + Math.cos(angle) * length;
+                const y2 = mY + Math.sin(angle) * length;
+                const spread = 0.025 + Math.abs(Math.sin(time * 0.7 + i)) * 0.01;
+                const ax = mX + Math.cos(angle - spread) * length;
+                const ay = mY + Math.sin(angle - spread) * length;
+                const bx = mX + Math.cos(angle + spread) * length;
+                const by = mY + Math.sin(angle + spread) * length;
+
+                ctx.beginPath();
+                ctx.moveTo(mX, mY);
+                ctx.lineTo(ax, ay);
+                ctx.lineTo(bx, by);
+                ctx.closePath();
+
+                const opacity = 0.05 + Math.abs(Math.sin(time + i * 0.5)) * 0.05;
+                ctx.fillStyle = 'rgba(244, 183, 49, ' + opacity + ')';
+                ctx.fill();
+            }
+            ctx.restore();
+
+            const glow = ctx.createRadialGradient(mX, mY, 0, mX, mY, 80);
+            glow.addColorStop(0, 'rgba(255, 246, 200, 0.9)');
+            glow.addColorStop(1, 'rgba(244, 183, 49, 0)');
+            ctx.fillStyle = glow;
+            ctx.beginPath();
+            ctx.arc(mX, mY, 80, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function drawMountain() {
+            ctx.beginPath();
+            ctx.moveTo(0, h);
+            mtn.forEach((y, i) => ctx.lineTo((i / (mtn.length - 1)) * w, y));
+            ctx.lineTo(w, h);
+            ctx.closePath();
+            ctx.fillStyle = '#0B1F33';
+            ctx.fill();
+        }
+
+        function render() {
+            if (!trackMouse) {
+                mX += (w * per.x - mX) * 0.04;
+                mY += (h * per.y - mY) * 0.04;
+            }
+            drawSky();
+            drawRays();
+            drawMountain();
+            requestAnimationFrame(render);
+        }
+
+        hero.addEventListener('mousemove', (e) => {
+            const rect = hero.getBoundingClientRect();
+            mX = e.clientX - rect.left;
+            mY = e.clientY - rect.top;
+            trackMouse = true;
+        });
+
+        hero.addEventListener('mouseleave', () => {
+            trackMouse = false;
+        });
+
+        window.addEventListener('resize', resize);
+        resize();
+        render();
+    })();
+</script>
 
 <script>
     const availableSlots = {{ availableSlots | json_encode | raw }};
