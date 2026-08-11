@@ -2,249 +2,658 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}SyriusPro — Nettoyage de panneaux photovoltaïques{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Sirius-Solar - Nettoyage & Entretien professionnel de panneaux photovoltaïques. Retrouvez jusqu'à 25% de rendement perdu. Eau osmosée, zéro produit chimique. Devis gratuit en 48h.">
+    <meta name="keywords" content="nettoyage panneaux solaires, Sirius-Solar, panneaux photovoltaïques, maintenance solar, eau osmosée">
+    <meta name="author" content="Sirius-Solar">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Sirius-Solar — Nettoyage & Entretien de Panneaux Photovoltaïques">
+    <meta property="og:description" content="Retrouvez jusqu'à 25% de rendement perdu. Eau osmosée, zéro produit chimique. Devis gratuit en 48h.">
+    <meta property="og:image" content="{{ asset('images/panneaux-solaires-sous-la-pluie.png') }}">
+
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#0A3D35">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <title>{% block title %}Sirius-Solar — Nettoyage & Entretien de Panneaux Photovoltaïques{% endblock %}</title>
+
+    <link rel="icon" href="{{ asset('images/panneaux-solaires-sous-la-pluie.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-     <link rel="icon" href="{{ asset('images/panneaux-solaires-sous-la-pluie.png') }}">{% block stylesheets %}
+
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+        <style>
+            /* Theme Toggle Animation - Paper Cut Style */
+            .theme-toggle-animation {
+              position: fixed;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              z-index: 10000;
+              pointer-events: none;
+              opacity: 0;
+              animation: themeToggleFade 1.5s ease-out forwards;
+            }
+
+            @keyframes themeToggleFade {
+              0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.5);
+              }
+              20% {
+                opacity: 1;
+              }
+              80% {
+                opacity: 1;
+              }
+              100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(1.1);
+              }
+            }
+
+            /* SVG Paper Cut Animation */
+            .theme-toggle-svg {
+              width: 300px;
+              height: 200px;
+              filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.2));
+            }
+
+            /* Sun animation */
+            .sun-circle {
+              animation: sunPulse 1.5s ease-out forwards;
+              transform-origin: center;
+            }
+
+            @keyframes sunPulse {
+              0% {
+                r: 30;
+                opacity: 0;
+              }
+              20% {
+                opacity: 1;
+              }
+              80% {
+                opacity: 1;
+              }
+              100% {
+                r: 35;
+                opacity: 0;
+              }
+            }
+
+            /* Cloud layers animation */
+            .cloud-layer {
+              animation: cloudFloat 1.5s ease-out forwards;
+            }
+
+            .cloud-1 {
+              animation-delay: 0.1s;
+            }
+
+            .cloud-2 {
+              animation-delay: 0.2s;
+            }
+
+            .cloud-3 {
+              animation-delay: 0.3s;
+            }
+
+            @keyframes cloudFloat {
+              0% {
+                opacity: 0;
+                transform: translateY(20px);
+              }
+              20% {
+                opacity: 1;
+                transform: translateY(0);
+              }
+              80% {
+                opacity: 1;
+                transform: translateY(0);
+              }
+              100% {
+                opacity: 0;
+                transform: translateY(-20px);
+              }
+            }
+
+            /* Cursor animation */
+            .cursor-icon {
+              animation: cursorClick 0.6s ease-out forwards;
+              transform-origin: 60% 60%;
+            }
+
+            @keyframes cursorClick {
+              0% {
+                opacity: 0;
+                transform: scale(0) rotate(0deg);
+              }
+              30% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+              }
+              60% {
+                opacity: 1;
+                transform: scale(1) rotate(-10deg);
+              }
+              100% {
+                opacity: 0;
+                transform: scale(0.8) rotate(-20deg) translateY(30px);
+              }
+            }
+        </style>
+    {% endblock %}
+
     <style>
-        :root {
-            --bleu-nuit: #0B1F33;
-            --bleu-panneau: #1E5F8C;
-            --jaune-solaire: #F4B731;
-            --gris-verre: #F0F4F7;
-            --blanc: #FFFFFF;
-            --texte: #1A2733;
+        /* === SPLASH SCREEN - WEBGL PARTICLE ANIMATION === */
+        .splash-screen {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(135deg, #0A3D35 0%, #2D6B55 100%);
+          z-index: 9999;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          gap: 40px;
+          opacity: 1;
+          visibility: visible;
+          transition: opacity 0.8s ease-out, visibility 0.8s ease-out;
+          color: #ffffff;
+          overflow: hidden;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        html { scroll-behavior: smooth; }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            color: var(--texte);
-            background: var(--blanc);
-            line-height: 1.6;
+        .splash-screen.hidden {
+          opacity: 0;
+          visibility: hidden;
+          pointer-events: none;
         }
 
-        h1, h2, h3, .display {
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 700;
-            letter-spacing: -0.01em;
+        #particle-canvas {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 1;
         }
 
-        a { color: inherit; }
-
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 24px;
+        .splash-content {
+          position: relative;
+          z-index: 2;
+          text-align: center;
+          animation: fadeInUp 0.8s ease-out 0.2s both;
         }
 
-        /* Header */
-        header.site {
-            position: sticky;
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .splash-logo {
+          font-size: 4rem;
+          margin-bottom: 24px;
+          animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+
+        .splash-title {
+          font-size: 2.5rem;
+          font-weight: 700;
+          margin-bottom: 12px;
+          letter-spacing: -0.02em;
+          color: #D4A842;
+          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+          animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .splash-subtitle {
+          font-size: 1rem;
+          color: rgba(255, 255, 255, 0.8);
+          font-style: italic;
+          animation: fadeInUp 0.8s ease-out 0.4s both;
+          letter-spacing: 0.05em;
+        }
+
+        .splash-loader {
+          position: relative;
+          width: 200px;
+          height: 4px;
+          background: rgba(255, 255, 255, 0.2);
+          border-radius: 2px;
+          overflow: hidden;
+          animation: fadeInUp 0.8s ease-out 0.5s both;
+        }
+
+        .splash-loader::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 100%;
+          background: linear-gradient(90deg, #D4A842, #ffffff, #D4A842);
+          background-size: 200% 100%;
+          animation: loading 2s linear infinite;
+        }
+
+        @keyframes loading {
+          0% { left: -100%; }
+          100% { left: 100%; }
+        }
+
+        .splash-text {
+          font-size: 0.85rem;
+          color: rgba(255, 255, 255, 0.6);
+          margin-top: 16px;
+          animation: fadeInUp 0.8s ease-out 0.6s both;
+          letter-spacing: 0.05em;
+        }
+
+        @media (max-width: 768px) {
+          .splash-screen {
+            gap: 30px;
+          }
+          .splash-logo {
+            font-size: 3rem;
+          }
+          .splash-title {
+            font-size: 1.8rem;
+          }
+          .splash-subtitle {
+            font-size: 0.95rem;
+          }
+          .splash-loader {
+            width: 150px;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .splash-screen {
+            gap: 20px;
+          }
+          .splash-logo {
+            font-size: 2.5rem;
+          }
+          .splash-title {
+            font-size: 1.4rem;
+          }
+          .splash-subtitle {
+            font-size: 0.9rem;
+          }
+          .splash-loader {
+            width: 120px;
+          }
+          .splash-text {
+            font-size: 0.8rem;
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .splash-screen, .splash-content, .splash-logo, .splash-title, .splash-subtitle, .splash-loader, .splash-text {
+            animation: none;
+          }
+          .splash-loader::after {
+            animation: none;
+            background: #D4A842;
+          }
+        }
+
+        /* Mobile menu styles - Non modularisés car dépendant du controller */
+        .mobile-menu {
+            position: fixed;
             top: 0;
-            z-index: 50;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: var(--bleu-nuit);
             color: var(--blanc);
+            z-index: 99;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            overflow-y: auto;
         }
 
-        .nav {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 18px 24px;           
-            max-width: 1100px;   
-            margin: 0 auto;
+        .mobile-menu.active {
+            transform: translateX(0);
         }
 
-        .logo {
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 700;
-            font-size: 1.25rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .mobile-menu-content {
+            padding: 80px var(--padding-container) var(--space-xl);
+        }
+
+        .mobile-menu a {
+            display: block;
+            padding: var(--space-md) 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             text-decoration: none;
-            color: var(--blanc);
-        }
-
-        .logo-mark {
-            display: inline-grid;
-            grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: repeat(2, 1fr);
-            gap: 2px;
-            width: 22px;
-            height: 22px;
-        }
-        .logo-mark span {
-            background: var(--jaune-solaire);
-            border-radius: 2px;
-        }
-        .logo-mark span:nth-child(2),
-        .logo-mark span:nth-child(3) { background: var(--bleu-panneau); }
-
-        .nav-links {
-            display: flex;
-            gap: 28px;
-            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.85);
             font-weight: 500;
         }
-        .nav-links a {
-            text-decoration: none;
-            color: rgba(255,255,255,0.85);
-            transition: color 0.15s ease;
-        }
-        .nav-links a:hover { color: var(--jaune-solaire); }
 
-        .btn {
-            display: inline-block;
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 600;
-            text-decoration: none;
-            padding: 12px 24px;
-            border-radius: 6px;
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
-        }
-        .btn-primary {
-            background: var(--jaune-solaire);
-            color: var(--bleu-nuit);
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(244,183,49,0.35);
-        }
-        .btn-outline {
-            border: 1px solid rgba(255,255,255,0.4);
-            color: var(--blanc);
-        }
-        .btn-outline:hover { border-color: var(--jaune-solaire); color: var(--jaune-solaire); }
-        .btn-secondary { background: var(--bleu-panneau); color: var(--blanc); }
-        .btn-secondary:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(30,95,140,0.35); }
-        .btn-success { background: #16a34a; color: var(--blanc); }
-        .btn-success:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(22,163,74,0.35); }
-
-        /* Footer */
-        footer.site {
-            background: var(--bleu-nuit);
-            color: rgba(255,255,255,0.7);
-            margin-top: 80px;
-        }
-        footer.site .container {
-            padding: 48px 24px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 32px;
-            font-size: 0.9rem;
-        }
-        footer.site h4 {
-            font-family: 'Space Grotesk', sans-serif;
-            color: var(--blanc);
-            margin-bottom: 12px;
-            font-size: 1rem;
-        }
-        footer.site a { text-decoration: none; color: inherit; }
-        footer.site a:hover { color: var(--jaune-solaire); }
-        .footer-bottom {
-            text-align: center;
-            font-size: 0.8rem;
-            padding: 16px 0 32px;
-            color: rgba(255,255,255,0.4);
+        .mobile-menu a:hover {
+            color: var(--jaune-solaire);
         }
 
-        @media (max-width: 720px) {
-            .nav-links { display: none; }
+        .mobile-menu .lang-switch {
+            margin-top: var(--space-xl);
+            margin-left: 0;
         }
 
-        .lang-switch {
-            display: flex;
-            gap: 4px;
-            margin-left: 20px;
-        }
-        .lang-switch a {
-            text-decoration: none;
-            color: rgba(255,255,255,0.6);
-            font-size: 0.8rem;
-            font-weight: 700;
-            padding: 4px 8px;
-            border-radius: 4px;
-            border: 1px solid rgba(255,255,255,0.25);
-        }
-        .lang-switch a.-active {
-            color: var(--bleu-nuit);
-            background: var(--jaune-solaire);
-            border-color: var(--jaune-solaire);
+        /* === MEGASWITCHER-3000 === */
+        .daynight {
+            -webkit-tap-highlight-color: transparent;
+            margin: 0;
+            font-size: 0.6rem;
+            display: block;
+            position: relative;
+            cursor: pointer;
+            width: 25em;
+            height: 10em;
+            border-radius: 5em;
+            overflow: hidden;
+            isolation: isolate;
+            box-shadow: 0 -0.3em 0.2em 0.1em rgba(0, 0, 0, 0.2), 0 0.3em 0.2em 0.1em rgb(255, 254, 255);
         }
 
-        .page-nav {
-            display: flex;
-            justify-content: space-between;
-            gap: 16px;
-            max-width: 1100px;
-            margin: 48px auto 0;
-            padding: 0 24px;
+        .daynight__checkbox {
+            appearance: none;
+            pointer-events: none;
+            margin: 0;
+            padding: 0;
+            outline: none;
+            border: none;
+            background: none;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: inherit;
+            box-shadow: inset 0 0.5em 0.5em 0 rgba(0, 0, 0, 0.5), inset 0 -0.5em 1em 0 rgba(0, 0, 0, 0.3);
+            z-index: 2;
         }
-        .page-nav .page-nav-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            text-decoration: none;
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 600;
-            color: var(--bleu-nuit);
-            background: var(--gris-verre);
-            padding: 12px 20px;
-            border-radius: 6px;
-            transition: transform 0.15s ease;
+
+        .daynight__sky {
+            display: block;
+            width: 100%;
+            height: 100%;
+            padding: 1em;
+            box-sizing: border-box;
+            background-color: #397ab0;
+            transition: background 1s cubic-bezier(0.65, 0, 0.34, 1.17);
+            isolation: isolate;
+            position: relative;
         }
-        .page-nav .page-nav-link:hover { transform: translateY(-2px); }
-        .page-nav .page-nav-spacer { flex: 1; }
+
+        .daynight__sky::before,
+        .daynight__sky::after {
+            content: "";
+            position: absolute;
+            z-index: 2;
+            border-radius: 50%;
+            width: 9em;
+            height: 9em;
+            left: 30.7em;
+            top: 1.4em;
+            transition: 1s cubic-bezier(0.65, 0, 0.34, 1.17);
+            box-shadow: -10em 0 0 0 #fff, -12.7em 2.5em 0 -1em #fff, -16.5em 5.8em 0 0 #fff, -20em 5.7em 0 -1em #fff, -23.5em 5em 0 -1.2em #fff, -28em 5.5em 0 -1em #fff, -31em 7.5em 0 0 #fff, 9em 1em 0 0 #fff;
+            animation: clouds 10s infinite cubic-bezier(0.65, 0, 0.35, 1);
+        }
+
+        .daynight__sky::before {
+            z-index: -1;
+            box-shadow: -10.5em -2.2em 0 0 #a5c5dc, -15em 0em 0 -2em #a5c5dc, -17.5em 1.8em 0 -1em #a5c5dc, -20.5em 4.6em 0 0 #a5c5dc, -24.5em 4.2em 0 0 #a5c5dc, -28.5em 5.8em 0 0 #a5c5dc, -31.5em 6.5em 0 0 #a5c5dc;
+            animation-delay: -5s;
+            animation-duration: 8s;
+        }
+
+        .daynight__checkbox:checked ~ .daynight__sky {
+            background-color: #1c202c;
+        }
+
+        .daynight__checkbox:checked ~ .daynight__sky::before {
+            transform: translateY(13em);
+            opacity: 0;
+        }
+
+        .daynight__checkbox:checked ~ .daynight__sky::after {
+            transform: translateY(10em);
+            opacity: 0;
+        }
+
+        .daynight__stars,
+        .daynight__morestars {
+            transition: 1s cubic-bezier(0.65, 0, 0.34, 1.17);
+            position: absolute;
+        }
+
+        .daynight__stars::before,
+        .daynight__stars::after,
+        .daynight__morestars::before,
+        .daynight__morestars::after {
+            content: "✦";
+            position: absolute;
+            font-size: 1.35em;
+            color: #fff;
+            opacity: 0;
+            transform: translateY(-15em);
+            transition: 1s cubic-bezier(0.65, 0, 0.34, 1.17);
+            animation: stars 7s infinite;
+        }
+
+        .daynight__checkbox:checked ~ * .daynight__stars::before,
+        .daynight__checkbox:checked ~ * .daynight__stars::after,
+        .daynight__checkbox:checked ~ * .daynight__morestars::before,
+        .daynight__checkbox:checked ~ * .daynight__morestars::after {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .daynight__stars::before {
+            left: 3.8em;
+            top: 0.8em;
+            text-shadow: 6.1em 1.1em;
+        }
+
+        .daynight__stars::after {
+            font-size: 1em;
+            left: 11em;
+            top: 6.8em;
+            animation-duration: 9.1s;
+            animation-delay: -2.8s;
+        }
+
+        .daynight__morestars::before {
+            font-size: 0.6em;
+            left: 4.9em;
+            top: 5.2em;
+            text-shadow: 4.5em 1.9em, 13.1em -0.8em, 16.8em 4.4em, 4.5em 8.7em;
+            animation-duration: 5.6s;
+            animation-delay: -7s;
+        }
+
+        .daynight__morestars::after {
+            font-size: 0.4em;
+            left: 8em;
+            top: 19.6em;
+            text-shadow: 1.5em -2.1em, 16.7em -7.1em;
+            animation-duration: 11.2s;
+            animation-delay: -1.4s;
+        }
+
+        .daynight__sunmoon {
+            content: "";
+            overflow: hidden;
+            display: block;
+            position: absolute;
+            width: 8em;
+            height: 8em;
+            border-radius: 50%;
+            transition: transform 1s cubic-bezier(0.65, 0, 0.34, 1.17);
+            background-color: #f2c426;
+            box-shadow: 0.4em 0.4em 0.5em 0.1em rgba(0, 0, 0, 0.3), inset -0.2em -0.2em 0.5em 0 rgba(0, 0, 0, 0.4), inset 0.2em 0.2em 0.5em 0 rgb(255, 254, 255), 0 0 0 10em rgba(255, 255, 255, 0.07), 0 0 0 6.5em rgba(255, 255, 255, 0.07), 0 0 0 3em rgba(255, 255, 255, 0.07);
+            left: 3em;
+            top: 1em;
+        }
+
+        .daynight__sunmoon::before {
+            content: "";
+            overflow: hidden;
+            display: block;
+            position: relative;
+            width: 8em;
+            height: 8em;
+            border-radius: 50%;
+            transition: 1s cubic-bezier(0.65, 0, 0.34, 1.17);
+            box-shadow: 0.4em 0.4em 0.5em 0.1em rgba(0, 0, 0, 0.3), inset -0.2em -0.2em 0.5em 0 rgba(0, 0, 0, 0.4), inset 0.2em 0.2em 0.5em 0 rgb(255, 254, 255);
+            background: radial-gradient(circle, rgba(150, 157, 176, 1) 1.1em, rgba(121, 128, 144, 1) 1.3em, rgba(129, 136, 153, 0) 1.4em), radial-gradient(circle, rgb(150, 157, 176) 0.5em, rgb(121, 128, 144) 0.7em, rgba(129, 136, 153, 0) 0.8em), radial-gradient(circle, rgb(150, 157, 176) 0.5em, rgb(121, 128, 144) 0.7em, rgba(129, 136, 153, 0) 0.8em);
+            background-position: -1.2em 0.7em, 0em -2em, 2em 1.4em;
+            background-color: #c5c8cf;
+            transform: translateX(105%) rotate(50deg);
+            animation: moon 25s infinite linear;
+        }
+
+        .daynight__checkbox:checked ~ .daynight__sky .daynight__sunmoon {
+            transform: translateX(15em);
+        }
+
+        .daynight__checkbox:checked ~ .daynight__sky .daynight__sunmoon::before {
+            transform: translateX(0) rotate(0);
+        }
+
+        @keyframes stars {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes clouds {
+            0% { scale: 1; }
+            50% { scale: 1.05; }
+            100% { scale: 1; }
+        }
+
+        @keyframes moon {
+            to { background-position: 6.8em 0.7em, 8em -2em, 10em 1.4em; }
+        }
     </style>
-    {% endblock %}
- <link rel="icon" href="{{ asset('images/panneaux-solaires-sous-la-pluie.png') }}"></head>
+</head>
 <body>
+    <!-- Splash Screen with WebGL Particle Animation -->
+    <div class="splash-screen">
+        <video id="splash-video" autoplay muted playsinline style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
+            <source src="{{ asset('images/particules.mp4') }}" type="video/mp4">
+            <source src="{{ asset('images/particules.mov') }}" type="video/quicktime">
+        </video>
+    </div>
+
     <header class="site">
-        <nav class="nav"> 
-            <a href="{{ path('app_home') }}" class="logo">
-                <span class="logo-mark">
+        <nav class="nav" role="navigation" aria-label="Navigation principale">
+            <a href="{{ path('app_home') }}" class="logo" aria-label="Sirius-Solar - Accueil">
+                <span class="logo-mark" aria-hidden="true">
                     <span></span><span></span><span></span><span></span>
                 </span>
-                SyriusPro
+                Sirius-Solar
             </a>
-            <div class="nav-links">
-                <a href="{{ path('app_home') }}#services">{{ 'nav.services'|trans }}</a>
-                <a href="{{ path('app_home') }}#avantages">{{ 'nav.why_us'|trans }}</a>
-                <a href="{{ path('app_devis') }}">{{ 'nav.quote'|trans }}</a>
+
+            <!-- Menu desktop -->
+            <div class="nav-links" id="nav-desktop" role="navigation" aria-label="Menu principal">
+                <a href="{{ path('app_home') }}#services" title="Voir nos services">{{ 'nav.services'|trans }}</a>
+                <a href="{{ path('app_home') }}#avantages" title="Voir nos avantages">{{ 'nav.why_us'|trans }}</a>
+                <a href="{{ path('app_devis') }}" title="Demander un devis">{{ 'nav.quote'|trans }}</a>
                 {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ path('app_admin_dashboard') }}">{{ 'nav.admin'|trans }}</a>
+                    <a href="{{ path('app_admin_dashboard') }}" title="Tableau de bord administrateur">{{ 'nav.admin'|trans }}</a>
                 {% elseif is_granted('ROLE_MEMBER') %}
-                    <a href="{{ path('app_member_dashboard') }}">{{ 'nav.member_area'|trans }}</a>
+                    <a href="{{ path('app_member_dashboard') }}" title="Mon espace">{{ 'nav.member_area'|trans }}</a>
                 {% endif %}
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <a href="{{ path('app_logout') }}">{{ 'nav.logout'|trans }}</a>
+                    <a href="{{ path('app_logout') }}" title="Se déconnecter">{{ 'nav.logout'|trans }}</a>
                 {% else %}
-                    <a href="{{ path('app_login') }}">{{ 'nav.login'|trans }}</a>
+                    <a href="{{ path('app_login') }}" title="Se connecter">{{ 'nav.login'|trans }}</a>
                 {% endif %}
             </div>
+
+            <!-- Language switcher et CTA -->
             <div class="lang-switch">
-                <a href="{{ path('app_locale_switch', {locale: 'fr'}) }}" class="{{ app.request.locale == 'fr' ? '-active' : '' }}">FR</a>
-                <a href="{{ path('app_locale_switch', {locale: 'en'}) }}" class="{{ app.request.locale == 'en' ? '-active' : '' }}">EN</a>
+                <a href="{{ path('app_locale_switch', {locale: 'fr'}) }}" class="{{ app.request.locale == 'fr' ? '-active' : '' }}" title="Français">FR</a>
+                <a href="{{ path('app_locale_switch', {locale: 'en'}) }}" class="{{ app.request.locale == 'en' ? '-active' : '' }}" title="English">EN</a>
             </div>
+
             <a href="{{ path('app_devis') }}" class="btn btn-primary" style="font-size:0.9rem; padding:10px 20px;">{{ 'nav.free_quote'|trans }}</a>
+
+            <!-- Dark mode toggle - MEGASWITCHER -->
+            <label class="daynight theme-toggle">
+                <input type="checkbox" class="daynight__checkbox">
+                <span class="daynight__sky">
+                    <span class="daynight__stars"></span>
+                    <span class="daynight__morestars"></span>
+                    <span class="daynight__sunmoon"></span>
+                </span>
+            </label>
+
+            <!-- Menu mobile hamburger -->
+            <button class="nav-toggle"
+                    id="mobile-menu-toggle"
+                    aria-controls="mobile-menu"
+                    aria-expanded="false"
+                    aria-label="Activer/Désactiver le menu">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
         </nav>
+
+        <!-- Menu mobile -->
+        <div class="mobile-menu" id="mobile-menu" role="navigation" aria-label="Menu mobile">
+            <div class="mobile-menu-content">
+                <a href="{{ path('app_home') }}" class="mobile-menu-link">{{ 'nav.home'|trans }}</a>
+                <a href="{{ path('app_home') }}#services" class="mobile-menu-link">{{ 'nav.services'|trans }}</a>
+                <a href="{{ path('app_home') }}#avantages" class="mobile-menu-link">{{ 'nav.why_us'|trans }}</a>
+                <a href="{{ path('app_devis') }}" class="mobile-menu-link">{{ 'nav.quote'|trans }}</a>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('app_admin_dashboard') }}" class="mobile-menu-link">{{ 'nav.admin'|trans }}</a>
+                {% elseif is_granted('ROLE_MEMBER') %}
+                    <a href="{{ path('app_member_dashboard') }}" class="mobile-menu-link">{{ 'nav.member_area'|trans }}</a>
+                {% endif %}
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <a href="{{ path('app_logout') }}" class="mobile-menu-link">{{ 'nav.logout'|trans }}</a>
+                {% else %}
+                    <a href="{{ path('app_login') }}" class="mobile-menu-link">{{ 'nav.login'|trans }}</a>
+                {% endif %}
+
+                <div class="lang-switch">
+                    <a href="{{ path('app_locale_switch', {locale: 'fr'}) }}" class="{{ app.request.locale == 'fr' ? '-active' : '' }}">FR</a>
+                    <a href="{{ path('app_locale_switch', {locale: 'en'}) }}" class="{{ app.request.locale == 'en' ? '-active' : '' }}">EN</a>
+                </div>
+            </div>
+        </div>
     </header>
 
-    <main>
+    <main role="main">
         {% for label, messages in app.flashes %}
             {% for message in messages %}
-                <div class="flash flash-{{ label }} container" style="margin-top:24px;">
-                    <div style="background:#E7F6EC; border:1px solid #34A85333; color:#1F7A3F; padding:16px 20px; border-radius:8px; font-weight:500;">
-                        {{ message }}
-                    </div>
+                <div class="alert alert-{{ label }} container" role="alert">
+                    {{ message }}
                 </div>
             {% endfor %}
         {% endfor %}
@@ -258,27 +667,316 @@
         </div>
     </main>
 
-    <footer class="site">
+    <!-- Back to top button -->
+    <button class="back-to-top" aria-label="Retour en haut">↑</button>
+
+    <footer class="site" role="contentinfo">
         <div class="container">
-            <div>
-                <h4>SyriusPro</h4>
-                <p>{{ 'footer.tagline'|trans }}</p>
+            <!-- About section -->
+            <div style="text-align: center; grid-column: 1 / -1;">
+                <h4>Sirius-Solar</h4>
+                <p>Spécialiste du nettoyage & entretien de panneaux photovoltaïques depuis 2020.</p>
+                <p style="font-size: 0.8rem; margin-top: var(--space-md); color: rgba(255,255,255,0.5);">
+                    "Un panneau propre, un rendement optimal!"
+                </p>
             </div>
+
+            <!-- Navigation links -->
             <div>
-                <h4>{{ 'footer.nav_title'|trans }}</h4>
-                <p><a href="{{ path('app_home') }}">{{ 'footer.home'|trans }}</a></p>
-                <p><a href="{{ path('app_home') }}#services">{{ 'footer.services'|trans }}</a></p>
-                <p><a href="{{ path('app_devis') }}">{{ 'footer.quote'|trans }}</a></p>
+                <h4>Navigation</h4>
+                <p><a href="{{ path('app_home') }}">Accueil</a></p>
+                <p><a href="{{ path('app_home') }}#pillars">Nos Engagements</a></p>
+                <p><a href="{{ path('app_devis') }}">Devis Gratuit</a></p>
+                <p><a href="{{ path('app_login') }}">Connexion</a></p>
             </div>
+
+            <!-- Contact Info -->
             <div>
-                <h4>{{ 'footer.contact_title'|trans }}</h4>
-                <p>contact@SyriusPro.fr</p>
-                <p>06 00 00 00 00</p>
+                <h4>Contact</h4>
+                <div class="contact-section">
+                    <div class="contact-item">
+                        <div class="contact-icon">📍</div>
+                        <div class="contact-details">
+                            <h5>Adresse</h5>
+                            <p>Route des dragons 7<br>1033 Cheseaux-sur-Lausanne</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📞</div>
+                        <div class="contact-details">
+                            <h5>Téléphone</h5>
+                            <p><a href="tel:+41779096413">077 909 64 13</a></p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">✉️</div>
+                        <div class="contact-details">
+                            <h5>Email</h5>
+                            <p><a href="mailto:ndiayeharouna1991@gmail.com">ndiayeharouna1991@gmail.com</a></p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">🌐</div>
+                        <div class="contact-details">
+                            <h5>Web</h5>
+                            <p>Sirius-Solar.ch</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Newsletter -->
+            <div>
+                <h4>Newsletter</h4>
+                <p>Recevez nos conseils d'entretien et offres exclusives.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Votre email" required>
+                    <button type="submit">S'abonner</button>
+                </form>
+                <div class="social-links" style="margin-top: var(--space-md);">
+                    <a href="#" title="Facebook" aria-label="Suivez-nous sur Facebook">f</a>
+                    <a href="#" title="Instagram" aria-label="Suivez-nous sur Instagram">📷</a>
+                    <a href="#" title="LinkedIn" aria-label="Suivez-nous sur LinkedIn">in</a>
+                </div>
             </div>
         </div>
+
+        <!-- Design Reference - Color Palette & Business Cards -->
+        <div style="margin-top: 60px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.1);">
+            <h3 style="margin-bottom: 40px; color: var(--blanc); font-size: 1.5rem; text-align: center;">🎨 Palette de Couleurs</h3>
+
+            <!-- Light Mode Colors -->
+            <div style="margin-bottom: 60px;">
+                <h4 style="color: #D4A842; font-size: 1.2rem; margin-bottom: 25px; text-align: center;">☀️ MODE CLAIR</h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; max-width: 800px; margin: 0 auto 30px;">
+                    <div style="text-align: center;">
+                        <div style="width: 100%; height: 80px; background: #0A3D35; border-radius: 8px; margin-bottom: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);"></div>
+                        <p style="color: rgba(255,255,255,0.9); font-size: 0.85rem; margin: 0;">Vert Principal<br>#0A3D35</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="width: 100%; height: 80px; background: #1B5548; border-radius: 8px; margin-bottom: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);"></div>
+                        <p style="color: rgba(255,255,255,0.9); font-size: 0.85rem; margin: 0;">Vert Moyen<br>#1B5548</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="width: 100%; height: 80px; background: #D4A842; border-radius: 8px; margin-bottom: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);"></div>
+                        <p style="color: rgba(255,255,255,0.9); font-size: 0.85rem; margin: 0;">Or Doré<br>#D4A842</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="width: 100%; height: 80px; background: #FFFFFF; border: 2px solid #333; border-radius: 8px; margin-bottom: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);"></div>
+                        <p style="color: rgba(255,255,255,0.9); font-size: 0.85rem; margin: 0;">Blanc<br>#FFFFFF</p>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <img src="{{ asset('images/cartet.jpeg') }}" alt="Carte de visite mode clair" style="width: 100%; max-width: 400px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+                </div>
+            </div>
+
+            <!-- Dark Mode Colors -->
+            <div>
+                <h4 style="color: #FFD700; font-size: 1.2rem; margin-bottom: 25px; text-align: center;">🌙 MODE SOMBRE</h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; max-width: 800px; margin: 0 auto 30px;">
+                    <div style="text-align: center;">
+                        <div style="width: 100%; height: 80px; background: #050f0c; border-radius: 8px; margin-bottom: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.5); border: 1px solid #2a3a38;"></div>
+                        <p style="color: rgba(255,255,255,0.9); font-size: 0.85rem; margin: 0;">Vert Ultra Sombre<br>#050f0c</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="width: 100%; height: 80px; background: #0f3a2f; border-radius: 8px; margin-bottom: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.5); border: 1px solid #2a3a38;"></div>
+                        <p style="color: rgba(255,255,255,0.9); font-size: 0.85rem; margin: 0;">Vert Sombre<br>#0f3a2f</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="width: 100%; height: 80px; background: #FFD700; border-radius: 8px; margin-bottom: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.5);"></div>
+                        <p style="color: rgba(255,255,255,0.9); font-size: 0.85rem; margin: 0;">Or Lumineux<br>#FFD700</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="width: 100%; height: 80px; background: #e0e0e0; border-radius: 8px; margin-bottom: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.5);"></div>
+                        <p style="color: rgba(255,255,255,0.9); font-size: 0.85rem; margin: 0;">Blanc Clair<br>#e0e0e0</p>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <img src="{{ asset('images/cartet2.jpeg') }}" alt="Carte de visite mode sombre" style="width: 100%; max-width: 400px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer bottom -->
         <div class="footer-bottom">
-            © {{ "now"|date("Y") }} SyriusPro — {{ 'footer.rights'|trans }}
+            <div class="footer-links">
+                <a href="#">Mentions légales</a>
+                <span>•</span>
+                <a href="#">Politique de confidentialité</a>
+                <span>•</span>
+                <a href="#">Conditions d'utilisation</a>
+            </div>
+            <p>© {{ "now"|date("Y") }} Sirius-Solar — Tous droits réservés. Nettoyage professionnel de panneaux photovoltaïques.</p>
         </div>
     </footer>
+
+    <!-- Script mobile menu -->
+    <script>
+        const toggle = document.getElementById('mobile-menu-toggle');
+        const menu = document.getElementById('mobile-menu');
+        const links = menu.querySelectorAll('a');
+
+        toggle.addEventListener('click', () => {
+            const isActive = menu.classList.toggle('active');
+            toggle.setAttribute('aria-expanded', isActive);
+            document.body.style.overflow = isActive ? 'hidden' : '';
+        });
+
+        links.forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.remove('active');
+                toggle.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // Fermer le menu au redimensionnement
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                menu.classList.remove('active');
+                toggle.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
+            }
+        });
+    </script>
+
+    <!-- Splash Screen Script -->
+    <script src="/splash-screen-controller.js"></script>
+
+    <!-- Dark mode toggle script -->
+    <script>
+        // Dark Mode Toggle Controller (Inline for immediate availability)
+        (function() {
+          'use strict';
+          const THEME_KEY = 'syriussolar-theme';
+          const DARK_MODE = 'dark';
+          const LIGHT_MODE = 'light';
+
+          function showThemeAnimation() {
+            const svg = `<svg class="theme-toggle-svg" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+              <!-- Sky background -->
+              <defs>
+                <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:#E0F6FF;stop-opacity:1" />
+                </linearGradient>
+              </defs>
+              <rect width="300" height="200" fill="url(#skyGrad)"/>
+
+              <!-- Sun -->
+              <circle cx="80" cy="50" r="30" fill="#FFD700" class="sun-circle"/>
+
+              <!-- Cloud layers -->
+              <g class="cloud-layer cloud-1">
+                <ellipse cx="150" cy="140" rx="60" ry="20" fill="white" opacity="0.9"/>
+              </g>
+              <g class="cloud-layer cloud-2">
+                <ellipse cx="100" cy="160" rx="50" ry="18" fill="white" opacity="0.8"/>
+              </g>
+              <g class="cloud-layer cloud-3">
+                <ellipse cx="200" cy="170" rx="55" ry="19" fill="white" opacity="0.75"/>
+              </g>
+
+              <!-- Cursor -->
+              <g class="cursor-icon">
+                <path d="M 250 80 L 250 120 L 270 110 Z" fill="black" stroke="black" stroke-width="2"/>
+              </g>
+            </svg>`;
+
+            const container = document.createElement('div');
+            container.className = 'theme-toggle-animation';
+            container.innerHTML = svg;
+            document.body.appendChild(container);
+
+            setTimeout(() => container.remove(), 1500);
+          }
+
+          function setTheme(theme, animate = false) {
+            const root = document.documentElement;
+            if (animate) {
+              root.classList.add('theme-changing');
+              showThemeAnimation();
+            }
+            root.setAttribute('data-theme', theme);
+            localStorage.setItem(THEME_KEY, theme);
+
+            // Apply body styles inline
+            const body = document.body;
+            if (theme === LIGHT_MODE) {
+              body.style.backgroundColor = '#faf9f7';
+              body.style.color = '#1B4D3E';
+            } else {
+              body.style.backgroundColor = '#0a0f0d';
+              body.style.color = '#e0e0e0';
+            }
+
+            // Sync checkbox state with theme
+            const checkbox = document.querySelector('.daynight__checkbox');
+            if (checkbox) {
+              checkbox.checked = (theme === DARK_MODE);
+            }
+
+            if (animate) {
+              setTimeout(() => root.classList.remove('theme-changing'), 300);
+            }
+          }
+
+          function init() {
+            const savedTheme = localStorage.getItem(THEME_KEY);
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const theme = savedTheme || (prefersDark ? DARK_MODE : LIGHT_MODE);
+            setTheme(theme, false);
+
+            // Sync checkbox with theme
+            const checkbox = document.querySelector('.daynight__checkbox');
+            if (checkbox) {
+              // Set initial checkbox state based on theme
+              const initialTheme = localStorage.getItem(THEME_KEY) || (window.matchMedia('(prefers-color-scheme: dark)').matches ? DARK_MODE : LIGHT_MODE);
+              checkbox.checked = (initialTheme === DARK_MODE);
+
+              // Listen to checkbox changes
+              checkbox.addEventListener('change', (e) => {
+                const current = document.documentElement.getAttribute('data-theme') || LIGHT_MODE;
+                setTheme(current === DARK_MODE ? LIGHT_MODE : DARK_MODE, true);
+              });
+            }
+
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+              if (!localStorage.getItem(THEME_KEY)) {
+                setTheme(e.matches ? DARK_MODE : LIGHT_MODE);
+              }
+            });
+          }
+
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+          } else {
+            init();
+          }
+        })();
+
+        // Back to top button
+        (function() {
+          'use strict';
+          const btn = document.querySelector('.back-to-top');
+          if (!btn) return;
+
+          window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+              btn.classList.add('visible');
+            } else {
+              btn.classList.remove('visible');
+            }
+          });
+
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          });
+        })();
+      </script>
+
+    {{ encore_entry_script_tags('app') }}
 </body>
 </html>

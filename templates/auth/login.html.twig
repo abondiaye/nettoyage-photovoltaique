@@ -1,38 +1,121 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ 'login.title'|trans }} - SyriusPro{% endblock %}
+{% block title %}{{ 'login.title'|trans }} - Sirius-Solar{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .auth-container {
+            min-height: calc(100vh - 200px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--bleu-nuit) 0%, var(--bleu-panneau) 100%);
+            padding: var(--space-md);
+        }
+
+        .auth-card {
+            background: var(--blanc);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            padding: var(--space-lg);
+            max-width: 420px;
+            width: 100%;
+        }
+
+        .auth-card h1 {
+            font-size: 1.75rem;
+            margin-bottom: var(--space-lg);
+            text-align: center;
+            color: var(--bleu-nuit);
+        }
+
+        .auth-form .form-group {
+            margin-bottom: var(--space-md);
+        }
+
+        .auth-form button {
+            width: 100%;
+            margin-top: var(--space-md);
+        }
+
+        .auth-footer {
+            margin-top: var(--space-lg);
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--gris-texte-leger);
+        }
+
+        .auth-footer a {
+            color: var(--bleu-panneau);
+            font-weight: 600;
+            transition: color var(--transition-fast);
+        }
+
+        .auth-footer a:hover {
+            color: var(--jaune-solaire);
+            text-decoration: underline;
+        }
+
+        @media (max-width: 640px) {
+            .auth-container {
+                padding: var(--space-sm);
+            }
+
+            .auth-card {
+                padding: var(--space-md);
+            }
+
+            .auth-card h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+{% endblock %}
 
 {% block body %}
-<div class="min-h-screen bg-gradient-to-br from-bleu-nuit to-bleu-panneau flex items-center justify-center px-4">
-    <div class="w-full max-w-md bg-white rounded-lg shadow-xl p-8">
-        <h1 class="text-3xl font-bold text-bleu-nuit mb-8 text-center">{{ 'login.title'|trans }}</h1>
+<div class="auth-container">
+    <div class="auth-card">
+        <h1>{{ 'login.title'|trans }}</h1>
 
         {% if error %}
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+            <div class="alert alert-error" role="alert">
                 {{ error.messageKey | trans(error.messageData) }}
             </div>
         {% endif %}
 
-        <form method="post" action="{{ path('app_login') }}" novalidate>
-            <div class="mb-6">
-                <label for="inputEmail" class="block text-sm font-medium text-bleu-nuit mb-2">{{ 'login.email'|trans }}</label>
-                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-jaune-solaire focus:border-transparent" required autofocus>
+        <form method="post" action="{{ path('app_login') }}" novalidate class="auth-form">
+            <div class="form-group">
+                <label for="inputEmail">{{ 'login.email'|trans }}</label>
+                <input type="email"
+                       value="{{ last_username }}"
+                       name="email"
+                       id="inputEmail"
+                       required
+                       autofocus
+                       autocomplete="email"
+                       aria-label="{{ 'login.email'|trans }}">
             </div>
 
-            <div class="mb-8">
-                <label for="inputPassword" class="block text-sm font-medium text-bleu-nuit mb-2">{{ 'login.password'|trans }}</label>
-                <input type="password" name="password" id="inputPassword" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-jaune-solaire focus:border-transparent" required>
+            <div class="form-group">
+                <label for="inputPassword">{{ 'login.password'|trans }}</label>
+                <input type="password"
+                       name="password"
+                       id="inputPassword"
+                       required
+                       autocomplete="current-password"
+                       aria-label="{{ 'login.password'|trans }}">
             </div>
 
-            <button type="submit" class="w-full bg-jaune-solaire text-bleu-nuit font-bold py-3 rounded-lg hover:bg-opacity-90 transition duration-300">
+            <button type="submit" class="btn btn-primary btn-large">
                 {{ 'login.submit'|trans }}
             </button>
         </form>
 
-        <div class="mt-6 text-center">
-            <p class="text-sm text-gray-600">
+        <div class="auth-footer">
+            <p>
                 {{ 'login.no_account'|trans }}
-                <a href="{{ path('app_register') }}" class="text-bleu-panneau font-semibold hover:underline">{{ 'login.register_link'|trans }}</a>
+                <a href="{{ path('app_register') }}">{{ 'login.register_link'|trans }}</a>
             </p>
         </div>
     </div>

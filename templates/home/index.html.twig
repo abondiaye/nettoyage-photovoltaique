@@ -1,335 +1,742 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}SyriusPro — Nettoyage de panneaux photovoltaïques{% endblock %}
+{% block title %}Sirius-Solar — Nettoyage & Entretien de Panneaux Photovoltaïques{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
     <style>
-.hero {
-    position: relative;
-    overflow: hidden;
-    color: var(--blanc);
-    min-height: 90vh;
-    background: 
-        linear-gradient(to bottom, rgba(11,31,51,0.4), rgba(11,31,51,0.7)),
-        url("{{ asset('images/panneaux-solaires-sous-la-pluie.png') }}");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
+        /* === NEW MODERN DESIGN INSPIRED BY BUSINESS CARDS === */
 
-.hero .container {
-    display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: 48px;
-    align-items: center;
-    padding: 80px 24px 96px;
-    position: relative;
-    z-index: 4;
-}
+        /* Hero Section - Card Design */
+        .hero-modern {
+            position: relative;
+            background: linear-gradient(135deg, rgba(27, 77, 62, 0.9) 0%, rgba(45, 107, 85, 0.85) 100%),
+                        url("{{ asset('images/panneaux-solaires-sous-la-pluie.png') }}") center/cover no-repeat;
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: visible;
+            padding: 60px 24px;
+            min-height: 700px;
+        }
 
-.hero h1 { font-size: clamp(2.2rem, 4.5vw, 3.4rem); line-height: 1.1; margin-bottom: 20px; }
-.hero h1 .accent { color: var(--jaune-solaire); }
-.hero p.lead { font-size: 1.1rem; color: rgba(255,255,255,0.78); max-width: 480px; margin-bottom: 32px; }
-.hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+        .hero-card {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 550px;
+            background: rgba(255, 255, 255, 0.15);
+            color: var(--blanc);
+            padding: 60px 40px;
+            border-radius: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow:
+                0 8px 32px rgba(0, 0, 0, 0.2),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+            animation: fadeInDown 0.8s ease-out;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
 
-.panel-grid {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-    gap: 6px;
-    aspect-ratio: 3/2;
-    border-radius: 12px;
-    overflow: hidden;
-    padding: 14px;
-    background: linear-gradient(135deg, #07141F, #102E47);
-    border: 1px solid rgba(255,255,255,0.08);
-}
-.panel-grid .cell {
-    border-radius: 3px;
-    background: #16324A;
-    animation: clean-sweep 4.5s ease-in-out infinite;
-}
-@keyframes clean-sweep {
-    0%, 100% { background: #16324A; }
-    50% { background: #3E8FC2; }
-}
-.panel-grid .cell:nth-child(6n+1) { animation-delay: 0s; }
-.panel-grid .cell:nth-child(6n+2) { animation-delay: 0.15s; }
-.panel-grid .cell:nth-child(6n+3) { animation-delay: 0.3s; }
-.panel-grid .cell:nth-child(6n+4) { animation-delay: 0.45s; }
-.panel-grid .cell:nth-child(6n+5) { animation-delay: 0.6s; }
-.panel-grid .cell:nth-child(6n+6) { animation-delay: 0.75s; }
-@media (prefers-reduced-motion: reduce) {
-    .panel-grid .cell { animation: none; background: #1E5F8C; }
-}
+        /* Raindrops effect */
+        .hero-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            border-radius: 20px;
+            background-image:
+                radial-gradient(circle at 20% 10%, rgba(255, 255, 255, 0.8) 3px, transparent 3px),
+                radial-gradient(circle at 75% 20%, rgba(255, 255, 255, 0.7) 2.5px, transparent 2.5px),
+                radial-gradient(circle at 15% 35%, rgba(255, 255, 255, 0.75) 2px, transparent 2px),
+                radial-gradient(circle at 85% 45%, rgba(255, 255, 255, 0.65) 3px, transparent 3px),
+                radial-gradient(circle at 45% 15%, rgba(255, 255, 255, 0.7) 2px, transparent 2px),
+                radial-gradient(circle at 60% 60%, rgba(255, 255, 255, 0.72) 2.5px, transparent 2.5px),
+                radial-gradient(circle at 30% 70%, rgba(255, 255, 255, 0.68) 2px, transparent 2px),
+                radial-gradient(circle at 80% 75%, rgba(255, 255, 255, 0.7) 2.5px, transparent 2.5px);
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            animation:
+                rainfall 4s linear infinite,
+                raindrop-flow 8s ease-in-out infinite;
+        }
 
-.stats { background: var(--gris-verre); border-top: 1px solid #E1E8EE; border-bottom: 1px solid #E1E8EE; }
-.stats .container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; padding: 36px 24px; text-align: center; }
-.stats .stat-num { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 2rem; color: var(--bleu-panneau); }
-.stats .stat-label { font-size: 0.9rem; color: #5B6B7A; }
+        @keyframes rainfall {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 0 100%;
+            }
+        }
 
-section { padding: 80px 0; }
-section.alt { background: var(--gris-verre); }
-.section-eyebrow { text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.78rem; font-weight: 600; color: var(--bleu-panneau); margin-bottom: 10px; }
-.section-title { font-size: clamp(1.6rem, 3vw, 2.2rem); margin-bottom: 16px; }
-.section-intro { max-width: 560px; color: #4F5E6C; margin-bottom: 48px; }
+        @keyframes raindrop-flow {
+            0%, 100% {
+                opacity: 0.5;
+            }
+            50% {
+                opacity: 0.9;
+            }
+        }
 
-.services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
-.service-card { background: var(--blanc); border: 1px solid #E1E8EE; border-radius: 10px; padding: 28px; display: flex; flex-direction: column; gap: 12px; transition: border-color 0.15s ease, transform 0.15s ease; }
-.service-card:hover { border-color: var(--bleu-panneau); transform: translateY(-3px); }
-.service-card h3 { font-size: 1.15rem; }
-.service-card p { color: #5B6B7A; font-size: 0.95rem; flex-grow: 1; }
-.service-price { font-family: 'Space Grotesk', sans-serif; font-weight: 600; color: var(--bleu-panneau); font-size: 0.95rem; padding-top: 8px; border-top: 1px solid #EEF2F5; }
+        .hero-logo {
+            margin-bottom: 30px;
+            color: var(--blanc);
+            font-weight: bold;
+            animation: fadeInUp 0.8s ease-out;
+        }
 
-.avantages-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-.avantage-item { display: flex; gap: 14px; align-items: flex-start; background: var(--blanc); border: 1px solid #E1E8EE; border-radius: 10px; padding: 20px; }
-.avantage-icon { flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px; background: var(--jaune-solaire); display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--bleu-nuit); font-family: 'Space Grotesk', sans-serif; }
-.avantage-text { font-size: 0.95rem; color: #2E3D4B; }
+        .hero-logo svg {
+            width: 150px;
+            height: auto;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+        }
 
-.cta-band { background: var(--bleu-panneau); color: var(--blanc); border-radius: 14px; margin: 0 24px; padding: 48px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px; }
-.cta-band h2 { font-size: 1.6rem; max-width: 480px; }
+        .hero-title {
+            font-size: clamp(2.5rem, 6vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: 2px;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            animation: fadeInUp 0.8s ease-out 0.1s both;
+        }
 
-/* Soleil */
-.hero::before {
-    content: "";
-    position: absolute;
-    width: 180px;
-    height: 180px;
-    border-radius: 50%;
-    background: radial-gradient(circle, #FFF9A5 0%, #FFD54F 40%, #F4B731 70%, rgba(244,183,49,0) 100%);
-    right: var(--sun-right, 78%);
-    bottom: var(--sun-bottom, 300px);
-    opacity: var(--sun-opacity, 0);
-    z-index: 2;
-    box-shadow: 
-        0 0 40px 20px rgba(4, 4, 2, 0.5),
-        0 0 80px 40px rgba(244,183,49,.3),
-        0 0 150px 60px rgba(244,183,49,.15);
-}
+        .hero-title-main {
+            display: block;
+            color: var(--blanc);
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        }
 
-@keyframes sunSet {
-    0%   { bottom: 300px; right: 78%; opacity: 0; }
-    8%   { opacity: 1; }
-    92%  { opacity: 1; }
-    100% { bottom: 20px; right: 10%; opacity: 0.5; }
-}
+        .hero-title-accent {
+            display: block;
+            color: var(--jaune-solaire);
+            font-size: 1.1em;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        }
 
-/* Montagnes */
-.mountains { position: absolute; bottom: 0; width: 100%; height: 280px; }
-.mountain-back, .mountain-middle, .mountain-front { position: absolute; bottom: 0; width: 100%; }
-.mountain-back   { height: 260px; background: #4d6d8b; z-index: 3; clip-path: polygon(0% 100%, 8% 60%, 18% 75%, 35% 30%, 50% 80%, 65% 25%, 82% 70%, 100% 100%); }
-.mountain-middle { height: 220px; background: #32506d; z-index: 4; clip-path: polygon(0% 100%, 15% 45%, 28% 80%, 50% 20%, 72% 70%, 85% 35%, 100% 100%); }
-.mountain-front  { height: 180px; background: #0B1F33; z-index: 5; clip-path: polygon(0% 100%, 10% 55%, 25% 75%, 45% 30%, 60% 85%, 80% 45%, 100% 100%); }
+        .hero-subtitle {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 50px;
+            letter-spacing: 1px;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
 
-@media (max-width: 800px) {
-    .hero .container { grid-template-columns: 1fr; padding-top: 56px; }
-    .stats .container { grid-template-columns: 1fr; }
-    .cta-band { margin: 0 16px; padding: 32px; }
-    .hero::before { width: 100px; height: 100px; }
-}
+        .hero-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 50px;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .hero-feature {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(212, 168, 66, 0.3);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .hero-feature:hover {
+            background: rgba(212, 168, 66, 0.15);
+            border-color: rgba(212, 168, 66, 0.6);
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            line-height: 1;
+        }
+
+        .feature-text {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .feature-text strong {
+            font-size: 0.9rem;
+            color: var(--blanc);
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .feature-text span {
+            font-size: 0.8rem;
+            color: var(--jaune-solaire);
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
+        .hero-cta {
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .hero-cta .btn {
+            font-size: 1.05rem;
+            padding: 16px 48px;
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Brushes/Brooms Icon Animation */
+        .brushes-icon {
+            width: 100%;
+            max-width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 120px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(212, 168, 66, 0.3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(212, 168, 66, 0.2);
+                border-color: rgba(212, 168, 66, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(212, 168, 66, 0.5);
+                border-color: rgba(212, 168, 66, 0.6);
+            }
+        }
+
+        /* Stats Section */
+        .stats-modern {
+            background: var(--gris-verre);
+            padding: 60px 0;
+            border-top: 3px solid var(--jaune-solaire);
+            border-bottom: 3px solid var(--bleu-nuit);
+        }
+
+        .stats-modern .container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            text-align: center;
+        }
+
+        .stat-box {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .stat-number {
+            font-size: clamp(2.5rem, 6vw, 3.5rem);
+            font-weight: 700;
+            color: var(--bleu-nuit);
+            font-family: var(--font-display);
+            margin-bottom: 8px;
+        }
+
+        .stat-number .symbol {
+            color: var(--jaune-solaire);
+        }
+
+        .stat-text {
+            font-size: 0.95rem;
+            color: var(--gris-texte-leger);
+            line-height: 1.6;
+        }
+
+        /* 4 Piliers Section (Card Design) */
+        .pillars-section {
+            padding: 80px 0;
+            background: var(--blanc);
+        }
+
+        .pillars-header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .pillars-header h2 {
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            margin-bottom: 16px;
+            color: var(--bleu-nuit);
+        }
+
+        .pillars-header p {
+            color: var(--gris-texte-leger);
+            font-size: 1.05rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .pillar-card {
+            background: linear-gradient(135deg, var(--blanc) 0%, #f9f7f4 100%);
+            border: 2px solid var(--gris-bordure);
+            border-radius: var(--radius-xl);
+            padding: 40px 24px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            animation: fadeInUp 0.8s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pillar-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--bleu-nuit), var(--jaune-solaire));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s ease;
+        }
+
+        .pillar-card:hover {
+            border-color: var(--jaune-solaire);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(27, 77, 62, 0.15);
+            background: linear-gradient(135deg, var(--blanc) 0%, #fffbf5 100%);
+        }
+
+        .pillar-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .pillar-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--bleu-nuit), var(--bleu-panneau));
+            border: 3px solid var(--jaune-solaire);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 24px;
+            box-shadow: 0 4px 15px rgba(27, 77, 62, 0.2);
+            transition: all 0.4s ease;
+        }
+
+        .pillar-card:hover .pillar-icon {
+            transform: rotate(-15deg) scale(1.1);
+            box-shadow: 0 8px 25px rgba(212, 168, 66, 0.4);
+        }
+
+        .pillar-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--bleu-nuit);
+            margin-bottom: 12px;
+            font-family: var(--font-display);
+        }
+
+        .pillar-description {
+            font-size: 0.9rem;
+            color: var(--gris-texte-leger);
+            line-height: 1.6;
+        }
+
+        /* Services Section */
+        .services-modern {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--gris-verre) 0%, var(--blanc) 100%);
+        }
+
+        .services-header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .services-header h2 {
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            margin-bottom: 16px;
+            color: var(--bleu-nuit);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+        }
+
+        .service-card-modern {
+            background: var(--blanc);
+            border-radius: var(--radius-xl);
+            padding: 32px 28px;
+            border: 2px solid var(--gris-bordure);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            animation: fadeInUp 0.8s ease-out;
+            position: relative;
+        }
+
+        .service-card-modern::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--bleu-nuit), var(--jaune-solaire));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s ease;
+            border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+        }
+
+        .service-card-modern:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 40px rgba(27, 77, 62, 0.15);
+            border-color: var(--jaune-solaire);
+        }
+
+        .service-card-modern:hover::after {
+            transform: scaleX(1);
+        }
+
+        .service-card-modern h3 {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            color: var(--bleu-nuit);
+        }
+
+        .service-card-modern p {
+            color: var(--gris-texte-leger);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .service-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--jaune-solaire);
+            font-family: var(--font-display);
+        }
+
+        /* CTA Section */
+        .cta-modern {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--bleu-nuit) 0%, var(--bleu-panneau) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-modern::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(212, 168, 66, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .cta-modern .container {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .cta-modern h2 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 24px;
+            color: var(--blanc);
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .cta-modern p {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 32px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-modern .btn {
+            font-size: 1.05rem;
+            padding: 16px 40px;
+            min-width: 280px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .hero-modern .container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                padding: 60px 24px;
+            }
+
+            .pillars-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+
+            .stats-modern .container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-modern {
+                min-height: auto;
+                padding: 40px 0;
+            }
+
+            .hero-modern .container {
+                gap: 30px;
+                padding: 40px 16px;
+            }
+
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+
+            .pillars-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pillar-card {
+                padding: 32px 20px;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .stats-modern .container {
+                gap: 20px;
+            }
+
+            .hero-visual {
+                display: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hero-content h1 {
+                font-size: 1.5rem;
+            }
+
+            .hero-content > p {
+                font-size: 1rem;
+            }
+
+            .hero-tagline {
+                font-size: 1.1rem;
+            }
+
+            .pillar-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 1.8rem;
+            }
+
+            .cta-modern h2 {
+                font-size: 1.5rem;
+            }
+
+            .cta-modern .btn {
+                width: 100%;
+            }
+        }
     </style>
 {% endblock %}
 
 {% block body %}
-    <section class="hero">
-                        <canvas id="sun-rays" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;"></canvas>
-        <div class="mountains">
-            <div class="mountain-back"></div>
-            <div class="mountain-middle"></div>
-            <div class="mountain-front"></div>
+
+<!-- HERO SECTION -->
+<section class="hero-modern">
+    <div class="hero-card">
+        <div class="hero-logo">
+            <svg viewBox="0 0 200 60" width="200" height="60">
+                <!-- Logo design -->
+                <circle cx="25" cy="30" r="18" fill="none" stroke="currentColor" stroke-width="2"/>
+                <circle cx="25" cy="30" r="14" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                <line x1="20" y1="30" x2="30" y2="30" stroke="currentColor" stroke-width="2"/>
+                <circle cx="55" cy="30" r="18" fill="none" stroke="currentColor" stroke-width="2"/>
+                <circle cx="55" cy="30" r="14" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                <line x1="50" y1="30" x2="60" y2="30" stroke="currentColor" stroke-width="2"/>
+                <text x="75" y="38" font-size="24" font-weight="bold" fill="currentColor">SIRIUS</text>
+                <polygon points="195,5 200,15 190,15" fill="currentColor"/>
+            </svg>
         </div>
-        <div class="container">
-            <div>
-                <h1>Vos panneaux perdent <span class="accent">jusqu'à 25 %</span> de rendement sans que vous le voyiez.</h1>
-                <p class="lead">
-                    Poussière, pollen, fientes et résidus calcaires forment un film invisible qui réduit la production
-                    de votre installation photovoltaïque. Notre équipe nettoie vos panneaux à l'eau osmosée, sans
-                    produit chimique, pour leur redonner leur pleine capacité.
-                </p>
-                <div class="hero-actions">
-                    <a href="{{ path('app_devis') }}" class="btn btn-primary">Demander un devis gratuit</a>
-                    <a href="#services" class="btn btn-outline">Voir nos prestations</a>
+        <h1 class="hero-title">
+            <span class="hero-title-main">SIRIUS</span>
+            <span class="hero-title-accent">-SOLAR</span>
+        </h1>
+        <p class="hero-subtitle">ENTRETIEN & NETTOYAGE<br>DE PANNEAUX PHOTOVOLTAÏQUES</p>
+
+        <div class="hero-features">
+            <div class="hero-feature">
+                <div class="feature-icon">💧</div>
+                <div class="feature-text">
+                    <strong>NETTOYAGE</strong>
+                    <span>À L'EAU PURE</span>
                 </div>
             </div>
-            <div class="panel-grid" aria-hidden="true">
-                {% for i in 1..24 %}
-                    <div class="cell"></div>
-                {% endfor %}
+            <div class="hero-feature">
+                <div class="feature-icon">✓</div>
+                <div class="feature-text">
+                    <strong>SÉCURITÉ</strong>
+                    <span>MAXIMALE</span>
+                </div>
+            </div>
+            <div class="hero-feature">
+                <div class="feature-icon">🌿</div>
+                <div class="feature-text">
+                    <strong>RESPECT DE</strong>
+                    <span>L'ENVIRONNEMENT</span>
+                </div>
+            </div>
+            <div class="hero-feature">
+                <div class="feature-icon">📈</div>
+                <div class="feature-text">
+                    <strong>PERFORMANCE</strong>
+                    <span>OPTIMALE</span>
+                </div>
             </div>
         </div>
-    </section>
 
-    <div class="stats">
-        <div class="container">
-            <div>
-                <div class="stat-num">+15 %</div>
-                <div class="stat-label">de production retrouvée en moyenne après nettoyage</div>
+        <div class="hero-cta">
+            <a href="{{ path('app_devis') }}" class="btn btn-primary">Devis Gratuit</a>
+        </div>
+    </div>
+</section>
+
+<!-- STATS SECTION -->
+<section class="stats-modern">
+    <div class="container">
+        <div class="stat-box">
+            <div class="stat-number"><span class="symbol">+</span>15<span class="symbol">%</span></div>
+            <div class="stat-text">Production retrouvée<br>en moyenne</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">100<span class="symbol">%</span></div>
+            <div class="stat-text">Eau osmosée<br>Zéro chimique</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number"><span class="symbol">~</span>48h</div>
+            <div class="stat-text">Réponse moyenne<br>à vos devis</div>
+        </div>
+    </div>
+</section>
+
+<!-- 4 PILLARS SECTION -->
+<section class="pillars-section" id="pillars">
+    <div class="container">
+        <div class="pillars-header">
+            <h2>Nos Engagements</h2>
+            <p>Qualité, sécurité, respect de l'environnement et performance optimale</p>
+        </div>
+        <div class="pillars-grid">
+            <div class="pillar-card">
+                <div class="pillar-icon">💧</div>
+                <h3 class="pillar-title">Nettoyage<br>à l'eau pure</h3>
+                <p class="pillar-description">Zéro résidu calcaire, aucun produit chimique agressif</p>
             </div>
-            <div>
-                <div class="stat-num">100 %</div>
-                <div class="stat-label">eau osmosée, zéro produit chimique</div>
+            <div class="pillar-card">
+                <div class="pillar-icon">✅</div>
+                <h3 class="pillar-title">Sécurité<br>maximale</h3>
+                <p class="pillar-description">Techniciens formés au travail en hauteur</p>
             </div>
-            <div>
-                <div class="stat-num">48h</div>
-                <div class="stat-label">délai moyen de réponse à votre devis</div>
+            <div class="pillar-card">
+                <div class="pillar-icon">🌿</div>
+                <h3 class="pillar-title">Respect de<br>l'environnement</h3>
+                <p class="pillar-description">Approche écologique et durable</p>
+            </div>
+            <div class="pillar-card">
+                <div class="pillar-icon">📈</div>
+                <h3 class="pillar-title">Performance<br>optimale</h3>
+                <p class="pillar-description">Jusqu'à 25% de perte évitée</p>
             </div>
         </div>
     </div>
+</section>
 
-    <section id="services">
-        <div class="container">
-            <div class="section-eyebrow">Nos prestations</div>
-            <h2 class="section-title">Un entretien adapté à chaque installation</h2>
-            <p class="section-intro">
-                Que vous soyez particulier, exploitant agricole ou gestionnaire de site industriel,
-                nous proposons une formule adaptée à la taille et à l'accessibilité de votre installation.
-            </p>
-            <div class="services-grid">
-                {% for service in services %}
-                    <div class="service-card">
-                        <h3>{{ service.titre }}</h3>
-                        <p>{{ service.description }}</p>
-                        <div class="service-price">{{ service.prix }}</div>
-                    </div>
-                {% endfor %}
-            </div>
+<!-- SERVICES SECTION -->
+<section class="services-modern">
+    <div class="container">
+        <div class="services-header">
+            <h2>Nos Prestations</h2>
+            <p>Un entretien adapté à chaque installation</p>
         </div>
-    </section>
-
-    <section id="avantages" class="alt">
-        <div class="container">
-            <div class="section-eyebrow">Pourquoi nous choisir</div>
-            <h2 class="section-title">Un savoir-faire technique, des résultats mesurables</h2>
-            <p class="section-intro">
-                Le nettoyage de panneaux n'est pas un simple lavage de vitres : c'est une intervention technique
-                qui demande du matériel adapté et une bonne connaissance des installations photovoltaïques.
-            </p>
-            <div class="avantages-list">
-                {% for avantage in avantages %}
-                    <div class="avantage-item">
-                        <div class="avantage-icon">✓</div>
-                        <div class="avantage-text">{{ avantage }}</div>
-                    </div>
-                {% endfor %}
-            </div>
+        <div class="services-grid">
+            {% for service in services %}
+                <div class="service-card-modern">
+                    <h3>{{ service.titre }}</h3>
+                    <p>{{ service.description }}</p>
+                    <div class="service-price">{{ service.prix }}</div>
+                </div>
+            {% endfor %}
         </div>
-    </section>
+    </div>
+</section>
 
-    <section>
-        <div class="cta-band">
-            <h2>Prêt à retrouver le plein rendement de votre installation ?</h2>
-            <a href="{{ path('app_devis') }}" class="btn btn-primary">Demander un devis gratuit</a>
-        </div>
-    </section>
+<!-- CTA SECTION -->
+<section class="cta-modern">
+    <div class="container">
+        <h2>Prêt à optimiser votre installation?</h2>
+        <p>Obtenez un devis gratuit en moins de 48h. Nos experts analyseront votre installation et vous proposeront une solution adaptée.</p>
+        <a href="{{ path('app_devis') }}" class="btn btn-primary">Demander mon devis gratuit</a>
+    </div>
+</section>
 
- <script>
-const canvas = document.getElementById('sun-rays');
-const ctx = canvas.getContext('2d');
-const hero = document.querySelector('.hero');
-const sunEl = document.querySelector('.hero::before');
-
-const DURATION = 16000;
-let rays = [];
-
-function resize() {
-    canvas.width = hero.offsetWidth;
-    canvas.height = hero.offsetHeight;
-}
-resize();
-window.addEventListener('resize', resize);
-
-// Le soleil suit le curseur (en plus de l'animation de coucher de soleil)
-let offsetX = 0, offsetY = 0;
-let targetOffsetX = 0, targetOffsetY = 0;
-const MAX_OFFSET = 70;
-
-hero.addEventListener('mousemove', (e) => {
-    const rect = hero.getBoundingClientRect();
-    const cx = rect.width / 2;
-    const cy = rect.height / 2;
-    targetOffsetX = ((e.clientX - rect.left - cx) / cx) * MAX_OFFSET;
-    targetOffsetY = ((e.clientY - rect.top - cy) / cy) * MAX_OFFSET;
-});
-
-hero.addEventListener('mouseleave', () => {
-    targetOffsetX = 0;
-    targetOffsetY = 0;
-});
-
-for (let i = 0; i < 25; i++) {
-    rays.push({
-        angle: Math.random() * Math.PI * 2,
-        speed: (Math.random() * 0.002 + 0.0005) * (Math.random() > 0.5 ? 1 : -1),
-        width: Math.random() * 0.03 + 0.008,
-        opacity: Math.random() * 0.12 + 0.04,
-    });
-}
-
-// On applique l'easing CSS ease-in-out manuellement
-function easeInOut(t) {
-    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-}
-
-function draw(now) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    const W = canvas.width;
-    const H = canvas.height;
-    const raw = (now % DURATION) / DURATION;
-    const progress = easeInOut(raw);
-
-    // Position du soleil (trajectoire du coucher de soleil)
-   const sunW = 180;
-const baseRightPct = 0.78 - progress * 0.68;
-const baseBottomPx = 300 - progress * 280;
-
-    // Le curseur ajoute un décalage par-dessus la trajectoire
-    offsetX += (targetOffsetX - offsetX) * 0.06;
-    offsetY += (targetOffsetY - offsetY) * 0.06;
-
-    const rightPct = baseRightPct - (offsetX / W);
-    const bottomPx = baseBottomPx - offsetY;
-
-// Centre exact du soleil
-const sunX = W - (W * rightPct) - sunW / 2;
-const sunY = H - bottomPx - sunW / 2;
-    // Opacité
-    let opacity = 1;
-    if (raw < 0.08) opacity = raw / 0.08;
-    else if (raw > 0.92) opacity = 1 - (raw - 0.92) / 0.08;
-
-    // Déplacer le soleil CSS
-    hero.style.setProperty('--sun-right', `${rightPct * 100}%`);
-    hero.style.setProperty('--sun-bottom', `${bottomPx}px`);
-    hero.style.setProperty('--sun-opacity', opacity);
-
-    // Dessiner les rayons
-    const len = Math.max(W, H) * 2;
-    rays.forEach(ray => {
-        ray.angle += ray.speed;
-        const a1 = ray.angle - ray.width;
-        const a2 = ray.angle + ray.width;
-
-        ctx.beginPath();
-        ctx.moveTo(sunX, sunY);
-        ctx.lineTo(sunX + Math.cos(a1) * len, sunY + Math.sin(a1) * len);
-        ctx.lineTo(sunX + Math.cos(a2) * len, sunY + Math.sin(a2) * len);
-        ctx.closePath();
-
-        const grad = ctx.createRadialGradient(sunX, sunY, 0, sunX, sunY, len * 0.5);
-        grad.addColorStop(0, `rgba(244,183,49,${ray.opacity * opacity})`);
-        grad.addColorStop(1, 'rgba(244,183,49,0)');
-        ctx.fillStyle = grad;
-        ctx.fill();
-    });
-
-    requestAnimationFrame(draw);
-}
-requestAnimationFrame(draw);
-</script>
 {% endblock %}
 
 {% block page_nav_next %}
-    <a href="{{ path('app_devis') }}" class="page-nav-link">{{ 'pagenav.quote'|trans }} →</a>
+    <a href="{{ path('app_devis') }}" class="page-nav-link">Devis Gratuit →</a>
 {% endblock %}

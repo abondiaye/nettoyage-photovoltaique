@@ -1,0 +1,265 @@
+/* === CIRCULAR BURGER MENU === */
+
+.burger-container {
+  position: relative;
+  z-index: 101;
+}
+
+.bars {
+  position: absolute;
+  width: 27px;
+  height: 27px;
+  top: 20px;
+  right: 30px;
+  cursor: pointer;
+  z-index: 101;
+  padding-top: 9px;
+  display: none;
+}
+
+.bar {
+  width: 100%;
+  height: 3px;
+  background-color: var(--blanc);
+  position: absolute;
+  transition: all 0.3s ease;
+}
+
+.bar::before,
+.bar::after {
+  content: "";
+  display: block;
+  background-color: var(--blanc);
+  width: 100%;
+  height: 3px;
+  position: absolute;
+}
+
+.bar::before {
+  transform: translateY(-9px);
+  transition: all 0.3s ease;
+}
+
+.bar::after {
+  transform: translateY(9px);
+  transition: all 0.3s ease;
+}
+
+.bars.active .bar {
+  background-color: transparent;
+}
+
+.bars.active .bar::before {
+  animation: top-bar 0.5s forwards;
+}
+
+.bars.active .bar::after {
+  animation: bottom-bar 0.5s forwards;
+}
+
+@keyframes top-bar {
+  0% {
+    transform: translateY(-9px) rotate(0deg);
+  }
+  100% {
+    transform: translateY(0) rotate(45deg);
+  }
+}
+
+@keyframes bottom-bar {
+  0% {
+    transform: translateY(9px) rotate(0deg);
+  }
+  100% {
+    transform: translateY(0) rotate(-45deg);
+  }
+}
+
+/* Circular Navigation Menu */
+#nav-circular {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  z-index: 95;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+#nav-circular.visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+}
+
+#nav-circular ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#nav-circular a {
+  color: var(--blanc);
+  text-decoration: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  border-radius: 50%;
+  font-size: 1.1rem;
+}
+
+#nav-circular a:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 0 30px rgba(212, 168, 66, 0.6);
+}
+
+/* Circle shapes for nav items */
+.shape-circle {
+  border-radius: 50%;
+  width: 20vw;
+  height: 20vw;
+  top: -10vw;
+  right: -10vw;
+  position: fixed;
+  transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  z-index: 6;
+}
+
+.circle-one {
+  background: var(--bleu-nuit);
+  box-shadow: 0 0px 0px rgba(27, 77, 62, 0.5);
+}
+
+.circle-two {
+  background: #0a3a2e;
+  box-shadow: 0 0px 0px rgba(27, 77, 62, 0.5);
+}
+
+.circle-three {
+  background: #0d4a38;
+  box-shadow: 0 0px 0px rgba(27, 77, 62, 0.5);
+}
+
+.circle-five {
+  background: var(--bleu-panneau);
+  box-shadow: 0 0px 0px rgba(27, 77, 62, 0.5);
+}
+
+/* Expanded states */
+#nav-circular.visible li:first-child {
+  width: 200vw;
+  height: 200vw;
+  top: -100vw;
+  right: -100vw;
+  z-index: 5;
+  box-shadow: 0 0px 80px rgba(27, 77, 62, 0.6);
+}
+
+#nav-circular.visible li:nth-child(2) {
+  width: 150vw;
+  height: 150vw;
+  top: -75vw;
+  right: -75vw;
+  z-index: 6;
+  box-shadow: 0 0px 80px rgba(27, 77, 62, 0.6);
+}
+
+#nav-circular.visible li:nth-child(3) {
+  width: 100vw;
+  height: 100vw;
+  top: -50vw;
+  right: -50vw;
+  z-index: 7;
+  box-shadow: 0 0px 80px rgba(27, 77, 62, 0.6);
+}
+
+#nav-circular.visible li:last-child {
+  width: 50vw;
+  height: 50vw;
+  top: -25vw;
+  right: -25vw;
+  z-index: 8;
+  box-shadow: 0 0px 80px rgba(27, 77, 62, 0.6);
+}
+
+#nav-circular.visible li:first-child a {
+  line-height: 200vw;
+  font-size: 2.5rem;
+}
+
+#nav-circular.visible li:nth-child(2) a {
+  line-height: 150vw;
+  font-size: 2rem;
+}
+
+#nav-circular.visible li:nth-child(3) a {
+  line-height: 100vw;
+  font-size: 1.5rem;
+}
+
+#nav-circular.visible li:last-child a {
+  line-height: 50vw;
+  font-size: 1.1rem;
+}
+
+/* Dark mode support */
+:root[data-theme="dark"] .bar,
+:root[data-theme="dark"] .bar::before,
+:root[data-theme="dark"] .bar::after {
+  background-color: var(--blanc);
+}
+
+:root[data-theme="dark"] .circle-one {
+  background: #050f0c;
+}
+
+:root[data-theme="dark"] .circle-two {
+  background: #0a1f1a;
+}
+
+:root[data-theme="dark"] .circle-three {
+  background: #0f2a22;
+}
+
+:root[data-theme="dark"] .circle-five {
+  background: #1a5a4a;
+}
+
+/* Mobile menu visibility */
+@media (max-width: 768px) {
+  .bars {
+    display: block;
+  }
+
+  #nav-circular li:first-child a {
+    line-height: 200vw !important;
+    text-indent: 15vw !important;
+  }
+
+  #nav-circular li:nth-child(2) a {
+    line-height: 150vw !important;
+    text-indent: 17vw !important;
+  }
+
+  #nav-circular li:nth-child(3) a {
+    line-height: 100vw !important;
+    text-indent: 17vw !important;
+  }
+
+  #nav-circular li:last-child a {
+    line-height: 50vw !important;
+    text-indent: 12vw !important;
+  }
+}
