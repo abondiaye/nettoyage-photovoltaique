@@ -1,0 +1,107 @@
+nav:
+  services: Servizi
+  why_us: Perché noi
+  quote: Richiedi un preventivo
+  admin: Admin
+  member_area: Area Membro
+  logout: Esci
+  login: Accedi
+  free_quote: Preventivo gratuito
+
+footer:
+  tagline: Pulizia professionale di pannelli fotovoltaici per privati, agricoltori e aziende.
+  nav_title: Navigazione
+  home: Home
+  services: I nostri servizi
+  quote: Richiedi un preventivo
+  contact_title: Contatti
+  rights: Tutti i diritti riservati.
+
+pagenav:
+  previous: Indietro
+  next: Avanti
+  home: Home
+  quote: Preventivo
+  login: Accedi
+  register: Registrati
+  book_appointment: Prenota un appuntamento
+  member_dashboard: La mia area
+  member_appointments: I miei appuntamenti
+  admin_dashboard: Dashboard
+  admin_appointments: Appuntamenti
+  admin_members: Membri
+  admin_comments: Commenti
+
+status:
+  scheduled: Programmato
+  completed: Completato
+  cancelled: Cancellato
+
+login:
+  title: Accedi
+  email: Email
+  password: Password
+  submit: Accedi
+  no_account: "Non hai un account?"
+  register_link: Registrati qui
+
+register:
+  title: Crea un account
+  submit: Registrati
+  has_account: Hai già un account?
+  login_link: Accedi qui
+
+member:
+  dashboard:
+    title: La mia area membro
+    points_available: Punti disponibili
+    active_discounts: Sconti attivi
+    scheduled_appointments: Appuntamenti programmati
+    points_history: Storico dei punti
+    available_discounts: Sconti disponibili
+    discount_label: "%percent%% di sconto"
+    created: Creato il
+    accumulate: Accumula 100 punti per uno sconto!
+    view_appointments: Visualizza i miei appuntamenti
+    book_appointment: Prenota un appuntamento
+  appointments:
+    title: I miei appuntamenti
+    book_new: Prenota un nuovo appuntamento
+    next_appointment: Prossimo appuntamento
+    time: "Orario:"
+    cancel: Annulla appuntamento
+    none: Nessun appuntamento al momento.
+    book_first: Prenota il tuo primo appuntamento
+
+home:
+  hero:
+    title: SIRIUS -SOLAR
+    subtitle: MANUTENZIONE E PULIZIA PANNELLI SOLARI
+    cta: Preventivo Gratuito
+  stats:
+    production: Produzione recuperata in media
+    water: Acqua Osmotizzata Zero sostanze chimiche
+    response: Risposta media ai tuoi preventivi
+  pillars:
+    title: I Nostri Impegni
+    subtitle: Qualità, sicurezza, rispetto ambientale e prestazioni ottimali
+    cleaning_title: Pulizia con acqua demineralizzata
+    cleaning_desc: Zero residui di calcare, nessuna sostanza chimica aggressiva
+    safety_title: Sicurezza massima
+    safety_desc: Tecnici addestrati al lavoro in altezza
+    environment_title: Rispetto dell'ambiente
+    environment_desc: Approccio ecologico e sostenibile
+    performance_title: Prestazioni ottimali
+    performance_desc: Fino al 25% di perdita evitata
+  services:
+    title: I Nostri Servizi
+    subtitle: Manutenzione adattata a ogni installazione
+  cta:
+    title: Pronto a ottimizzare il tuo impianto?
+    subtitle: Ottieni un preventivo gratuito in meno di 48 ore. I nostri esperti analizzeranno il tuo impianto e proporranno una soluzione adatta.
+    button: Richiedi il mio preventivo gratuito
+
+admin:
+  members:
+    next_appointment: Prossimo appuntamento
+    no_appointment: Nessun appuntamento

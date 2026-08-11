@@ -1,0 +1,107 @@
+nav:
+  services: Servetschas
+  why_us: Pertgei nus
+  quote: Dumander in offerta
+  admin: Admin
+  member_area: Zona da commembers
+  logout: Sortir
+  login: Entrar
+  free_quote: Offerta gratuita
+
+footer:
+  tagline: Nettezia professiunala da planchas fotovoltaicas per persunas privatas, agriculturs e seziouns.
+  nav_title: Navigaziun
+  home: Hema
+  services: Nossas servetschas
+  quote: Dumander in offerta
+  contact_title: Contactas
+  rights: Tuts drets conservads.
+
+pagenav:
+  previous: Enavos
+  next: Avant
+  home: Hema
+  quote: Offerta
+  login: Entrar
+  register: Registraziun
+  book_appointment: Profiter ina notga
+  member_dashboard: Mia zona
+  member_appointments: Mias notgas
+  admin_dashboard: Tabla da controlla
+  admin_appointments: Notgas
+  admin_members: Commembers
+  admin_comments: Commentaris
+
+status:
+  scheduled: Planifitgà
+  completed: Cumpletà
+  cancelled: Annulà
+
+login:
+  title: Entrar
+  email: Posta electronica
+  password: Contrasenga
+  submit: Entrar
+  no_account: "Nus es ina chonta?"
+  register_link: Registreschat qua
+
+register:
+  title: Crear ina chonta
+  submit: Registreschà
+  has_account: Nus has gia ina chonta?
+  login_link: Entrar qua
+
+member:
+  dashboard:
+    title: Mia zona da commemorz
+    points_available: Puncts disponibels
+    active_discounts: Rabats activs
+    scheduled_appointments: Notgas planifitgadas
+    points_history: Historgia da puncts
+    available_discounts: Rabats disponibels
+    discount_label: "%percent%% da rabat"
+    created: Creà il
+    accumulate: Acumulescha 100 puncts per in rabat!
+    view_appointments: Mussar las mias notgas
+    book_appointment: Profiter ina notga
+  appointments:
+    title: Mias notgas
+    book_new: Profiter ina nova notga
+    next_appointment: Proxima notga
+    time: "Temp:"
+    cancel: Annular la notga
+    none: Nagin notga actualmain.
+    book_first: Proffir tia emprima notga
+
+home:
+  hero:
+    title: SIRIUS -SOLAR
+    subtitle: MANUTENAZIUN E NETTEZIA DA PLANCHAS SOLARS
+    cta: Offerta Gratuita
+  stats:
+    production: Producziun guadagnada en media
+    water: Aua Osmotizada Senza substanzas chimicas
+    response: Risposta media a tias offertas
+  pillars:
+    title: Nossas Pledgas
+    subtitle: Qualitad, segirezza, respect dal miliau e prestanzas optimaslas
+    cleaning_title: Nettezia cun aua demineralisada
+    cleaning_desc: Senza residus da calcari, nagin producta chimica aggressivs
+    safety_title: Segirezza maxima
+    safety_desc: Technicians formads per lavur en altezza
+    environment_title: Respect dal miliau
+    environment_desc: Approcha ecologica e sustentabla
+    performance_title: Prestanzas optimaslas
+    performance_desc: Ensuain 25% da perdita evitada
+  services:
+    title: Nossas Servetschas
+    subtitle: Manutenaziun adaptada a tia installaziun
+  cta:
+    title: Prests ad optimalisar ta installaziun?
+    subtitle: Sitta in offerta gratuita en pli pauc da 48 uras. Nossas sperts analisaran ta installaziun e proporan ina soluziun adequata.
+    button: Dumanda mia offerta gratuita
+
+admin:
+  members:
+    next_appointment: Proxima notga
+    no_appointment: Nagin notga

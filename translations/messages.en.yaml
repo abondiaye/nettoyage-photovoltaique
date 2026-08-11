@@ -73,6 +73,34 @@ member:
     none: No appointments yet.
     book_first: Book your first appointment
 
+home:
+  hero:
+    title: SIRIUS -SOLAR
+    subtitle: MAINTENANCE & CLEANING OF SOLAR PANELS
+    cta: Free Quote
+  stats:
+    production: Production recovered on average
+    water: Osmosed Water Zero chemicals
+    response: Average response to your quotes
+  pillars:
+    title: Our Commitments
+    subtitle: Quality, safety, environmental respect and optimal performance
+    cleaning_title: Pure water cleaning
+    cleaning_desc: Zero limescale residue, no aggressive chemicals
+    safety_title: Maximum safety
+    safety_desc: Technicians trained in working at height
+    environment_title: Environmental respect
+    environment_desc: Ecological and sustainable approach
+    performance_title: Optimal performance
+    performance_desc: Up to 25% loss avoided
+  services:
+    title: Our Services
+    subtitle: Maintenance tailored to each installation
+  cta:
+    title: Ready to optimize your installation?
+    subtitle: Get a free quote in less than 48 hours. Our experts will analyze your installation and propose a suitable solution.
+    button: Request my free quote
+
 admin:
   members:
     next_appointment: Next appointment

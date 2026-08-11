@@ -73,6 +73,34 @@ member:
     none: Aucun rendez-vous pour le moment.
     book_first: Prenez votre premier rendez-vous
 
+home:
+  hero:
+    title: SIRIUS -SOLAR
+    subtitle: ENTRETIEN & NETTOYAGE DE PANNEAUX PHOTOVOLTAÏQUES
+    cta: Devis Gratuit
+  stats:
+    production: Production retrouvée en moyenne
+    water: Eau osmosée Zéro chimique
+    response: Réponse moyenne à vos devis
+  pillars:
+    title: Nos Engagements
+    subtitle: Qualité, sécurité, respect de l'environnement et performance optimale
+    cleaning_title: Nettoyage à l'eau pure
+    cleaning_desc: Zéro résidu calcaire, aucun produit chimique agressif
+    safety_title: Sécurité maximale
+    safety_desc: Techniciens formés au travail en hauteur
+    environment_title: Respect de l'environnement
+    environment_desc: Approche écologique et durable
+    performance_title: Performance optimale
+    performance_desc: Jusqu'à 25% de perte évitée
+  services:
+    title: Nos Prestations
+    subtitle: Un entretien adapté à chaque installation
+  cta:
+    title: Prêt à optimiser votre installation?
+    subtitle: Obtenez un devis gratuit en moins de 48h. Nos experts analyseront votre installation et vous proposeront une solution adaptée.
+    button: Demander mon devis gratuit
+
 admin:
   members:
     next_appointment: Prochain rendez-vous

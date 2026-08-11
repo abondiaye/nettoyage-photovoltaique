@@ -365,14 +365,17 @@
             margin: 0;
             font-size: 0.6rem;
             display: block;
-            position: relative;
+            position: fixed;
             cursor: pointer;
-            width: 25em;
-            height: 10em;
-            border-radius: 5em;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
             overflow: hidden;
             isolation: isolate;
-            box-shadow: 0 -0.3em 0.2em 0.1em rgba(0, 0, 0, 0.2), 0 0.3em 0.2em 0.1em rgb(255, 254, 255);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            right: 30px;
+            top: 30px;
+            z-index: 500;
         }
 
         .daynight__checkbox {
@@ -395,14 +398,19 @@
 
         .daynight__sky {
             display: block;
-            width: 100%;
-            height: 100%;
-            padding: 1em;
+            width: 80px;
+            height: 80px;
+            padding: 0.5em;
             box-sizing: border-box;
             background-color: #397ab0;
             transition: background 1s cubic-bezier(0.65, 0, 0.34, 1.17);
             isolation: isolate;
-            position: relative;
+            position: fixed;
+            right: 30px;
+            top: 30px;
+            z-index: 500;
+            border-radius: 50%;
+            cursor: pointer;
         }
 
         .daynight__sky::before,
@@ -593,10 +601,13 @@
                 {% endif %}
             </div>
 
-            <!-- Language switcher et CTA -->
+            <!-- Language switcher - Swiss Languages -->
             <div class="lang-switch">
-                <a href="{{ path('app_locale_switch', {locale: 'fr'}) }}" class="{{ app.request.locale == 'fr' ? '-active' : '' }}" title="Français">FR</a>
-                <a href="{{ path('app_locale_switch', {locale: 'en'}) }}" class="{{ app.request.locale == 'en' ? '-active' : '' }}" title="English">EN</a>
+                <a href="{{ path('app_locale_switch', {locale: 'fr'}) }}" class="{{ app.request.locale == 'fr' ? '-active' : '' }}" title="Français (Suisse)" aria-label="Français">🇫🇷 FR</a>
+                <a href="{{ path('app_locale_switch', {locale: 'en'}) }}" class="{{ app.request.locale == 'en' ? '-active' : '' }}" title="English" aria-label="English">🇬🇧 EN</a>
+                <a href="{{ path('app_locale_switch', {locale: 'de'}) }}" class="{{ app.request.locale == 'de' ? '-active' : '' }}" title="Deutsch (Schweiz)" aria-label="Deutsch">🇩🇪 DE</a>
+                <a href="{{ path('app_locale_switch', {locale: 'it'}) }}" class="{{ app.request.locale == 'it' ? '-active' : '' }}" title="Italiano (Svizzera)" aria-label="Italiano">🇮🇹 IT</a>
+                <a href="{{ path('app_locale_switch', {locale: 'rm'}) }}" class="{{ app.request.locale == 'rm' ? '-active' : '' }}" title="Rumantsch" aria-label="Rumantsch">🏔️ RM</a>
             </div>
 
             <a href="{{ path('app_devis') }}" class="btn btn-primary" style="font-size:0.9rem; padding:10px 20px;">{{ 'nav.free_quote'|trans }}</a>
@@ -825,33 +836,50 @@
         </div>
     </footer>
 
-    <!-- Script mobile menu -->
+    <!-- Script mobile menu - Now handled by circular burger menu script below -->
+
+    <!-- Circular Burger Menu Script -->
     <script>
-        const toggle = document.getElementById('mobile-menu-toggle');
-        const menu = document.getElementById('mobile-menu');
-        const links = menu.querySelectorAll('a');
+        document.addEventListener('DOMContentLoaded', function() {
+            const bars = document.getElementById('nav-action');
+            const nav = document.getElementById('nav-circular');
 
-        toggle.addEventListener('click', () => {
-            const isActive = menu.classList.toggle('active');
-            toggle.setAttribute('aria-expanded', isActive);
-            document.body.style.overflow = isActive ? 'hidden' : '';
-        });
+            if (!bars || !nav) return;
 
-        links.forEach(link => {
-            link.addEventListener('click', () => {
-                menu.classList.remove('active');
-                toggle.setAttribute('aria-expanded', 'false');
-                document.body.style.overflow = '';
+            const navLinks = nav.querySelectorAll('a');
+
+            // Toggle menu on burger click
+            bars.addEventListener('click', function(e) {
+                e.stopPropagation();
+                bars.classList.toggle('active');
+                nav.classList.toggle('visible');
             });
-        });
 
-        // Fermer le menu au redimensionnement
-        window.addEventListener('resize', () => {
-            if (window.innerWidth > 768) {
-                menu.classList.remove('active');
-                toggle.setAttribute('aria-expanded', 'false');
-                document.body.style.overflow = '';
-            }
+            // Close menu when clicking links
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    bars.classList.remove('active');
+                    nav.classList.remove('visible');
+                });
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (nav.classList.contains('visible') &&
+                    !nav.contains(e.target) &&
+                    !bars.contains(e.target)) {
+                    bars.classList.remove('active');
+                    nav.classList.remove('visible');
+                }
+            });
+
+            // Close menu on Escape
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && nav.classList.contains('visible')) {
+                    bars.classList.remove('active');
+                    nav.classList.remove('visible');
+                }
+            });
         });
     </script>
 
@@ -944,6 +972,7 @@
 
             // Sync checkbox with theme
             const checkbox = document.querySelector('.daynight__checkbox');
+            const daynight = document.querySelector('.daynight');
             if (checkbox) {
               // Set initial checkbox state based on theme
               const initialTheme = localStorage.getItem(THEME_KEY) || (window.matchMedia('(prefers-color-scheme: dark)').matches ? DARK_MODE : LIGHT_MODE);
@@ -954,6 +983,15 @@
                 const current = document.documentElement.getAttribute('data-theme') || LIGHT_MODE;
                 setTheme(current === DARK_MODE ? LIGHT_MODE : DARK_MODE, true);
               });
+
+              // Also handle click on the daynight container
+              if (daynight) {
+                daynight.addEventListener('click', (e) => {
+                  checkbox.checked = !checkbox.checked;
+                  const current = document.documentElement.getAttribute('data-theme') || LIGHT_MODE;
+                  setTheme(current === DARK_MODE ? LIGHT_MODE : DARK_MODE, true);
+                });
+              }
             }
 
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
@@ -988,6 +1026,108 @@
             e.preventDefault();
             window.scrollTo({ top: 0, behavior: 'smooth' });
           });
+        })();
+
+        // Rain animation on hero card
+        (function() {
+            'use strict';
+            var c = document.getElementById("rainCanvas");
+            if (!c) return;
+
+            var ctx = c.getContext("2d");
+            var clearColor = 'rgba(0, 0, 0, .05)';
+            var max = 15;
+            var drops = [];
+
+            function random(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            function O() {}
+
+            O.prototype = {
+                init: function() {
+                    this.x = random(0, c.width);
+                    this.y = 0;
+                    this.color = 'hsla(180, 100%, 50%, 0.8)';
+                    this.w = 2;
+                    this.h = 1;
+                    this.vy = random(4, 5);
+                    this.vw = 3;
+                    this.vh = 1;
+                    this.size = 2;
+                    this.hit = random(c.height * .8, c.height * .9);
+                    this.a = 1;
+                    this.va = .96;
+                },
+                draw: function() {
+                    if (this.y > this.hit) {
+                        ctx.beginPath();
+                        ctx.moveTo(this.x, this.y - this.h / 2);
+                        ctx.bezierCurveTo(
+                            this.x + this.w / 2, this.y - this.h / 2,
+                            this.x + this.w / 2, this.y + this.h / 2,
+                            this.x, this.y + this.h / 2);
+                        ctx.bezierCurveTo(
+                            this.x - this.w / 2, this.y + this.h / 2,
+                            this.x - this.w / 2, this.y - this.h / 2,
+                            this.x, this.y - this.h / 2);
+                        ctx.strokeStyle = 'hsla(180, 100%, 50%, '+this.a+')';
+                        ctx.stroke();
+                        ctx.closePath();
+                    } else {
+                        ctx.fillStyle = this.color;
+                        ctx.fillRect(this.x, this.y, this.size, this.size * 5);
+                    }
+                    this.update();
+                },
+                update: function() {
+                    if(this.y < this.hit){
+                        this.y += this.vy;
+                    } else {
+                        if(this.a > .03){
+                            this.w += this.vw;
+                            this.h += this.vh;
+                            if(this.w > 100){
+                                this.a *= this.va;
+                                this.vw *= .98;
+                                this.vh *= .98;
+                            }
+                        } else {
+                            this.init();
+                        }
+                    }
+                }
+            }
+
+            function setup(){
+                for(var i = 0; i < max; i++){
+                    (function(j){
+                        setTimeout(function(){
+                            var o = new O();
+                            o.init();
+                            drops.push(o);
+                        }, j * 200)
+                    }(i));
+                }
+            }
+
+            function anim() {
+                ctx.fillStyle = clearColor;
+                ctx.fillRect(0,0,c.width,c.height);
+                for(var i in drops){
+                    drops[i].draw();
+                }
+                requestAnimationFrame(anim);
+            }
+
+            // Set initial size
+            var rect = c.parentElement.getBoundingClientRect();
+            c.width = rect.width;
+            c.height = rect.height;
+
+            setup();
+            anim();
         })();
       </script>
 

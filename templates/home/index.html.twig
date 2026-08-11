@@ -10,8 +10,7 @@
         /* Hero Section - Card Design */
         .hero-modern {
             position: relative;
-            background: linear-gradient(135deg, rgba(27, 77, 62, 0.9) 0%, rgba(45, 107, 85, 0.85) 100%),
-                        url("{{ asset('images/panneaux-solaires-sous-la-pluie.png') }}") center/cover no-repeat;
+            background: url("{{ asset('images/panneaux-solaires-sous-la-pluie.png') }}") center/cover no-repeat;
             background-attachment: fixed;
             display: flex;
             align-items: center;
@@ -26,61 +25,142 @@
             z-index: 2;
             text-align: center;
             max-width: 550px;
-            background: rgba(255, 255, 255, 0.15);
+            background: transparent;
             color: var(--blanc);
-            padding: 60px 40px;
+            padding: 60px 300px;
             border-radius: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            box-shadow:
-                0 8px 32px rgba(0, 0, 0, 0.2),
-                inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+            border: none;
             animation: fadeInDown 0.8s ease-out;
             text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
         }
 
-        /* Raindrops effect */
+        #rainCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .hero-card > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Raindrops - Column 1 */
         .hero-card::before {
             content: '';
             position: absolute;
             top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            left: 10%;
+            width: 6px;
+            height: 100%;
             pointer-events: none;
             border-radius: 20px;
             background-image:
-                radial-gradient(circle at 20% 10%, rgba(255, 255, 255, 0.8) 3px, transparent 3px),
-                radial-gradient(circle at 75% 20%, rgba(255, 255, 255, 0.7) 2.5px, transparent 2.5px),
-                radial-gradient(circle at 15% 35%, rgba(255, 255, 255, 0.75) 2px, transparent 2px),
-                radial-gradient(circle at 85% 45%, rgba(255, 255, 255, 0.65) 3px, transparent 3px),
-                radial-gradient(circle at 45% 15%, rgba(255, 255, 255, 0.7) 2px, transparent 2px),
-                radial-gradient(circle at 60% 60%, rgba(255, 255, 255, 0.72) 2.5px, transparent 2.5px),
-                radial-gradient(circle at 30% 70%, rgba(255, 255, 255, 0.68) 2px, transparent 2px),
-                radial-gradient(circle at 80% 75%, rgba(255, 255, 255, 0.7) 2.5px, transparent 2.5px);
-            background-repeat: no-repeat;
-            background-size: 100% 100%;
-            animation:
-                rainfall 4s linear infinite,
-                raindrop-flow 8s ease-in-out infinite;
+                radial-gradient(ellipse 3px 4px at 0 0%, rgba(255, 255, 255, 0.95) 0%, rgba(200, 220, 255, 0.4) 60%, transparent 100%),
+                radial-gradient(circle at -0.5px 0.5px, rgba(255, 255, 255, 1) 0.5px, transparent 1px);
+            background-repeat: repeat-y;
+            background-size: 6px 35px;
+            animation: slideDown 3.5s linear infinite;
         }
 
-        @keyframes rainfall {
-            0% {
-                background-position: 0 0;
-            }
-            100% {
-                background-position: 0 100%;
-            }
+        /* Raindrops - Column 2 */
+        .hero-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 30%;
+            width: 6px;
+            height: 100%;
+            pointer-events: none;
+            border-radius: 20px;
+            background-image:
+                radial-gradient(ellipse 3px 4px at 0 0%, rgba(255, 255, 255, 0.9) 0%, rgba(200, 220, 255, 0.3) 50%, transparent 100%),
+                radial-gradient(circle at 0.5px 0.5px, rgba(255, 255, 255, 1) 0.5px, transparent 1px);
+            background-repeat: repeat-y;
+            background-size: 6px 35px;
+            animation: slideDown 4s linear infinite 0.5s;
         }
 
-        @keyframes raindrop-flow {
-            0%, 100% {
-                opacity: 0.5;
+        /* Additional raindrops using box-shadow approach */
+        .hero-card {
+            box-shadow:
+                /* Col 3 */ 55% 5% 0 -3px rgba(255, 255, 255, 0.9),
+                55% 10% 0 -3px rgba(255, 255, 255, 0.85),
+                55% 20% 0 -3px rgba(255, 255, 255, 0.8),
+                55% 35% 0 -3px rgba(255, 255, 255, 0.85),
+                55% 50% 0 -3px rgba(255, 255, 255, 0.9),
+                55% 65% 0 -3px rgba(255, 255, 255, 0.8),
+                55% 80% 0 -3px rgba(255, 255, 255, 0.85),
+                /* Col 4 */ 75% 8% 0 -3px rgba(255, 255, 255, 0.85),
+                75% 25% 0 -3px rgba(255, 255, 255, 0.9),
+                75% 42% 0 -3px rgba(255, 255, 255, 0.8),
+                75% 58% 0 -3px rgba(255, 255, 255, 0.85),
+                75% 72% 0 -3px rgba(255, 255, 255, 0.9),
+                75% 88% 0 -3px rgba(255, 255, 255, 0.8),
+                /* Col 5 */ 90% 12% 0 -3px rgba(255, 255, 255, 0.9),
+                90% 30% 0 -3px rgba(255, 255, 255, 0.85),
+                90% 55% 0 -3px rgba(255, 255, 255, 0.8),
+                90% 75% 0 -3px rgba(255, 255, 255, 0.9),
+                0 8px 32px rgba(0, 0, 0, 0.2),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+            animation: glideDown 4s ease-in infinite;
+        }
+
+        @keyframes slideDown {
+            0% { transform: translateY(-50px); opacity: 0; }
+            5% { opacity: 1; }
+            95% { opacity: 1; }
+            100% { transform: translateY(450px); opacity: 0; }
+        }
+
+        @keyframes glideDown {
+            0% { box-shadow:
+                55% 0% 0 -3px rgba(255, 255, 255, 0.95),
+                55% 5% 0 -3px rgba(255, 255, 255, 0.9),
+                55% 15% 0 -3px rgba(255, 255, 255, 0.85),
+                55% 28% 0 -3px rgba(255, 255, 255, 0.9),
+                55% 45% 0 -3px rgba(255, 255, 255, 0.95),
+                55% 60% 0 -3px rgba(255, 255, 255, 0.85),
+                55% 75% 0 -3px rgba(255, 255, 255, 0.9),
+                75% 3% 0 -3px rgba(255, 255, 255, 0.9),
+                75% 18% 0 -3px rgba(255, 255, 255, 0.95),
+                75% 35% 0 -3px rgba(255, 255, 255, 0.85),
+                75% 52% 0 -3px rgba(255, 255, 255, 0.9),
+                75% 68% 0 -3px rgba(255, 255, 255, 0.95),
+                75% 85% 0 -3px rgba(255, 255, 255, 0.85),
+                90% 8% 0 -3px rgba(255, 255, 255, 0.95),
+                90% 25% 0 -3px rgba(255, 255, 255, 0.9),
+                90% 48% 0 -3px rgba(255, 255, 255, 0.85),
+                90% 70% 0 -3px rgba(255, 255, 255, 0.95),
+                0 8px 32px rgba(0, 0, 0, 0.2),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.2);
             }
-            50% {
-                opacity: 0.9;
+            100% { box-shadow:
+                55% 50% 0 -3px rgba(255, 255, 255, 0.95),
+                55% 55% 0 -3px rgba(255, 255, 255, 0.9),
+                55% 65% 0 -3px rgba(255, 255, 255, 0.85),
+                55% 78% 0 -3px rgba(255, 255, 255, 0.9),
+                55% 95% 0 -3px rgba(255, 255, 255, 0.95),
+                55% 110% 0 -3px rgba(255, 255, 255, 0.85),
+                55% 125% 0 -3px rgba(255, 255, 255, 0.9),
+                75% 53% 0 -3px rgba(255, 255, 255, 0.9),
+                75% 68% 0 -3px rgba(255, 255, 255, 0.95),
+                75% 85% 0 -3px rgba(255, 255, 255, 0.85),
+                75% 102% 0 -3px rgba(255, 255, 255, 0.9),
+                75% 118% 0 -3px rgba(255, 255, 255, 0.95),
+                75% 135% 0 -3px rgba(255, 255, 255, 0.85),
+                90% 58% 0 -3px rgba(255, 255, 255, 0.95),
+                90% 75% 0 -3px rgba(255, 255, 255, 0.9),
+                90% 98% 0 -3px rgba(255, 255, 255, 0.85),
+                90% 120% 0 -3px rgba(255, 255, 255, 0.95),
+                0 8px 32px rgba(0, 0, 0, 0.2),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.2);
             }
         }
 
@@ -601,6 +681,7 @@
 <!-- HERO SECTION -->
 <section class="hero-modern">
     <div class="hero-card">
+        <canvas id="rainCanvas"></canvas>
         <div class="hero-logo">
             <svg viewBox="0 0 200 60" width="200" height="60">
                 <!-- Logo design -->
@@ -618,7 +699,7 @@
             <span class="hero-title-main">SIRIUS</span>
             <span class="hero-title-accent">-SOLAR</span>
         </h1>
-        <p class="hero-subtitle">ENTRETIEN & NETTOYAGE<br>DE PANNEAUX PHOTOVOLTAÏQUES</p>
+        <p class="hero-subtitle">{{ 'home.hero.subtitle'|trans }}</p>
 
         <div class="hero-features">
             <div class="hero-feature">
@@ -662,15 +743,15 @@
     <div class="container">
         <div class="stat-box">
             <div class="stat-number"><span class="symbol">+</span>15<span class="symbol">%</span></div>
-            <div class="stat-text">Production retrouvée<br>en moyenne</div>
+            <div class="stat-text">{{ 'home.stats.production'|trans }}</div>
         </div>
         <div class="stat-box">
             <div class="stat-number">100<span class="symbol">%</span></div>
-            <div class="stat-text">Eau osmosée<br>Zéro chimique</div>
+            <div class="stat-text">{{ 'home.stats.water'|trans }}</div>
         </div>
         <div class="stat-box">
             <div class="stat-number"><span class="symbol">~</span>48h</div>
-            <div class="stat-text">Réponse moyenne<br>à vos devis</div>
+            <div class="stat-text">{{ 'home.stats.response'|trans }}</div>
         </div>
     </div>
 </section>
@@ -679,29 +760,29 @@
 <section class="pillars-section" id="pillars">
     <div class="container">
         <div class="pillars-header">
-            <h2>Nos Engagements</h2>
-            <p>Qualité, sécurité, respect de l'environnement et performance optimale</p>
+            <h2>{{ 'home.pillars.title'|trans }}</h2>
+            <p>{{ 'home.pillars.subtitle'|trans }}</p>
         </div>
         <div class="pillars-grid">
             <div class="pillar-card">
                 <div class="pillar-icon">💧</div>
-                <h3 class="pillar-title">Nettoyage<br>à l'eau pure</h3>
-                <p class="pillar-description">Zéro résidu calcaire, aucun produit chimique agressif</p>
+                <h3 class="pillar-title">{{ 'home.pillars.cleaning_title'|trans }}</h3>
+                <p class="pillar-description">{{ 'home.pillars.cleaning_desc'|trans }}</p>
             </div>
             <div class="pillar-card">
                 <div class="pillar-icon">✅</div>
-                <h3 class="pillar-title">Sécurité<br>maximale</h3>
-                <p class="pillar-description">Techniciens formés au travail en hauteur</p>
+                <h3 class="pillar-title">{{ 'home.pillars.safety_title'|trans }}</h3>
+                <p class="pillar-description">{{ 'home.pillars.safety_desc'|trans }}</p>
             </div>
             <div class="pillar-card">
                 <div class="pillar-icon">🌿</div>
-                <h3 class="pillar-title">Respect de<br>l'environnement</h3>
-                <p class="pillar-description">Approche écologique et durable</p>
+                <h3 class="pillar-title">{{ 'home.pillars.environment_title'|trans }}</h3>
+                <p class="pillar-description">{{ 'home.pillars.environment_desc'|trans }}</p>
             </div>
             <div class="pillar-card">
                 <div class="pillar-icon">📈</div>
-                <h3 class="pillar-title">Performance<br>optimale</h3>
-                <p class="pillar-description">Jusqu'à 25% de perte évitée</p>
+                <h3 class="pillar-title">{{ 'home.pillars.performance_title'|trans }}</h3>
+                <p class="pillar-description">{{ 'home.pillars.performance_desc'|trans }}</p>
             </div>
         </div>
     </div>
@@ -711,8 +792,8 @@
 <section class="services-modern">
     <div class="container">
         <div class="services-header">
-            <h2>Nos Prestations</h2>
-            <p>Un entretien adapté à chaque installation</p>
+            <h2>{{ 'home.services.title'|trans }}</h2>
+            <p>{{ 'home.services.subtitle'|trans }}</p>
         </div>
         <div class="services-grid">
             {% for service in services %}
@@ -729,9 +810,9 @@
 <!-- CTA SECTION -->
 <section class="cta-modern">
     <div class="container">
-        <h2>Prêt à optimiser votre installation?</h2>
-        <p>Obtenez un devis gratuit en moins de 48h. Nos experts analyseront votre installation et vous proposeront une solution adaptée.</p>
-        <a href="{{ path('app_devis') }}" class="btn btn-primary">Demander mon devis gratuit</a>
+        <h2>{{ 'home.cta.title'|trans }}</h2>
+        <p>{{ 'home.cta.subtitle'|trans }}</p>
+        <a href="{{ path('app_devis') }}" class="btn btn-primary">{{ 'home.cta.button'|trans }}</a>
     </div>
 </section>
 
