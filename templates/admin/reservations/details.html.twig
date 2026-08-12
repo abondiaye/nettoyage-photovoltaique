@@ -1,0 +1,401 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails Demande — Admin Sirius-Solar{% endblock %}
+
+{% block body %}
+<style>
+    .details-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px;
+        background: linear-gradient(180deg, rgba(10, 61, 53, 0.05) 0%, transparent 100%);
+        min-height: calc(100vh - 80px);
+    }
+
+    .details-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+        padding-bottom: 20px;
+        border-bottom: 2px solid rgba(212, 168, 66, 0.2);
+    }
+
+    .details-header h1 {
+        font-size: 32px;
+        color: var(--vert-fonce);
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700;
+    }
+
+    .back-link {
+        color: var(--dore);
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .back-link:hover {
+        opacity: 0.7;
+    }
+
+    .details-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        margin-bottom: 40px;
+    }
+
+    /* ===== CLIENT INFO CARD ===== */
+    .info-card {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-top: 4px solid var(--dore);
+    }
+
+    .info-card h2 {
+        font-size: 18px;
+        color: var(--vert-fonce);
+        margin-bottom: 20px;
+        font-weight: 600;
+        font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #eee;
+        margin-bottom: 15px;
+    }
+
+    .info-row:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    .info-label {
+        color: #888;
+        font-weight: 600;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .info-value {
+        color: var(--vert-fonce);
+        font-weight: 600;
+        text-align: right;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin-top: 15px;
+    }
+
+    .status-pending {
+        background: rgba(255, 193, 7, 0.2);
+        color: #ff9800;
+    }
+
+    .status-confirmed {
+        background: rgba(76, 175, 80, 0.2);
+        color: #4caf50;
+    }
+
+    /* ===== CALENDAR ===== */
+    .calendar-card {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-top: 4px solid var(--dore);
+    }
+
+    .calendar-card h2 {
+        font-size: 18px;
+        color: var(--vert-fonce);
+        margin-bottom: 20px;
+        font-weight: 600;
+        font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .calendar-input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 14px;
+        margin-bottom: 15px;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .time-input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 14px;
+        margin-bottom: 15px;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .calendar-input:focus,
+    .time-input:focus {
+        outline: none;
+        border-color: var(--dore);
+        box-shadow: 0 0 10px rgba(212, 168, 66, 0.3);
+    }
+
+    .selected-date {
+        background: rgba(212, 168, 66, 0.1);
+        border: 2px solid var(--dore);
+        border-radius: 8px;
+        padding: 15px;
+        margin-top: 15px;
+        text-align: center;
+        color: var(--dore);
+        font-weight: 600;
+    }
+
+    /* ===== RESPONSE FORM ===== */
+    .response-form-card {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-top: 4px solid var(--dore);
+        margin-bottom: 40px;
+    }
+
+    .response-form-card h2 {
+        font-size: 18px;
+        color: var(--vert-fonce);
+        margin-bottom: 20px;
+        font-weight: 600;
+        font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #666;
+        font-weight: 600;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .form-group textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-family: 'Inter', sans-serif;
+        font-size: 14px;
+        resize: vertical;
+        min-height: 150px;
+    }
+
+    .form-group textarea:focus {
+        outline: none;
+        border-color: var(--dore);
+        box-shadow: 0 0 10px rgba(212, 168, 66, 0.3);
+    }
+
+    /* ===== ACTION BUTTONS ===== */
+    .actions-row {
+        display: flex;
+        gap: 15px;
+        margin-top: 30px;
+    }
+
+    .btn-primary, .btn-secondary, .btn-danger {
+        padding: 14px 28px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--dore), var(--dore-clair));
+        color: #121212;
+        flex: 1;
+    }
+
+    .btn-primary:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 30px rgba(212, 168, 66, 0.4);
+    }
+
+    .btn-secondary {
+        background: transparent;
+        border: 2px solid var(--vert-fonce);
+        color: var(--vert-fonce);
+        flex: 1;
+    }
+
+    .btn-secondary:hover {
+        background: rgba(10, 61, 53, 0.1);
+    }
+
+    .btn-danger {
+        background: #f44336;
+        color: white;
+        flex: 1;
+    }
+
+    .btn-danger:hover {
+        background: #d32f2f;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+        .details-container {
+            padding: 20px;
+        }
+
+        .details-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .actions-row {
+            flex-direction: column;
+        }
+
+        .btn-primary, .btn-secondary, .btn-danger {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="details-container">
+    <!-- Header -->
+    <div class="details-header">
+        <h1>Détails Demande de Devis</h1>
+        <a href="{{ path('admin_dashboard') }}" class="back-link">← Retour au Dashboard</a>
+    </div>
+
+    <div class="details-grid">
+        <!-- Client Information -->
+        <div class="info-card">
+            <h2>👤 Informations Client</h2>
+
+            <div class="info-row">
+                <span class="info-label">Nom</span>
+                <span class="info-value">{{ reservation.client.prenom }} {{ reservation.client.nom }}</span>
+            </div>
+
+            <div class="info-row">
+                <span class="info-label">Email</span>
+                <span class="info-value" style="text-align: right; word-break: break-all;">{{ reservation.client.email }}</span>
+            </div>
+
+            <div class="info-row">
+                <span class="info-label">Téléphone</span>
+                <span class="info-value">{{ reservation.client.telephone }}</span>
+            </div>
+
+            <div class="info-row">
+                <span class="info-label">Adresse</span>
+                <span class="info-value">{{ reservation.client.adresse }}<br>{{ reservation.client.codePostal }} {{ reservation.client.ville }}</span>
+            </div>
+
+            <div class="status-badge status-pending">
+                {% if reservation.statut == 'CONFIRMEE' %}
+                    <span class="status-badge status-confirmed">✅ Confirmée</span>
+                {% else %}
+                    En Attente
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Calendar Section -->
+        <div class="calendar-card">
+            <h2>📅 Proposer une Date</h2>
+
+            <form method="POST" action="#">
+                <div class="form-group">
+                    <label for="date_intervention">Date d'intervention proposée</label>
+                    <input type="date" id="date_intervention" name="date_intervention" class="calendar-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="time_intervention">Heure d'intervention</label>
+                    <input type="time" id="time_intervention" name="time_intervention" class="time-input" required>
+                </div>
+
+                <div class="selected-date" id="selectedDate">
+                    Sélectionnez une date et heure
+                </div>
+
+                <div class="actions-row" style="margin-bottom: 0;">
+                    <button type="submit" class="btn-primary">Proposer cette date</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Response Form -->
+    <div class="response-form-card">
+        <h2>💬 Répondre à la Demande</h2>
+
+        <form method="POST" action="#">
+            <div class="form-group">
+                <label for="response_message">Message de réponse</label>
+                <textarea id="response_message" name="response_message" placeholder="Écrivez votre réponse au client..."></textarea>
+            </div>
+
+            <div class="actions-row">
+                <button type="submit" class="btn-primary">Confirmer l'intervention</button>
+                <button type="button" class="btn-secondary" onclick="alert('Demande refusée')">Refuser</button>
+                <button type="button" class="btn-danger" onclick="if(confirm('Supprimer cette demande ?')) { }">Supprimer</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Update selected date display
+    const dateInput = document.getElementById('date_intervention');
+    const timeInput = document.getElementById('time_intervention');
+    const selectedDateDiv = document.getElementById('selectedDate');
+
+    function updateDateDisplay() {
+        if (dateInput.value && timeInput.value) {
+            const date = new Date(dateInput.value);
+            const formattedDate = date.toLocaleDateString('fr-FR', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            selectedDateDiv.textContent = `📅 ${formattedDate} à ${timeInput.value}`;
+            selectedDateDiv.style.background = 'rgba(76, 175, 80, 0.2)';
+            selectedDateDiv.style.color = '#4caf50';
+        }
+    }
+
+    dateInput.addEventListener('change', updateDateDisplay);
+    timeInput.addEventListener('change', updateDateDisplay);
+</script>
+
+{% endblock %}
