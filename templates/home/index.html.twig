@@ -2,915 +2,540 @@
 
 {% block title %}Sirius-Solar — Nettoyage & Entretien de Panneaux Photovoltaïques{% endblock %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <style>
-        /* === NEW MODERN DESIGN INSPIRED BY BUSINESS CARDS === */
+{% block body %}
+<style>
+    /* ===== HERO SECTION ===== */
+    .hero-container {
+        position: relative;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-        /* Hero Section - Card Design */
-        .hero-modern {
-            position: relative;
-            background: url("{{ asset('images/panneaux-solaires-sous-la-pluie.png') }}") center/cover no-repeat;
-            background-attachment: fixed;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: visible;
-            padding: 60px 24px;
-            min-height: 700px;
+        /* Outer gradient (type LISA BLACKPINK) */
+        background: linear-gradient(135deg, #a8e6cf 0%, #88d8c0 100%);
+        padding: 20px;
+        overflow: hidden;
+    }
+
+    .hero-gradient-bg {
+        position: absolute;
+        inset: 20px;
+        background: linear-gradient(135deg, var(--vert-fonce) 0%, var(--vert-clair) 100%);
+        border-radius: 20px;
+        z-index: 0;
+    }
+
+    .hero-card {
+        position: relative;
+        z-index: 1;
+
+        /* Glasmorphism */
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(30px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+
+        border-radius: 20px;
+        padding: 80px 60px;
+        max-width: 700px;
+        text-align: center;
+        color: white;
+
+        /* Shadow */
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3),
+                    inset 0 0 30px rgba(255, 255, 255, 0.1);
+
+        /* Animation */
+        animation: fadeInUp 0.8s ease-out, floatCard 3s ease-in-out infinite;
+    }
+
+    @keyframes floatCard {
+        0%, 100% {
+            transform: translateY(0);
         }
-
-        .hero-card {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            max-width: 550px;
-            background: rgba(255, 255, 255, 0.15);
-            color: var(--blanc);
-            padding: 60px 300px;
-            border-radius: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(20px) saturate(130%);
-            -webkit-backdrop-filter: blur(20px) saturate(130%);
-            animation: fadeInDown 0.8s ease-out;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.4), inset 0 0 20px rgba(255, 255, 255, 0.1);
+        50% {
+            transform: translateY(-10px);
         }
+    }
 
-        #rainCanvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 20px;
-            pointer-events: none;
-            z-index: 1;
-        }
+    .hero-title {
+        font-size: 48px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        font-family: 'Space Grotesk', sans-serif;
+        letter-spacing: -1px;
+    }
 
-        .hero-card > * {
-            position: relative;
-            z-index: 2;
-        }
+    .hero-subtitle {
+        font-size: 18px;
+        opacity: 0.95;
+        margin-bottom: 30px;
+        line-height: 1.6;
+        font-weight: 500;
+    }
 
-        /* Raindrops - Column 1 */
-        .hero-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 10%;
-            width: 6px;
-            height: 100%;
-            pointer-events: none;
-            border-radius: 20px;
-            background-image:
-                radial-gradient(ellipse 3px 4px at 0 0%, rgba(255, 255, 255, 0.95) 0%, rgba(200, 220, 255, 0.4) 60%, transparent 100%),
-                radial-gradient(circle at -0.5px 0.5px, rgba(255, 255, 255, 1) 0.5px, transparent 1px);
-            background-repeat: repeat-y;
-            background-size: 6px 35px;
-            animation: slideDown 3.5s linear infinite;
-        }
+    .hero-features {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+        margin-bottom: 40px;
+    }
 
-        /* Raindrops - Column 2 */
-        .hero-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 30%;
-            width: 6px;
-            height: 100%;
-            pointer-events: none;
-            border-radius: 20px;
-            background-image:
-                radial-gradient(ellipse 3px 4px at 0 0%, rgba(255, 255, 255, 0.9) 0%, rgba(200, 220, 255, 0.3) 50%, transparent 100%),
-                radial-gradient(circle at 0.5px 0.5px, rgba(255, 255, 255, 1) 0.5px, transparent 1px);
-            background-repeat: repeat-y;
-            background-size: 6px 35px;
-            animation: slideDown 4s linear infinite 0.5s;
-        }
+    .feature-tag {
+        background: rgba(212, 168, 66, 0.2);
+        border: 1px solid rgba(212, 168, 66, 0.5);
+        color: var(--dore);
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        animation: fadeInUp 0.8s ease-out;
+        animation-fill-mode: both;
+    }
 
-        /* Additional raindrops using box-shadow approach */
-        .hero-card {
-            box-shadow:
-                /* Col 3 */ 55% 5% 0 -3px rgba(255, 255, 255, 0.9),
-                55% 10% 0 -3px rgba(255, 255, 255, 0.85),
-                55% 20% 0 -3px rgba(255, 255, 255, 0.8),
-                55% 35% 0 -3px rgba(255, 255, 255, 0.85),
-                55% 50% 0 -3px rgba(255, 255, 255, 0.9),
-                55% 65% 0 -3px rgba(255, 255, 255, 0.8),
-                55% 80% 0 -3px rgba(255, 255, 255, 0.85),
-                /* Col 4 */ 75% 8% 0 -3px rgba(255, 255, 255, 0.85),
-                75% 25% 0 -3px rgba(255, 255, 255, 0.9),
-                75% 42% 0 -3px rgba(255, 255, 255, 0.8),
-                75% 58% 0 -3px rgba(255, 255, 255, 0.85),
-                75% 72% 0 -3px rgba(255, 255, 255, 0.9),
-                75% 88% 0 -3px rgba(255, 255, 255, 0.8),
-                /* Col 5 */ 90% 12% 0 -3px rgba(255, 255, 255, 0.9),
-                90% 30% 0 -3px rgba(255, 255, 255, 0.85),
-                90% 55% 0 -3px rgba(255, 255, 255, 0.8),
-                90% 75% 0 -3px rgba(255, 255, 255, 0.9),
-                0 8px 32px rgba(0, 0, 0, 0.2),
-                inset 0 0 0 1px rgba(255, 255, 255, 0.2);
-            animation: glideDown 4s ease-in infinite;
-        }
+    .feature-tag:nth-child(1) { animation-delay: 0.1s; }
+    .feature-tag:nth-child(2) { animation-delay: 0.2s; }
+    .feature-tag:nth-child(3) { animation-delay: 0.3s; }
 
-        @keyframes slideDown {
-            0% { transform: translateY(-50px); opacity: 0; }
-            5% { opacity: 1; }
-            95% { opacity: 1; }
-            100% { transform: translateY(450px); opacity: 0; }
-        }
+    .btn-cta {
+        background: linear-gradient(135deg, var(--dore), var(--dore-clair));
+        color: #121212;
+        border: none;
+        padding: 16px 40px;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
 
-        @keyframes glideDown {
-            0% { box-shadow:
-                55% 0% 0 -3px rgba(255, 255, 255, 0.95),
-                55% 5% 0 -3px rgba(255, 255, 255, 0.9),
-                55% 15% 0 -3px rgba(255, 255, 255, 0.85),
-                55% 28% 0 -3px rgba(255, 255, 255, 0.9),
-                55% 45% 0 -3px rgba(255, 255, 255, 0.95),
-                55% 60% 0 -3px rgba(255, 255, 255, 0.85),
-                55% 75% 0 -3px rgba(255, 255, 255, 0.9),
-                75% 3% 0 -3px rgba(255, 255, 255, 0.9),
-                75% 18% 0 -3px rgba(255, 255, 255, 0.95),
-                75% 35% 0 -3px rgba(255, 255, 255, 0.85),
-                75% 52% 0 -3px rgba(255, 255, 255, 0.9),
-                75% 68% 0 -3px rgba(255, 255, 255, 0.95),
-                75% 85% 0 -3px rgba(255, 255, 255, 0.85),
-                90% 8% 0 -3px rgba(255, 255, 255, 0.95),
-                90% 25% 0 -3px rgba(255, 255, 255, 0.9),
-                90% 48% 0 -3px rgba(255, 255, 255, 0.85),
-                90% 70% 0 -3px rgba(255, 255, 255, 0.95),
-                0 8px 32px rgba(0, 0, 0, 0.2),
-                inset 0 0 0 1px rgba(255, 255, 255, 0.2);
-            }
-            100% { box-shadow:
-                55% 50% 0 -3px rgba(255, 255, 255, 0.95),
-                55% 55% 0 -3px rgba(255, 255, 255, 0.9),
-                55% 65% 0 -3px rgba(255, 255, 255, 0.85),
-                55% 78% 0 -3px rgba(255, 255, 255, 0.9),
-                55% 95% 0 -3px rgba(255, 255, 255, 0.95),
-                55% 110% 0 -3px rgba(255, 255, 255, 0.85),
-                55% 125% 0 -3px rgba(255, 255, 255, 0.9),
-                75% 53% 0 -3px rgba(255, 255, 255, 0.9),
-                75% 68% 0 -3px rgba(255, 255, 255, 0.95),
-                75% 85% 0 -3px rgba(255, 255, 255, 0.85),
-                75% 102% 0 -3px rgba(255, 255, 255, 0.9),
-                75% 118% 0 -3px rgba(255, 255, 255, 0.95),
-                75% 135% 0 -3px rgba(255, 255, 255, 0.85),
-                90% 58% 0 -3px rgba(255, 255, 255, 0.95),
-                90% 75% 0 -3px rgba(255, 255, 255, 0.9),
-                90% 98% 0 -3px rgba(255, 255, 255, 0.85),
-                90% 120% 0 -3px rgba(255, 255, 255, 0.95),
-                0 8px 32px rgba(0, 0, 0, 0.2),
-                inset 0 0 0 1px rgba(255, 255, 255, 0.2);
-            }
-        }
+        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 
-        .hero-logo {
-            margin-bottom: 30px;
-            color: var(--blanc);
-            font-weight: bold;
-            animation: fadeInUp 0.8s ease-out;
-        }
+        box-shadow: 0 10px 30px rgba(212, 168, 66, 0.3);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
 
-        .hero-logo svg {
-            width: 150px;
+    .btn-cta:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 20px 50px rgba(212, 168, 66, 0.5);
+    }
+
+    .btn-cta:active {
+        transform: translateY(-1px) scale(0.98);
+    }
+
+    /* ===== SERVICES SECTION ===== */
+    .services-section {
+        padding: 100px 40px;
+        background: linear-gradient(180deg, rgba(10, 61, 53, 0.05) 0%, transparent 100%);
+    }
+
+    .section-title {
+        font-size: 42px;
+        text-align: center;
+        margin-bottom: 60px;
+        color: var(--vert-fonce);
+        animation: fadeInDown 0.6s ease-out;
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700;
+        letter-spacing: -1px;
+    }
+
+    .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .service-card {
+        /* Glasmorphism */
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+
+        border-radius: 16px;
+        padding: 40px;
+        text-align: center;
+
+        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        cursor: pointer;
+
+        animation: fadeInUp 0.6s ease-out;
+        animation-fill-mode: both;
+    }
+
+    .service-card:nth-child(1) { animation-delay: 0.1s; }
+    .service-card:nth-child(2) { animation-delay: 0.2s; }
+    .service-card:nth-child(3) { animation-delay: 0.3s; }
+
+    .service-card:hover {
+        transform: translateY(-10px);
+        background: rgba(212, 168, 66, 0.1);
+        border-color: rgba(212, 168, 66, 0.5);
+
+        box-shadow: 0 20px 40px rgba(212, 168, 66, 0.2);
+    }
+
+    .card-icon {
+        font-size: 48px;
+        margin-bottom: 20px;
+        transition: transform 0.4s ease;
+    }
+
+    .service-card:hover .card-icon {
+        transform: scale(1.2) rotateZ(10deg);
+    }
+
+    .service-card h3 {
+        font-size: 22px;
+        color: var(--vert-fonce);
+        margin-bottom: 15px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 600;
+    }
+
+    .service-card p {
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 25px;
+        font-size: 15px;
+    }
+
+    .btn-learn {
+        background: transparent;
+        border: 2px solid var(--dore);
+        color: var(--dore);
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-learn:hover {
+        background: var(--dore);
+        color: white;
+        transform: scale(1.05);
+    }
+
+    /* ===== ADVANTAGES SECTION ===== */
+    .advantages-section {
+        padding: 100px 40px;
+        background: linear-gradient(180deg, transparent 0%, rgba(10, 61, 53, 0.05) 100%);
+    }
+
+    .advantages-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .advantage-card {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(212, 168, 66, 0.3);
+
+        border-radius: 16px;
+        padding: 40px;
+        text-align: center;
+
+        animation: fadeInUp 0.6s ease-out;
+        animation-fill-mode: both;
+
+        transition: all 0.3s ease;
+    }
+
+    .advantage-card:nth-child(1) { animation-delay: 0.1s; }
+    .advantage-card:nth-child(2) { animation-delay: 0.2s; }
+    .advantage-card:nth-child(3) { animation-delay: 0.3s; }
+    .advantage-card:nth-child(4) { animation-delay: 0.4s; }
+
+    .advantage-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(212, 168, 66, 0.15);
+    }
+
+    .advantage-icon {
+        font-size: 42px;
+        margin-bottom: 15px;
+    }
+
+    .advantage-card h3 {
+        font-size: 20px;
+        color: var(--vert-fonce);
+        margin-bottom: 10px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 600;
+    }
+
+    .advantage-card p {
+        color: #666;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    /* ===== CTA SECTION ===== */
+    .cta-section {
+        padding: 80px 40px;
+        background: linear-gradient(135deg, var(--vert-fonce) 0%, var(--vert-clair) 100%);
+        text-align: center;
+        color: white;
+    }
+
+    .cta-content {
+        max-width: 600px;
+        margin: 0 auto;
+        animation: fadeInUp 0.8s ease-out;
+    }
+
+    .cta-title {
+        font-size: 38px;
+        margin-bottom: 20px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700;
+        letter-spacing: -1px;
+    }
+
+    .cta-text {
+        font-size: 16px;
+        margin-bottom: 30px;
+        opacity: 0.95;
+        line-height: 1.6;
+    }
+
+    .btn-cta-white {
+        background: white;
+        color: var(--vert-fonce);
+        border: none;
+        padding: 16px 40px;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+
+        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-cta-white:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+        background: var(--noir);
+        color: rgba(255, 255, 255, 0.7);
+        padding: 60px 40px 30px;
+    }
+
+    .footer-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 40px;
+        max-width: 1200px;
+        margin: 0 auto 40px;
+    }
+
+    .footer-column h3 {
+        color: white;
+        margin-bottom: 20px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 600;
+    }
+
+    .footer-column a,
+    .footer-column p {
+        display: block;
+        margin-bottom: 10px;
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        font-size: 14px;
+        transition: color 0.3s ease;
+    }
+
+    .footer-column a:hover {
+        color: var(--dore);
+    }
+
+    .footer-bottom {
+        text-align: center;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 13px;
+    }
+
+    /* ===== RESPONSIVE MOBILE ===== */
+    @media (max-width: 768px) {
+        .hero-container {
             height: auto;
-            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+            padding: 20px 10px;
+            min-height: 100vh;
+        }
+
+        .hero-gradient-bg {
+            inset: 10px;
+        }
+
+        .hero-card {
+            padding: 50px 30px;
         }
 
         .hero-title {
-            font-size: clamp(2.5rem, 6vw, 3.5rem);
-            font-weight: 700;
-            margin-bottom: 12px;
-            letter-spacing: 2px;
-            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-            animation: fadeInUp 0.8s ease-out 0.1s both;
-        }
-
-        .hero-title-main {
-            display: block;
-            color: var(--blanc);
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-        }
-
-        .hero-title-accent {
-            display: block;
-            color: var(--jaune-solaire);
-            font-size: 1.1em;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+            font-size: 32px;
         }
 
         .hero-subtitle {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            color: rgba(255, 255, 255, 0.95);
-            margin-bottom: 50px;
-            letter-spacing: 1px;
-            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-            animation: fadeInUp 0.8s ease-out 0.2s both;
+            font-size: 14px;
         }
 
-        .hero-features {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
+        .services-section, .advantages-section, .cta-section, .footer {
+            padding: 60px 20px;
+        }
+
+        .section-title, .cta-title {
+            font-size: 28px;
+        }
+
+        .services-grid, .advantages-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .service-card, .advantage-card {
+            padding: 30px 20px;
+        }
+
+        .footer-content {
+            grid-template-columns: 1fr;
             gap: 30px;
-            margin-bottom: 50px;
-            animation: fadeInUp 0.8s ease-out 0.3s both;
         }
+    }
+</style>
 
-        .hero-feature {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(212, 168, 66, 0.3);
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
+<!-- Hero Section -->
+<section class="hero-container">
+    <div class="hero-gradient-bg"></div>
 
-        .hero-feature:hover {
-            background: rgba(212, 168, 66, 0.15);
-            border-color: rgba(212, 168, 66, 0.6);
-            transform: translateY(-5px);
-        }
-
-        .feature-icon {
-            font-size: 2.5rem;
-            line-height: 1;
-        }
-
-        .feature-text {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .feature-text strong {
-            font-size: 0.9rem;
-            color: var(--blanc);
-            letter-spacing: 0.5px;
-            font-weight: 600;
-        }
-
-        .feature-text span {
-            font-size: 0.8rem;
-            color: var(--jaune-solaire);
-            letter-spacing: 0.5px;
-            font-weight: 500;
-        }
-
-        .hero-cta {
-            animation: fadeInUp 0.8s ease-out 0.4s both;
-        }
-
-        .hero-cta .btn {
-            font-size: 1.05rem;
-            padding: 16px 48px;
-            letter-spacing: 0.5px;
-        }
-
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Brushes/Brooms Icon Animation */
-        .brushes-icon {
-            width: 100%;
-            max-width: 300px;
-            height: 300px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 120px;
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(212, 168, 66, 0.3);
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                box-shadow: 0 0 20px rgba(212, 168, 66, 0.2);
-                border-color: rgba(212, 168, 66, 0.3);
-            }
-            50% {
-                box-shadow: 0 0 40px rgba(212, 168, 66, 0.5);
-                border-color: rgba(212, 168, 66, 0.6);
-            }
-        }
-
-        /* Stats Section */
-        .stats-modern {
-            background: var(--gris-verre);
-            padding: 60px 0;
-            border-top: 3px solid var(--jaune-solaire);
-            border-bottom: 3px solid var(--bleu-nuit);
-        }
-
-        .stats-modern .container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
-            text-align: center;
-        }
-
-        .stat-box {
-            animation: fadeInUp 0.8s ease-out;
-        }
-
-        .stat-number {
-            font-size: clamp(2.5rem, 6vw, 3.5rem);
-            font-weight: 700;
-            color: var(--bleu-nuit);
-            font-family: var(--font-display);
-            margin-bottom: 8px;
-        }
-
-        .stat-number .symbol {
-            color: var(--jaune-solaire);
-        }
-
-        .stat-text {
-            font-size: 0.95rem;
-            color: var(--gris-texte-leger);
-            line-height: 1.6;
-        }
-
-        /* 4 Piliers Section (Card Design) */
-        .pillars-section {
-            padding: 80px 0;
-            background: var(--blanc);
-        }
-
-        .pillars-header {
-            text-align: center;
-            margin-bottom: 60px;
-            animation: fadeInUp 0.8s ease-out;
-        }
-
-        .pillars-header h2 {
-            font-size: clamp(2rem, 4vw, 2.5rem);
-            margin-bottom: 16px;
-            color: var(--bleu-nuit);
-        }
-
-        .pillars-header p {
-            color: var(--gris-texte-leger);
-            font-size: 1.05rem;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .pillars-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-        }
-
-        .pillar-card {
-            background: linear-gradient(135deg, var(--blanc) 0%, #f9f7f4 100%);
-            border: 2px solid var(--gris-bordure);
-            border-radius: var(--radius-xl);
-            padding: 40px 24px;
-            text-align: center;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            animation: fadeInUp 0.8s ease-out;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .pillar-card::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--bleu-nuit), var(--jaune-solaire));
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.5s ease;
-        }
-
-        .pillar-card:hover {
-            border-color: var(--jaune-solaire);
-            transform: translateY(-8px);
-            box-shadow: 0 12px 40px rgba(27, 77, 62, 0.15);
-            background: linear-gradient(135deg, var(--blanc) 0%, #fffbf5 100%);
-        }
-
-        .pillar-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .pillar-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--bleu-nuit), var(--bleu-panneau));
-            border: 3px solid var(--jaune-solaire);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            margin: 0 auto 24px;
-            box-shadow: 0 4px 15px rgba(27, 77, 62, 0.2);
-            transition: all 0.4s ease;
-        }
-
-        .pillar-card:hover .pillar-icon {
-            transform: rotate(-15deg) scale(1.1);
-            box-shadow: 0 8px 25px rgba(212, 168, 66, 0.4);
-        }
-
-        .pillar-title {
-            font-size: 1.15rem;
-            font-weight: 700;
-            color: var(--bleu-nuit);
-            margin-bottom: 12px;
-            font-family: var(--font-display);
-        }
-
-        .pillar-description {
-            font-size: 0.9rem;
-            color: var(--gris-texte-leger);
-            line-height: 1.6;
-        }
-
-        /* Services Section */
-        .services-modern {
-            padding: 80px 0;
-            background: linear-gradient(135deg, var(--gris-verre) 0%, var(--blanc) 100%);
-        }
-
-        .services-header {
-            text-align: center;
-            margin-bottom: 60px;
-            animation: fadeInUp 0.8s ease-out;
-        }
-
-        .services-header h2 {
-            font-size: clamp(2rem, 4vw, 2.5rem);
-            margin-bottom: 16px;
-            color: var(--bleu-nuit);
-        }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 32px;
-        }
-
-        .service-card-modern {
-            background: var(--blanc);
-            border-radius: var(--radius-xl);
-            padding: 32px 28px;
-            border: 2px solid var(--gris-bordure);
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            animation: fadeInUp 0.8s ease-out;
-            position: relative;
-        }
-
-        .service-card-modern::after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--bleu-nuit), var(--jaune-solaire));
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.5s ease;
-            border-radius: 0 0 var(--radius-xl) var(--radius-xl);
-        }
-
-        .service-card-modern:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 16px 40px rgba(27, 77, 62, 0.15);
-            border-color: var(--jaune-solaire);
-        }
-
-        .service-card-modern:hover::after {
-            transform: scaleX(1);
-        }
-
-        .service-card-modern h3 {
-            font-size: 1.3rem;
-            margin-bottom: 12px;
-            color: var(--bleu-nuit);
-        }
-
-        .service-card-modern p {
-            color: var(--gris-texte-leger);
-            font-size: 0.95rem;
-            line-height: 1.7;
-            margin-bottom: 20px;
-        }
-
-        .service-price {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--jaune-solaire);
-            font-family: var(--font-display);
-        }
-
-        /* CTA Section */
-        .cta-modern {
-            padding: 80px 0;
-            background: linear-gradient(135deg, var(--bleu-nuit) 0%, var(--bleu-panneau) 100%);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cta-modern::before {
-            content: "";
-            position: absolute;
-            top: -50%;
-            right: -10%;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(212, 168, 66, 0.1) 0%, transparent 70%);
-            border-radius: 50%;
-            z-index: 1;
-        }
-
-        .cta-modern .container {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            animation: fadeInUp 0.8s ease-out;
-        }
-
-        .cta-modern h2 {
-            font-size: clamp(1.8rem, 4vw, 2.5rem);
-            margin-bottom: 24px;
-            color: var(--blanc);
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        .cta-modern p {
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 32px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .cta-modern .btn {
-            font-size: 1.05rem;
-            padding: 16px 40px;
-            min-width: 280px;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            .hero-modern .container {
-                grid-template-columns: 1fr;
-                gap: 40px;
-                padding: 60px 24px;
-            }
-
-            .pillars-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 20px;
-            }
-
-            .stats-modern .container {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .hero-modern {
-                min-height: auto;
-                padding: 40px 0;
-            }
-
-            .hero-modern .container {
-                gap: 30px;
-                padding: 40px 16px;
-            }
-
-            .hero-content h1 {
-                font-size: 1.8rem;
-            }
-
-            .pillars-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .pillar-card {
-                padding: 32px 20px;
-            }
-
-            .services-grid {
-                grid-template-columns: 1fr;
-                gap: 24px;
-            }
-
-            .stats-modern .container {
-                gap: 20px;
-            }
-
-            .hero-visual {
-                display: none;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .hero-content h1 {
-                font-size: 1.5rem;
-            }
-
-            .hero-content > p {
-                font-size: 1rem;
-            }
-
-            .hero-tagline {
-                font-size: 1.1rem;
-            }
-
-            .pillar-icon {
-                width: 60px;
-                height: 60px;
-                font-size: 1.8rem;
-            }
-
-            .cta-modern h2 {
-                font-size: 1.5rem;
-            }
-
-            .cta-modern .btn {
-                width: 100%;
-            }
-        }
-    </style>
-{% endblock %}
-
-{% block body %}
-
-<!-- HERO SECTION -->
-<section class="hero-modern">
     <div class="hero-card">
-        <canvas id="rainCanvas"></canvas>
-        <div class="hero-logo">
-            <svg viewBox="0 0 200 60" width="200" height="60">
-                <!-- Logo design -->
-                <circle cx="25" cy="30" r="18" fill="none" stroke="currentColor" stroke-width="2"/>
-                <circle cx="25" cy="30" r="14" fill="none" stroke="currentColor" stroke-width="1.5"/>
-                <line x1="20" y1="30" x2="30" y2="30" stroke="currentColor" stroke-width="2"/>
-                <circle cx="55" cy="30" r="18" fill="none" stroke="currentColor" stroke-width="2"/>
-                <circle cx="55" cy="30" r="14" fill="none" stroke="currentColor" stroke-width="1.5"/>
-                <line x1="50" y1="30" x2="60" y2="30" stroke="currentColor" stroke-width="2"/>
-                <text x="75" y="38" font-size="24" font-weight="bold" fill="currentColor">SIRIUS</text>
-                <polygon points="195,5 200,15 190,15" fill="currentColor"/>
-            </svg>
-        </div>
-        <h1 class="hero-title">
-            <span class="hero-title-main">SIRIUS</span>
-            <span class="hero-title-accent">-SOLAR</span>
-        </h1>
-        <p class="hero-subtitle">{{ 'home.hero.subtitle'|trans }}</p>
+        <h1 class="hero-title">Optimisez votre rendement solaire</h1>
+        <p class="hero-subtitle">Eau osmosée • Zéro produit chimique • Jusqu'à 25% regagné</p>
 
         <div class="hero-features">
-            <div class="hero-feature">
-                <div class="feature-icon">💧</div>
-                <div class="feature-text">
-                    <strong>NETTOYAGE</strong>
-                    <span>À L'EAU PURE</span>
-                </div>
-            </div>
-            <div class="hero-feature">
-                <div class="feature-icon">✓</div>
-                <div class="feature-text">
-                    <strong>SÉCURITÉ</strong>
-                    <span>MAXIMALE</span>
-                </div>
-            </div>
-            <div class="hero-feature">
-                <div class="feature-icon">🌿</div>
-                <div class="feature-text">
-                    <strong>RESPECT DE</strong>
-                    <span>L'ENVIRONNEMENT</span>
-                </div>
-            </div>
-            <div class="hero-feature">
-                <div class="feature-icon">📈</div>
-                <div class="feature-text">
-                    <strong>PERFORMANCE</strong>
-                    <span>OPTIMALE</span>
-                </div>
-            </div>
+            <span class="feature-tag">💧 Eau pure</span>
+            <span class="feature-tag">⚡ Haute performance</span>
+            <span class="feature-tag">✅ Écologique</span>
         </div>
 
-        <div class="hero-cta">
-            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
-                <a href="{{ path('reservation_form') }}" class="btn btn-primary">📋 Réserver</a>
-                <a href="{{ path('app_login') }}" class="btn btn-primary" style="background: rgba(255, 255, 255, 0.2); border: 2px solid white;">🔐 Admin</a>
-                <a href="{{ path('app_devis') }}" class="btn btn-primary">Devis Gratuit</a>
-            </div>
+        <a href="{{ path('app_devis') }}" class="btn-cta">Demander un devis</a>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="services-section" id="services">
+    <h2 class="section-title">Nos Services</h2>
+
+    <div class="services-grid">
+        <div class="service-card">
+            <div class="card-icon">💧</div>
+            <h3>Nettoyage Premium</h3>
+            <p>Eau osmosée haute pression, résultats garantis et performance maximale</p>
+            <button class="btn-learn">En savoir plus</button>
+        </div>
+
+        <div class="service-card">
+            <div class="card-icon">🔍</div>
+            <h3>Inspection Complète</h3>
+            <p>Diagnostic professionnel avec rapport détaillé de vos installations</p>
+            <button class="btn-learn">En savoir plus</button>
+        </div>
+
+        <div class="service-card">
+            <div class="card-icon">⚡</div>
+            <h3>Maintenance Régulière</h3>
+            <p>Contrats d'entretien personnalisés pour une performance durable</p>
+            <button class="btn-learn">En savoir plus</button>
         </div>
     </div>
 </section>
 
-<!-- HEXAGON NAVIGATION SECTION -->
-<section id="hexagon-scene">
-    <div class="hexagon-container">
-        <div class="hexagon" data-link="services">
-            <a href="#services">
-                <svg version="1.1" viewBox="0 0 600 516.8">
-                    <polygon points="150.7,516.8 1.5,258.4 150.7,0 449,0 598.2,258.4 449,516.8 "/>
-                </svg>
-                <span>🔧 Services</span>
-            </a>
+<!-- Advantages Section -->
+<section class="advantages-section" id="avantages">
+    <h2 class="section-title">Pourquoi Sirius-Solar ?</h2>
+
+    <div class="advantages-grid">
+        <div class="advantage-card">
+            <div class="advantage-icon">📈</div>
+            <h3>Rendement +25%</h3>
+            <p>Retrouvez jusqu'à 25% de rendement perdu par la saleté et les dépôts</p>
         </div>
 
-        <div class="hexagon" data-link="avantages">
-            <a href="#avantages">
-                <svg version="1.1" viewBox="0 0 600 516.8">
-                    <polygon points="150.7,516.8 1.5,258.4 150.7,0 449,0 598.2,258.4 449,516.8 "/>
-                </svg>
-                <span>⭐ Avantages</span>
-            </a>
+        <div class="advantage-card">
+            <div class="advantage-icon">💧</div>
+            <h3>Eau Osmosée</h3>
+            <p>Nettoyage avec eau pure, sans résidu, sans trace sur vos panneaux</p>
         </div>
 
-        <div class="hexagon" data-link="reserve">
-            <a href="{{ path('reservation_form') }}">
-                <svg version="1.1" viewBox="0 0 600 516.8">
-                    <polygon points="150.7,516.8 1.5,258.4 150.7,0 449,0 598.2,258.4 449,516.8 "/>
-                </svg>
-                <span>📋 Réserver</span>
-            </a>
+        <div class="advantage-card">
+            <div class="advantage-icon">🌍</div>
+            <h3>Zéro Chimique</h3>
+            <p>Approach écologique respectueuse de l'environnement et vos installations</p>
         </div>
 
-        <div class="hexagon" data-link="contact">
-            <a href="{{ path('app_login') }}">
-                <svg version="1.1" viewBox="0 0 600 516.8">
-                    <polygon points="150.7,516.8 1.5,258.4 150.7,0 449,0 598.2,258.4 449,516.8 "/>
-                </svg>
-                <span>🔐 Admin</span>
-            </a>
+        <div class="advantage-card">
+            <div class="advantage-icon">⏱️</div>
+            <h3>Devis en 48h</h3>
+            <p>Service rapide et efficace, réponse garantie en moins de 2 jours</p>
         </div>
     </div>
 </section>
 
-<!-- STATS SECTION -->
-<section class="stats-modern">
-    <div class="container">
-        <div class="stat-box">
-            <div class="stat-number"><span class="symbol">+</span>15<span class="symbol">%</span></div>
-            <div class="stat-text">{{ 'home.stats.production'|trans }}</div>
-        </div>
-        <div class="stat-box">
-            <div class="stat-number">100<span class="symbol">%</span></div>
-            <div class="stat-text">{{ 'home.stats.water'|trans }}</div>
-        </div>
-        <div class="stat-box">
-            <div class="stat-number"><span class="symbol">~</span>48h</div>
-            <div class="stat-text">{{ 'home.stats.response'|trans }}</div>
-        </div>
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="cta-content">
+        <h2 class="cta-title">Prêt à optimiser votre installation ?</h2>
+        <p class="cta-text">Contactez nos experts Sirius-Solar pour un diagnostic gratuit et une solution adaptée à vos panneaux photovoltaïques.</p>
+        <a href="{{ path('app_devis') }}" class="btn-cta-white">Réserver une visite</a>
     </div>
 </section>
 
-<!-- 4 PILLARS SECTION -->
-<section class="pillars-section" id="avantages">
-    <div class="container">
-        <div class="pillars-header">
-            <h2>{{ 'home.pillars.title'|trans }}</h2>
-            <p>{{ 'home.pillars.subtitle'|trans }}</p>
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-column">
+            <h3>Sirius-Solar</h3>
+            <p>Nettoyage & Entretien de panneaux photovoltaïques avec eau osmosée</p>
         </div>
-        <div class="pillars-grid">
-            <div class="pillar-card">
-                <div class="pillar-icon">💧</div>
-                <h3 class="pillar-title">{{ 'home.pillars.cleaning_title'|trans }}</h3>
-                <p class="pillar-description">{{ 'home.pillars.cleaning_desc'|trans }}</p>
-            </div>
-            <div class="pillar-card">
-                <div class="pillar-icon">✅</div>
-                <h3 class="pillar-title">{{ 'home.pillars.safety_title'|trans }}</h3>
-                <p class="pillar-description">{{ 'home.pillars.safety_desc'|trans }}</p>
-            </div>
-            <div class="pillar-card">
-                <div class="pillar-icon">🌿</div>
-                <h3 class="pillar-title">{{ 'home.pillars.environment_title'|trans }}</h3>
-                <p class="pillar-description">{{ 'home.pillars.environment_desc'|trans }}</p>
-            </div>
-            <div class="pillar-card">
-                <div class="pillar-icon">📈</div>
-                <h3 class="pillar-title">{{ 'home.pillars.performance_title'|trans }}</h3>
-                <p class="pillar-description">{{ 'home.pillars.performance_desc'|trans }}</p>
-            </div>
+
+        <div class="footer-column">
+            <h3>Liens Utiles</h3>
+            <a href="{{ path('app_home') }}">Accueil</a>
+            <a href="{{ path('app_home') }}#services">Services</a>
+            <a href="{{ path('app_devis') }}">Devis</a>
+            <a href="{{ path('app_login') }}">Connexion</a>
+        </div>
+
+        <div class="footer-column">
+            <h3>Contact</h3>
+            <p>Email: info@sirius-solar.ch</p>
+            <p>Téléphone: +41 XX XXX XX XX</p>
+            <p>Réponse en 48h garantie</p>
         </div>
     </div>
-</section>
 
-<!-- SERVICES SECTION -->
-<section class="services-modern" id="services">
-    <div class="container">
-        <div class="services-header">
-            <h2>{{ 'home.services.title'|trans }}</h2>
-            <p>{{ 'home.services.subtitle'|trans }}</p>
-        </div>
-        <div class="services-grid">
-            {% for service in services %}
-                <div class="service-card-modern">
-                    <h3>{{ service.titre }}</h3>
-                    <p>{{ service.description }}</p>
-                    <div class="service-price">{{ service.prix }}</div>
-                </div>
-            {% endfor %}
-        </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 Sirius-Solar. Tous droits réservés.</p>
     </div>
-</section>
+</footer>
 
-<!-- CTA SECTION -->
-<section class="cta-modern">
-    <div class="container">
-        <h2>{{ 'home.cta.title'|trans }}</h2>
-        <p>{{ 'home.cta.subtitle'|trans }}</p>
-        <a href="{{ path('app_devis') }}" class="btn btn-primary">{{ 'home.cta.button'|trans }}</a>
-    </div>
-</section>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Hexagon navigation functionality
-    const hexagons = document.querySelectorAll('.hexagon');
-
-    hexagons.forEach(hexagon => {
-        hexagon.addEventListener('click', function(e) {
-            // Remove active class from all hexagons
-            hexagons.forEach(h => h.classList.remove('active'));
-            // Add active class to clicked hexagon
-            this.classList.add('active');
-        });
-
-        hexagon.addEventListener('mouseover', function() {
-            this.style.transform = 'scale(1.1)';
-        });
-
-        hexagon.addEventListener('mouseout', function() {
-            if (!this.classList.contains('active')) {
-                this.style.transform = 'scale(1)';
-            }
-        });
-    });
-
-    // Highlight hexagon when section comes into view
-    const sections = {
-        'services': document.querySelector('#services'),
-        'avantages': document.querySelector('#avantages')
-    };
-
-    window.addEventListener('scroll', function() {
-        Object.entries(sections).forEach(([key, section]) => {
-            if (section) {
-                const rect = section.getBoundingClientRect();
-                if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
-                    hexagons.forEach(h => h.classList.remove('active'));
-                    const hexagon = document.querySelector(`[data-link="${key}"]`);
-                    if (hexagon) hexagon.classList.add('active');
-                }
-            }
-        });
-    });
-});
-</script>
-
-{% endblock %}
-
-{% block page_nav_next %}
-    <a href="{{ path('app_devis') }}" class="page-nav-link">Devis Gratuit →</a>
 {% endblock %}
