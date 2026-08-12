@@ -1,0 +1,350 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réserver un nettoyage - Sirius Solar{% endblock %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 60px auto; padding: 40px; background: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+    <h1 style="text-align: center; margin-bottom: 10px; color: #1a3a52;">☀️ Réservez votre nettoyage</h1>
+    <p style="text-align: center; color: #666; margin-bottom: 40px;">Remplissez ce formulaire pour demander un nettoyage de vos panneaux solaires</p>
+
+    <form id="reservationForm" style="display: grid; gap: 20px;">
+        <!-- Section 1: Informations Personnelles -->
+        <fieldset style="border: 1px solid #eee; padding: 20px; border-radius: 8px;">
+            <legend style="font-weight: 600; padding: 0 10px; color: #1a3a52;">👤 Informations Personnelles</legend>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div class="form-group">
+                    <label for="nom">Nom *</label>
+                    <input type="text" id="nom" name="nom" required>
+                    <small class="error-message"></small>
+                </div>
+                <div class="form-group">
+                    <label for="prenom">Prénom *</label>
+                    <input type="text" id="prenom" name="prenom" required>
+                    <small class="error-message"></small>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" required>
+                    <small class="error-message"></small>
+                </div>
+                <div class="form-group">
+                    <label for="telephone">Téléphone *</label>
+                    <input type="tel" id="telephone" name="telephone" required pattern="[0-9\s\-\+]{10,}">
+                    <small class="error-message"></small>
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- Section 2: Adresse -->
+        <fieldset style="border: 1px solid #eee; padding: 20px; border-radius: 8px;">
+            <legend style="font-weight: 600; padding: 0 10px; color: #1a3a52;">📍 Adresse</legend>
+
+            <div class="form-group">
+                <label for="adresse">Adresse complète *</label>
+                <input type="text" id="adresse" name="adresse" placeholder="Rue, numéro" required>
+                <small class="error-message"></small>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 15px;">
+                <div class="form-group">
+                    <label for="codePostal">Code Postal *</label>
+                    <input type="text" id="codePostal" name="codePostal" placeholder="1200" required pattern="[0-9]{4}">
+                    <small class="error-message"></small>
+                </div>
+                <div class="form-group">
+                    <label for="ville">Ville *</label>
+                    <input type="text" id="ville" name="ville" required>
+                    <small class="error-message"></small>
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- Section 3: Détails Intervention -->
+        <fieldset style="border: 1px solid #eee; padding: 20px; border-radius: 8px;">
+            <legend style="font-weight: 600; padding: 0 10px; color: #1a3a52;">🔧 Détails de l'intervention</legend>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div class="form-group">
+                    <label for="dateSouhaitee">Date souhaitée *</label>
+                    <input type="date" id="dateSouhaitee" name="dateSouhaitee" required>
+                    <small class="error-message"></small>
+                </div>
+                <div class="form-group">
+                    <label for="heureSouhaitee">Heure souhaitée *</label>
+                    <input type="time" id="heureSouhaitee" name="heureSouhaitee" required>
+                    <small class="error-message"></small>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div class="form-group">
+                    <label for="nombrePanneaux">Nombre de panneaux *</label>
+                    <input type="number" id="nombrePanneaux" name="nombrePanneaux" min="1" max="200" required>
+                    <small class="error-message"></small>
+                </div>
+                <div class="form-group">
+                    <label for="typeToiture">Type de toiture *</label>
+                    <select id="typeToiture" name="typeToiture" required>
+                        <option value="">-- Sélectionnez --</option>
+                        <option value="plat">Toiture plate</option>
+                        <option value="incline_leger">Inclinaison légère (< 30°)</option>
+                        <option value="incline_moyen">Inclinaison moyenne (30-50°)</option>
+                        <option value="incline_fort">Inclinaison forte (> 50°)</option>
+                        <option value="avec_obstacles">Avec obstacles (cheminées, etc.)</option>
+                    </select>
+                    <small class="error-message"></small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="notes">Notes supplémentaires</label>
+                <textarea id="notes" name="notes" placeholder="Accès spécial, allergies, etc." style="resize: vertical; min-height: 80px;"></textarea>
+            </div>
+        </fieldset>
+
+        <!-- Section 4: Estimation du Prix -->
+        <div style="background: #f0f8ff; padding: 20px; border-radius: 8px; border-left: 4px solid #007bff;">
+            <h3 style="color: #1a3a52; margin-bottom: 10px;">💰 Estimation du prix</h3>
+            <p id="priceEstimate" style="font-size: 20px; font-weight: bold; color: #28a745;">
+                CHF <span id="priceValue">0.00</span>
+            </p>
+            <p style="font-size: 12px; color: #666; margin-top: 10px;">
+                *Prix estimé basé sur le nombre de panneaux et le type de toiture. Le prix final sera confirmé par notre équipe.
+            </p>
+        </div>
+
+        <!-- Section 5: Conditions -->
+        <div class="form-group">
+            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                <input type="checkbox" id="agree" name="agree" required style="width: 20px; height: 20px;">
+                <span>J'accepte que mes données soient traitées pour traiter ma demande *</span>
+            </label>
+            <small class="error-message"></small>
+        </div>
+
+        <!-- Boutons -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 30px;">
+            <button type="reset" class="btn" style="background: #6c757d; color: white; padding: 12px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;">
+                ↻ Réinitialiser
+            </button>
+            <button type="submit" class="btn" id="submitBtn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: 600;">
+                📬 Envoyer ma demande
+            </button>
+        </div>
+
+        <div id="successMessage" style="display: none; background: #d4edda; color: #155724; padding: 20px; border-radius: 8px; border: 1px solid #c3e6cb; margin-top: 20px;">
+            <h3 style="margin-bottom: 10px;">✅ Demande enregistrée avec succès!</h3>
+            <p style="margin-bottom: 10px;">Votre numéro de réservation: <strong id="reservationNumber"></strong></p>
+            <p>Notre équipe examinera votre demande et vous contactera dans les 24h pour confirmer ou discuter des détails.</p>
+            <p style="margin-top: 15px;">
+                <a href="/" style="color: #155724; text-decoration: underline;">← Retour à l'accueil</a>
+            </p>
+        </div>
+
+        <div id="errorMessage" style="display: none; background: #f8d7da; color: #721c24; padding: 20px; border-radius: 8px; border: 1px solid #f5c6cb; margin-top: 20px;">
+            <h3 style="margin-bottom: 10px;">❌ Erreur lors de l'envoi</h3>
+            <p id="errorText"></p>
+        </div>
+    </form>
+</div>
+
+<style>
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: inherit;
+    transition: all 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-group input.error,
+.form-group textarea.error,
+.form-group select.error {
+    border-color: #dc3545;
+    background: #fff5f5;
+}
+
+.error-message {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 4px;
+    display: none;
+}
+
+.form-group input.error ~ .error-message,
+.form-group textarea.error ~ .error-message,
+.form-group select.error ~ .error-message {
+    display: block;
+}
+
+@media (max-width: 600px) {
+    div[style*="grid-template-columns: 1fr 1fr"] {
+        grid-template-columns: 1fr !important;
+    }
+
+    div[style*="grid-template-columns: 1fr 2fr"] {
+        grid-template-columns: 1fr !important;
+    }
+}
+</style>
+
+<script>
+const form = document.getElementById('reservationForm');
+const submitBtn = document.getElementById('submitBtn');
+const successMessage = document.getElementById('successMessage');
+const errorMessage = document.getElementById('errorMessage');
+
+// Calcul du prix en temps réel
+const nombrePanneaux = document.getElementById('nombrePanneaux');
+const typeToiture = document.getElementById('typeToiture');
+const priceValue = document.getElementById('priceValue');
+
+function calculatePrice() {
+    const panneaux = parseInt(nombrePanneaux.value) || 0;
+    const toiture = typeToiture.value;
+
+    const prixBase = 50;
+    const multiplicateurs = {
+        'plat': 1.0,
+        'incline_leger': 1.1,
+        'incline_moyen': 1.2,
+        'incline_fort': 1.3,
+        'avec_obstacles': 1.5,
+    };
+
+    const multiplicateur = multiplicateurs[toiture] || 1.0;
+    const prixEstime = panneaux * prixBase * multiplicateur;
+
+    priceValue.textContent = prixEstime.toFixed(2);
+}
+
+nombrePanneaux.addEventListener('change', calculatePrice);
+nombrePanneaux.addEventListener('input', calculatePrice);
+typeToiture.addEventListener('change', calculatePrice);
+
+// Validation du formulaire
+function validateForm() {
+    let isValid = true;
+    const fields = form.querySelectorAll('input, textarea, select');
+
+    fields.forEach(field => {
+        field.classList.remove('error');
+        const errorMsg = field.parentElement.querySelector('.error-message');
+        if (errorMsg) errorMsg.textContent = '';
+
+        if (!field.value && field.hasAttribute('required')) {
+            field.classList.add('error');
+            if (errorMsg) errorMsg.textContent = 'Ce champ est obligatoire';
+            isValid = false;
+        }
+
+        if (field.type === 'email' && field.value && !field.value.includes('@')) {
+            field.classList.add('error');
+            if (errorMsg) errorMsg.textContent = 'Email invalide';
+            isValid = false;
+        }
+
+        if (field.id === 'telephone' && field.value) {
+            const cleanPhone = field.value.replace(/[\s\-\+]/g, '');
+            if (cleanPhone.length < 10 || !/^\d+$/.test(cleanPhone)) {
+                field.classList.add('error');
+                if (errorMsg) errorMsg.textContent = 'Numéro de téléphone invalide (min 10 chiffres)';
+                isValid = false;
+            }
+        }
+
+        if (field.id === 'dateSouhaitee' && field.value) {
+            const selectedDate = new Date(field.value);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            if (selectedDate < today) {
+                field.classList.add('error');
+                if (errorMsg) errorMsg.textContent = 'La date doit être dans le futur';
+                isValid = false;
+            }
+        }
+    });
+
+    const agree = document.getElementById('agree');
+    if (!agree.checked) {
+        agree.classList.add('error');
+        const errorMsg = agree.parentElement.querySelector('.error-message');
+        if (errorMsg) errorMsg.textContent = 'Vous devez accepter les conditions';
+        isValid = false;
+    }
+
+    return isValid;
+}
+
+// Soumission du formulaire
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    successMessage.style.display = 'none';
+    errorMessage.style.display = 'none';
+
+    if (!validateForm()) {
+        return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = '⏳ Envoi en cours...';
+
+    try {
+        const formData = new FormData(form);
+        const response = await fetch('{{ path("reservation_submit") }}', {
+            method: 'POST',
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            document.getElementById('reservationNumber').textContent = data.reservationNumber;
+            successMessage.style.display = 'block';
+            form.style.display = 'none';
+        } else {
+            document.getElementById('errorText').textContent = data.message;
+            errorMessage.style.display = 'block';
+        }
+    } catch (error) {
+        document.getElementById('errorText').textContent = 'Une erreur réseau s\'est produite. Veuillez réessayer.';
+        errorMessage.style.display = 'block';
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '📬 Envoyer ma demande';
+    }
+});
+
+// Fixer la date minimale
+const dateSouhaitee = document.getElementById('dateSouhaitee');
+const tomorrow = new Date();
+tomorrow.setDate(tomorrow.getDate() + 1);
+dateSouhaitee.min = tomorrow.toISOString().split('T')[0];
+</script>
+{% endblock %}

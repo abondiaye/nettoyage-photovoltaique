@@ -1,0 +1,83 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}📊 Dashboard{% endblock %}
+
+{% block content %}
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px;">
+    <div class="card" style="border-left: 4px solid #ffc107;">
+        <h3 style="color: #ffc107;">{{ stats.en_attente ?? 0 }}</h3>
+        <p>Demandes en attente</p>
+    </div>
+    <div class="card" style="border-left: 4px solid #17a2b8;">
+        <h3 style="color: #17a2b8;">{{ stats.confirmee ?? 0 }}</h3>
+        <p>Interventions confirmées</p>
+    </div>
+    <div class="card" style="border-left: 4px solid #28a745;">
+        <h3 style="color: #28a745;">{{ stats.realisee ?? 0 }}</h3>
+        <p>Interventions réalisées</p>
+    </div>
+    <div class="card" style="border-left: 4px solid #dc3545;">
+        <h3 style="color: #dc3545;">{{ stats.refusee ?? 0 }}</h3>
+        <p>Demandes refusées</p>
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+    <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2>📋 Demandes en attente</h2>
+            <a href="{{ path('admin_reservations_list', {statut: 'EN_ATTENTE'}) }}" class="btn btn-primary">Voir tout</a>
+        </div>
+
+        {% if pendingReservations %}
+            <table style="font-size: 13px;">
+                <thead>
+                    <tr>
+                        <th>Client</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reservation in pendingReservations[:5] %}
+                        <tr>
+                            <td>{{ reservation.customer.prenom }} {{ reservation.customer.nom }}</td>
+                            <td>{{ reservation.dateSouhaitee.format('d/m/Y') }}</td>
+                            <td>
+                                <a href="{{ path('admin_reservations_show', {id: reservation.id}) }}" class="btn btn-sm" style="padding: 5px 10px;">Voir</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p style="color: #999; text-align: center; padding: 20px;">Aucune demande en attente</p>
+        {% endif %}
+    </div>
+
+    <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2>🔔 Notifications</h2>
+            <span style="background: #dc3545; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">{{ unreadCount }}</span>
+        </div>
+
+        {% if unreadNotifications %}
+            <ul style="list-style: none; padding: 0;">
+                {% for notification in unreadNotifications[:5] %}
+                    <li style="padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>{{ notification.titre }}</strong><br>
+                            <small style="color: #999;">{{ notification.message }}</small>
+                        </div>
+                        <small style="color: #999;">{{ notification.dateCreation.format('H:i') }}</small>
+                    </li>
+                {% endfor %}
+            </ul>
+            <a href="{{ path('admin_notifications') }}" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Voir toutes les notifications</a>
+        {% else %}
+            <p style="color: #999; text-align: center; padding: 20px;">Aucune notification</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
