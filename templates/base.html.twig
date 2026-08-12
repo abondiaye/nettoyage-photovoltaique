@@ -29,1463 +29,383 @@
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
         <style>
-            /* Theme Toggle Animation - Paper Cut Style */
-            .theme-toggle-animation {
-              position: fixed;
-              top: 50%;
-              left: 50%;
-              transform: translate(-50%, -50%);
-              z-index: 10000;
-              pointer-events: none;
-              opacity: 0;
-              animation: themeToggleFade 1.5s ease-out forwards;
+            /* ===== RESET & VARIABLES ===== */
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
             }
 
-            @keyframes themeToggleFade {
-              0% {
+            :root {
+                --vert-fonce: #0A3D35;
+                --vert-clair: #2D6B55;
+                --dore: #D4A842;
+                --dore-clair: #f4d03f;
+                --blanc: #FFFFFF;
+                --noir: #121212;
+                --gris-clair: #F0F4F8;
+                --gris-moyen: #888888;
+            }
+
+            html, body {
+                height: 100%;
+                font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+                background: white;
+                color: #333;
+            }
+
+            /* ===== NAVBAR GLASMORPHISM ===== */
+            .navbar {
+                position: sticky;
+                top: 0;
+                z-index: 1000;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                /* Glasmorphism */
+                background: rgba(10, 61, 53, 0.8);
+                backdrop-filter: blur(20px);
+                border-bottom: 1px solid rgba(212, 168, 66, 0.3);
+
+                height: 80px;
+                padding: 0 40px;
+
+                /* Animation */
+                animation: slideDown 0.6s ease-out;
+            }
+
+            @keyframes slideDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-100%);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            /* Brand */
+            .nav-brand {
+                font-size: 20px;
+                font-weight: 700;
+                color: white;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .nav-brand-icon {
+                font-size: 28px;
+            }
+
+            .nav-brand:hover {
+                transform: scale(1.05);
+                color: var(--dore);
+            }
+
+            /* Menu Items */
+            .nav-menu {
+                display: flex;
+                list-style: none;
+                gap: 30px;
+            }
+
+            .nav-menu a {
+                color: rgba(255, 255, 255, 0.8);
+                text-decoration: none;
+                font-size: 14px;
+                font-weight: 500;
+                transition: all 0.3s ease;
+                position: relative;
+            }
+
+            .nav-menu a:hover {
+                color: var(--dore);
+            }
+
+            .nav-menu a::after {
+                content: '';
+                position: absolute;
+                bottom: -5px;
+                left: 0;
+                width: 0;
+                height: 2px;
+                background: var(--dore);
+                transition: width 0.3s ease;
+            }
+
+            .nav-menu a:hover::after {
+                width: 100%;
+            }
+
+            /* Action Buttons */
+            .nav-buttons {
+                display: flex;
+                gap: 15px;
+                align-items: center;
+            }
+
+            .btn-login {
+                background: transparent;
+                color: white;
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                padding: 10px 20px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 13px;
+                font-weight: 600;
+                transition: all 0.3s ease;
+            }
+
+            .btn-login:hover {
+                background: rgba(255, 255, 255, 0.1);
+                border-color: var(--dore);
+                color: var(--dore);
+            }
+
+            .btn-signup {
+                background: linear-gradient(135deg, var(--dore), var(--dore-clair));
+                color: #121212;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 8px;
+                font-weight: 600;
+                cursor: pointer;
+                font-size: 13px;
+                transition: all 0.3s ease;
+            }
+
+            .btn-signup:hover {
+                transform: scale(1.05);
+                box-shadow: 0 10px 30px rgba(212, 168, 66, 0.4);
+            }
+
+            /* Hamburger Menu */
+            .hamburger-menu {
+                display: none;
+                flex-direction: column;
+                cursor: pointer;
+                gap: 6px;
+            }
+
+            .hamburger-menu span {
+                width: 25px;
+                height: 3px;
+                background: white;
+                border-radius: 2px;
+                transition: all 0.3s ease;
+            }
+
+            .hamburger-menu.active span:nth-child(1) {
+                transform: rotate(45deg) translate(10px, 10px);
+            }
+
+            .hamburger-menu.active span:nth-child(2) {
                 opacity: 0;
-                transform: translate(-50%, -50%) scale(0.5);
-              }
-              20% {
-                opacity: 1;
-              }
-              80% {
-                opacity: 1;
-              }
-              100% {
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(1.1);
-              }
             }
 
-            /* SVG Paper Cut Animation */
-            .theme-toggle-svg {
-              width: 300px;
-              height: 200px;
-              filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.2));
+            .hamburger-menu.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -7px);
             }
 
-            /* Sun animation */
-            .sun-circle {
-              animation: sunPulse 1.5s ease-out forwards;
-              transform-origin: center;
+            /* Mobile Menu */
+            .nav-menu-mobile {
+                display: none;
+                position: absolute;
+                top: 80px;
+                left: 0;
+                right: 0;
+                background: rgba(10, 61, 53, 0.95);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                gap: 0;
+                list-style: none;
+                padding: 0;
+                border-bottom: 1px solid rgba(212, 168, 66, 0.3);
+                animation: slideDown 0.3s ease-out;
             }
 
-            @keyframes sunPulse {
-              0% {
-                r: 30;
-                opacity: 0;
-              }
-              20% {
-                opacity: 1;
-              }
-              80% {
-                opacity: 1;
-              }
-              100% {
-                r: 35;
-                opacity: 0;
-              }
+            .nav-menu-mobile.active {
+                display: flex;
             }
 
-            /* Cloud layers animation */
-            .cloud-layer {
-              animation: cloudFloat 1.5s ease-out forwards;
+            .nav-menu-mobile li {
+                border-bottom: 1px solid rgba(212, 168, 66, 0.2);
             }
 
-            .cloud-1 {
-              animation-delay: 0.1s;
+            .nav-menu-mobile a {
+                display: block;
+                color: rgba(255, 255, 255, 0.8);
+                text-decoration: none;
+                font-size: 14px;
+                font-weight: 500;
+                padding: 16px 40px;
+                transition: all 0.3s ease;
             }
 
-            .cloud-2 {
-              animation-delay: 0.2s;
+            .nav-menu-mobile a:hover {
+                color: var(--dore);
+                background: rgba(212, 168, 66, 0.1);
             }
 
-            .cloud-3 {
-              animation-delay: 0.3s;
+            /* Responsive Mobile */
+            @media (max-width: 768px) {
+                .navbar {
+                    padding: 0 20px;
+                }
+
+                .nav-menu, .nav-buttons {
+                    display: none;
+                }
+
+                .hamburger-menu {
+                    display: flex;
+                }
+
+                .nav-brand {
+                    font-size: 18px;
+                }
+
+                .nav-brand-icon {
+                    font-size: 24px;
+                }
             }
 
-            @keyframes cloudFloat {
-              0% {
-                opacity: 0;
-                transform: translateY(20px);
-              }
-              20% {
-                opacity: 1;
-                transform: translateY(0);
-              }
-              80% {
-                opacity: 1;
-                transform: translateY(0);
-              }
-              100% {
-                opacity: 0;
-                transform: translateY(-20px);
-              }
+            /* ===== GLOBAL ANIMATIONS ===== */
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
             }
 
-            /* Cursor animation */
-            .cursor-icon {
-              animation: cursorClick 0.6s ease-out forwards;
-              transform-origin: 60% 60%;
+            @keyframes fadeInDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
             }
 
-            @keyframes cursorClick {
-              0% {
-                opacity: 0;
-                transform: scale(0) rotate(0deg);
-              }
-              30% {
-                opacity: 1;
-                transform: scale(1) rotate(0deg);
-              }
-              60% {
-                opacity: 1;
-                transform: scale(1) rotate(-10deg);
-              }
-              100% {
-                opacity: 0;
-                transform: scale(0.8) rotate(-20deg) translateY(30px);
-              }
+            @keyframes fadeInLeft {
+                from {
+                    opacity: 0;
+                    transform: translateX(-30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+
+            @keyframes pulse {
+                0%, 100% {
+                    opacity: 1;
+                }
+                50% {
+                    opacity: 0.7;
+                }
+            }
+
+            /* ===== UTILITY CLASSES ===== */
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 40px;
+            }
+
+            @media (max-width: 768px) {
+                .container {
+                    padding: 0 20px;
+                }
             }
         </style>
     {% endblock %}
-
-    <style>
-        /* === BUTTONS STYLING === */
-        .btn {
-          display: inline-block;
-          padding: 12px 24px;
-          border-radius: 8px;
-          text-decoration: none;
-          font-weight: 600;
-          transition: all 0.3s ease;
-          border: 2px solid transparent;
-          cursor: pointer;
-        }
-
-        .btn-primary {
-          background: linear-gradient(135deg, #d4a842, #f4d03f);
-          color: #1a1a1a;
-          box-shadow: 0 4px 15px rgba(212, 168, 66, 0.3);
-        }
-
-        .btn-primary:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 25px rgba(212, 168, 66, 0.5);
-        }
-
-        /* === LANGUAGE SWITCHER === */
-        .lang-switch {
-          display: flex;
-          gap: 8px;
-          align-items: center;
-        }
-
-        .lang-switch a {
-          padding: 8px 12px;
-          border-radius: 6px;
-          text-decoration: none;
-          font-size: 0.9rem;
-          font-weight: 600;
-          border: 2px solid transparent;
-          transition: all 0.3s ease;
-          color: inherit;
-        }
-
-        .lang-switch a:hover,
-        .lang-switch a.-active {
-          background: rgba(212, 168, 66, 0.2);
-          border-color: #d4a842;
-          color: #d4a842;
-        }
-
-        /* === NAVIGATION LINKS === */
-        .nav-links {
-          display: flex;
-          gap: 20px;
-          align-items: center;
-          flex-wrap: wrap;
-        }
-
-        .nav-links a {
-          text-decoration: none;
-          color: inherit;
-          font-weight: 500;
-          transition: all 0.3s ease;
-          padding: 8px 12px;
-          border-radius: 6px;
-        }
-
-        .nav-links a:hover {
-          color: #d4a842;
-          background: rgba(212, 168, 66, 0.1);
-        }
-
-        /* === NAVBAR FIXES === */
-        header.site {
-          background: linear-gradient(135deg, rgba(10, 61, 53, 0.95) 0%, rgba(45, 107, 85, 0.95) 100%) !important;
-          backdrop-filter: blur(10px);
-          border-bottom: 2px solid rgba(212, 168, 66, 0.3);
-          padding: 1rem 2rem !important;
-        }
-
-        header.site .nav {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 2rem;
-          flex-wrap: wrap;
-        }
-
-        header.site .logo {
-          font-weight: 700;
-          font-size: 1.3rem;
-          color: #d4a842 !important;
-          text-decoration: none;
-          white-space: nowrap;
-          flex-shrink: 0;
-        }
-
-        header.site .nav-links {
-          display: flex;
-          gap: 1rem;
-          align-items: center;
-          justify-content: center;
-          flex: 1;
-          min-width: 300px;
-        }
-
-        header.site .nav-links a {
-          color: white;
-          text-decoration: none;
-          font-size: 0.95rem;
-          transition: all 0.3s ease;
-          padding: 10px 16px;
-          border: 2px solid rgba(212, 168, 66, 0.5);
-          border-radius: 6px;
-          background: rgba(255, 255, 255, 0.05);
-          display: inline-block;
-        }
-
-        header.site .nav-links a:hover {
-          color: #f4d03f;
-          border-color: #d4a842;
-          background: rgba(212, 168, 66, 0.15);
-        }
-
-        /* === BURGER MENU === */
-        .burger-menu {
-          display: none;
-          flex-direction: column;
-          gap: 6px;
-          cursor: pointer;
-          background: none;
-          border: none;
-          padding: 10px;
-        }
-
-        .burger-menu span {
-          width: 24px;
-          height: 3px;
-          background: #d4a842;
-          border-radius: 2px;
-          transition: all 0.3s ease;
-        }
-
-        .burger-menu.active span:nth-child(1) {
-          transform: rotate(45deg) translate(8px, 8px);
-        }
-
-        .burger-menu.active span:nth-child(2) {
-          opacity: 0;
-        }
-
-        .burger-menu.active span:nth-child(3) {
-          transform: rotate(-45deg) translate(7px, -7px);
-        }
-
-        /* === MOBILE MENU === */
-        .mobile-nav {
-          display: none;
-          position: absolute;
-          top: 100%;
-          left: 0;
-          right: 0;
-          background: linear-gradient(135deg, rgba(10, 61, 53, 0.98) 0%, rgba(45, 107, 85, 0.98) 100%);
-          border-bottom: 2px solid rgba(212, 168, 66, 0.3);
-          padding: 1.5rem;
-          flex-direction: column;
-          gap: 1rem;
-          z-index: 100;
-        }
-
-        .mobile-nav.active {
-          display: flex;
-        }
-
-        .mobile-nav a {
-          color: white;
-          text-decoration: none;
-          padding: 12px 16px;
-          border: 2px solid rgba(212, 168, 66, 0.5);
-          border-radius: 6px;
-          background: rgba(255, 255, 255, 0.05);
-          transition: all 0.3s ease;
-          text-align: center;
-          font-weight: 600;
-        }
-
-        .mobile-nav a:hover {
-          color: #f4d03f;
-          border-color: #d4a842;
-          background: rgba(212, 168, 66, 0.15);
-        }
-
-        header.site .lang-switch {
-          display: flex;
-          gap: 0.5rem;
-          align-items: center;
-          flex-wrap: wrap;
-        }
-
-        header.site .lang-switch a {
-          padding: 6px 10px !important;
-          font-size: 0.85rem !important;
-          background: rgba(255, 255, 255, 0.1);
-          color: white;
-          border: 1px solid rgba(212, 168, 66, 0.3);
-          border-radius: 4px;
-          transition: all 0.3s ease;
-        }
-
-        header.site .lang-switch a:hover,
-        header.site .lang-switch a.-active {
-          background: rgba(212, 168, 66, 0.3);
-          border-color: #d4a842;
-          color: #f4d03f;
-        }
-
-        header.site .btn {
-          padding: 10px 20px !important;
-          font-size: 0.9rem !important;
-          white-space: nowrap;
-        }
-
-        @media (max-width: 768px) {
-          header.site {
-            padding: 1rem !important;
-          }
-
-          header.site .nav {
-            flex-wrap: nowrap;
-            gap: 1rem;
-          }
-
-          header.site .nav-links {
-            display: none;
-          }
-
-          header.site .lang-switch {
-            flex: 0;
-          }
-
-          header.site .lang-switch a {
-            padding: 4px 8px !important;
-            font-size: 0.75rem !important;
-          }
-
-          .burger-menu {
-            display: flex;
-            order: 10;
-          }
-
-          .mobile-nav {
-            position: fixed;
-            top: 70px;
-            left: 0;
-            right: 0;
-            width: 100%;
-            border-radius: 0;
-          }
-        }
-
-        /* === HEXAGON NAVIGATION === */
-        #hexagon-scene {
-          position: relative;
-          width: 100%;
-          min-height: 500px;
-          background: linear-gradient(135deg, #e8f0f7 0%, #ffffff 100%);
-          overflow: hidden;
-          padding: 80px 20px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .hexagon-container {
-          position: relative;
-          max-width: 1200px;
-          width: 100%;
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-          gap: 60px;
-          align-items: center;
-          justify-items: center;
-        }
-
-        .hexagon {
-          position: relative;
-          width: 180px;
-          height: 180px;
-          cursor: pointer;
-          transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .hexagon a {
-          position: relative;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 100%;
-          height: 100%;
-          text-decoration: none;
-          color: #1a3a52;
-          font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: 1px;
-          font-size: 0.85rem;
-          transition: all 0.3s ease;
-        }
-
-        .hexagon svg {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          stroke: #d4a842;
-          stroke-width: 2;
-          fill: transparent;
-          transition: all 0.3s ease;
-          filter: drop-shadow(0 4px 15px rgba(212, 168, 66, 0.3));
-        }
-
-        .hexagon span {
-          position: relative;
-          z-index: 2;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
-          font-size: 1rem;
-        }
-
-        .hexagon:hover {
-          transform: scale(1.15) translateY(-10px);
-        }
-
-        .hexagon:hover svg {
-          stroke: #f4d03f;
-          fill: rgba(212, 168, 66, 0.15);
-          filter: drop-shadow(0 10px 30px rgba(212, 168, 66, 0.5));
-          stroke-width: 2.5;
-        }
-
-        .hexagon:hover a {
-          color: #d4a842;
-        }
-
-        .hexagon.active svg {
-          fill: #f4d03f;
-          stroke: #1a3a52;
-          stroke-width: 3;
-        }
-
-        .hexagon.active a {
-          color: #1a3a52;
-        }
-
-        /* === SPLASH SCREEN - WEBGL PARTICLE ANIMATION === */
-        .splash-screen {
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: linear-gradient(135deg, #0A3D35 0%, #2D6B55 100%);
-          z-index: 9999;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-direction: column;
-          gap: 40px;
-          opacity: 1;
-          visibility: visible;
-          transition: opacity 0.8s ease-out, visibility 0.8s ease-out;
-          color: #ffffff;
-          overflow: hidden;
-        }
-
-        .splash-screen.hidden {
-          opacity: 0;
-          visibility: hidden;
-          pointer-events: none;
-        }
-
-        #particle-canvas {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          z-index: 1;
-        }
-
-        .splash-content {
-          position: relative;
-          z-index: 2;
-          text-align: center;
-          animation: fadeInUp 0.8s ease-out 0.2s both;
-        }
-
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .splash-logo {
-          font-size: 4rem;
-          margin-bottom: 24px;
-          animation: spin 2s linear infinite;
-        }
-
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-
-        .splash-title {
-          font-size: 2.5rem;
-          font-weight: 700;
-          margin-bottom: 12px;
-          letter-spacing: -0.02em;
-          color: #D4A842;
-          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-          animation: fadeInUp 0.8s ease-out 0.3s both;
-        }
-
-        .splash-subtitle {
-          font-size: 1rem;
-          color: rgba(255, 255, 255, 0.8);
-          font-style: italic;
-          animation: fadeInUp 0.8s ease-out 0.4s both;
-          letter-spacing: 0.05em;
-        }
-
-        .splash-loader {
-          position: relative;
-          width: 200px;
-          height: 4px;
-          background: rgba(255, 255, 255, 0.2);
-          border-radius: 2px;
-          overflow: hidden;
-          animation: fadeInUp 0.8s ease-out 0.5s both;
-        }
-
-        .splash-loader::after {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: 0;
-          height: 100%;
-          background: linear-gradient(90deg, #D4A842, #ffffff, #D4A842);
-          background-size: 200% 100%;
-          animation: loading 2s linear infinite;
-        }
-
-        @keyframes loading {
-          0% { left: -100%; }
-          100% { left: 100%; }
-        }
-
-        .splash-text {
-          font-size: 0.85rem;
-          color: rgba(255, 255, 255, 0.6);
-          margin-top: 16px;
-          animation: fadeInUp 0.8s ease-out 0.6s both;
-          letter-spacing: 0.05em;
-        }
-
-        @media (max-width: 768px) {
-          .splash-screen {
-            gap: 30px;
-          }
-          .splash-logo {
-            font-size: 3rem;
-          }
-          .splash-title {
-            font-size: 1.8rem;
-          }
-          .splash-subtitle {
-            font-size: 0.95rem;
-          }
-          .splash-loader {
-            width: 150px;
-          }
-        }
-
-        @media (max-width: 480px) {
-          .splash-screen {
-            gap: 20px;
-          }
-          .splash-logo {
-            font-size: 2.5rem;
-          }
-          .splash-title {
-            font-size: 1.4rem;
-          }
-          .splash-subtitle {
-            font-size: 0.9rem;
-          }
-          .splash-loader {
-            width: 120px;
-          }
-          .splash-text {
-            font-size: 0.8rem;
-          }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          .splash-screen, .splash-content, .splash-logo, .splash-title, .splash-subtitle, .splash-loader, .splash-text {
-            animation: none;
-          }
-          .splash-loader::after {
-            animation: none;
-            background: #D4A842;
-          }
-        }
-
-        /* Mobile menu styles - Non modularisés car dépendant du controller */
-        .mobile-menu {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--bleu-nuit);
-            color: var(--blanc);
-            z-index: 99;
-            transform: translateX(-100%);
-            transition: transform 0.3s ease;
-            overflow-y: auto;
-        }
-
-        .mobile-menu.active {
-            transform: translateX(0);
-        }
-
-        .mobile-menu-content {
-            padding: 80px var(--padding-container) var(--space-xl);
-        }
-
-        .mobile-menu a {
-            display: block;
-            padding: var(--space-md) 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            text-decoration: none;
-            color: rgba(255, 255, 255, 0.85);
-            font-weight: 500;
-        }
-
-        .mobile-menu a:hover {
-            color: var(--jaune-solaire);
-        }
-
-        .mobile-menu .lang-switch {
-            margin-top: var(--space-xl);
-            margin-left: 0;
-        }
-
-        /* === MEGASWITCHER-3000 === */
-        .daynight {
-            -webkit-tap-highlight-color: transparent;
-            margin: 0;
-            font-size: 0.6rem;
-            display: block;
-            position: fixed;
-            cursor: pointer;
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            overflow: hidden;
-            isolation: isolate;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            right: 30px;
-            top: 30px;
-            z-index: 500;
-        }
-
-        .daynight__checkbox {
-            appearance: none;
-            pointer-events: none;
-            margin: 0;
-            padding: 0;
-            outline: none;
-            border: none;
-            background: none;
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: inherit;
-            box-shadow: inset 0 0.5em 0.5em 0 rgba(0, 0, 0, 0.5), inset 0 -0.5em 1em 0 rgba(0, 0, 0, 0.3);
-            z-index: 2;
-        }
-
-        .daynight__sky {
-            display: block;
-            width: 80px;
-            height: 80px;
-            padding: 0.5em;
-            box-sizing: border-box;
-            background-color: #397ab0;
-            transition: background 1s cubic-bezier(0.65, 0, 0.34, 1.17);
-            isolation: isolate;
-            position: fixed;
-            right: 30px;
-            top: 30px;
-            z-index: 500;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-
-        .daynight__sky::before,
-        .daynight__sky::after {
-            content: "";
-            position: absolute;
-            z-index: 2;
-            border-radius: 50%;
-            width: 9em;
-            height: 9em;
-            left: 30.7em;
-            top: 1.4em;
-            transition: 1s cubic-bezier(0.65, 0, 0.34, 1.17);
-            box-shadow: -10em 0 0 0 #fff, -12.7em 2.5em 0 -1em #fff, -16.5em 5.8em 0 0 #fff, -20em 5.7em 0 -1em #fff, -23.5em 5em 0 -1.2em #fff, -28em 5.5em 0 -1em #fff, -31em 7.5em 0 0 #fff, 9em 1em 0 0 #fff;
-            animation: clouds 10s infinite cubic-bezier(0.65, 0, 0.35, 1);
-        }
-
-        .daynight__sky::before {
-            z-index: -1;
-            box-shadow: -10.5em -2.2em 0 0 #a5c5dc, -15em 0em 0 -2em #a5c5dc, -17.5em 1.8em 0 -1em #a5c5dc, -20.5em 4.6em 0 0 #a5c5dc, -24.5em 4.2em 0 0 #a5c5dc, -28.5em 5.8em 0 0 #a5c5dc, -31.5em 6.5em 0 0 #a5c5dc;
-            animation-delay: -5s;
-            animation-duration: 8s;
-        }
-
-        .daynight__checkbox:checked ~ .daynight__sky {
-            background-color: #1c202c;
-        }
-
-        .daynight__checkbox:checked ~ .daynight__sky::before {
-            transform: translateY(13em);
-            opacity: 0;
-        }
-
-        .daynight__checkbox:checked ~ .daynight__sky::after {
-            transform: translateY(10em);
-            opacity: 0;
-        }
-
-        .daynight__stars,
-        .daynight__morestars {
-            transition: 1s cubic-bezier(0.65, 0, 0.34, 1.17);
-            position: absolute;
-        }
-
-        .daynight__stars::before,
-        .daynight__stars::after,
-        .daynight__morestars::before,
-        .daynight__morestars::after {
-            content: "✦";
-            position: absolute;
-            font-size: 1.35em;
-            color: #fff;
-            opacity: 0;
-            transform: translateY(-15em);
-            transition: 1s cubic-bezier(0.65, 0, 0.34, 1.17);
-            animation: stars 7s infinite;
-        }
-
-        .daynight__checkbox:checked ~ * .daynight__stars::before,
-        .daynight__checkbox:checked ~ * .daynight__stars::after,
-        .daynight__checkbox:checked ~ * .daynight__morestars::before,
-        .daynight__checkbox:checked ~ * .daynight__morestars::after {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .daynight__stars::before {
-            left: 3.8em;
-            top: 0.8em;
-            text-shadow: 6.1em 1.1em;
-        }
-
-        .daynight__stars::after {
-            font-size: 1em;
-            left: 11em;
-            top: 6.8em;
-            animation-duration: 9.1s;
-            animation-delay: -2.8s;
-        }
-
-        .daynight__morestars::before {
-            font-size: 0.6em;
-            left: 4.9em;
-            top: 5.2em;
-            text-shadow: 4.5em 1.9em, 13.1em -0.8em, 16.8em 4.4em, 4.5em 8.7em;
-            animation-duration: 5.6s;
-            animation-delay: -7s;
-        }
-
-        .daynight__morestars::after {
-            font-size: 0.4em;
-            left: 8em;
-            top: 19.6em;
-            text-shadow: 1.5em -2.1em, 16.7em -7.1em;
-            animation-duration: 11.2s;
-            animation-delay: -1.4s;
-        }
-
-        .daynight__sunmoon {
-            content: "";
-            overflow: hidden;
-            display: block;
-            position: absolute;
-            width: 8em;
-            height: 8em;
-            border-radius: 50%;
-            transition: transform 1s cubic-bezier(0.65, 0, 0.34, 1.17);
-            background-color: #f2c426;
-            box-shadow: 0.4em 0.4em 0.5em 0.1em rgba(0, 0, 0, 0.3), inset -0.2em -0.2em 0.5em 0 rgba(0, 0, 0, 0.4), inset 0.2em 0.2em 0.5em 0 rgb(255, 254, 255), 0 0 0 10em rgba(255, 255, 255, 0.07), 0 0 0 6.5em rgba(255, 255, 255, 0.07), 0 0 0 3em rgba(255, 255, 255, 0.07);
-            left: -14em;
-            top: 0em;
-        }
-
-        .daynight__sunmoon::before {
-            content: "";
-            overflow: hidden;
-            display: block;
-            position: relative;
-            width: 8em;
-            height: 8em;
-            border-radius: 50%;
-            transition: 1s cubic-bezier(0.65, 0, 0.34, 1.17);
-            box-shadow: 0.4em 0.4em 0.5em 0.1em rgba(0, 0, 0, 0.3), inset -0.2em -0.2em 0.5em 0 rgba(0, 0, 0, 0.4), inset 0.2em 0.2em 0.5em 0 rgb(255, 254, 255);
-            background: radial-gradient(circle, rgba(150, 157, 176, 1) 1.1em, rgba(121, 128, 144, 1) 1.3em, rgba(129, 136, 153, 0) 1.4em), radial-gradient(circle, rgb(150, 157, 176) 0.5em, rgb(121, 128, 144) 0.7em, rgba(129, 136, 153, 0) 0.8em), radial-gradient(circle, rgb(150, 157, 176) 0.5em, rgb(121, 128, 144) 0.7em, rgba(129, 136, 153, 0) 0.8em);
-            background-position: -1.2em 0.7em, 0em -2em, 2em 1.4em;
-            background-color: #c5c8cf;
-            transform: translateX(105%) rotate(50deg);
-            animation: moon 25s infinite linear;
-        }
-
-        .daynight__checkbox:checked ~ .daynight__sky .daynight__sunmoon {
-            transform: translateX(15em);
-        }
-
-        .daynight__checkbox:checked ~ .daynight__sky .daynight__sunmoon::before {
-            transform: translateX(0) rotate(0);
-        }
-
-        @keyframes stars {
-            0% { opacity: 1; }
-            50% { opacity: 0.3; }
-            100% { opacity: 1; }
-        }
-
-        @keyframes clouds {
-            0% { scale: 1; }
-            50% { scale: 1.05; }
-            100% { scale: 1; }
-        }
-
-        @keyframes moon {
-            to { background-position: 6.8em 0.7em, 8em -2em, 10em 1.4em; }
-        }
-    </style>
 </head>
 <body>
-    <!-- Splash Screen with WebGL Particle Animation -->
-    <div class="splash-screen">
-        <canvas id="particle-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;"></canvas>
-        <div class="splash-content" style="position: relative; z-index: 2; text-align: center;">
-            <div class="splash-logo">☀️</div>
-            <h1 class="splash-title">SIRIUS-SOLAR</h1>
-            <p class="splash-subtitle">Chargement...</p>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span class="nav-brand-icon">☀️</span>
+            <span>SIRIUS-SOLAR</span>
         </div>
-    </div>
 
-    <header class="site">
-        <nav class="nav" role="navigation" aria-label="Navigation principale">
-            <a href="{{ path('app_home') }}" class="logo" aria-label="Sirius-Solar - Accueil">
-                <span class="logo-mark" aria-hidden="true">
-                    <span></span><span></span><span></span><span></span>
-                </span>
-                Sirius-Solar
-            </a>
+        <ul class="nav-menu">
+            <li><a href="{{ path('app_home') }}#services">Services</a></li>
+            <li><a href="{{ path('app_home') }}#avantages">Avantages</a></li>
+            <li><a href="{{ path('app_devis') }}">Réserver</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
 
-            <!-- Menu desktop -->
-            <div class="nav-links" id="nav-desktop" role="navigation" aria-label="Menu principal">
-                <a href="{{ path('app_home') }}#services" title="Voir nos services">{{ 'nav.services'|trans }}</a>
-                <a href="{{ path('app_home') }}#avantages" title="Voir nos avantages">{{ 'nav.why_us'|trans }}</a>
-                <a href="{{ path('reservation_form') }}" title="Demander un devis">{{ 'nav.quote'|trans }}</a>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ path('admin_dashboard') }}" title="Tableau de bord administrateur">{{ 'nav.admin'|trans }}</a>
-                {% endif %}
-                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <a href="{{ path('app_logout') }}" title="Se déconnecter">{{ 'nav.logout'|trans }}</a>
-                {% else %}
-                    <a href="{{ path('app_login') }}" title="Se connecter">{{ 'nav.login'|trans }}</a>
-                {% endif %}
-            </div>
-
-            <!-- Language switcher - Swiss Languages -->
-            <div class="lang-switch">
-                <a href="{{ path('app_locale_switch', {locale: 'fr'}) }}" class="{{ app.request.locale == 'fr' ? '-active' : '' }}" title="Français (Suisse)" aria-label="Français">🇫🇷 FR</a>
-                <a href="{{ path('app_locale_switch', {locale: 'en'}) }}" class="{{ app.request.locale == 'en' ? '-active' : '' }}" title="English" aria-label="English">🇬🇧 EN</a>
-                <a href="{{ path('app_locale_switch', {locale: 'de'}) }}" class="{{ app.request.locale == 'de' ? '-active' : '' }}" title="Deutsch (Schweiz)" aria-label="Deutsch">🇩🇪 DE</a>
-                <a href="{{ path('app_locale_switch', {locale: 'it'}) }}" class="{{ app.request.locale == 'it' ? '-active' : '' }}" title="Italiano (Svizzera)" aria-label="Italiano">🇮🇹 IT</a>
-                <a href="{{ path('app_locale_switch', {locale: 'rm'}) }}" class="{{ app.request.locale == 'rm' ? '-active' : '' }}" title="Rumantsch" aria-label="Rumantsch">🏔️ RM</a>
-            </div>
-
-            <a href="{{ path('reservation_form') }}" class="btn btn-primary" style="font-size:0.9rem; padding:10px 20px;">{{ 'nav.free_quote'|trans }}</a>
-
-            <!-- Admin/Login Buttons -->
-            {% if is_granted('ROLE_ADMIN') %}
-                <a href="{{ path('admin_dashboard') }}" class="btn btn-primary" style="font-size:0.9rem; padding:10px 20px; background:linear-gradient(135deg, #d4a842, #f4d03f);">🔐 Admin</a>
-            {% endif %}
-            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                <a href="{{ path('app_logout') }}" class="btn btn-primary" style="font-size:0.9rem; padding:10px 20px; background:rgba(255,255,255,0.2); border:1px solid white;">🚪 Logout</a>
-            {% else %}
-                <a href="{{ path('app_login') }}" class="btn btn-primary" style="font-size:0.9rem; padding:10px 20px; background:rgba(255,255,255,0.2); border:1px solid white;">🔑 Login</a>
-            {% endif %}
-
-            <!-- Dark mode toggle - MEGASWITCHER -->
-            <label class="daynight theme-toggle">
-                <input type="checkbox" class="daynight__checkbox">
-                <span class="daynight__sky">
-                    <span class="daynight__stars"></span>
-                    <span class="daynight__morestars"></span>
-                    <span class="daynight__sunmoon"></span>
-                </span>
-            </label>
-
-            <!-- Hamburger Menu Button -->
-            <button class="burger-menu" id="burger-menu" aria-label="Toggle menu" aria-expanded="false">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </nav>
-
-        <!-- Mobile Navigation Menu -->
-        <nav class="mobile-nav" id="mobile-nav" role="navigation" aria-label="Menu mobile">
-            <a href="{{ path('app_home') }}#services">🔧 {{ 'nav.services'|trans }}</a>
-            <a href="{{ path('app_home') }}#avantages">⭐ {{ 'nav.why_us'|trans }}</a>
-            <a href="{{ path('reservation_form') }}">📋 {{ 'nav.quote'|trans }}</a>
-            {% if is_granted('ROLE_ADMIN') %}
-                <a href="{{ path('admin_dashboard') }}">🔐 {{ 'nav.admin'|trans }}</a>
-            {% endif %}
-            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                <a href="{{ path('app_logout') }}">🚪 {{ 'nav.logout'|trans }}</a>
-            {% else %}
-                <a href="{{ path('app_login') }}">🔑 {{ 'nav.login'|trans }}</a>
-            {% endif %}
-        </nav>
-
-        <!-- Circular Navigation Menu -->
-        <nav id="nav-circular" role="navigation" aria-label="Menu circulaire mobile">
-            <ul>
-                <li class="shape-circle circle-one">
-                    <a href="{{ path('app_home') }}#services">{{ 'nav.services'|trans }}</a>
-                </li>
-                <li class="shape-circle circle-two">
-                    <a href="{{ path('app_home') }}#avantages">{{ 'nav.why_us'|trans }}</a>
-                </li>
-                <li class="shape-circle circle-three">
-                    <a href="{{ path('reservation_form') }}">{{ 'nav.quote'|trans }}</a>
-                </li>
-                <li class="shape-circle circle-five">
-                    <a href="{{ path('app_home') }}">{{ 'nav.home'|trans }}</a>
-                </li>
-            </ul>
-        </nav>
-
-        <!-- Menu mobile -->
-        <div class="mobile-menu" id="mobile-menu" role="navigation" aria-label="Menu mobile">
-            <div class="mobile-menu-content">
-                <a href="{{ path('app_home') }}" class="mobile-menu-link">{{ 'nav.home'|trans }}</a>
-                <a href="{{ path('app_home') }}#services" class="mobile-menu-link">{{ 'nav.services'|trans }}</a>
-                <a href="{{ path('app_home') }}#avantages" class="mobile-menu-link">{{ 'nav.why_us'|trans }}</a>
-                <a href="{{ path('reservation_form') }}" class="mobile-menu-link">{{ 'nav.quote'|trans }}</a>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ path('admin_dashboard') }}" class="mobile-menu-link">{{ 'nav.admin'|trans }}</a>
-                {% endif %}
-                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <a href="{{ path('app_logout') }}" class="mobile-menu-link">{{ 'nav.logout'|trans }}</a>
-                {% else %}
-                    <a href="{{ path('app_login') }}" class="mobile-menu-link">{{ 'nav.login'|trans }}</a>
-                {% endif %}
-
-                <div class="lang-switch">
-                    <a href="{{ path('app_locale_switch', {locale: 'fr'}) }}" class="{{ app.request.locale == 'fr' ? '-active' : '' }}">FR</a>
-                    <a href="{{ path('app_locale_switch', {locale: 'en'}) }}" class="{{ app.request.locale == 'en' ? '-active' : '' }}">EN</a>
-                </div>
-            </div>
+        <div class="nav-buttons">
+            <a href="{{ path('app_login') }}" class="btn-login">Connexion</a>
+            <a href="{{ path('app_admin_dashboard') }}" class="btn-signup">Admin</a>
         </div>
-    </header>
 
-    <main role="main">
-        {% for label, messages in app.flashes %}
-            {% for message in messages %}
-                <div class="alert alert-{{ label }} container" role="alert">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endfor %}
+        <div class="hamburger-menu" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
 
+    <!-- Mobile Menu -->
+    <ul class="nav-menu-mobile" id="mobileMenu">
+        <li><a href="{{ path('app_home') }}#services">Services</a></li>
+        <li><a href="{{ path('app_home') }}#avantages">Avantages</a></li>
+        <li><a href="{{ path('app_devis') }}">Réserver</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li style="border-bottom: none; display: flex; gap: 10px; padding: 16px 40px;">
+            <a href="{{ path('app_login') }}" class="btn-login" style="flex: 1;">Connexion</a>
+            <a href="{{ path('app_admin_dashboard') }}" class="btn-signup" style="flex: 1;">Admin</a>
+        </li>
+    </ul>
+
+    <!-- Main Content -->
+    <main>
         {% block body %}{% endblock %}
-
-        <div class="page-nav">
-            {% block page_nav_prev %}{% endblock %}
-            <div class="page-nav-spacer"></div>
-            {% block page_nav_next %}{% endblock %}
-        </div>
     </main>
 
-    <!-- Back to top button -->
-    <button class="back-to-top" aria-label="Retour en haut">↑</button>
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+        <script>
+            // Hamburger Menu Toggle
+            const hamburger = document.getElementById('hamburger');
+            const mobileMenu = document.getElementById('mobileMenu');
 
-    <footer class="site" role="contentinfo">
-        <div class="container">
-            <!-- About section -->
-            <div style="text-align: center; grid-column: 1 / -1;">
-                <h4>Sirius-Solar</h4>
-                <p>Spécialiste du nettoyage & entretien de panneaux photovoltaïques depuis 2020.</p>
-                <p style="font-size: 0.8rem; margin-top: var(--space-md); color: rgba(255,255,255,0.5);">
-                    "Un panneau propre, un rendement optimal!"
-                </p>
-            </div>
-
-            <!-- Navigation links -->
-            <div>
-                <h4>🗺️ Navigation</h4>
-                <p><a href="{{ path('app_home') }}">Accueil</a></p>
-                <p><a href="{{ path('app_home') }}#avantages">Nos Engagements</a></p>
-                <p><a href="{{ path('reservation_form') }}">Devis Gratuit</a></p>
-                <p><a href="{{ path('app_login') }}">Connexion</a></p>
-            </div>
-
-            <!-- Contact Info -->
-            <div>
-                <h4>Contact</h4>
-                <div class="contact-section">
-                    <div class="contact-item">
-                        <div class="contact-icon">📍</div>
-                        <div class="contact-details">
-                            <h5>Adresse</h5>
-                            <p>Route des dragons 7<br>1033 Cheseaux-sur-Lausanne</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">📞</div>
-                        <div class="contact-details">
-                            <h5>Téléphone</h5>
-                            <p><a href="tel:+41779096413">077 909 64 13</a></p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">✉️</div>
-                        <div class="contact-details">
-                            <h5>Email</h5>
-                            <p><a href="mailto:ndiayeharouna1991@gmail.com">ndiayeharouna1991@gmail.com</a></p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">🌐</div>
-                        <div class="contact-details">
-                            <h5>Web</h5>
-                            <p>Sirius-Solar.ch</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Newsletter -->
-            <div>
-                <h4>Newsletter</h4>
-                <p>Recevez nos conseils d'entretien et offres exclusives.</p>
-                <form class="newsletter-form">
-                    <input type="email" placeholder="Votre email" required>
-                    <button type="submit">S'abonner</button>
-                </form>
-                <div class="social-links" style="margin-top: var(--space-md);">
-                    <a href="#" title="Facebook" aria-label="Suivez-nous sur Facebook">f</a>
-                    <a href="#" title="Instagram" aria-label="Suivez-nous sur Instagram">📷</a>
-                    <a href="#" title="LinkedIn" aria-label="Suivez-nous sur LinkedIn">in</a>
-                </div>
-            </div>
-        </div>
-
-
-        <!-- Footer bottom -->
-        <div class="footer-bottom">
-            <div class="footer-links">
-                <a href="#">Mentions légales</a>
-                <span>•</span>
-                <a href="#">Politique de confidentialité</a>
-                <span>•</span>
-                <a href="#">Conditions d'utilisation</a>
-            </div>
-            <p>© {{ "now"|date("Y") }} Sirius-Solar — Tous droits réservés. Nettoyage professionnel de panneaux photovoltaïques.</p>
-        </div>
-    </footer>
-
-    <!-- Script mobile menu - Now handled by circular burger menu script below -->
-
-    <!-- Circular Burger Menu Script -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const bars = document.getElementById('nav-action');
-            const nav = document.getElementById('nav-circular');
-
-            if (!bars || !nav) return;
-
-            const navLinks = nav.querySelectorAll('a');
-
-            // Toggle menu on burger click
-            bars.addEventListener('click', function(e) {
-                e.stopPropagation();
-                bars.classList.toggle('active');
-                nav.classList.toggle('visible');
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                mobileMenu.classList.toggle('active');
             });
 
-            // Close menu when clicking links
-            navLinks.forEach(link => {
-                link.addEventListener('click', function() {
-                    bars.classList.remove('active');
-                    nav.classList.remove('visible');
+            // Close menu on link click
+            const mobileLinks = mobileMenu.querySelectorAll('a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    hamburger.classList.remove('active');
+                    mobileMenu.classList.remove('active');
                 });
             });
 
-            // Close menu when clicking outside
-            document.addEventListener('click', function(e) {
-                if (nav.classList.contains('visible') &&
-                    !nav.contains(e.target) &&
-                    !bars.contains(e.target)) {
-                    bars.classList.remove('active');
-                    nav.classList.remove('visible');
+            // Close menu on outside click
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.navbar') && !e.target.closest('#mobileMenu')) {
+                    hamburger.classList.remove('active');
+                    mobileMenu.classList.remove('active');
                 }
             });
-
-            // Close menu on Escape
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && nav.classList.contains('visible')) {
-                    bars.classList.remove('active');
-                    nav.classList.remove('visible');
-                }
-            });
-        });
-    </script>
-
-    <!-- Splash Screen Script -->
-    <script src="/splash-screen-controller.js"></script>
-
-    <!-- Dark mode toggle script -->
-    <script>
-        // Dark Mode Toggle Controller (Inline for immediate availability)
-        (function() {
-          'use strict';
-          const THEME_KEY = 'syriussolar-theme';
-          const DARK_MODE = 'dark';
-          const LIGHT_MODE = 'light';
-
-          function showThemeAnimation() {
-            const svg = `<svg class="theme-toggle-svg" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
-              <!-- Sky background -->
-              <defs>
-                <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:1" />
-                  <stop offset="100%" style="stop-color:#E0F6FF;stop-opacity:1" />
-                </linearGradient>
-              </defs>
-              <rect width="300" height="200" fill="url(#skyGrad)"/>
-
-              <!-- Sun -->
-              <circle cx="80" cy="50" r="30" fill="#FFD700" class="sun-circle"/>
-
-              <!-- Cloud layers -->
-              <g class="cloud-layer cloud-1">
-                <ellipse cx="150" cy="140" rx="60" ry="20" fill="white" opacity="0.9"/>
-              </g>
-              <g class="cloud-layer cloud-2">
-                <ellipse cx="100" cy="160" rx="50" ry="18" fill="white" opacity="0.8"/>
-              </g>
-              <g class="cloud-layer cloud-3">
-                <ellipse cx="200" cy="170" rx="55" ry="19" fill="white" opacity="0.75"/>
-              </g>
-
-              <!-- Cursor -->
-              <g class="cursor-icon">
-                <path d="M 250 80 L 250 120 L 270 110 Z" fill="black" stroke="black" stroke-width="2"/>
-              </g>
-            </svg>`;
-
-            const container = document.createElement('div');
-            container.className = 'theme-toggle-animation';
-            container.innerHTML = svg;
-            document.body.appendChild(container);
-
-            setTimeout(() => container.remove(), 1500);
-          }
-
-          function setTheme(theme, animate = false) {
-            const root = document.documentElement;
-            if (animate) {
-              root.classList.add('theme-changing');
-              showThemeAnimation();
-            }
-            root.setAttribute('data-theme', theme);
-            localStorage.setItem(THEME_KEY, theme);
-
-            // Apply body styles inline
-            const body = document.body;
-            if (theme === LIGHT_MODE) {
-              body.style.backgroundColor = '#faf9f7';
-              body.style.color = '#1B4D3E';
-            } else {
-              body.style.backgroundColor = '#0a0f0d';
-              body.style.color = '#e0e0e0';
-            }
-
-            // Sync checkbox state with theme
-            const checkbox = document.querySelector('.daynight__checkbox');
-            if (checkbox) {
-              checkbox.checked = (theme === DARK_MODE);
-            }
-
-            if (animate) {
-              setTimeout(() => root.classList.remove('theme-changing'), 300);
-            }
-          }
-
-          function init() {
-            const savedTheme = localStorage.getItem(THEME_KEY);
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            const theme = savedTheme || (prefersDark ? DARK_MODE : LIGHT_MODE);
-            setTheme(theme, false);
-
-            // Sync checkbox with theme
-            const checkbox = document.querySelector('.daynight__checkbox');
-            const daynight = document.querySelector('.daynight');
-            if (checkbox) {
-              // Set initial checkbox state based on theme
-              const initialTheme = localStorage.getItem(THEME_KEY) || (window.matchMedia('(prefers-color-scheme: dark)').matches ? DARK_MODE : LIGHT_MODE);
-              checkbox.checked = (initialTheme === DARK_MODE);
-
-              // Listen to checkbox changes
-              checkbox.addEventListener('change', (e) => {
-                const current = document.documentElement.getAttribute('data-theme') || LIGHT_MODE;
-                setTheme(current === DARK_MODE ? LIGHT_MODE : DARK_MODE, true);
-              });
-
-              // Also handle click on the daynight container
-              if (daynight) {
-                daynight.addEventListener('click', (e) => {
-                  checkbox.checked = !checkbox.checked;
-                  const current = document.documentElement.getAttribute('data-theme') || LIGHT_MODE;
-                  setTheme(current === DARK_MODE ? LIGHT_MODE : DARK_MODE, true);
-                });
-              }
-            }
-
-            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-              if (!localStorage.getItem(THEME_KEY)) {
-                setTheme(e.matches ? DARK_MODE : LIGHT_MODE);
-              }
-            });
-          }
-
-          if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', init);
-          } else {
-            init();
-          }
-        })();
-
-        // Back to top button
-        (function() {
-          'use strict';
-          const btn = document.querySelector('.back-to-top');
-          if (!btn) return;
-
-          window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 300) {
-              btn.classList.add('visible');
-            } else {
-              btn.classList.remove('visible');
-            }
-          });
-
-          btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          });
-        })();
-
-        // Rain animation on hero card
-        (function() {
-            'use strict';
-            var c = document.getElementById("rainCanvas");
-            if (!c) return;
-
-            var ctx = c.getContext("2d");
-            var clearColor = 'rgba(0, 0, 0, .05)';
-            var max = 15;
-            var drops = [];
-
-            function random(min, max) {
-                return Math.random() * (max - min) + min;
-            }
-
-            function O() {}
-
-            O.prototype = {
-                init: function() {
-                    this.x = random(0, c.width);
-                    this.y = 0;
-                    this.color = 'hsla(180, 100%, 50%, 0.8)';
-                    this.w = 2;
-                    this.h = 1;
-                    this.vy = random(4, 5);
-                    this.vw = 3;
-                    this.vh = 1;
-                    this.size = 2;
-                    this.hit = random(c.height * .8, c.height * .9);
-                    this.a = 1;
-                    this.va = .96;
-                },
-                draw: function() {
-                    if (this.y > this.hit) {
-                        ctx.beginPath();
-                        ctx.moveTo(this.x, this.y - this.h / 2);
-                        ctx.bezierCurveTo(
-                            this.x + this.w / 2, this.y - this.h / 2,
-                            this.x + this.w / 2, this.y + this.h / 2,
-                            this.x, this.y + this.h / 2);
-                        ctx.bezierCurveTo(
-                            this.x - this.w / 2, this.y + this.h / 2,
-                            this.x - this.w / 2, this.y - this.h / 2,
-                            this.x, this.y - this.h / 2);
-                        ctx.strokeStyle = 'hsla(180, 100%, 50%, '+this.a+')';
-                        ctx.stroke();
-                        ctx.closePath();
-                    } else {
-                        ctx.fillStyle = this.color;
-                        ctx.fillRect(this.x, this.y, this.size, this.size * 5);
-                    }
-                    this.update();
-                },
-                update: function() {
-                    if(this.y < this.hit){
-                        this.y += this.vy;
-                    } else {
-                        if(this.a > .03){
-                            this.w += this.vw;
-                            this.h += this.vh;
-                            if(this.w > 100){
-                                this.a *= this.va;
-                                this.vw *= .98;
-                                this.vh *= .98;
-                            }
-                        } else {
-                            this.init();
-                        }
-                    }
-                }
-            }
-
-            function setup(){
-                for(var i = 0; i < max; i++){
-                    (function(j){
-                        setTimeout(function(){
-                            var o = new O();
-                            o.init();
-                            drops.push(o);
-                        }, j * 200)
-                    }(i));
-                }
-            }
-
-            function anim() {
-                ctx.fillStyle = clearColor;
-                ctx.fillRect(0,0,c.width,c.height);
-                for(var i in drops){
-                    drops[i].draw();
-                }
-                requestAnimationFrame(anim);
-            }
-
-            // Set initial size
-            var rect = c.parentElement.getBoundingClientRect();
-            c.width = rect.width;
-            c.height = rect.height;
-
-            setup();
-            anim();
-        })();
-      </script>
-
-    <!-- Burger Menu Script -->
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const burgerMenu = document.getElementById('burger-menu');
-        const mobileNav = document.getElementById('mobile-nav');
-
-        if (!burgerMenu || !mobileNav) return;
-
-        burgerMenu.addEventListener('click', function() {
-          burgerMenu.classList.toggle('active');
-          mobileNav.classList.toggle('active');
-          burgerMenu.setAttribute('aria-expanded', burgerMenu.classList.contains('active'));
-        });
-
-        // Close menu when a link is clicked
-        mobileNav.querySelectorAll('a').forEach(link => {
-          link.addEventListener('click', function() {
-            burgerMenu.classList.remove('active');
-            mobileNav.classList.remove('active');
-            burgerMenu.setAttribute('aria-expanded', 'false');
-          });
-        });
-
-        // Close menu when clicking outside
-        document.addEventListener('click', function(event) {
-          if (!event.target.closest('header') && mobileNav.classList.contains('active')) {
-            burgerMenu.classList.remove('active');
-            mobileNav.classList.remove('active');
-            burgerMenu.setAttribute('aria-expanded', 'false');
-          }
-        });
-      });
-    </script>
-
-    {{ encore_entry_script_tags('app') }}
+        </script>
+    {% endblock %}
 </body>
 </html>
