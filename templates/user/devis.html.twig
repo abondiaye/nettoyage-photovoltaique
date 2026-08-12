@@ -1,0 +1,159 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Mes Devis - Sirius-Solar{% endblock %}
+
+{% block body %}
+<div style="min-height: calc(100vh - 80px); background: linear-gradient(135deg, #0A3D35 0%, #2D6B55 100%); padding: 40px 20px;">
+    <div class="container" style="max-width: 1000px;">
+        <a href="{{ path('app_user_dashboard') }}" style="
+            color: var(--dore-clair);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: gap 0.3s ease;
+        " onmouseover="this.style.gap='12px'" onmouseout="this.style.gap='8px'">
+            ← Retour au Dashboard
+        </a>
+
+        <h1 style="
+            color: white;
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            font-family: 'Space Grotesk', sans-serif;
+            animation: fadeInDown 0.6s ease-out;
+        ">Mes Demandes de Devis</h1>
+
+        <p style="color: rgba(255,255,255, 0.7); margin-bottom: 40px;">Suivi de toutes vos demandes</p>
+
+        {% if devis|length == 0 %}
+            <div style="
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(20px);
+                border: 1px solid rgba(212, 168, 66, 0.3);
+                border-radius: 15px;
+                padding: 60px 40px;
+                text-align: center;
+            ">
+                <p style="font-size: 48px; margin-bottom: 20px;">📋</p>
+                <p style="color: rgba(255,255,255, 0.8); font-size: 18px; margin-bottom: 20px;">Aucun devis pour le moment</p>
+                <p style="color: rgba(255,255,255, 0.6); margin-bottom: 30px;">Commencez par demander un devis pour vos panneaux solaires</p>
+                <a href="{{ path('app_devis') }}" style="
+                    background: linear-gradient(135deg, var(--dore), var(--dore-clair));
+                    color: #121212;
+                    padding: 14px 30px;
+                    border-radius: 10px;
+                    text-decoration: none;
+                    font-weight: 600;
+                    display: inline-block;
+                    transition: all 0.3s ease;
+                " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    Demander un Devis
+                </a>
+            </div>
+        {% else %}
+            <!-- Devis List -->
+            <div style="display: grid; gap: 20px;">
+                {% for d in devis|reverse %}
+                    <div style="
+                        background: rgba(255, 255, 255, 0.1);
+                        backdrop-filter: blur(20px);
+                        border: 1px solid rgba(212, 168, 66, 0.3);
+                        border-radius: 15px;
+                        padding: 25px;
+                        animation: fadeInUp 0.6s ease-out;
+                    ">
+                        <!-- Devis Header -->
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 20px;">
+                            <div>
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <div>
+                                        <p style="color: rgba(255,255,255, 0.8); font-size: 12px; text-transform: uppercase; margin-bottom: 5px;">Devis #{{ d.id }}</p>
+                                        <p style="color: var(--dore-clair); font-size: 14px; font-weight: 600;">{{ d.typeInstallation|capitalize }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <span style="
+                                padding: 8px 16px;
+                                border-radius: 20px;
+                                font-size: 12px;
+                                font-weight: 600;
+                                background: {% if d.statut == 'accepte' %}#52C77A{% elseif d.statut == 'refuse' %}#FF6B6B{% else %}#FFB84D{% endif %};
+                                color: white;
+                            ">
+                                {% if d.statut == 'nouveau' %}⏳ En attente{% elseif d.statut == 'accepte' %}✅ Confirmé{% elseif d.statut == 'refuse' %}❌ Refusé{% else %}⚙️ En cours{% endif %}
+                            </span>
+                        </div>
+
+                        <!-- Devis Details -->
+                        <div style="
+                            display: grid;
+                            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                            gap: 15px;
+                            border-top: 1px solid rgba(212, 168, 66, 0.2);
+                            border-bottom: 1px solid rgba(212, 168, 66, 0.2);
+                            padding: 20px 0;
+                            margin-bottom: 20px;
+                        ">
+                            <div>
+                                <p style="color: rgba(255,255,255, 0.6); font-size: 12px; text-transform: uppercase; margin-bottom: 5px;">Date</p>
+                                <p style="color: white; font-size: 14px;">{{ d.dateCreation|date('d/m/Y') }}</p>
+                            </div>
+                            <div>
+                                <p style="color: rgba(255,255,255, 0.6); font-size: 12px; text-transform: uppercase; margin-bottom: 5px;">Nombre de Panneaux</p>
+                                <p style="color: white; font-size: 14px;">{{ d.nombrePanneaux }} panneaux</p>
+                            </div>
+                            <div>
+                                <p style="color: rgba(255,255,255, 0.6); font-size: 12px; text-transform: uppercase; margin-bottom: 5px;">Contact</p>
+                                <p style="color: white; font-size: 14px;">{{ d.client.email }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Client Info -->
+                        {% if d.client %}
+                            <div style="margin-bottom: 20px;">
+                                <p style="color: rgba(255,255,255, 0.6); font-size: 12px; text-transform: uppercase; margin-bottom: 10px;">Informations Client</p>
+                                <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                                    <p style="color: white; margin: 5px 0;"><strong>Nom:</strong> {{ d.client.prenom }} {{ d.client.nom }}</p>
+                                    <p style="color: white; margin: 5px 0;"><strong>Email:</strong> {{ d.client.email }}</p>
+                                    <p style="color: white; margin: 5px 0;"><strong>Tél:</strong> {{ d.client.telephone }}</p>
+                                    <p style="color: white; margin: 5px 0;"><strong>Adresse:</strong> {{ d.client.adresse }}, {{ d.client.codePostal }} {{ d.client.ville }}</p>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <!-- Message -->
+                        {% if d.message %}
+                            <div style="margin-bottom: 20px;">
+                                <p style="color: rgba(255,255,255, 0.6); font-size: 12px; text-transform: uppercase; margin-bottom: 10px;">Votre Message</p>
+                                <p style="color: rgba(255,255,255, 0.8); font-size: 14px; line-height: 1.6;">{{ d.message }}</p>
+                            </div>
+                        {% endif %}
+
+                        <!-- Actions -->
+                        <div style="display: flex; gap: 10px;">
+                            <a href="{{ path('app_devis') }}" style="
+                                background: rgba(255, 255, 255, 0.1);
+                                color: white;
+                                padding: 10px 15px;
+                                border-radius: 8px;
+                                text-decoration: none;
+                                font-size: 13px;
+                                font-weight: 600;
+                                border: 1px solid rgba(212, 168, 66, 0.3);
+                                transition: all 0.3s ease;
+                            " onmouseover="this.style.background='rgba(212, 168, 66, 0.15)'; this.style.borderColor='var(--dore)'; this.style.color='var(--dore)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.borderColor='rgba(212, 168, 66, 0.3)'; this.style.color='white'">
+                                📝 Nouveau Devis
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

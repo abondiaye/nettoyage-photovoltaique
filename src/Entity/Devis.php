@@ -18,6 +18,10 @@ class Devis
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?User $user = null;
+
     #[ORM\ManyToOne(targetEntity: Client::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Client $client = null;
@@ -105,5 +109,16 @@ class Devis
     public function getDateCreation(): ?\DateTimeImmutable
     {
         return $this->dateCreation;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+        return $this;
     }
 }

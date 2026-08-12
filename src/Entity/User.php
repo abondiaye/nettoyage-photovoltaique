@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -39,6 +41,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private bool $isActive = true;
+
+    #[ORM\OneToMany(targetEntity: Devis::class, mappedBy: 'user', cascade: ['remove'])]
+    private Collection $devis;
+
+    public function __construct()
+    {
+        $this->devis = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -141,6 +151,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsActive(bool $isActive): static
     {
         $this->isActive = $isActive;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Devis>
+     */
+    public function getDevis(): Collection
+    {
+        return $this->devis;
+    }
+
+    public function addDevis(Devis $devis): static
+    {
+        if (!$this->devis->contains($devis)) {
+            $this->devis->add($devis);
+            $devis->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDevis(Devis $devis): static
+    {
+        if ($this->devis->removeElement($devis)) {
+            if ($devis->getUser() === $this) {
+                $devis->setUser(null);
+            }
+        }
+
         return $this;
     }
 }
