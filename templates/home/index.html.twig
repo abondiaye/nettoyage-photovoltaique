@@ -513,8 +513,40 @@
 <footer class="footer">
     <!-- Carte de Visite Banner -->
     <div style="background: rgba(212, 168, 66, 0.1); border-bottom: 2px solid rgba(212, 168, 66, 0.3); padding: 40px; margin-bottom: 40px;">
-        <div class="container" style="max-width: 1000px; margin: 0 auto;">
-            <img src="{{ asset('images/carte2.svg') }}" alt="Sirius-Solar - Carte de Visite" style="width: 100%; height: auto; max-width: 1000px; display: block; margin: 0 auto; border-radius: 15px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);">
+        <style>
+            @keyframes carteSlideIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(40px) scale(0.95);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0) scale(1);
+                }
+            }
+
+            @keyframes carteHover {
+                0%, 100% {
+                    transform: translateY(0px);
+                }
+                50% {
+                    transform: translateY(-10px);
+                }
+            }
+
+            .carte-visite {
+                animation: carteSlideIn 0.8s ease-out;
+                transition: all 0.3s ease;
+            }
+
+            .carte-visite:hover {
+                animation: carteHover 1s ease-in-out infinite;
+                box-shadow: 0 30px 70px rgba(212, 168, 66, 0.4) !important;
+            }
+        </style>
+
+        <div class="container" style="max-width: 1000px; margin: 0 auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);">
+            <img src="{{ asset('images/carte2.svg') }}" alt="Sirius-Solar - Carte de Visite" class="carte-visite" style="width: 100%; height: auto; max-width: 1000px; display: block; margin: 0 auto; border-radius: 15px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);">
         </div>
     </div>
 
