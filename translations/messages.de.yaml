@@ -1,107 +1,194 @@
+# Deutsch (DE)
 nav:
   services: Dienstleistungen
-  why_us: Warum wir
-  quote: Kostenloser Kostenvoranschlag
-  admin: Admin
-  member_area: Mitgliedsbereich
-  logout: Abmelden
+  advantages: Vorteile
+  booking: Buchen
+  contact: Kontakt
   login: Anmelden
-  free_quote: Kostenlos Angebot
+  admin: Admin
+
+hero:
+  title: Optimieren Sie Ihre Solarerträge
+  subtitle: Osmosewasser • Keine Chemikalien • Bis zu 25% Ertrag zurückgewonnen
+  tag1: 💧 Reines Wasser
+  tag2: ⚡ Hohe Leistung
+  tag3: ✅ Ökologisch
+  cta: Angebot anfordern
+
+services:
+  title: Unsere Dienstleistungen
+  premium:
+    title: Premium-Reinigung
+    desc: Hochdruck-Reinigung mit Osmosewasser für garantierte Ergebnisse und optimale Leistung
+  inspection:
+    title: Vollständige Inspektion
+    desc: Professionelle Diagnose mit detailliertem Bericht Ihrer Anlagen
+  maintenance:
+    title: Regelmäßige Wartung
+    desc: Maßgeschneiderte Wartungsverträge für optimale Langzeitleistung
+  learn_more: Mehr erfahren
+
+advantages:
+  title: Warum Sirius-Solar?
+  efficiency:
+    title: Ertrag +25%
+    desc: Gewinnen Sie bis zu 25% Ertrag zurück, der durch Verschmutzung und Ablagerungen verloren geht
+  water:
+    title: Osmosewasser
+    desc: Reinigung mit reinem Wasser ohne Rückstände oder Wasserflecken
+  eco:
+    title: Keine Chemikalien
+    desc: Ökologischer Ansatz, der Umwelt und Anlagen respektiert
+  fast:
+    title: Angebot in 48h
+    desc: Schneller und effizienter Service mit garantierter Antwort innerhalb von 2 Tagen
+
+cta:
+  title: Bereit, Ihre Anlage zu optimieren?
+  desc: Kontaktieren Sie unsere Experten von Sirius-Solar für eine kostenlose Diagnose und eine maßgeschneiderte Lösung für Ihre Photovoltaikanlagen.
+  button: Besuch buchen
 
 footer:
-  tagline: Professionelle Reinigung von Photovoltaikanlagen für Privatpersonen, Landwirte und Unternehmen.
-  nav_title: Navigation
-  home: Startseite
-  services: Unsere Dienstleistungen
-  quote: Kostenloser Kostenvoranschlag
+  brand: Sirius-Solar
+  desc: Reinigung & Wartung von Photovoltaikanlagen mit Osmosewasser
+  links_title: Nützliche Links
   contact_title: Kontakt
-  rights: Alle Rechte vorbehalten.
+  email: "E-Mail: info@sirius-solar.ch"
+  phone: "Telefon: +41 XX XXX XX XX"
+  response: Antwort innerhalb von 48h garantiert
+  copyright: © 2026 Sirius-Solar. Alle Rechte vorbehalten.
 
-pagenav:
-  previous: Zurück
-  next: Weiter
-  home: Startseite
-  quote: Angebot
-  login: Anmelden
-  register: Registrieren
-  book_appointment: Termin vereinbaren
-  member_dashboard: Mein Bereich
-  member_appointments: Meine Termine
-  admin_dashboard: Dashboard
-  admin_appointments: Termine
-  admin_members: Mitglieder
-  admin_comments: Kommentare
+services_page:
+  title: Unsere professionellen Dienstleistungen
+  subtitle: Entdecken Sie unsere umfassenden Reinigungslösungen für Photovoltaikanlagen
 
-status:
-  scheduled: Geplant
-  completed: Abgeschlossen
-  cancelled: Storniert
+  service1:
+    title: Hochdruck-Reinigung
+    desc: Professionelle Reinigung mit Osmosewasser und Hochdruckausrüstung zur Beseitigung aller Verschmutzungen.
+    feature1: 100% reines Osmosewasser
+    feature2: Keine Chemikalien
+    feature3: Ökologische Technologie
+    feature4: Garantierte Ertragssteigerung von +25%
 
-login:
-  title: Anmelden
+  service2:
+    title: Vollständige Inspektion
+    desc: Detaillierte professionelle Diagnose Ihrer Solaranlagen mit vollständigem Fotobericht.
+    feature1: Detaillierter Bericht inbegriffen
+    feature2: Hochauflösende Fotos
+    feature3: Personalisierte Empfehlungen
+    feature4: Kostenlos für Sirius-Kunden
+
+  service3:
+    title: Regelmäßige Wartung
+    desc: Maßgeschneiderte Wartungsverträge zur Sicherung optimaler Leistung das ganze Jahr über.
+    feature1: Monatliche/vierteljährliche Reinigungen
+    feature2: Echtzeit-Überwachung
+    feature3: Bevorzugte Tarife
+    feature4: Vorrangestellte Interventionen
+
+  service4:
+    title: Schutz & Versiegelung
+    desc: Anwendung ökologischer Schutzprodukte zur Verlängerung der Lebensdauer Ihrer Anlagen.
+    feature1: 18 Monate Schutz
+    feature2: Reduziert Verschmutzung
+    feature3: Silikonfreie Formel
+    feature4: Zertifiziert ökologisch
+
+  service5:
+    title: Leistungsanalyse
+    desc: Detaillierte Analyse der Anlagenleistung mit Optimierungsvorschlägen.
+    feature1: Produktionsdaten
+    feature2: Normvergleiche
+    feature3: Verbesserungsplan
+    feature4: Monatliche Überwachung inbegriffen
+
+  service6:
+    title: Notfalleinsatz
+    desc: Schneller 24/7-Service für Notfälle und kritische Probleme.
+    feature1: Antwort innerhalb von 2 Stunden
+    feature2: 24/7-Verfügbarkeit
+    feature3: Erfahrene Techniker
+    feature4: Transparente Preise
+
+pricing:
+  title: Transparente Preisgestaltung
+  residential:
+    name: Wohnbereich
+    note: Installation < 15 Paneele
+    desc: Ideale Lösung für kleine Privatanlagen mit regelmäßiger Reinigung.
+    price: Ab CHF 120
+  professional:
+    name: Professionell
+    note: Installation 15-50 Paneele
+    desc: Komplettes Paket mit regelmäßiger Wartung und Prioritätssupport für größere Anlagen.
+    price: Ab CHF 250
+  enterprise:
+    name: Unternehmen
+    note: Installation > 50 Paneele
+    desc: Premium-Lösung mit Jahresvertrag, geplanter Wartung und spezialisiertem Team vor Ort.
+    price: Individuelles Angebot
+
+devis:
+  title: Kostenlose Angebotsan frage
+  subtitle: Füllen Sie das Formular unten aus und unsere Experten von Sirius-Solar antworten Ihnen innerhalb von 48 Stunden
+  info_box: Alle mit * gekennzeichneten Felder sind erforderlich. Wir garantieren eine schnelle Antwort.
+
+  form_title: Angebotsformular
+  form_subtitle: Kontakt- und Anlagendaten
+
+  firstname: Vorname
+  lastname: Nachname
   email: E-Mail
-  password: Passwort
-  submit: Anmelden
-  no_account: "Sie haben kein Konto?"
-  register_link: Hier registrieren
+  phone: Telefon
+  address: Adresse
+  postal: Postleitzahl
+  city: Stadt
+  message: Zusätzliche Nachricht
+  placeholder_message: Beschreiben Sie Ihre Solaranlage, Anzahl der Paneele, etc...
 
-register:
-  title: Konto erstellen
-  submit: Registrieren
-  has_account: Sie haben bereits ein Konto?
-  login_link: Hier anmelden
+  lavage_title: "🧹 Reinigungstypen (Mehrere auswählen)"
+  lavage_standard: Standard
+  lavage_premium: Premium
+  lavage_haute_pression: Hochdruck
+  lavage_inspection: Inspektion
+  lavage_protection: Schutz
+  lavage_analyse: Analyse
 
-member:
-  dashboard:
-    title: Mein Mitgliedsbereich
-    points_available: Verfügbare Punkte
-    active_discounts: Aktive Rabatte
-    scheduled_appointments: Geplante Termine
-    points_history: Punkthistorie
-    available_discounts: Verfügbare Rabatte
-    discount_label: "%percent%% Rabatt"
-    created: Erstellt am
-    accumulate: Sammeln Sie 100 Punkte für einen Rabatt!
-    view_appointments: Meine Termine anzeigen
-    book_appointment: Termin vereinbaren
-  appointments:
-    title: Meine Termine
-    book_new: Neuen Termin vereinbaren
-    next_appointment: Nächster Termin
-    time: "Zeit:"
-    cancel: Termin absagen
-    none: Derzeit keine Termine.
-    book_first: Vereinbaren Sie Ihren ersten Termin
-
-home:
-  hero:
-    title: SIRIUS -SOLAR
-    subtitle: WARTUNG & REINIGUNG VON SOLARANLAGEN
-    cta: Kostenloses Angebot
-  stats:
-    production: Gewonnene Produktion im Durchschnitt
-    water: Osmosewasser Keine Chemikalien
-    response: Durchschnittliche Antwort auf Ihre Angebote
-  pillars:
-    title: Unsere Verpflichtungen
-    subtitle: Qualität, Sicherheit, Umweltschutz und optimale Leistung
-    cleaning_title: Reinigung mit Reinstwasser
-    cleaning_desc: Keine Kalkablagerungen, keine aggressiven Chemikalien
-    safety_title: Maximale Sicherheit
-    safety_desc: Techniker mit Schulung für Arbeit in der Höhe
-    environment_title: Umweltschutz
-    environment_desc: Ökologischer und nachhaltiger Ansatz
-    performance_title: Optimale Leistung
-    performance_desc: Bis zu 25% Verlust vermieden
-  services:
-    title: Unsere Dienstleistungen
-    subtitle: Wartung für jede Installation angepasst
-  cta:
-    title: Bereit, Ihre Anlage zu optimieren?
-    subtitle: Erhalten Sie in weniger als 48 Stunden ein kostenloses Angebot. Unsere Experten analysieren Ihre Anlage und schlagen eine geeignete Lösung vor.
-    button: Kostenloses Angebot anfordern
+  total_price: "💰 Geschätzter Gesamtpreis"
+  submit: Angebot senden
+  reset: Zurücksetzen
 
 admin:
-  members:
-    next_appointment: Nächster Termin
-    no_appointment: Kein Termin
+  dashboard: Admin-Dashboard
+  devis_recent: Neueste Angebotsanfragen
+  total: Gesamtanfragen
+  pending: Ausstehend
+  confirmed: Bestätigt
+  notifications: Benachrichtigungen
+
+  client_info: "👤 Kundendaten"
+  name: Name
+  address_info: Adresse
+  status: Status
+
+  propose_date: "📅 Datum vorschlagen"
+  date: "Vorgeschlagenes Interventionsdatum"
+  time: "Interventionszeit"
+  selected_date: Wählen Sie ein Datum und eine Uhrzeit
+
+  response: "💬 Auf Anfrage antworten"
+  message: Antwortnachricht
+  placeholder_response: "Schreiben Sie Ihre Antwort an den Kunden..."
+  confirm: Intervention bestätigen
+  refuse: Ablehnen
+  delete: Löschen
+  back: "← Zurück zum Dashboard"
+
+login:
+  title: Admin-Anmeldung
+  subtitle: Sirius-Solar-Verwaltung
+  email: E-Mail-Adresse
+  password: Passwort
+  signin: Anmelden
+  forgot: Passwort vergessen?
+  back_home: "← Zurück zur Startseite"

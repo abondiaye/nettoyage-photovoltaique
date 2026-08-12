@@ -1,107 +1,194 @@
+# Italiano (IT)
 nav:
   services: Servizi
-  why_us: Perché noi
-  quote: Richiedi un preventivo
-  admin: Admin
-  member_area: Area Membro
-  logout: Esci
+  advantages: Vantaggi
+  booking: Prenotare
+  contact: Contatti
   login: Accedi
-  free_quote: Preventivo gratuito
+  admin: Admin
+
+hero:
+  title: Ottimizzate il vostro rendimento solare
+  subtitle: Acqua osmotizzata • Zero prodotti chimici • Fino al 25% di resa recuperata
+  tag1: 💧 Acqua pura
+  tag2: ⚡ Alte prestazioni
+  tag3: ✅ Ecologico
+  cta: Richiedi un preventivo
+
+services:
+  title: I nostri servizi
+  premium:
+    title: Pulizia Premium
+    desc: Pulizia ad alta pressione con acqua osmotizzata per risultati garantiti e prestazioni ottimali
+  inspection:
+    title: Ispezione Completa
+    desc: Diagnosi professionale con relazione dettagliata dei vostri impianti
+  maintenance:
+    title: Manutenzione Regolare
+    desc: Contratti di manutenzione personalizzati per prestazioni durature
+  learn_more: Scopri di più
+
+advantages:
+  title: Perché Sirius-Solar?
+  efficiency:
+    title: Resa +25%
+    desc: Recuperate fino al 25% di resa persa a causa dello sporco e dei depositi
+  water:
+    title: Acqua Osmotizzata
+    desc: Pulizia con acqua pura, senza residui, senza aloni
+  eco:
+    title: Zero Chimici
+    desc: Approccio ecologico che rispetta l'ambiente e i vostri impianti
+  fast:
+    title: Preventivo in 48h
+    desc: Servizio rapido ed efficiente con risposta garantita entro 2 giorni
+
+cta:
+  title: Pronti per ottimizzare il vostro impianto?
+  desc: Contattate i nostri esperti di Sirius-Solar per una diagnosi gratuita e una soluzione adatta ai vostri pannelli fotovoltaici.
+  button: Prenota una visita
 
 footer:
-  tagline: Pulizia professionale di pannelli fotovoltaici per privati, agricoltori e aziende.
-  nav_title: Navigazione
-  home: Home
-  services: I nostri servizi
-  quote: Richiedi un preventivo
+  brand: Sirius-Solar
+  desc: Pulizia e manutenzione di pannelli fotovoltaici con acqua osmotizzata
+  links_title: Link Utili
   contact_title: Contatti
-  rights: Tutti i diritti riservati.
+  email: "Email: info@sirius-solar.ch"
+  phone: "Telefono: +41 XX XXX XX XX"
+  response: Risposta garantita entro 48h
+  copyright: © 2026 Sirius-Solar. Tutti i diritti riservati.
 
-pagenav:
-  previous: Indietro
-  next: Avanti
-  home: Home
-  quote: Preventivo
-  login: Accedi
-  register: Registrati
-  book_appointment: Prenota un appuntamento
-  member_dashboard: La mia area
-  member_appointments: I miei appuntamenti
-  admin_dashboard: Dashboard
-  admin_appointments: Appuntamenti
-  admin_members: Membri
-  admin_comments: Commenti
+services_page:
+  title: I nostri servizi professionali
+  subtitle: Scoprite le nostre soluzioni complete di pulizia e manutenzione per pannelli fotovoltaici
 
-status:
-  scheduled: Programmato
-  completed: Completato
-  cancelled: Cancellato
+  service1:
+    title: Pulizia ad alta pressione
+    desc: Pulizia professionale con acqua osmotizzata e attrezzature ad alta pressione per rimuovere ogni sporcizia.
+    feature1: Acqua osmotizzata al 100%
+    feature2: Zero prodotti chimici
+    feature3: Tecnologia ecologica
+    feature4: Resa garantita +25%
 
-login:
-  title: Accedi
+  service2:
+    title: Ispezione Completa
+    desc: Diagnosi professionale dettagliata dei vostri impianti solari con relazione fotografica completa.
+    feature1: Relazione dettagliata inclusa
+    feature2: Foto ad alta risoluzione
+    feature3: Raccomandazioni personalizzate
+    feature4: Gratuito per clienti Sirius
+
+  service3:
+    title: Manutenzione Regolare
+    desc: Contratti di manutenzione personalizzati per garantire prestazioni ottimali tutto l'anno.
+    feature1: Pulizie mensili/trimestrali
+    feature2: Monitoraggio in tempo reale
+    feature3: Tariffe preferenziali
+    feature4: Interventi prioritari
+
+  service4:
+    title: Protezione e Sigillatura
+    desc: Applicazione di prodotti di protezione ecologica per prolungare la vita dei vostri impianti.
+    feature1: Protezione 18 mesi
+    feature2: Riduce lo sporco
+    feature3: Senza silicone
+    feature4: Certificato ecologico
+
+  service5:
+    title: Analisi delle Prestazioni
+    desc: Analisi dettagliata del rendimento del vostro impianto con proposte di ottimizzazione.
+    feature1: Dati di produzione
+    feature2: Confronto con i standard
+    feature3: Piano di miglioramento
+    feature4: Monitoraggio mensile incluso
+
+  service6:
+    title: Intervento di Emergenza
+    desc: Servizio di intervento rapido 24/7 per situazioni di emergenza o problemi critici.
+    feature1: Risposta entro 2 ore
+    feature2: Disponibilità 24/7
+    feature3: Tecnici esperti
+    feature4: Prezzi trasparenti
+
+pricing:
+  title: Prezzi Trasparenti
+  residential:
+    name: Residenziale
+    note: Installazione < 15 pannelli
+    desc: Soluzione ideale per piccoli impianti residenziali con pulizia regolare inclusa.
+    price: A partire da CHF 120
+  professional:
+    name: Professionale
+    note: Installazione 15-50 pannelli
+    desc: Pacchetto completo con manutenzione regolare e supporto prioritario per impianti più grandi.
+    price: A partire da CHF 250
+  enterprise:
+    name: Impresa
+    note: Installazione > 50 pannelli
+    desc: Soluzione premium con contratto annuale, manutenzione programmata e team dedicato sul sito.
+    price: Preventivo personalizzato
+
+devis:
+  title: Richiesta di Preventivo Gratuito
+  subtitle: Compilate il modulo sottostante e i nostri esperti di Sirius-Solar vi risponderanno entro 48 ore
+  info_box: Tutti i campi contrassegnati con * sono obbligatori. Vi garantiamo una risposta veloce.
+
+  form_title: Modulo di Preventivo
+  form_subtitle: Informazioni di contatto e impianto
+
+  firstname: Nome
+  lastname: Cognome
   email: Email
-  password: Password
-  submit: Accedi
-  no_account: "Non hai un account?"
-  register_link: Registrati qui
+  phone: Telefono
+  address: Indirizzo
+  postal: CAP
+  city: Città
+  message: Messaggio aggiuntivo
+  placeholder_message: Descrivete il vostro impianto solare, numero di pannelli, ecc...
 
-register:
-  title: Crea un account
-  submit: Registrati
-  has_account: Hai già un account?
-  login_link: Accedi qui
+  lavage_title: "🧹 Tipi di Pulizia (Selezionare uno o più)"
+  lavage_standard: Standard
+  lavage_premium: Premium
+  lavage_haute_pression: Alta Pressione
+  lavage_inspection: Ispezione
+  lavage_protection: Protezione
+  lavage_analyse: Analisi
 
-member:
-  dashboard:
-    title: La mia area membro
-    points_available: Punti disponibili
-    active_discounts: Sconti attivi
-    scheduled_appointments: Appuntamenti programmati
-    points_history: Storico dei punti
-    available_discounts: Sconti disponibili
-    discount_label: "%percent%% di sconto"
-    created: Creato il
-    accumulate: Accumula 100 punti per uno sconto!
-    view_appointments: Visualizza i miei appuntamenti
-    book_appointment: Prenota un appuntamento
-  appointments:
-    title: I miei appuntamenti
-    book_new: Prenota un nuovo appuntamento
-    next_appointment: Prossimo appuntamento
-    time: "Orario:"
-    cancel: Annulla appuntamento
-    none: Nessun appuntamento al momento.
-    book_first: Prenota il tuo primo appuntamento
-
-home:
-  hero:
-    title: SIRIUS -SOLAR
-    subtitle: MANUTENZIONE E PULIZIA PANNELLI SOLARI
-    cta: Preventivo Gratuito
-  stats:
-    production: Produzione recuperata in media
-    water: Acqua Osmotizzata Zero sostanze chimiche
-    response: Risposta media ai tuoi preventivi
-  pillars:
-    title: I Nostri Impegni
-    subtitle: Qualità, sicurezza, rispetto ambientale e prestazioni ottimali
-    cleaning_title: Pulizia con acqua demineralizzata
-    cleaning_desc: Zero residui di calcare, nessuna sostanza chimica aggressiva
-    safety_title: Sicurezza massima
-    safety_desc: Tecnici addestrati al lavoro in altezza
-    environment_title: Rispetto dell'ambiente
-    environment_desc: Approccio ecologico e sostenibile
-    performance_title: Prestazioni ottimali
-    performance_desc: Fino al 25% di perdita evitata
-  services:
-    title: I Nostri Servizi
-    subtitle: Manutenzione adattata a ogni installazione
-  cta:
-    title: Pronto a ottimizzare il tuo impianto?
-    subtitle: Ottieni un preventivo gratuito in meno di 48 ore. I nostri esperti analizzeranno il tuo impianto e proporranno una soluzione adatta.
-    button: Richiedi il mio preventivo gratuito
+  total_price: "💰 Prezzo Totale Stimato"
+  submit: Invia preventivo
+  reset: Ripristina
 
 admin:
-  members:
-    next_appointment: Prossimo appuntamento
-    no_appointment: Nessun appuntamento
+  dashboard: Dashboard Admin
+  devis_recent: Richieste di Preventivo Recenti
+  total: Richieste Totali
+  pending: In Attesa
+  confirmed: Confermata
+  notifications: Notifiche
+
+  client_info: "👤 Informazioni Cliente"
+  name: Nome
+  address_info: Indirizzo
+  status: Stato
+
+  propose_date: "📅 Proponi una Data"
+  date: "Data di intervento proposta"
+  time: "Ora di intervento"
+  selected_date: Selezionate una data e ora
+
+  response: "💬 Rispondi alla Richiesta"
+  message: Messaggio di risposta
+  placeholder_response: "Scrivete la vostra risposta al cliente..."
+  confirm: Conferma intervento
+  refuse: Rifiuta
+  delete: Elimina
+  back: "← Torna al Dashboard"
+
+login:
+  title: Accesso Admin
+  subtitle: Amministrazione Sirius-Solar
+  email: Indirizzo Email
+  password: Password
+  signin: Accedi
+  forgot: Password dimenticata?
+  back_home: "← Torna a casa"

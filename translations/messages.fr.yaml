@@ -1,107 +1,194 @@
+# Français (FR)
 nav:
   services: Services
-  why_us: Pourquoi nous
-  quote: Demander un devis
-  admin: Admin
-  member_area: Espace Membre
-  logout: Déconnexion
+  advantages: Avantages
+  booking: Réserver
+  contact: Contact
   login: Connexion
-  free_quote: Devis gratuit
+  admin: Admin
+
+hero:
+  title: Optimisez votre rendement solaire
+  subtitle: Eau osmosée • Zéro produit chimique • Jusqu'à 25% regagné
+  tag1: 💧 Eau pure
+  tag2: ⚡ Haute performance
+  tag3: ✅ Écologique
+  cta: Demander un devis
+
+services:
+  title: Nos Services
+  premium:
+    title: Nettoyage Premium
+    desc: Eau osmosée haute pression, résultats garantis et performance maximale
+  inspection:
+    title: Inspection Complète
+    desc: Diagnostic professionnel avec rapport détaillé de vos installations
+  maintenance:
+    title: Maintenance Régulière
+    desc: Contrats d'entretien personnalisés pour une performance durable
+  learn_more: En savoir plus
+
+advantages:
+  title: Pourquoi Sirius-Solar ?
+  efficiency:
+    title: Rendement +25%
+    desc: Retrouvez jusqu'à 25% de rendement perdu par la saleté et les dépôts
+  water:
+    title: Eau Osmosée
+    desc: Nettoyage avec eau pure, sans résidu, sans trace sur vos panneaux
+  eco:
+    title: Zéro Chimique
+    desc: Approche écologique respectueuse de l'environnement et vos installations
+  fast:
+    title: Devis en 48h
+    desc: Service rapide et efficace, réponse garantie en moins de 2 jours
+
+cta:
+  title: Prêt à optimiser votre installation ?
+  desc: Contactez nos experts Sirius-Solar pour un diagnostic gratuit et une solution adaptée à vos panneaux photovoltaïques.
+  button: Réserver une visite
 
 footer:
-  tagline: Nettoyage professionnel de panneaux photovoltaïques pour particuliers, agriculteurs et entreprises.
-  nav_title: Navigation
-  home: Accueil
-  services: Nos services
-  quote: Demander un devis
+  brand: Sirius-Solar
+  desc: Nettoyage & Entretien de panneaux photovoltaïques avec eau osmosée
+  links_title: Liens Utiles
   contact_title: Contact
-  rights: Tous droits réservés.
+  email: "Email: info@sirius-solar.ch"
+  phone: "Téléphone: +41 XX XXX XX XX"
+  response: Réponse en 48h garantie
+  copyright: © 2026 Sirius-Solar. Tous droits réservés.
 
-pagenav:
-  previous: Précédent
-  next: Suivant
-  home: Accueil
-  quote: Devis
-  login: Connexion
-  register: Inscription
-  book_appointment: Prendre rendez-vous
-  member_dashboard: Mon espace
-  member_appointments: Mes rendez-vous
-  admin_dashboard: Tableau de bord
-  admin_appointments: Rendez-vous
-  admin_members: Membres
-  admin_comments: Commentaires
+services_page:
+  title: Nos Services Professionnels
+  subtitle: Découvrez nos solutions complètes de nettoyage et d'entretien pour panneaux photovoltaïques
 
-status:
-  scheduled: Prévu
-  completed: Terminé
-  cancelled: Annulé
+  service1:
+    title: Nettoyage Haute Pression
+    desc: Nettoyage professionnel avec eau osmosée et équipement haute pression pour éliminer toute saleté et dépôt.
+    feature1: Eau osmosée 100% pure
+    feature2: Zéro produit chimique
+    feature3: Technologie écologique
+    feature4: Rendement +25% garanti
 
-login:
-  title: Connexion
+  service2:
+    title: Inspection Complète
+    desc: Diagnostic professionnel détaillé de vos installations solaires avec rapport photographique complet.
+    feature1: Rapport détaillé inclus
+    feature2: Photos haute résolution
+    feature3: Recommandations personnalisées
+    feature4: Gratuit pour clients Sirius
+
+  service3:
+    title: Maintenance Régulière
+    desc: Contrats d'entretien personnalisés pour garantir une performance optimale de vos panneaux toute l'année.
+    feature1: Nettoyages mensuels/trimestriels
+    feature2: Suivi en temps réel
+    feature3: Tarifs préférentiels
+    feature4: Priorité interventions
+
+  service4:
+    title: Protection & Sealant
+    desc: Application de produits de protection écologique pour prolonger la vie de vos installations solaires.
+    feature1: Protection 18 mois
+    feature2: Réduit salissures
+    feature3: Sans silicone
+    feature4: Écologique certifié
+
+  service5:
+    title: Analyse Performance
+    desc: Analyse détaillée du rendement de votre installation avec propositions d'optimisation.
+    feature1: Données de production
+    feature2: Comparaison normes
+    feature3: Plan d'amélioration
+    feature4: Suivi mensuel inclus
+
+  service6:
+    title: Intervention d'Urgence
+    desc: Service d'intervention rapide 24/7 pour toute situation d'urgence ou problème critique.
+    feature1: Réponse dans 2 heures
+    feature2: Disponibilité 24/7
+    feature3: Techniciens expérimentés
+    feature4: Tarifs transparents
+
+pricing:
+  title: Tarification Transparente
+  residential:
+    name: Résidentiel
+    note: Installation < 15 panneaux
+    desc: Solution idéale pour les petites installations résidentielles avec nettoyage régulier compris.
+    price: À partir de CHF 120
+  professional:
+    name: Professionnel
+    note: Installation 15-50 panneaux
+    desc: Pack complet avec maintenance régulière et support prioritaire pour installations plus importantes.
+    price: À partir de CHF 250
+  enterprise:
+    name: Entreprise
+    note: Installation > 50 panneaux
+    desc: Solution premium avec contrat annuel, maintenance planifiée et équipe dédiée pour votre site.
+    price: Devis sur mesure
+
+devis:
+  title: Demande de Devis Gratuit
+  subtitle: Remplissez le formulaire ci-dessous et nos experts Sirius-Solar vous répondront dans les 48 heures
+  info_box: Tous les champs marqués avec un * sont obligatoires. Nous vous garantissons une réponse rapide.
+
+  form_title: Formulaire de Devis
+  form_subtitle: Informations de contact et installation
+
+  firstname: Prénom
+  lastname: Nom
   email: Email
-  password: Mot de passe
-  submit: Se connecter
-  no_account: "Vous n'avez pas de compte ?"
-  register_link: Inscrivez-vous ici
+  phone: Téléphone
+  address: Adresse
+  postal: Code Postal
+  city: Ville
+  message: Message additionnel
+  placeholder_message: Décrivez votre installation solaire, nombre de panneaux, etc...
 
-register:
-  title: Créer un compte
-  submit: S'inscrire
-  has_account: Vous avez déjà un compte ?
-  login_link: Connectez-vous ici
+  lavage_title: "🧹 Types de Lavage (Sélectionnez un ou plusieurs)"
+  lavage_standard: Standard
+  lavage_premium: Premium
+  lavage_haute_pression: Haute Pression
+  lavage_inspection: Inspection
+  lavage_protection: Protection
+  lavage_analyse: Analyse
 
-member:
-  dashboard:
-    title: Mon espace membre
-    points_available: Points disponibles
-    active_discounts: Réductions actives
-    scheduled_appointments: Rendez-vous planifiés
-    points_history: Historique des points
-    available_discounts: Réductions disponibles
-    discount_label: "%percent%% de réduction"
-    created: Créée le
-    accumulate: Cumulez 100 points pour obtenir une réduction !
-    view_appointments: Voir mes rendez-vous
-    book_appointment: Prendre rendez-vous
-  appointments:
-    title: Mes rendez-vous
-    book_new: Prendre un nouveau rendez-vous
-    next_appointment: Prochain rendez-vous
-    time: "Heure :"
-    cancel: Annuler le rendez-vous
-    none: Aucun rendez-vous pour le moment.
-    book_first: Prenez votre premier rendez-vous
-
-home:
-  hero:
-    title: SIRIUS -SOLAR
-    subtitle: ENTRETIEN & NETTOYAGE DE PANNEAUX PHOTOVOLTAÏQUES
-    cta: Devis Gratuit
-  stats:
-    production: Production retrouvée en moyenne
-    water: Eau osmosée Zéro chimique
-    response: Réponse moyenne à vos devis
-  pillars:
-    title: Nos Engagements
-    subtitle: Qualité, sécurité, respect de l'environnement et performance optimale
-    cleaning_title: Nettoyage à l'eau pure
-    cleaning_desc: Zéro résidu calcaire, aucun produit chimique agressif
-    safety_title: Sécurité maximale
-    safety_desc: Techniciens formés au travail en hauteur
-    environment_title: Respect de l'environnement
-    environment_desc: Approche écologique et durable
-    performance_title: Performance optimale
-    performance_desc: Jusqu'à 25% de perte évitée
-  services:
-    title: Nos Prestations
-    subtitle: Un entretien adapté à chaque installation
-  cta:
-    title: Prêt à optimiser votre installation?
-    subtitle: Obtenez un devis gratuit en moins de 48h. Nos experts analyseront votre installation et vous proposeront une solution adaptée.
-    button: Demander mon devis gratuit
+  total_price: "💰 Prix Total Estimé"
+  submit: Envoyer la demande
+  reset: Réinitialiser
 
 admin:
-  members:
-    next_appointment: Prochain rendez-vous
-    no_appointment: Aucun rendez-vous
+  dashboard: Dashboard Admin
+  devis_recent: Demandes de Devis Récentes
+  total: Demandes Total
+  pending: En Attente
+  confirmed: Confirmées
+  notifications: Notifications
+
+  client_info: "👤 Informations Client"
+  name: Nom
+  address_info: Adresse
+  status: Statut
+
+  propose_date: "📅 Proposer une Date"
+  date: "Date d'intervention proposée"
+  time: "Heure d'intervention"
+  selected_date: Sélectionnez une date et heure
+
+  response: "💬 Répondre à la Demande"
+  message: Message de réponse
+  placeholder_response: "Écrivez votre réponse au client..."
+  confirm: Confirmer l'intervention
+  refuse: Refuser
+  delete: Supprimer
+  back: "← Retour au Dashboard"
+
+login:
+  title: Admin Login
+  subtitle: Sirius-Solar Administration
+  email: Email Address
+  password: Password
+  signin: Sign In
+  forgot: Forgot password?
+  back_home: "← Back to home"
