@@ -260,6 +260,110 @@
         line-height: 1.6;
     }
 
+    /* ===== LAVAGE TYPE SELECTION ===== */
+    .lavage-section {
+        background: rgba(212, 168, 66, 0.08);
+        border: 1px solid rgba(212, 168, 66, 0.3);
+        border-radius: 12px;
+        padding: 30px;
+        margin: 30px 0;
+        animation: fadeInUp 0.6s ease-out;
+        animation-fill-mode: both;
+    }
+
+    .lavage-section:nth-child(2) {
+        animation-delay: 0.6s;
+    }
+
+    .lavage-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--vert-fonce);
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .lavage-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+    }
+
+    .lavage-card {
+        position: relative;
+        cursor: pointer;
+    }
+
+    .lavage-card input[type="checkbox"] {
+        display: none;
+    }
+
+    .lavage-card-label {
+        display: block;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(212, 168, 66, 0.3);
+        border-radius: 12px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 600;
+        font-size: 14px;
+        color: var(--vert-fonce);
+    }
+
+    .lavage-icon {
+        font-size: 28px;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .lavage-name {
+        display: block;
+        font-size: 13px;
+        margin-bottom: 5px;
+    }
+
+    .lavage-price {
+        font-size: 12px;
+        color: var(--dore);
+        font-weight: bold;
+    }
+
+    .lavage-card input[type="checkbox"]:checked + .lavage-card-label {
+        background: rgba(212, 168, 66, 0.2);
+        border-color: var(--dore);
+        box-shadow: 0 0 15px rgba(212, 168, 66, 0.3);
+        transform: scale(1.05);
+    }
+
+    .price-summary {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(212, 168, 66, 0.3);
+        border-radius: 12px;
+        padding: 20px;
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: white;
+    }
+
+    .price-label {
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .price-value {
+        font-size: 24px;
+        font-weight: bold;
+        color: var(--dore);
+    }
+
     /* ===== RESPONSIVE ===== */
     @media (max-width: 768px) {
         .devis-header {
@@ -292,6 +396,16 @@
 
         .btn-submit, .btn-reset {
             width: 100%;
+        }
+
+        .lavage-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .price-summary {
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
         }
     }
 </style>
@@ -366,6 +480,80 @@
                 </div>
             </div>
 
+            <!-- Types de Lavage -->
+            <div class="lavage-section">
+                <div class="lavage-title">
+                    🧹 Types de Lavage (Sélectionnez un ou plusieurs)
+                </div>
+
+                <div class="lavage-grid">
+                    <!-- Nettoyage Standard -->
+                    <div class="lavage-card">
+                        <input type="checkbox" id="lavage_standard" name="lavage_types[]" value="standard" data-price="120">
+                        <label for="lavage_standard" class="lavage-card-label">
+                            <span class="lavage-icon">💧</span>
+                            <span class="lavage-name">Standard</span>
+                            <span class="lavage-price">CHF 120</span>
+                        </label>
+                    </div>
+
+                    <!-- Nettoyage Premium -->
+                    <div class="lavage-card">
+                        <input type="checkbox" id="lavage_premium" name="lavage_types[]" value="premium" data-price="180">
+                        <label for="lavage_premium" class="lavage-card-label">
+                            <span class="lavage-icon">⭐</span>
+                            <span class="lavage-name">Premium</span>
+                            <span class="lavage-price">CHF 180</span>
+                        </label>
+                    </div>
+
+                    <!-- Haute Pression -->
+                    <div class="lavage-card">
+                        <input type="checkbox" id="lavage_haute_pression" name="lavage_types[]" value="haute_pression" data-price="150">
+                        <label for="lavage_haute_pression" class="lavage-card-label">
+                            <span class="lavage-icon">⚡</span>
+                            <span class="lavage-name">Haute Pression</span>
+                            <span class="lavage-price">CHF 150</span>
+                        </label>
+                    </div>
+
+                    <!-- Inspection -->
+                    <div class="lavage-card">
+                        <input type="checkbox" id="lavage_inspection" name="lavage_types[]" value="inspection" data-price="80">
+                        <label for="lavage_inspection" class="lavage-card-label">
+                            <span class="lavage-icon">🔍</span>
+                            <span class="lavage-name">Inspection</span>
+                            <span class="lavage-price">CHF 80</span>
+                        </label>
+                    </div>
+
+                    <!-- Protection Sealant -->
+                    <div class="lavage-card">
+                        <input type="checkbox" id="lavage_protection" name="lavage_types[]" value="protection" data-price="200">
+                        <label for="lavage_protection" class="lavage-card-label">
+                            <span class="lavage-icon">🛡️</span>
+                            <span class="lavage-name">Protection</span>
+                            <span class="lavage-price">CHF 200</span>
+                        </label>
+                    </div>
+
+                    <!-- Analyse Performance -->
+                    <div class="lavage-card">
+                        <input type="checkbox" id="lavage_analyse" name="lavage_types[]" value="analyse" data-price="120">
+                        <label for="lavage_analyse" class="lavage-card-label">
+                            <span class="lavage-icon">📊</span>
+                            <span class="lavage-name">Analyse</span>
+                            <span class="lavage-price">CHF 120</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="price-summary">
+                    <span class="price-label">💰 Prix Total Estimé</span>
+                    <span class="price-value" id="totalPrice">CHF 0</span>
+                </div>
+            </div>
+
             <!-- Message -->
             <div class="form-group">
                 <label for="message">Message additionnel</label>
@@ -380,5 +568,35 @@
         </form>
     </div>
 </section>
+
+<script>
+    // Calculate total price based on selected lavage types
+    function updateTotalPrice() {
+        let total = 0;
+        const checkboxes = document.querySelectorAll('input[name="lavage_types[]"]');
+
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                const price = parseInt(checkbox.getAttribute('data-price'));
+                total += price;
+            }
+        });
+
+        const totalPriceElement = document.getElementById('totalPrice');
+        if (total === 0) {
+            totalPriceElement.textContent = 'CHF 0';
+        } else {
+            totalPriceElement.textContent = 'CHF ' + total;
+        }
+    }
+
+    // Add event listeners to all checkboxes
+    document.querySelectorAll('input[name="lavage_types[]"]').forEach(checkbox => {
+        checkbox.addEventListener('change', updateTotalPrice);
+    });
+
+    // Initialize on page load
+    updateTotalPrice();
+</script>
 
 {% endblock %}
