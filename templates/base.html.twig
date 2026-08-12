@@ -152,6 +152,76 @@
     {% endblock %}
 
     <style>
+        /* === BUTTONS STYLING === */
+        .btn {
+          display: inline-block;
+          padding: 12px 24px;
+          border-radius: 8px;
+          text-decoration: none;
+          font-weight: 600;
+          transition: all 0.3s ease;
+          border: 2px solid transparent;
+          cursor: pointer;
+        }
+
+        .btn-primary {
+          background: linear-gradient(135deg, #d4a842, #f4d03f);
+          color: #1a1a1a;
+          box-shadow: 0 4px 15px rgba(212, 168, 66, 0.3);
+        }
+
+        .btn-primary:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba(212, 168, 66, 0.5);
+        }
+
+        /* === LANGUAGE SWITCHER === */
+        .lang-switch {
+          display: flex;
+          gap: 8px;
+          align-items: center;
+        }
+
+        .lang-switch a {
+          padding: 8px 12px;
+          border-radius: 6px;
+          text-decoration: none;
+          font-size: 0.9rem;
+          font-weight: 600;
+          border: 2px solid transparent;
+          transition: all 0.3s ease;
+          color: inherit;
+        }
+
+        .lang-switch a:hover,
+        .lang-switch a.-active {
+          background: rgba(212, 168, 66, 0.2);
+          border-color: #d4a842;
+          color: #d4a842;
+        }
+
+        /* === NAVIGATION LINKS === */
+        .nav-links {
+          display: flex;
+          gap: 20px;
+          align-items: center;
+          flex-wrap: wrap;
+        }
+
+        .nav-links a {
+          text-decoration: none;
+          color: inherit;
+          font-weight: 500;
+          transition: all 0.3s ease;
+          padding: 8px 12px;
+          border-radius: 6px;
+        }
+
+        .nav-links a:hover {
+          color: #d4a842;
+          background: rgba(212, 168, 66, 0.1);
+        }
+
         /* === SPLASH SCREEN - WEBGL PARTICLE ANIMATION === */
         .splash-screen {
           position: fixed;
@@ -590,11 +660,9 @@
             <div class="nav-links" id="nav-desktop" role="navigation" aria-label="Menu principal">
                 <a href="{{ path('app_home') }}#services" title="Voir nos services">{{ 'nav.services'|trans }}</a>
                 <a href="{{ path('app_home') }}#avantages" title="Voir nos avantages">{{ 'nav.why_us'|trans }}</a>
-                <a href="{{ path('app_devis') }}" title="Demander un devis">{{ 'nav.quote'|trans }}</a>
+                <a href="{{ path('reservation_form') }}" title="Demander un devis">{{ 'nav.quote'|trans }}</a>
                 {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ path('app_admin_dashboard') }}" title="Tableau de bord administrateur">{{ 'nav.admin'|trans }}</a>
-                {% elseif is_granted('ROLE_MEMBER') %}
-                    <a href="{{ path('app_member_dashboard') }}" title="Mon espace">{{ 'nav.member_area'|trans }}</a>
+                    <a href="{{ path('admin_dashboard') }}" title="Tableau de bord administrateur">{{ 'nav.admin'|trans }}</a>
                 {% endif %}
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     <a href="{{ path('app_logout') }}" title="Se déconnecter">{{ 'nav.logout'|trans }}</a>
@@ -612,7 +680,17 @@
                 <a href="{{ path('app_locale_switch', {locale: 'rm'}) }}" class="{{ app.request.locale == 'rm' ? '-active' : '' }}" title="Rumantsch" aria-label="Rumantsch">🏔️ RM</a>
             </div>
 
-            <a href="{{ path('app_devis') }}" class="btn btn-primary" style="font-size:0.9rem; padding:10px 20px;">{{ 'nav.free_quote'|trans }}</a>
+            <a href="{{ path('reservation_form') }}" class="btn btn-primary" style="font-size:0.9rem; padding:10px 20px;">{{ 'nav.free_quote'|trans }}</a>
+
+            <!-- Admin/Login Buttons -->
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('admin_dashboard') }}" class="btn btn-primary" style="font-size:0.9rem; padding:10px 20px; background:linear-gradient(135deg, #d4a842, #f4d03f);">🔐 Admin</a>
+            {% endif %}
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <a href="{{ path('app_logout') }}" class="btn btn-primary" style="font-size:0.9rem; padding:10px 20px; background:rgba(255,255,255,0.2); border:1px solid white;">🚪 Logout</a>
+            {% else %}
+                <a href="{{ path('app_login') }}" class="btn btn-primary" style="font-size:0.9rem; padding:10px 20px; background:rgba(255,255,255,0.2); border:1px solid white;">🔑 Login</a>
+            {% endif %}
 
             <!-- Dark mode toggle - MEGASWITCHER -->
             <label class="daynight theme-toggle">
@@ -642,7 +720,7 @@
                     <a href="{{ path('app_home') }}#avantages">{{ 'nav.why_us'|trans }}</a>
                 </li>
                 <li class="shape-circle circle-three">
-                    <a href="{{ path('app_devis') }}">{{ 'nav.quote'|trans }}</a>
+                    <a href="{{ path('reservation_form') }}">{{ 'nav.quote'|trans }}</a>
                 </li>
                 <li class="shape-circle circle-five">
                     <a href="{{ path('app_home') }}">{{ 'nav.home'|trans }}</a>
@@ -656,11 +734,9 @@
                 <a href="{{ path('app_home') }}" class="mobile-menu-link">{{ 'nav.home'|trans }}</a>
                 <a href="{{ path('app_home') }}#services" class="mobile-menu-link">{{ 'nav.services'|trans }}</a>
                 <a href="{{ path('app_home') }}#avantages" class="mobile-menu-link">{{ 'nav.why_us'|trans }}</a>
-                <a href="{{ path('app_devis') }}" class="mobile-menu-link">{{ 'nav.quote'|trans }}</a>
+                <a href="{{ path('reservation_form') }}" class="mobile-menu-link">{{ 'nav.quote'|trans }}</a>
                 {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ path('app_admin_dashboard') }}" class="mobile-menu-link">{{ 'nav.admin'|trans }}</a>
-                {% elseif is_granted('ROLE_MEMBER') %}
-                    <a href="{{ path('app_member_dashboard') }}" class="mobile-menu-link">{{ 'nav.member_area'|trans }}</a>
+                    <a href="{{ path('admin_dashboard') }}" class="mobile-menu-link">{{ 'nav.admin'|trans }}</a>
                 {% endif %}
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     <a href="{{ path('app_logout') }}" class="mobile-menu-link">{{ 'nav.logout'|trans }}</a>
@@ -713,7 +789,7 @@
                 <h4>🗺️ Navigation</h4>
                 <p><a href="{{ path('app_home') }}">Accueil</a></p>
                 <p><a href="{{ path('app_home') }}#avantages">Nos Engagements</a></p>
-                <p><a href="{{ path('app_devis') }}">Devis Gratuit</a></p>
+                <p><a href="{{ path('reservation_form') }}">Devis Gratuit</a></p>
                 <p><a href="{{ path('app_login') }}">Connexion</a></p>
             </div>
 

@@ -733,7 +733,11 @@
         </div>
 
         <div class="hero-cta">
-            <a href="{{ path('app_devis') }}" class="btn btn-primary">Devis Gratuit</a>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <a href="{{ path('reservation_form') }}" class="btn btn-primary">📋 Réserver</a>
+                <a href="{{ path('app_login') }}" class="btn btn-primary" style="background: rgba(255, 255, 255, 0.2); border: 2px solid white;">🔐 Admin</a>
+                <a href="{{ path('app_devis') }}" class="btn btn-primary">Devis Gratuit</a>
+            </div>
         </div>
     </div>
 </section>
