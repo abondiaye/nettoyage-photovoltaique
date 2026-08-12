@@ -742,6 +742,47 @@
     </div>
 </section>
 
+<!-- HEXAGON NAVIGATION SECTION -->
+<section id="hexagon-scene">
+    <div class="hexagon-container">
+        <div class="hexagon" data-link="services">
+            <a href="#services">
+                <svg version="1.1" viewBox="0 0 600 516.8">
+                    <polygon points="150.7,516.8 1.5,258.4 150.7,0 449,0 598.2,258.4 449,516.8 "/>
+                </svg>
+                <span>🔧 Services</span>
+            </a>
+        </div>
+
+        <div class="hexagon" data-link="avantages">
+            <a href="#avantages">
+                <svg version="1.1" viewBox="0 0 600 516.8">
+                    <polygon points="150.7,516.8 1.5,258.4 150.7,0 449,0 598.2,258.4 449,516.8 "/>
+                </svg>
+                <span>⭐ Avantages</span>
+            </a>
+        </div>
+
+        <div class="hexagon" data-link="reserve">
+            <a href="{{ path('reservation_form') }}">
+                <svg version="1.1" viewBox="0 0 600 516.8">
+                    <polygon points="150.7,516.8 1.5,258.4 150.7,0 449,0 598.2,258.4 449,516.8 "/>
+                </svg>
+                <span>📋 Réserver</span>
+            </a>
+        </div>
+
+        <div class="hexagon" data-link="contact">
+            <a href="{{ path('app_login') }}">
+                <svg version="1.1" viewBox="0 0 600 516.8">
+                    <polygon points="150.7,516.8 1.5,258.4 150.7,0 449,0 598.2,258.4 449,516.8 "/>
+                </svg>
+                <span>🔐 Admin</span>
+            </a>
+        </div>
+    </div>
+</section>
+
 <!-- STATS SECTION -->
 <section class="stats-modern">
     <div class="container">
@@ -819,6 +860,51 @@
         <a href="{{ path('app_devis') }}" class="btn btn-primary">{{ 'home.cta.button'|trans }}</a>
     </div>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Hexagon navigation functionality
+    const hexagons = document.querySelectorAll('.hexagon');
+
+    hexagons.forEach(hexagon => {
+        hexagon.addEventListener('click', function(e) {
+            // Remove active class from all hexagons
+            hexagons.forEach(h => h.classList.remove('active'));
+            // Add active class to clicked hexagon
+            this.classList.add('active');
+        });
+
+        hexagon.addEventListener('mouseover', function() {
+            this.style.transform = 'scale(1.1)';
+        });
+
+        hexagon.addEventListener('mouseout', function() {
+            if (!this.classList.contains('active')) {
+                this.style.transform = 'scale(1)';
+            }
+        });
+    });
+
+    // Highlight hexagon when section comes into view
+    const sections = {
+        'services': document.querySelector('#services'),
+        'avantages': document.querySelector('#avantages')
+    };
+
+    window.addEventListener('scroll', function() {
+        Object.entries(sections).forEach(([key, section]) => {
+            if (section) {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
+                    hexagons.forEach(h => h.classList.remove('active'));
+                    const hexagon = document.querySelector(`[data-link="${key}"]`);
+                    if (hexagon) hexagon.classList.add('active');
+                }
+            }
+        });
+    });
+});
+</script>
 
 {% endblock %}
 
