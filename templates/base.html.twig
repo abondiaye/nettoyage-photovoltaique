@@ -385,8 +385,18 @@
         </ul>
 
         <div class="nav-buttons">
-            <a href="{{ path('app_login') }}" class="btn-login">Connexion</a>
-            <a href="{{ path('app_admin_dashboard') }}" class="btn-signup">Admin</a>
+            {% if app.user %}
+                {# Utilisateur connecté #}
+                <a href="{{ path('app_user_dashboard') }}" class="btn-login">📊 Mon Compte</a>
+                <a href="{{ path('app_logout') }}" class="btn-login">Déconnexion</a>
+                {% if 'ROLE_ADMIN' in app.user.roles %}
+                    <a href="{{ path('app_admin_dashboard') }}" class="btn-signup">Admin</a>
+                {% endif %}
+            {% else %}
+                {# Utilisateur non connecté #}
+                <a href="{{ path('app_register') }}" class="btn-login">S'inscrire</a>
+                <a href="{{ path('app_login') }}" class="btn-login">Connexion</a>
+            {% endif %}
         </div>
 
         <div class="hamburger-menu" id="hamburger">
@@ -402,9 +412,17 @@
         <li><a href="{{ path('app_home') }}#avantages">Avantages</a></li>
         <li><a href="{{ path('app_devis') }}">Réserver</a></li>
         <li><a href="#contact">Contact</a></li>
-        <li style="border-bottom: none; display: flex; gap: 10px; padding: 16px 40px;">
-            <a href="{{ path('app_login') }}" class="btn-login" style="flex: 1;">Connexion</a>
-            <a href="{{ path('app_admin_dashboard') }}" class="btn-signup" style="flex: 1;">Admin</a>
+        <li style="border-bottom: none; display: flex; gap: 10px; padding: 16px 40px; flex-wrap: wrap;">
+            {% if app.user %}
+                <a href="{{ path('app_user_dashboard') }}" class="btn-login" style="flex: 1; min-width: 140px;">Mon Compte</a>
+                <a href="{{ path('app_logout') }}" class="btn-login" style="flex: 1; min-width: 140px;">Déconnexion</a>
+                {% if 'ROLE_ADMIN' in app.user.roles %}
+                    <a href="{{ path('app_admin_dashboard') }}" class="btn-signup" style="flex: 1; width: 100%;">Admin</a>
+                {% endif %}
+            {% else %}
+                <a href="{{ path('app_register') }}" class="btn-login" style="flex: 1; min-width: 140px;">S'inscrire</a>
+                <a href="{{ path('app_login') }}" class="btn-login" style="flex: 1; min-width: 140px;">Connexion</a>
+            {% endif %}
         </li>
     </ul>
 

@@ -32,7 +32,10 @@
     /* ===== SERVICES GRID ===== */
     .services-container {
         padding: 100px 40px;
-        background: linear-gradient(180deg, rgba(10, 61, 53, 0.05) 0%, transparent 100%);
+        background: url('{{ asset("images/panneaux-solaires-sous-la-pluie.png") }}') center/cover no-repeat,
+                    linear-gradient(180deg, rgba(10, 61, 53, 0.85) 0%, rgba(10, 61, 53, 0.75) 100%);
+        background-blend-mode: overlay;
+        position: relative;
     }
 
     .services-full-grid {
