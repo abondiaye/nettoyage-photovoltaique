@@ -1,504 +1,437 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Demander un devis — SolarClean{% endblock %}
-
-{% block stylesheets %}
-    {{ parent() }}
-    <style>
-        .devis-hero {
-            background: var(--bleu-nuit);
-            color: var(--blanc);
-            padding: 56px 0 64px;
-        }
-        .devis-hero h1 { font-size: clamp(1.8rem, 3.5vw, 2.6rem); margin-bottom: 12px; }
-        .devis-hero p { color: rgba(255,255,255,0.75); max-width: 540px; }
-
-        .devis-wrapper {
-            max-width: 720px;
-            margin: -32px auto 80px;
-            background: var(--blanc);
-            border-radius: 14px;
-            border: 1px solid #E1E8EE;
-            box-shadow: 0 12px 32px rgba(11,31,51,0.08);
-            padding: 40px;
-        }
-
-        .form-section-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 600;
-            font-size: 1rem;
-            color: var(--bleu-panneau);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            margin: 32px 0 16px;
-        }
-        .form-section-title:first-of-type { margin-top: 0; }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
-        .form-row.full { grid-template-columns: 1fr; }
-
-        .field { margin-bottom: 16px; }
-        .field label {
-            display: block;
-            font-size: 0.88rem;
-            font-weight: 500;
-            margin-bottom: 6px;
-            color: #2E3D4B;
-        }
-        .field input,
-        .field select,
-        .field textarea {
-            width: 100%;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.95rem;
-            padding: 11px 14px;
-            border: 1px solid #D5DEE6;
-            border-radius: 8px;
-            background: var(--gris-verre);
-            color: var(--texte);
-            transition: border-color 0.15s ease, background 0.15s ease;
-        }
-        .field input:focus,
-        .field select:focus,
-        .field textarea:focus {
-            outline: none;
-            border-color: var(--bleu-panneau);
-            background: var(--blanc);
-        }
-        .field .form-error {
-            color: #C0392B;
-            font-size: 0.82rem;
-            margin-top: 6px;
-        }
-
-        .submit-row {
-            margin-top: 24px;
-            display: flex;
-            justify-content: flex-end;
-        }
-        .submit-row button {
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 600;
-            font-size: 1rem;
-            background: var(--jaune-solaire);
-            color: var(--bleu-nuit);
-            border: none;
-            border-radius: 8px;
-            padding: 14px 32px;
-            cursor: pointer;
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
-        }
-        .submit-row button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(244,183,49,0.35);
-        }
-
-        @media (max-width: 640px) {
-            .form-row { grid-template-columns: 1fr; }
-            .devis-wrapper { margin: -24px 16px 64px; padding: 28px; }
-        }
-
-        /* --- Calculateur d'estimation --- */
-        .calc-wrapper {
-            max-width: 720px;
-            margin: -32px auto 32px;
-            background: var(--bleu-nuit);
-            color: var(--blanc);
-            border-radius: 14px;
-            box-shadow: 0 12px 32px rgba(11,31,51,0.25);
-            padding: 32px 40px;
-        }
-        .calc-wrapper h2 {
-            font-size: 1.3rem;
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .calc-wrapper > p.calc-sub {
-            color: rgba(255,255,255,0.65);
-            font-size: 0.9rem;
-            margin-bottom: 24px;
-        }
-        .calc-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-bottom: 16px;
-        }
-        .calc-field label {
-            display: block;
-            font-size: 0.78rem;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: rgba(255,255,255,0.6);
-            margin-bottom: 6px;
-        }
-        .calc-field select,
-        .calc-field input[type="number"] {
-            width: 100%;
-            padding: 10px 12px;
-            border-radius: 8px;
-            border: 1px solid rgba(255,255,255,0.18);
-            background: rgba(255,255,255,0.06);
-            color: var(--blanc);
-            font-size: 0.95rem;
-            outline: none;
-            transition: border-color 0.15s ease, background 0.15s ease;
-        }
-        .calc-field select:focus,
-        .calc-field input[type="number"]:focus {
-            border-color: var(--jaune-solaire);
-            background: rgba(255,255,255,0.1);
-        }
-        .calc-chips {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .calc-chip {
-            border-radius: 999px;
-            padding: 6px 14px;
-            font-size: 0.82rem;
-            border: 1px solid rgba(255,255,255,0.25);
-            color: rgba(255,255,255,0.75);
-            cursor: pointer;
-            user-select: none;
-            transition: all 0.15s ease;
-        }
-        .calc-chip:hover { border-color: var(--jaune-solaire); color: var(--jaune-solaire); }
-        .calc-chip.active {
-            border-color: var(--jaune-solaire);
-            background: rgba(244,183,49,0.15);
-            color: var(--jaune-solaire);
-        }
-        .calc-option-line {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.9rem;
-            margin: 18px 0;
-            color: rgba(255,255,255,0.85);
-        }
-        .calc-option-line input[type="checkbox"] {
-            width: 17px;
-            height: 17px;
-            accent-color: var(--jaune-solaire);
-        }
-        .calc-divider {
-            height: 1px;
-            background: rgba(255,255,255,0.12);
-            margin: 20px 0;
-        }
-        .calc-result-main {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--jaune-solaire);
-        }
-        .calc-result-main small {
-            font-size: 1rem;
-            font-weight: 500;
-            color: rgba(255,255,255,0.6);
-        }
-        .calc-detail {
-            font-size: 0.85rem;
-            color: rgba(255,255,255,0.7);
-            margin-top: 8px;
-            line-height: 1.6;
-        }
-        .calc-pill-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 14px;
-        }
-        .calc-pill {
-            font-size: 0.78rem;
-            padding: 4px 10px;
-            border-radius: 999px;
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.18);
-            color: rgba(255,255,255,0.8);
-        }
-        .calc-pill strong { color: var(--blanc); }
-        .calc-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-            margin-top: 24px;
-        }
-        .calc-btn-fill {
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 600;
-            font-size: 0.95rem;
-            background: var(--jaune-solaire);
-            color: var(--bleu-nuit);
-            border: none;
-            border-radius: 8px;
-            padding: 12px 24px;
-            cursor: pointer;
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
-        }
-        .calc-btn-fill:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(244,183,49,0.35);
-        }
-        .calc-note {
-            font-size: 0.78rem;
-            color: rgba(255,255,255,0.45);
-            margin-top: 16px;
-        }
-
-        @media (max-width: 640px) {
-            .calc-wrapper { margin: -24px 16px 24px; padding: 24px; }
-            .calc-row { grid-template-columns: 1fr; }
-        }
-    </style>
-{% endblock %}
+{% block title %}Demande de Devis Gratuit — Sirius-Solar{% endblock %}
 
 {% block body %}
-    <section class="devis-hero">
-        <div class="container">
-            <h1>Demandez votre devis gratuit</h1>
-            <p>
-                Indiquez-nous quelques informations sur votre installation et vos coordonnées.
-                Nous vous recontactons sous 48h avec une proposition adaptée.
-            </p>
+<style>
+    /* ===== DEVIS PAGE HEADER ===== */
+    .devis-header {
+        padding: 80px 40px;
+        background: linear-gradient(135deg, var(--vert-fonce) 0%, var(--vert-clair) 100%);
+        text-align: center;
+        color: white;
+
+        animation: fadeInDown 0.8s ease-out;
+    }
+
+    .devis-header h1 {
+        font-size: 42px;
+        margin-bottom: 15px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700;
+        letter-spacing: -1px;
+    }
+
+    .devis-header p {
+        font-size: 16px;
+        opacity: 0.95;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    /* ===== FORM CONTAINER ===== */
+    .devis-container {
+        position: relative;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        /* Outer gradient */
+        background: linear-gradient(135deg, #a8e6cf 0%, #88d8c0 100%);
+        padding: 60px 20px;
+        overflow: hidden;
+    }
+
+    .devis-gradient-bg {
+        position: absolute;
+        inset: 20px;
+        background: linear-gradient(135deg, var(--vert-fonce) 0%, var(--vert-clair) 100%);
+        border-radius: 20px;
+        z-index: 0;
+    }
+
+    .devis-form-card {
+        position: relative;
+        z-index: 1;
+
+        /* Glasmorphism */
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(30px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+
+        border-radius: 20px;
+        padding: 60px;
+        max-width: 600px;
+        width: 100%;
+
+        /* Shadow */
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3),
+                    inset 0 0 30px rgba(255, 255, 255, 0.1);
+
+        /* Animation */
+        animation: fadeInUp 0.8s ease-out;
+    }
+
+    .form-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 10px;
+        text-align: center;
+        font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .form-subtitle {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.7);
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    /* ===== FORM GROUPS ===== */
+    .form-group {
+        margin-bottom: 25px;
+        animation: fadeInUp 0.6s ease-out;
+        animation-fill-mode: both;
+    }
+
+    .form-group:nth-child(1) { animation-delay: 0.1s; }
+    .form-group:nth-child(2) { animation-delay: 0.15s; }
+    .form-group:nth-child(3) { animation-delay: 0.2s; }
+    .form-group:nth-child(4) { animation-delay: 0.25s; }
+    .form-group:nth-child(5) { animation-delay: 0.3s; }
+    .form-group:nth-child(6) { animation-delay: 0.35s; }
+    .form-group:nth-child(7) { animation-delay: 0.4s; }
+    .form-group:nth-child(8) { animation-delay: 0.45s; }
+    .form-group:nth-child(9) { animation-delay: 0.5s; }
+
+    /* ===== LABELS ===== */
+    .form-group label {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.9);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .form-group.required label::after {
+        content: ' *';
+        color: var(--dore);
+    }
+
+    /* ===== INPUTS ===== */
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 14px 16px;
+        font-size: 15px;
+        font-family: 'Inter', sans-serif;
+
+        /* Glasmorphism input */
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        color: white;
+        border-radius: 8px;
+
+        transition: all 0.3s ease;
+
+        resize: vertical;
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        outline: none;
+        background: rgba(255, 255, 255, 0.1);
+        border-color: var(--dore);
+        box-shadow: 0 0 15px rgba(212, 168, 66, 0.3);
+    }
+
+    .form-group textarea {
+        min-height: 120px;
+    }
+
+    /* ===== TWO-COLUMN LAYOUT ===== */
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .form-row .form-group {
+        margin-bottom: 0;
+    }
+
+    @media (max-width: 600px) {
+        .form-row {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+
+        .form-row .form-group {
+            margin-bottom: 25px;
+        }
+    }
+
+    /* ===== SUBMIT BUTTON ===== */
+    .form-submit-group {
+        margin-top: 40px;
+        display: flex;
+        gap: 15px;
+    }
+
+    .btn-submit {
+        flex: 1;
+        background: linear-gradient(135deg, var(--dore), var(--dore-clair));
+        color: #121212;
+        border: none;
+        padding: 16px 32px;
+        border-radius: 12px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+
+        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        box-shadow: 0 10px 30px rgba(212, 168, 66, 0.3);
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 20px 50px rgba(212, 168, 66, 0.5);
+    }
+
+    .btn-submit:active {
+        transform: translateY(-1px) scale(0.98);
+    }
+
+    .btn-reset {
+        flex: 1;
+        background: transparent;
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        color: white;
+        padding: 14px 32px;
+        border-radius: 12px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+
+        transition: all 0.3s ease;
+    }
+
+    .btn-reset:hover {
+        border-color: white;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* ===== SUCCESS MESSAGE ===== */
+    .alert-success {
+        background: rgba(76, 175, 80, 0.2);
+        border: 1px solid rgba(76, 175, 80, 0.5);
+        color: #90EE90;
+        padding: 16px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+        font-size: 14px;
+        animation: fadeInDown 0.6s ease-out;
+    }
+
+    .alert-error {
+        background: rgba(244, 67, 54, 0.2);
+        border: 1px solid rgba(244, 67, 54, 0.5);
+        color: #FF6B6B;
+        padding: 16px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+        font-size: 14px;
+        animation: fadeInDown 0.6s ease-out;
+    }
+
+    /* ===== FORM ERRORS ===== */
+    .form-group.has-error input,
+    .form-group.has-error select,
+    .form-group.has-error textarea {
+        border-color: #FF6B6B;
+        background: rgba(255, 107, 107, 0.1);
+    }
+
+    .form-error {
+        color: #FF6B6B;
+        font-size: 12px;
+        margin-top: 6px;
+        display: block;
+    }
+
+    /* ===== INFO BOX ===== */
+    .devis-info-box {
+        background: rgba(212, 168, 66, 0.1);
+        border-left: 4px solid var(--dore);
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 40px;
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.8);
+        line-height: 1.6;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+        .devis-header {
+            padding: 60px 20px;
+        }
+
+        .devis-header h1 {
+            font-size: 28px;
+        }
+
+        .devis-container {
+            padding: 40px 10px;
+        }
+
+        .devis-gradient-bg {
+            inset: 10px;
+        }
+
+        .devis-form-card {
+            padding: 40px 24px;
+        }
+
+        .form-title {
+            font-size: 22px;
+        }
+
+        .form-submit-group {
+            flex-direction: column;
+        }
+
+        .btn-submit, .btn-reset {
+            width: 100%;
+        }
+    }
+</style>
+
+<!-- Header -->
+<div class="devis-header">
+    <h1>Demande de Devis Gratuit</h1>
+    <p>Remplissez le formulaire ci-dessous et nos experts Sirius-Solar vous répondront dans les 48 heures</p>
+</div>
+
+<!-- Form Section -->
+<section class="devis-container">
+    <div class="devis-gradient-bg"></div>
+
+    <div class="devis-form-card">
+        {% if form.vars.errors %}
+            <div class="alert-error">
+                ❌ Erreur : Veuillez corriger les champs obligatoires
+            </div>
+        {% endif %}
+
+        {% for message in app.flashes('success') %}
+            <div class="alert-success">
+                ✅ {{ message }}
+            </div>
+        {% endfor %}
+
+        <div class="form-title">Formulaire de Devis</div>
+        <p class="form-subtitle">Informations de contact et installation</p>
+
+        <div class="devis-info-box">
+            ℹ️ Tous les champs marqués avec un <span style="color: var(--dore);">*</span> sont obligatoires. Nous vous garantissons une réponse rapide.
         </div>
-    </section>
 
-    <div class="container">
-        <div class="calc-wrapper">
-            <h2>🧮 Estimation rapide</h2>
-            <p class="calc-sub">Obtenez une estimation immédiate, puis pré-remplissez votre demande de devis ci-dessous.</p>
+        <form method="POST" action="{{ path('app_devis') }}" novalidate>
+            <!-- Nom & Prénom -->
+            <div class="form-row">
+                <div class="form-group required">
+                    <label for="clientPrenom">Prénom</label>
+                    <input type="text" id="clientPrenom" name="devis[clientPrenom]" placeholder="Votre prénom" required>
+                    {% if form.clientPrenom.vars.errors %}
+                        <span class="form-error">{{ form.clientPrenom.vars.errors[0].message }}</span>
+                    {% endif %}
+                </div>
 
-            <div class="calc-row">
-                <div class="calc-field">
-                    <label>Type d'installation</label>
-                    <select id="calcType">
-                        <option value="residentiel">Résidentiel</option>
-                        <option value="agricole">Agricole</option>
-                        <option value="industriel">Industriel / Tertiaire</option>
-                    </select>
-                </div>
-                <div class="calc-field">
-                    <label>Nombre de panneaux</label>
-                    <input type="number" id="calcNbPanneaux" value="20" min="1" step="1">
-                </div>
-            </div>
-
-            <div class="calc-row">
-                <div class="calc-field">
-                    <label>Difficulté d'accès</label>
-                    <div class="calc-chips" id="calcAcces">
-                        <div class="calc-chip active" data-val="1">Standard</div>
-                        <div class="calc-chip" data-val="1.2">Toiture en pente</div>
-                        <div class="calc-chip" data-val="1.4">Hauteur / difficile</div>
-                    </div>
-                </div>
-                <div class="calc-field">
-                    <label>Fréquence</label>
-                    <div class="calc-chips" id="calcFrequence">
-                        <div class="calc-chip active" data-val="1">Ponctuel</div>
-                        <div class="calc-chip" data-val="0.85">Abonnement annuel (-15%)</div>
-                    </div>
+                <div class="form-group required">
+                    <label for="clientNom">Nom</label>
+                    <input type="text" id="clientNom" name="devis[clientNom]" placeholder="Votre nom" required>
+                    {% if form.clientNom.vars.errors %}
+                        <span class="form-error">{{ form.clientNom.vars.errors[0].message }}</span>
+                    {% endif %}
                 </div>
             </div>
 
-            <div class="calc-option-line">
-                <input type="checkbox" id="calcDeplacement" checked>
-                <span>Forfait déplacement (30 € TTC)</span>
+            <!-- Email & Phone -->
+            <div class="form-row">
+                <div class="form-group required">
+                    <label for="clientEmail">Email</label>
+                    <input type="email" id="clientEmail" name="devis[clientEmail]" placeholder="votre@email.ch" required>
+                    {% if form.clientEmail.vars.errors %}
+                        <span class="form-error">{{ form.clientEmail.vars.errors[0].message }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="form-group required">
+                    <label for="clientTelephone">Téléphone</label>
+                    <input type="tel" id="clientTelephone" name="devis[clientTelephone]" placeholder="+41 XX XXX XX XX" required>
+                    {% if form.clientTelephone.vars.errors %}
+                        <span class="form-error">{{ form.clientTelephone.vars.errors[0].message }}</span>
+                    {% endif %}
+                </div>
             </div>
 
-            <div class="calc-divider"></div>
-
-            <div id="calcResult">
-                <div class="calc-result-main">0,00 € <small>TTC estimé</small></div>
-                <div class="calc-detail"></div>
-                <div class="calc-pill-row"></div>
+            <!-- Address -->
+            <div class="form-group required">
+                <label for="clientAdresse">Adresse</label>
+                <input type="text" id="clientAdresse" name="devis[clientAdresse]" placeholder="Rue et numéro" required>
+                {% if form.clientAdresse.vars.errors %}
+                    <span class="form-error">{{ form.clientAdresse.vars.errors[0].message }}</span>
+                {% endif %}
             </div>
 
-            <div class="calc-actions">
-                <button type="button" class="calc-btn-fill" id="calcBtnFill">Utiliser cette estimation ↓</button>
+            <!-- Postal Code & City -->
+            <div class="form-row">
+                <div class="form-group required">
+                    <label for="clientCodePostal">Code Postal</label>
+                    <input type="text" id="clientCodePostal" name="devis[clientCodePostal]" placeholder="1200" required>
+                    {% if form.clientCodePostal.vars.errors %}
+                        <span class="form-error">{{ form.clientCodePostal.vars.errors[0].message }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="form-group required">
+                    <label for="clientVille">Ville</label>
+                    <input type="text" id="clientVille" name="devis[clientVille]" placeholder="Genève" required>
+                    {% if form.clientVille.vars.errors %}
+                        <span class="form-error">{{ form.clientVille.vars.errors[0].message }}</span>
+                    {% endif %}
+                </div>
             </div>
 
-            <p class="calc-note">Cette estimation est indicative et non contractuelle. Le devis final est confirmé après étude de votre installation.</p>
-        </div>
+            <!-- Message -->
+            <div class="form-group">
+                <label for="message">Message additionnel</label>
+                <textarea id="message" name="message" placeholder="Décrivez votre installation solaire, nombre de panneaux, etc..."></textarea>
+            </div>
 
-        <div class="devis-wrapper">
-            {{ form_start(form) }}
-
-                <div class="form-section-title">Vos coordonnées</div>
-                <div class="form-row">
-                    <div class="field">
-                        {{ form_label(form.clientPrenom) }}
-                        {{ form_widget(form.clientPrenom) }}
-                        <div class="form-error">{{ form_errors(form.clientPrenom) }}</div>
-                    </div>
-                    <div class="field">
-                        {{ form_label(form.clientNom) }}
-                        {{ form_widget(form.clientNom) }}
-                        <div class="form-error">{{ form_errors(form.clientNom) }}</div>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="field">
-                        {{ form_label(form.clientEmail) }}
-                        {{ form_widget(form.clientEmail) }}
-                        <div class="form-error">{{ form_errors(form.clientEmail) }}</div>
-                    </div>
-                    <div class="field">
-                        {{ form_label(form.clientTelephone) }}
-                        {{ form_widget(form.clientTelephone) }}
-                        <div class="form-error">{{ form_errors(form.clientTelephone) }}</div>
-                    </div>
-                </div>
-                <div class="form-row full">
-                    <div class="field">
-                        {{ form_label(form.clientAdresse) }}
-                        {{ form_widget(form.clientAdresse) }}
-                        <div class="form-error">{{ form_errors(form.clientAdresse) }}</div>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="field">
-                        {{ form_label(form.clientCodePostal) }}
-                        {{ form_widget(form.clientCodePostal) }}
-                        <div class="form-error">{{ form_errors(form.clientCodePostal) }}</div>
-                    </div>
-                    <div class="field">
-                        {{ form_label(form.clientVille) }}
-                        {{ form_widget(form.clientVille) }}
-                        <div class="form-error">{{ form_errors(form.clientVille) }}</div>
-                    </div>
-                </div>
-
-                <div class="form-section-title">Votre installation</div>
-                <div class="form-row">
-                    <div class="field">
-                        {{ form_label(form.typeInstallation) }}
-                        {{ form_widget(form.typeInstallation) }}
-                        <div class="form-error">{{ form_errors(form.typeInstallation) }}</div>
-                    </div>
-                    <div class="field">
-                        {{ form_label(form.nombrePanneaux) }}
-                        {{ form_widget(form.nombrePanneaux) }}
-                        <div class="form-error">{{ form_errors(form.nombrePanneaux) }}</div>
-                    </div>
-                </div>
-                <div class="form-row full">
-                    <div class="field">
-                        {{ form_label(form.message) }}
-                        {{ form_widget(form.message) }}
-                        <div class="form-error">{{ form_errors(form.message) }}</div>
-                    </div>
-                </div>
-
-                <div class="submit-row">
-                    <button type="submit">Envoyer ma demande</button>
-                </div>
-
-            {{ form_end(form) }}
-        </div>
+            <!-- Submit -->
+            <div class="form-submit-group">
+                <button type="submit" class="btn-submit">Envoyer la demande</button>
+                <button type="reset" class="btn-reset">Réinitialiser</button>
+            </div>
+        </form>
     </div>
+</section>
 
-    <script>
-        (function () {
-            const PRIX_PAR_PANNEAU = { residentiel: 8, agricole: 6, industriel: 5 };
-            const LABELS_TYPE = { residentiel: 'Résidentiel', agricole: 'Agricole', industriel: 'Industriel / Tertiaire' };
-            const FORFAIT_DEPLACEMENT = 30;
-
-            const calcType = document.getElementById('calcType');
-            const calcNbPanneaux = document.getElementById('calcNbPanneaux');
-            const calcAcces = document.getElementById('calcAcces');
-            const calcFrequence = document.getElementById('calcFrequence');
-            const calcDeplacement = document.getElementById('calcDeplacement');
-            const calcResult = document.getElementById('calcResult');
-            const calcBtnFill = document.getElementById('calcBtnFill');
-
-            let accesCoef = 1;
-            let frequenceCoef = 1;
-
-            function formatEuro(val) {
-                return val.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            }
-
-            function setActiveChip(group, chip) {
-                group.querySelectorAll('.calc-chip').forEach(c => c.classList.remove('active'));
-                chip.classList.add('active');
-            }
-
-            function calc() {
-                const type = calcType.value;
-                const nb = Math.max(0, parseInt(calcNbPanneaux.value, 10) || 0);
-                const prixUnitaire = PRIX_PAR_PANNEAU[type] ?? 8;
-                const deplacement = calcDeplacement.checked ? FORFAIT_DEPLACEMENT : 0;
-
-                const basePrix = nb * prixUnitaire;
-                const prixAjuste = basePrix * accesCoef * frequenceCoef;
-                const total = prixAjuste + deplacement;
-
-                calcResult.querySelector('.calc-result-main').innerHTML =
-                    formatEuro(total) + ' € <small>TTC estimé</small>';
-
-                calcResult.querySelector('.calc-detail').innerHTML =
-                    nb + ' panneaux × ' + formatEuro(prixUnitaire) + ' €/panneau (' + LABELS_TYPE[type] + ')'
-                    + (accesCoef !== 1 ? ' × coefficient accès ' + accesCoef : '')
-                    + (frequenceCoef !== 1 ? ' × coefficient fréquence ' + frequenceCoef : '')
-                    + (deplacement > 0 ? ' + ' + formatEuro(deplacement) + ' € de déplacement' : '');
-
-                calcResult.querySelector('.calc-pill-row').innerHTML =
-                    '<div class="calc-pill"><strong>' + nb + '</strong> panneaux</div>'
-                    + '<div class="calc-pill"><strong>' + formatEuro(prixUnitaire) + ' €</strong> / panneau</div>'
-                    + (deplacement > 0 ? '<div class="calc-pill"><strong>Déplacement</strong> inclus</div>' : '');
-            }
-
-            calcType.addEventListener('change', calc);
-            calcNbPanneaux.addEventListener('input', calc);
-            calcDeplacement.addEventListener('change', calc);
-
-            calcAcces.addEventListener('click', (e) => {
-                const chip = e.target.closest('.calc-chip');
-                if (!chip) return;
-                accesCoef = parseFloat(chip.dataset.val);
-                setActiveChip(calcAcces, chip);
-                calc();
-            });
-
-            calcFrequence.addEventListener('click', (e) => {
-                const chip = e.target.closest('.calc-chip');
-                if (!chip) return;
-                frequenceCoef = parseFloat(chip.dataset.val);
-                setActiveChip(calcFrequence, chip);
-                calc();
-            });
-
-            calcBtnFill.addEventListener('click', () => {
-                const typeField = document.getElementById('{{ form.typeInstallation.vars.id }}');
-                const nbField = document.getElementById('{{ form.nombrePanneaux.vars.id }}');
-                if (typeField) typeField.value = calcType.value;
-                if (nbField) nbField.value = calcNbPanneaux.value;
-                document.querySelector('.devis-wrapper').scrollIntoView({ behavior: 'smooth', block: 'start' });
-            });
-
-            calc();
-        })();
-    </script>
-{% endblock %}
-
-{% block page_nav_prev %}
-    <a href="{{ path('app_home') }}" class="page-nav-link">← {{ 'pagenav.home'|trans }}</a>
-{% endblock %}
-
-{% block page_nav_next %}
-    {% if is_granted('ROLE_MEMBER') %}
-        <a href="{{ path('app_appointment_book') }}" class="page-nav-link">{{ 'pagenav.book_appointment'|trans }} →</a>
-    {% elseif not is_granted('IS_AUTHENTICATED_FULLY') %}
-        <a href="{{ path('app_login') }}" class="page-nav-link">{{ 'pagenav.login'|trans }} →</a>
-    {% endif %}
 {% endblock %}
