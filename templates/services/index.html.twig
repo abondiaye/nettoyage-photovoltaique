@@ -1,0 +1,458 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos Services — Sirius-Solar{% endblock %}
+
+{% block body %}
+<style>
+    /* ===== SERVICES PAGE HEADER ===== */
+    .services-header {
+        padding: 80px 40px;
+        background: linear-gradient(135deg, var(--vert-fonce) 0%, var(--vert-clair) 100%);
+        text-align: center;
+        color: white;
+
+        animation: fadeInDown 0.8s ease-out;
+    }
+
+    .services-header h1 {
+        font-size: 42px;
+        margin-bottom: 15px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700;
+        letter-spacing: -1px;
+    }
+
+    .services-header p {
+        font-size: 16px;
+        opacity: 0.95;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    /* ===== SERVICES GRID ===== */
+    .services-container {
+        padding: 100px 40px;
+        background: linear-gradient(180deg, rgba(10, 61, 53, 0.05) 0%, transparent 100%);
+    }
+
+    .services-full-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 40px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .service-full-card {
+        /* Glasmorphism */
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+
+        border-radius: 16px;
+        padding: 40px;
+        text-align: center;
+
+        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        cursor: pointer;
+
+        animation: fadeInUp 0.6s ease-out;
+        animation-fill-mode: both;
+
+        display: flex;
+        flex-direction: column;
+    }
+
+    .service-full-card:nth-child(1) { animation-delay: 0.1s; }
+    .service-full-card:nth-child(2) { animation-delay: 0.2s; }
+    .service-full-card:nth-child(3) { animation-delay: 0.3s; }
+    .service-full-card:nth-child(4) { animation-delay: 0.4s; }
+    .service-full-card:nth-child(5) { animation-delay: 0.5s; }
+    .service-full-card:nth-child(6) { animation-delay: 0.6s; }
+
+    .service-full-card:hover {
+        transform: translateY(-10px);
+        background: rgba(212, 168, 66, 0.1);
+        border-color: rgba(212, 168, 66, 0.5);
+
+        box-shadow: 0 20px 40px rgba(212, 168, 66, 0.2);
+    }
+
+    .service-icon-large {
+        font-size: 56px;
+        margin-bottom: 20px;
+        transition: transform 0.4s ease;
+    }
+
+    .service-full-card:hover .service-icon-large {
+        transform: scale(1.3) rotateZ(10deg);
+    }
+
+    .service-full-card h3 {
+        font-size: 24px;
+        color: var(--vert-fonce);
+        margin-bottom: 15px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 600;
+    }
+
+    .service-description {
+        color: #666;
+        line-height: 1.8;
+        margin-bottom: 30px;
+        flex-grow: 1;
+        font-size: 15px;
+    }
+
+    .service-features {
+        text-align: left;
+        margin-bottom: 30px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(212, 168, 66, 0.3);
+    }
+
+    .service-features li {
+        list-style: none;
+        margin-bottom: 12px;
+        color: #666;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .service-features li::before {
+        content: '✓';
+        color: var(--dore);
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    .btn-service-cta {
+        background: linear-gradient(135deg, var(--dore), var(--dore-clair));
+        color: #121212;
+        border: none;
+        padding: 14px 28px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(212, 168, 66, 0.3);
+    }
+
+    .btn-service-cta:hover {
+        transform: scale(1.05);
+        box-shadow: 0 15px 40px rgba(212, 168, 66, 0.4);
+    }
+
+    /* ===== PRICING SECTION ===== */
+    .pricing-section {
+        padding: 100px 40px;
+        background: linear-gradient(180deg, transparent 0%, rgba(10, 61, 53, 0.05) 100%);
+    }
+
+    .pricing-title {
+        font-size: 42px;
+        text-align: center;
+        margin-bottom: 60px;
+        color: var(--vert-fonce);
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700;
+        animation: fadeInDown 0.6s ease-out;
+    }
+
+    .pricing-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .pricing-card {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(212, 168, 66, 0.3);
+
+        border-radius: 16px;
+        padding: 40px;
+        text-align: center;
+
+        animation: fadeInUp 0.6s ease-out;
+        animation-fill-mode: both;
+
+        transition: all 0.3s ease;
+    }
+
+    .pricing-card:nth-child(1) { animation-delay: 0.2s; }
+    .pricing-card:nth-child(2) { animation-delay: 0.3s; }
+    .pricing-card:nth-child(3) { animation-delay: 0.4s; }
+
+    .pricing-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(212, 168, 66, 0.15);
+    }
+
+    .pricing-title-card {
+        font-size: 20px;
+        color: var(--vert-fonce);
+        margin-bottom: 15px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 600;
+    }
+
+    .pricing-description {
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 25px;
+        line-height: 1.6;
+    }
+
+    .pricing-note {
+        color: var(--dore);
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+        letter-spacing: 0.5px;
+    }
+
+    /* ===== CONTACT CTA ===== */
+    .services-cta {
+        padding: 80px 40px;
+        background: linear-gradient(135deg, var(--vert-fonce) 0%, var(--vert-clair) 100%);
+        text-align: center;
+        color: white;
+    }
+
+    .services-cta-content {
+        max-width: 700px;
+        margin: 0 auto;
+        animation: fadeInUp 0.8s ease-out;
+    }
+
+    .services-cta h2 {
+        font-size: 38px;
+        margin-bottom: 20px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700;
+        letter-spacing: -1px;
+    }
+
+    .services-cta p {
+        font-size: 16px;
+        margin-bottom: 30px;
+        opacity: 0.95;
+        line-height: 1.6;
+    }
+
+    .btn-cta-white {
+        background: white;
+        color: var(--vert-fonce);
+        border: none;
+        padding: 16px 40px;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+
+        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-cta-white:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+        .services-header {
+            padding: 60px 20px;
+        }
+
+        .services-header h1 {
+            font-size: 28px;
+        }
+
+        .services-container, .pricing-section, .services-cta {
+            padding: 60px 20px;
+        }
+
+        .services-full-grid, .pricing-grid {
+            gap: 20px;
+        }
+
+        .service-full-card, .pricing-card {
+            padding: 30px 20px;
+        }
+
+        .pricing-title, .services-cta h2 {
+            font-size: 28px;
+        }
+    }
+</style>
+
+<!-- Header -->
+<div class="services-header">
+    <h1>Nos Services Professionnels</h1>
+    <p>Découvrez nos solutions complètes de nettoyage et d'entretien pour panneaux photovoltaïques</p>
+</div>
+
+<!-- Services Grid -->
+<section class="services-container">
+    <div class="services-full-grid">
+        <!-- Service 1 -->
+        <div class="service-full-card">
+            <div class="service-icon-large">💧</div>
+            <h3>Nettoyage Haute Pression</h3>
+            <p class="service-description">
+                Nettoyage professionnel avec eau osmosée et équipement haute pression pour éliminer toute saleté et dépôt.
+            </p>
+            <ul class="service-features">
+                <li>Eau osmosée 100% pure</li>
+                <li>Zéro produit chimique</li>
+                <li>Technologie écologique</li>
+                <li>Rendement +25% garanti</li>
+            </ul>
+            <a href="{{ path('app_devis') }}" class="btn-service-cta">Demander un devis</a>
+        </div>
+
+        <!-- Service 2 -->
+        <div class="service-full-card">
+            <div class="service-icon-large">🔍</div>
+            <h3>Inspection Complète</h3>
+            <p class="service-description">
+                Diagnostic professionnel détaillé de vos installations solaires avec rapport photographique complet.
+            </p>
+            <ul class="service-features">
+                <li>Rapport détaillé inclus</li>
+                <li>Photos haute résolution</li>
+                <li>Recommandations personnalisées</li>
+                <li>Gratuit pour clients Sirius</li>
+            </ul>
+            <a href="{{ path('app_devis') }}" class="btn-service-cta">Demander un devis</a>
+        </div>
+
+        <!-- Service 3 -->
+        <div class="service-full-card">
+            <div class="service-icon-large">⚡</div>
+            <h3>Maintenance Régulière</h3>
+            <p class="service-description">
+                Contrats d'entretien personnalisés pour garantir une performance optimale de vos panneaux toute l'année.
+            </p>
+            <ul class="service-features">
+                <li>Nettoyages mensuels/trimestriels</li>
+                <li>Suivi en temps réel</li>
+                <li>Tarifs préférentiels</li>
+                <li>Priorité interventions</li>
+            </ul>
+            <a href="{{ path('app_devis') }}" class="btn-service-cta">Demander un devis</a>
+        </div>
+
+        <!-- Service 4 -->
+        <div class="service-full-card">
+            <div class="service-icon-large">🛡️</div>
+            <h3>Protection & Sealant</h3>
+            <p class="service-description">
+                Application de produits de protection écologique pour prolonger la vie de vos installations solaires.
+            </p>
+            <ul class="service-features">
+                <li>Protection 18 mois</li>
+                <li>Réduit salissures</li>
+                <li>Sans silicone</li>
+                <li>Écologique certifié</li>
+            </ul>
+            <a href="{{ path('app_devis') }}" class="btn-service-cta">Demander un devis</a>
+        </div>
+
+        <!-- Service 5 -->
+        <div class="service-full-card">
+            <div class="service-icon-large">📊</div>
+            <h3>Analyse Performance</h3>
+            <p class="service-description">
+                Analyse détaillée du rendement de votre installation avec propositions d'optimisation.
+            </p>
+            <ul class="service-features">
+                <li>Données de production</li>
+                <li>Comparaison normes</li>
+                <li>Plan d'amélioration</li>
+                <li>Suivi mensuel inclus</li>
+            </ul>
+            <a href="{{ path('app_devis') }}" class="btn-service-cta">Demander un devis</a>
+        </div>
+
+        <!-- Service 6 -->
+        <div class="service-full-card">
+            <div class="service-icon-large">🚨</div>
+            <h3>Intervention d'Urgence</h3>
+            <p class="service-description">
+                Service d'intervention rapide 24/7 pour toute situation d'urgence ou problème critique.
+            </p>
+            <ul class="service-features">
+                <li>Réponse dans 2 heures</li>
+                <li>Disponibilité 24/7</li>
+                <li>Techniciens expérimentés</li>
+                <li>Tarifs transparents</li>
+            </ul>
+            <a href="{{ path('app_devis') }}" class="btn-service-cta">Contacter maintenant</a>
+        </div>
+    </div>
+</section>
+
+<!-- Pricing Section -->
+<section class="pricing-section">
+    <h2 class="pricing-title">Tarification Transparente</h2>
+
+    <div class="pricing-grid">
+        <div class="pricing-card">
+            <div class="pricing-title-card">Résidentiel</div>
+            <p class="pricing-note">Installation < 15 panneaux</p>
+            <p class="pricing-description">
+                Solution idéale pour les petites installations résidentielles avec nettoyage régulier compris.
+            </p>
+            <p style="color: var(--dore); font-size: 24px; font-weight: bold; margin-bottom: 20px;">À partir de CHF 120</p>
+            <p style="color: #999; font-size: 12px; margin-bottom: 20px;">par intervention</p>
+            <a href="{{ path('app_devis') }}" class="btn-service-cta">Demander un devis</a>
+        </div>
+
+        <div class="pricing-card">
+            <div class="pricing-title-card">Professionnel</div>
+            <p class="pricing-note">Installation 15-50 panneaux</p>
+            <p class="pricing-description">
+                Pack complet avec maintenance régulière et support prioritaire pour installations plus importantes.
+            </p>
+            <p style="color: var(--dore); font-size: 24px; font-weight: bold; margin-bottom: 20px;">À partir de CHF 250</p>
+            <p style="color: #999; font-size: 12px; margin-bottom: 20px;">par intervention</p>
+            <a href="{{ path('app_devis') }}" class="btn-service-cta">Demander un devis</a>
+        </div>
+
+        <div class="pricing-card">
+            <div class="pricing-title-card">Entreprise</div>
+            <p class="pricing-note">Installation > 50 panneaux</p>
+            <p class="pricing-description">
+                Solution premium avec contrat annuel, maintenance planifiée et équipe dédiée pour votre site.
+            </p>
+            <p style="color: var(--dore); font-size: 24px; font-weight: bold; margin-bottom: 20px;">Devis sur mesure</p>
+            <p style="color: #999; font-size: 12px; margin-bottom: 20px;">Contactez-nous</p>
+            <a href="{{ path('app_devis') }}" class="btn-service-cta">Demander un devis</a>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="services-cta">
+    <div class="services-cta-content">
+        <h2>Prêt pour un nettoyage professionnel ?</h2>
+        <p>Nos experts Sirius-Solar sont disponibles pour vous proposer une solution adaptée à votre installation. Contactez-nous dès aujourd'hui pour un devis gratuit sans engagement.</p>
+        <a href="{{ path('app_devis') }}" class="btn-cta-white">Demander un devis gratuit</a>
+    </div>
+</section>
+
+{% endblock %}
