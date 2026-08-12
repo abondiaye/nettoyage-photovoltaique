@@ -222,6 +222,100 @@
           background: rgba(212, 168, 66, 0.1);
         }
 
+        /* === NAVBAR FIXES === */
+        header.site {
+          background: linear-gradient(135deg, rgba(10, 61, 53, 0.95) 0%, rgba(45, 107, 85, 0.95) 100%) !important;
+          backdrop-filter: blur(10px);
+          border-bottom: 2px solid rgba(212, 168, 66, 0.3);
+          padding: 1rem 2rem !important;
+        }
+
+        header.site .nav {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 2rem;
+          flex-wrap: wrap;
+        }
+
+        header.site .logo {
+          font-weight: 700;
+          font-size: 1.3rem;
+          color: #d4a842 !important;
+          text-decoration: none;
+          white-space: nowrap;
+          flex-shrink: 0;
+        }
+
+        header.site .nav-links {
+          display: flex;
+          gap: 1.5rem;
+          align-items: center;
+          justify-content: center;
+          flex: 1;
+          min-width: 300px;
+        }
+
+        header.site .nav-links a {
+          color: white;
+          text-decoration: none;
+          font-size: 0.95rem;
+          transition: all 0.3s ease;
+          padding: 0 8px;
+        }
+
+        header.site .nav-links a:hover {
+          color: #f4d03f;
+        }
+
+        header.site .lang-switch {
+          display: flex;
+          gap: 0.5rem;
+          align-items: center;
+          flex-wrap: wrap;
+        }
+
+        header.site .lang-switch a {
+          padding: 6px 10px !important;
+          font-size: 0.85rem !important;
+          background: rgba(255, 255, 255, 0.1);
+          color: white;
+          border: 1px solid rgba(212, 168, 66, 0.3);
+          border-radius: 4px;
+          transition: all 0.3s ease;
+        }
+
+        header.site .lang-switch a:hover,
+        header.site .lang-switch a.-active {
+          background: rgba(212, 168, 66, 0.3);
+          border-color: #d4a842;
+          color: #f4d03f;
+        }
+
+        header.site .btn {
+          padding: 10px 20px !important;
+          font-size: 0.9rem !important;
+          white-space: nowrap;
+        }
+
+        @media (max-width: 768px) {
+          header.site .nav {
+            flex-direction: column;
+            gap: 1rem;
+          }
+
+          header.site .nav-links {
+            flex: none;
+            flex-direction: column;
+            gap: 0.5rem;
+            min-width: auto;
+          }
+
+          header.site .lang-switch {
+            justify-content: center;
+          }
+        }
+
         /* === HEXAGON NAVIGATION === */
         #hexagon-scene {
           position: relative;
