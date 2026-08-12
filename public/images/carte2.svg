@@ -1,63 +1,129 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 1000 600" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="mapGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#a8e6cf;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#88d8c0;stop-opacity:1" />
+    <linearGradient id="gradGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0A3D35;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2D6B55;stop-opacity:1" />
     </linearGradient>
-    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
-      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
-    </filter>
+    <linearGradient id="gradGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4A842;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f4d03f;stop-opacity:1" />
+    </linearGradient>
   </defs>
 
   <!-- Background -->
-  <rect width="600" height="400" fill="url(#mapGradient)"/>
+  <rect width="1000" height="600" fill="#ffffff"/>
 
-  <!-- Map base -->
-  <path d="M 50 100 Q 150 50 250 100 T 450 100 L 500 200 Q 450 300 300 350 Q 150 300 100 200 Z"
-        fill="#0A3D35" opacity="0.3" filter="url(#shadow)"/>
+  <!-- Left side green gradient -->
+  <rect width="450" height="600" fill="url(#gradGreen)"/>
 
-  <!-- Lake/water -->
-  <circle cx="150" cy="200" r="60" fill="#2D6B55" opacity="0.4"/>
-  <circle cx="400" cy="180" r="45" fill="#2D6B55" opacity="0.3"/>
+  <!-- Decorative curve -->
+  <path d="M 450 0 Q 480 300 450 600 L 500 600 Q 470 300 500 0 Z" fill="url(#gradGold)" opacity="0.8"/>
 
-  <!-- Solar farm locations (pin markers) -->
-  <g filter="url(#shadow)">
-    <!-- Pin 1 -->
-    <circle cx="180" cy="140" r="8" fill="#D4A842"/>
-    <circle cx="180" cy="140" r="6" fill="#f4d03f" opacity="0.8"/>
-    <path d="M 180 155 L 175 170 L 185 170 Z" fill="#D4A842"/>
-
-    <!-- Pin 2 -->
-    <circle cx="320" cy="200" r="8" fill="#D4A842"/>
-    <circle cx="320" cy="200" r="6" fill="#f4d03f" opacity="0.8"/>
-    <path d="M 320 215 L 315 230 L 325 230 Z" fill="#D4A842"/>
-
-    <!-- Pin 3 -->
-    <circle cx="420" cy="120" r="8" fill="#D4A842"/>
-    <circle cx="420" cy="120" r="6" fill="#f4d03f" opacity="0.8"/>
-    <path d="M 420 135 L 415 150 L 425 150 Z" fill="#D4A842"/>
-
-    <!-- Pin 4 -->
-    <circle cx="250" cy="280" r="8" fill="#D4A842"/>
-    <circle cx="250" cy="280" r="6" fill="#f4d03f" opacity="0.8"/>
-    <path d="M 250 295 L 245 310 L 255 310 Z" fill="#D4A842"/>
-  </g>
-
-  <!-- Roads/connections -->
-  <g stroke="#F0F4F8" stroke-width="3" opacity="0.5">
-    <path d="M 100 150 Q 200 180 300 200"/>
-    <path d="M 300 200 Q 350 150 450 120"/>
-    <path d="M 300 200 Q 280 240 250 280"/>
-  </g>
-
-  <!-- Title -->
-  <text x="300" y="40" font-size="28" font-weight="bold" text-anchor="middle" fill="#0A3D35" font-family="Arial">Zone d'intervention</text>
-  <text x="300" y="365" font-size="14" text-anchor="middle" fill="#0A3D35" font-family="Arial">Services disponibles en Suisse Romande</text>
-
-  <!-- Legend -->
+  <!-- Left side content -->
   <g>
-    <circle cx="480" cy="340" r="5" fill="#D4A842"/>
-    <text x="495" y="345" font-size="12" fill="#0A3D35" font-family="Arial">Installation cliente</text>
+    <!-- Logo text -->
+    <text x="70" y="80" font-size="48" font-weight="bold" fill="#0A3D35" font-family="Arial">SIRIUS</text>
+    <text x="60" y="140" font-size="48" font-weight="bold" fill="url(#gradGold)" font-family="Arial">-SOLAR</text>
+
+    <!-- Subtitle -->
+    <text x="70" y="180" font-size="14" font-weight="600" fill="#0A3D35" font-family="Arial" letter-spacing="2">ENTRETIEN &amp; NETTOYAGE</text>
+    <text x="70" y="200" font-size="14" font-weight="600" fill="#0A3D35" font-family="Arial" letter-spacing="2">DE PANNEAUX PHOTOVOLTAÏQUES</text>
+
+    <!-- Decorative line -->
+    <line x1="70" y1="220" x2="180" y2="220" stroke="url(#gradGold)" stroke-width="3"/>
+    <circle cx="190" cy="220" r="4" fill="url(#gradGold)"/>
+
+    <!-- Contact info section -->
+    <g transform="translate(70, 260)">
+      <!-- Address -->
+      <circle cx="20" cy="20" r="18" fill="none" stroke="url(#gradGold)" stroke-width="2"/>
+      <text x="20" y="26" font-size="20" text-anchor="middle" fill="url(#gradGold)" font-family="Arial">📍</text>
+      <text x="50" y="15" font-size="13" font-weight="bold" fill="white" font-family="Arial">Route des dragons 7,</text>
+      <text x="50" y="32" font-size="13" font-weight="bold" fill="white" font-family="Arial">1033 cheseaux-sur-Lausanne</text>
+
+      <!-- Phone -->
+      <g transform="translate(0, 70)">
+        <circle cx="20" cy="20" r="18" fill="none" stroke="url(#gradGold)" stroke-width="2"/>
+        <text x="20" y="26" font-size="20" text-anchor="middle" fill="url(#gradGold)" font-family="Arial">📞</text>
+        <text x="50" y="28" font-size="13" font-weight="bold" fill="white" font-family="Arial">077 909 64 13</text>
+      </g>
+
+      <!-- Email -->
+      <g transform="translate(0, 140)">
+        <circle cx="20" cy="20" r="18" fill="none" stroke="url(#gradGold)" stroke-width="2"/>
+        <text x="20" y="26" font-size="18" text-anchor="middle" fill="url(#gradGold)" font-family="Arial">✉</text>
+        <text x="50" y="28" font-size="13" font-weight="bold" fill="white" font-family="Arial">ndiayeharouna1991@gmail.com</text>
+      </g>
+
+      <!-- Website -->
+      <g transform="translate(0, 210)">
+        <circle cx="20" cy="20" r="18" fill="none" stroke="url(#gradGold)" stroke-width="2"/>
+        <text x="20" y="26" font-size="20" text-anchor="middle" fill="url(#gradGold)" font-family="Arial">🌐</text>
+        <text x="50" y="28" font-size="13" font-weight="bold" fill="white" font-family="Arial">Sirius-Solar</text>
+      </g>
+    </g>
+
+    <!-- Footer text -->
+    <text x="70" y="560" font-size="18" font-style="italic" fill="white" font-family="Arial">Un panneau propre,</text>
+    <text x="70" y="585" font-size="18" font-style="italic" fill="url(#gradGold)" font-family="Arial" font-weight="bold">un rendement optimal !</text>
+  </g>
+
+  <!-- Right side - image placeholder with text -->
+  <g transform="translate(500, 0)">
+    <!-- Solar panel background -->
+    <rect x="0" y="0" width="500" height="600" fill="#e8f4f1"/>
+
+    <!-- Decorative panel lines -->
+    <g stroke="#D4A842" stroke-width="2" opacity="0.3">
+      <line x1="50" y1="80" x2="450" y2="80"/>
+      <line x1="50" y1="150" x2="450" y2="150"/>
+      <line x1="50" y1="220" x2="450" y2="220"/>
+    </g>
+
+    <!-- Title -->
+    <text x="250" y="120" font-size="42" font-weight="bold" text-anchor="middle" fill="#0A3D35" font-family="Arial">SIRIUS</text>
+    <text x="250" y="170" font-size="42" font-weight="bold" text-anchor="middle" fill="url(#gradGold)" font-family="Arial">-SOLAR</text>
+
+    <!-- Subtitle -->
+    <text x="250" y="225" font-size="16" text-anchor="middle" fill="#0A3D35" font-family="Arial" font-weight="600">SPÉCIALISTE DU NETTOYAGE</text>
+    <text x="250" y="250" font-size="16" text-anchor="middle" fill="#0A3D35" font-family="Arial" font-weight="600">DE PANNEAUX PHOTOVOLTAÏQUES</text>
+
+    <!-- Features row -->
+    <g transform="translate(50, 320)">
+      <!-- Water drop -->
+      <circle cx="60" cy="60" r="35" fill="none" stroke="url(#gradGold)" stroke-width="2"/>
+      <text x="60" y="70" font-size="32" text-anchor="middle" fill="url(#gradGold)" font-family="Arial">💧</text>
+      <text x="60" y="130" font-size="12" text-anchor="middle" font-weight="bold" fill="#0A3D35" font-family="Arial">NETTOYAGE</text>
+      <text x="60" y="148" font-size="12" text-anchor="middle" font-weight="bold" fill="#0A3D35" font-family="Arial">À L'EAU PURE</text>
+
+      <!-- Check -->
+      <g transform="translate(150, 0)">
+        <circle cx="60" cy="60" r="35" fill="none" stroke="url(#gradGold)" stroke-width="2"/>
+        <text x="60" y="70" font-size="32" text-anchor="middle" fill="url(#gradGold)" font-family="Arial">✓</text>
+        <text x="60" y="130" font-size="12" text-anchor="middle" font-weight="bold" fill="#0A3D35" font-family="Arial">SÉCURITÉ</text>
+        <text x="60" y="148" font-size="12" text-anchor="middle" font-weight="bold" fill="#0A3D35" font-family="Arial">MAXIMALE</text>
+      </g>
+
+      <!-- Leaf -->
+      <g transform="translate(300, 0)">
+        <circle cx="60" cy="60" r="35" fill="none" stroke="url(#gradGold)" stroke-width="2"/>
+        <text x="60" y="70" font-size="32" text-anchor="middle" fill="url(#gradGold)" font-family="Arial">🌿</text>
+        <text x="60" y="130" font-size="12" text-anchor="middle" font-weight="bold" fill="#0A3D35" font-family="Arial">RESPECT DE</text>
+        <text x="60" y="148" font-size="12" text-anchor="middle" font-weight="bold" fill="#0A3D35" font-family="Arial">L'ENVIRONNEMENT</text>
+      </g>
+    </g>
+
+    <!-- Performance indicator -->
+    <g transform="translate(320, 360)">
+      <circle cx="60" cy="60" r="35" fill="none" stroke="url(#gradGold)" stroke-width="2"/>
+      <text x="60" y="70" font-size="32" text-anchor="middle" fill="url(#gradGold)" font-family="Arial">📈</text>
+      <text x="60" y="130" font-size="12" text-anchor="middle" font-weight="bold" fill="#0A3D35" font-family="Arial">PERFORMANCE</text>
+      <text x="60" y="148" font-size="12" text-anchor="middle" font-weight="bold" fill="#0A3D35" font-family="Arial">OPTIMALE</text>
+    </g>
+
+    <!-- Bottom highlight bar -->
+    <rect x="0" y="520" width="500" height="80" fill="url(#gradGreen)"/>
+    <text x="250" y="560" font-size="14" text-anchor="middle" font-weight="bold" fill="url(#gradGold)" font-family="Arial" letter-spacing="1">Eau osmosée • Zéro chimique • +25% de rendement</text>
   </g>
 </svg>
