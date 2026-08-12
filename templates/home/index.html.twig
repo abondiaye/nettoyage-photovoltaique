@@ -50,6 +50,19 @@
         animation: fadeInUp 0.8s ease-out, raindropsEffect 4s ease-in-out infinite;
     }
 
+    #hero-canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 20px;
+        z-index: 2;
+        mix-blend-mode: screen;
+        opacity: 0.8;
+        pointer-events: none;
+    }
+
     /* Raindrops effect - Gouttes descendantes */
     @keyframes raindropsEffect {
         0% {
@@ -587,11 +600,93 @@
     }
 </style>
 
+<script>
+// Raindrops animation for hero card
+document.addEventListener('DOMContentLoaded', function() {
+    const canvas = document.getElementById('hero-canvas');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    const heroCard = canvas.parentElement;
+
+    function resizeCanvas() {
+        canvas.width = heroCard.offsetWidth;
+        canvas.height = heroCard.offsetHeight;
+    }
+
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // Raindrop class
+    class Raindrop {
+        constructor(canvas) {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height - canvas.height;
+            this.width = 1.5 + Math.random() * 2;
+            this.height = 15 + Math.random() * 25;
+            this.speed = 5 + Math.random() * 10;
+            this.opacity = 0.4 + Math.random() * 0.4;
+            this.tilt = Math.random() * 0.3 - 0.15;
+            this.canvas = canvas;
+        }
+
+        update() {
+            this.y += this.speed;
+            this.x += this.tilt;
+
+            if (this.y > this.canvas.height) {
+                this.y = -this.height;
+                this.x = Math.random() * this.canvas.width;
+            }
+
+            if (this.x > this.canvas.width) {
+                this.x = 0;
+            } else if (this.x < 0) {
+                this.x = this.canvas.width;
+            }
+        }
+
+        draw(ctx) {
+            ctx.save();
+            ctx.globalAlpha = this.opacity;
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+            ctx.beginPath();
+            ctx.ellipse(this.x, this.y, this.width / 2, this.height / 2, this.tilt, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+        }
+    }
+
+    const raindrops = [];
+    const dropCount = 25;
+
+    for (let i = 0; i < dropCount; i++) {
+        raindrops.push(new Raindrop(canvas));
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        raindrops.forEach(drop => {
+            drop.update();
+            drop.draw(ctx);
+        });
+
+        requestAnimationFrame(animate);
+    }
+
+    animate();
+});
+</script>
+
 <!-- Hero Section -->
 <section class="hero-container">
     <div class="hero-gradient-bg"></div>
 
     <div class="hero-card">
+        <!-- Raindrops Canvas -->
+        <canvas id="hero-canvas" aria-hidden="true"></canvas>
+
         <!-- Rain bubbles effect -->
         <div class="pl">
             <div class="pl__bubble">
