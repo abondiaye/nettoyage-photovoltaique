@@ -1013,6 +1013,25 @@
                     themeIcon.textContent = '🌙';
                 }
             });
+
+            // Handle anchor links properly
+            document.addEventListener('click', (e) => {
+                const target = e.target.closest('a[href*="#"]');
+                if (target && target.href) {
+                    const url = new URL(target.href);
+                    const currentUrl = window.location.href;
+                    const hash = url.hash;
+
+                    // If the link is to an anchor on the same page or home page with anchor
+                    if (hash && (url.pathname === window.location.pathname || url.pathname === '/')) {
+                        e.preventDefault();
+                        const element = document.querySelector(hash);
+                        if (element) {
+                            element.scrollIntoView({ behavior: 'auto', block: 'start' });
+                        }
+                    }
+                }
+            });
         </script>
     {% endblock %}
 </body>
