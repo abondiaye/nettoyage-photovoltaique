@@ -142,7 +142,7 @@
         }
     }
 
-    .raindrops-video {
+    .raindrops-image {
         position: absolute;
         top: 0;
         left: 0;
@@ -464,6 +464,47 @@
             gap: 30px;
         }
     }
+
+    /* ===== PROCESSUS SECTION ===== */
+    .processus-section {
+        padding: 100px 40px;
+        background: linear-gradient(180deg, transparent 0%, rgba(10, 61, 53, 0.03) 100%);
+    }
+
+    .processus-container {
+        max-width: 900px;
+        margin: 0 auto;
+        animation: fadeInUp 0.8s ease-out;
+    }
+
+    .processus-video {
+        position: relative;
+        width: 100%;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        background: rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .processus-video video {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 20px;
+    }
+
+    .processus-title {
+        font-size: 36px;
+        text-align: center;
+        margin-bottom: 50px;
+        color: var(--vert-fonce);
+        animation: fadeInDown 0.6s ease-out;
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700;
+        letter-spacing: -1px;
+    }
 </style>
 
 <!-- Hero Section -->
@@ -471,9 +512,7 @@
     <div class="hero-gradient-bg"></div>
 
     <div class="hero-card">
-        <video class="raindrops-video" autoplay muted loop playsinline>
-            <source src="/media/raindrops.mp4" type="video/mp4">
-        </video>
+        <img src="/images/panneaux-solaires-sous-la-pluie.png" alt="Panneaux solaires sous la pluie" class="raindrops-image">
 
         <h1 class="hero-title">Optimisez votre rendement solaire</h1>
         <p class="hero-subtitle">Eau osmosée • Zéro produit chimique • Jusqu'à 25% regagné</p>
@@ -485,6 +524,20 @@
         </div>
 
         <a href="{{ path('app_devis') }}" class="btn-cta">Demander un devis</a>
+    </div>
+</section>
+
+<!-- Processus Section -->
+<section class="processus-section" id="processus">
+    <div class="processus-container">
+        <h2 class="processus-title">Notre Processus de Nettoyage</h2>
+
+        <div class="processus-video">
+            <video controls autoplay loop muted playsinline>
+                <source src="/media/cleaning-process.mp4" type="video/mp4">
+                Votre navigateur ne supporte pas la vidéo HTML5.
+            </video>
+        </div>
     </div>
 </section>
 
