@@ -696,9 +696,48 @@
                 }
             }
 
+            .carte-visite-container {
+                position: relative;
+                max-width: 1000px;
+                margin: 0 auto;
+                background: transparent;
+                padding: 30px;
+                border-radius: 20px;
+                box-shadow: none;
+                overflow: hidden;
+            }
+
+            .carte-visite-background {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                border-radius: 20px;
+                z-index: 0;
+            }
+
+            .carte-visite-background video {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 20px;
+                opacity: 0.5;
+                mix-blend-mode: overlay;
+            }
+
             .carte-visite {
+                position: relative;
+                z-index: 1;
                 animation: carteSlideIn 0.8s ease-out;
                 transition: all 0.3s ease;
+                width: 100%;
+                height: auto;
+                max-width: 1000px;
+                display: block;
+                margin: 0 auto;
+                border-radius: 15px;
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
             }
 
             .carte-visite:hover {
@@ -707,8 +746,13 @@
             }
         </style>
 
-        <div class="container" style="max-width: 1000px; margin: 0 auto; background: transparent; padding: 30px; border-radius: 20px; box-shadow: none;">
-            <img src="{{ asset('images/cartet.jpeg') }}" alt="Sirius-Solar - Carte de Visite" class="carte-visite" style="width: 100%; height: auto; max-width: 1000px; display: block; margin: 0 auto; border-radius: 15px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);">
+        <div class="carte-visite-container">
+            <div class="carte-visite-background">
+                <video autoplay muted loop playsinline>
+                    <source src="/media/raindrops.mp4" type="video/mp4">
+                </video>
+            </div>
+            <img src="{{ asset('images/cartet.jpeg') }}" alt="Sirius-Solar - Carte de Visite" class="carte-visite">
         </div>
     </div>
 
