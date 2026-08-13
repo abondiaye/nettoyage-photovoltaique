@@ -21,7 +21,7 @@
     .hero-gradient-bg {
         position: absolute;
         inset: 20px;
-        background: linear-gradient(135deg, var(--vert-fonce) 0%, var(--vert-clair) 100%);
+        background: linear-gradient(135deg, #001a33 0%, #0d4d6d 40%, #1a7a99 60%, #2d5a6f 100%);
         border-radius: 20px;
         z-index: 0;
     }
@@ -30,9 +30,13 @@
         position: relative;
         z-index: 1;
         overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
 
         /* Glasmorphism */
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba(0, 0, 0, 0.4);
         backdrop-filter: blur(30px);
         border: 1px solid rgba(255, 255, 255, 0.3);
 
@@ -51,6 +55,8 @@
     }
 
 .hero-title {
+        position: relative;
+        z-index: 1;
         font-size: 48px;
         font-weight: 700;
         margin-bottom: 20px;
@@ -60,6 +66,8 @@
     }
 
     .hero-subtitle {
+        position: relative;
+        z-index: 1;
         font-size: 18px;
         opacity: 0.95;
         margin-bottom: 30px;
@@ -68,6 +76,8 @@
     }
 
     .hero-features {
+        position: relative;
+        z-index: 1;
         display: flex;
         justify-content: center;
         gap: 15px;
@@ -92,6 +102,8 @@
     .feature-tag:nth-child(3) { animation-delay: 0.3s; }
 
     .btn-cta {
+        position: relative;
+        z-index: 1;
         background: linear-gradient(135deg, var(--dore), var(--dore-clair));
         color: #121212;
         border: none;
@@ -130,7 +142,7 @@
         }
     }
 
-    .raindrops-canvas {
+    .raindrops-video {
         position: absolute;
         top: 0;
         left: 0;
@@ -138,8 +150,22 @@
         height: 100%;
         border-radius: 20px;
         pointer-events: none;
-        mix-blend-mode: screen;
-        opacity: 0.9;
+        object-fit: cover;
+        opacity: 0.95;
+        z-index: 0;
+    }
+
+    .hero-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.2);
+        z-index: 0.5;
+        border-radius: 20px;
+        pointer-events: none;
     }
 
     /* ===== SERVICES SECTION ===== */
@@ -445,7 +471,9 @@
     <div class="hero-gradient-bg"></div>
 
     <div class="hero-card">
-        <canvas id="raindrops-canvas" class="raindrops-canvas"></canvas>
+        <video class="raindrops-video" autoplay muted loop playsinline>
+            <source src="/media/raindrops.mp4" type="video/mp4">
+        </video>
 
         <h1 class="hero-title">Optimisez votre rendement solaire</h1>
         <p class="hero-subtitle">Eau osmosée • Zéro produit chimique • Jusqu'à 25% regagné</p>
@@ -608,100 +636,5 @@
     </div>
 </footer>
 
-<script>
-// Raindrops Canvas Animation
-(function() {
-    const canvas = document.getElementById('raindrops-canvas');
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    const heroCard = canvas.parentElement;
-
-    function resizeCanvas() {
-        canvas.width = heroCard.offsetWidth;
-        canvas.height = heroCard.offsetHeight;
-    }
-
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-
-    class Raindrop {
-        constructor() {
-            this.reset();
-        }
-
-        reset() {
-            this.x = Math.random() * canvas.width;
-            this.y = Math.random() * canvas.height * 0.5 - 100;
-            this.vy = Math.random() * 2 + 1.5;
-            this.size = Math.random() * 25 + 15;
-            this.opacity = Math.random() * 0.4 + 0.5;
-        }
-
-        update() {
-            this.y += this.vy;
-
-            if (this.y > canvas.height) {
-                this.reset();
-            }
-        }
-
-        draw() {
-            ctx.save();
-
-            // Ombre/bordure (shadow)
-            ctx.fillStyle = `rgba(0, 0, 0, ${this.opacity * 0.3})`;
-            ctx.beginPath();
-            ctx.arc(this.x + 2, this.y + 2, this.size / 2 + 1, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Goutte principale avec gradient
-            const gradient = ctx.createRadialGradient(this.x - this.size / 3, this.y - this.size / 3, 0, this.x, this.y, this.size / 2);
-            gradient.addColorStop(0, `rgba(255, 255, 255, ${this.opacity * 0.9})`);
-            gradient.addColorStop(0.5, `rgba(200, 220, 255, ${this.opacity * 0.6})`);
-            gradient.addColorStop(1, `rgba(100, 180, 255, ${this.opacity * 0.3})`);
-
-            ctx.fillStyle = gradient;
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size / 2, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Reflet brillant interne
-            ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity * 1.2})`;
-            ctx.beginPath();
-            ctx.arc(this.x - this.size / 4, this.y - this.size / 4, this.size / 6, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Petit reflet secondaire
-            ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity * 0.6})`;
-            ctx.beginPath();
-            ctx.arc(this.x + this.size / 6, this.y + this.size / 5, this.size / 12, 0, Math.PI * 2);
-            ctx.fill();
-
-            ctx.restore();
-        }
-    }
-
-    const raindrops = [];
-    const dropCount = 40;
-
-    for (let i = 0; i < dropCount; i++) {
-        raindrops.push(new Raindrop());
-    }
-
-    function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        raindrops.forEach(drop => {
-            drop.update();
-            drop.draw();
-        });
-
-        requestAnimationFrame(animate);
-    }
-
-    animate();
-})();
-</script>
 
 {% endblock %}
