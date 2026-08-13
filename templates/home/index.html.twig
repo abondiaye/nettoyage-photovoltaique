@@ -130,136 +130,16 @@
         }
     }
 
-    @keyframes bubbleRise {
-        0% {
-            bottom: -50px;
-            opacity: 0;
-        }
-        10% {
-            opacity: 0.7;
-        }
-        90% {
-            opacity: 0.7;
-        }
-        100% {
-            bottom: 100%;
-            opacity: 0;
-            transform: translateX(50px);
-        }
-    }
-
-    @keyframes bubbleRise2 {
-        0% {
-            bottom: -50px;
-            opacity: 0;
-        }
-        10% {
-            opacity: 0.6;
-        }
-        90% {
-            opacity: 0.6;
-        }
-        100% {
-            bottom: 100%;
-            opacity: 0;
-            transform: translateX(-40px);
-        }
-    }
-
-    @keyframes bubbleRise3 {
-        0% {
-            bottom: -50px;
-            opacity: 0;
-        }
-        10% {
-            opacity: 0.65;
-        }
-        90% {
-            opacity: 0.65;
-        }
-        100% {
-            bottom: 100%;
-            opacity: 0;
-            transform: translateX(30px);
-        }
-    }
-
-    .hero-card::before {
-        content: '';
+    .raindrops-canvas {
         position: absolute;
-        bottom: 0;
-        left: 10%;
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 20px;
         pointer-events: none;
-        background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4));
-        box-shadow:
-            inset -2px -2px 5px rgba(0, 0, 0, 0.1),
-            inset 2px 2px 5px rgba(255, 255, 255, 0.4);
-        animation: bubbleRise 4s ease-in infinite;
-    }
-
-    .hero-card::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 40%;
-        width: 25px;
-        height: 25px;
-        border-radius: 50%;
-        pointer-events: none;
-        background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.35));
-        box-shadow:
-            inset -2px -2px 5px rgba(0, 0, 0, 0.1),
-            inset 2px 2px 5px rgba(255, 255, 255, 0.4);
-        animation: bubbleRise2 5s ease-in 0.5s infinite;
-    }
-
-    .bubble {
-        position: absolute;
-        bottom: -50px;
-        border-radius: 50%;
-        pointer-events: none;
-        background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.3));
-        box-shadow:
-            inset -2px -2px 5px rgba(0, 0, 0, 0.15),
-            inset 2px 2px 5px rgba(255, 255, 255, 0.5);
-    }
-
-    .bubble-1 {
-        width: 35px;
-        height: 35px;
-        left: 15%;
-        animation: bubbleRise 6s ease-in infinite;
-    }
-
-    .bubble-2 {
-        width: 25px;
-        height: 25px;
-        left: 35%;
-        animation: bubbleRise2 5.5s ease-in 0.8s infinite;
-    }
-
-    .bubble-3 {
-        width: 30px;
-        height: 30px;
-        left: 55%;
-        animation: bubbleRise 7s ease-in 1.2s infinite;
-    }
-
-    .bubble-4 {
-        width: 20px;
-        height: 20px;
-        left: 70%;
-        animation: bubbleRise2 6s ease-in 0.4s infinite;
-    }
-
-    .bubble-5 {
-        width: 28px;
-        height: 28px;
-        left: 85%;
-        animation: bubbleRise3 6.5s ease-in 1.6s infinite;
+        mix-blend-mode: screen;
+        opacity: 0.9;
     }
 
     /* ===== SERVICES SECTION ===== */
@@ -565,11 +445,7 @@
     <div class="hero-gradient-bg"></div>
 
     <div class="hero-card">
-        <div class="bubble bubble-1"></div>
-        <div class="bubble bubble-2"></div>
-        <div class="bubble bubble-3"></div>
-        <div class="bubble bubble-4"></div>
-        <div class="bubble bubble-5"></div>
+        <canvas id="raindrops-canvas" class="raindrops-canvas"></canvas>
 
         <h1 class="hero-title">Optimisez votre rendement solaire</h1>
         <p class="hero-subtitle">Eau osmosée • Zéro produit chimique • Jusqu'à 25% regagné</p>
@@ -731,5 +607,84 @@
         <p>&copy; 2026 Sirius-Solar. Tous droits réservés. | Spécialiste du nettoyage de panneaux photovoltaïques en Suisse Romande.</p>
     </div>
 </footer>
+
+<script>
+// Raindrops Canvas Animation
+(function() {
+    const canvas = document.getElementById('raindrops-canvas');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    const heroCard = canvas.parentElement;
+
+    function resizeCanvas() {
+        canvas.width = heroCard.offsetWidth;
+        canvas.height = heroCard.offsetHeight;
+    }
+
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    class Raindrop {
+        constructor() {
+            this.reset();
+        }
+
+        reset() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height * 0.5 - 50;
+            this.vx = (Math.random() - 0.5) * 2;
+            this.vy = Math.random() * 3 + 2;
+            this.length = Math.random() * 15 + 10;
+            this.opacity = Math.random() * 0.5 + 0.3;
+            this.width = Math.random() * 1.5 + 0.5;
+        }
+
+        update() {
+            this.y += this.vy;
+            this.x += this.vx;
+
+            if (this.y > canvas.height || this.x < 0 || this.x > canvas.width) {
+                this.reset();
+            }
+        }
+
+        draw() {
+            ctx.save();
+            ctx.globalAlpha = this.opacity;
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+            ctx.lineWidth = this.width;
+            ctx.lineCap = 'round';
+
+            ctx.beginPath();
+            ctx.moveTo(this.x, this.y);
+            ctx.lineTo(this.x + this.vx * this.length, this.y + this.vy * this.length);
+            ctx.stroke();
+
+            ctx.restore();
+        }
+    }
+
+    const raindrops = [];
+    const dropCount = 40;
+
+    for (let i = 0; i < dropCount; i++) {
+        raindrops.push(new Raindrop());
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        raindrops.forEach(drop => {
+            drop.update();
+            drop.draw();
+        });
+
+        requestAnimationFrame(animate);
+    }
+
+    animate();
+})();
+</script>
 
 {% endblock %}
