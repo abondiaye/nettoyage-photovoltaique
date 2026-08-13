@@ -569,7 +569,9 @@
 <section class="hero-container">
     <div class="hero-gradient-bg">
         <img src="{{ asset('images/panneaux-solaires-sous-la-pluie.png') }}" alt="Panneaux solaires sous la pluie">
-        <img src="{{ asset('images/pluie.jpeg') }}" alt="Effet de pluie" style="z-index: 2; opacity: 0.7; mix-blend-mode: overlay;">
+        <video autoplay muted loop playsinline style="z-index: 2; opacity: 0.7; mix-blend-mode: overlay;">
+            <source src="{{ asset('media/raindrops.mp4') }}" type="video/mp4">
+        </video>
     </div>
 
     <div class="hero-card">
@@ -747,7 +749,9 @@
         <div class="carte-visite-container">
             <div class="carte-visite-background">
                 <img src="{{ asset('images/panneaux-solaires-sous-la-pluie.png') }}" alt="Panneaux solaires sous la pluie" style="width: 100%; height: 100%; object-fit: cover;">
-                <img src="{{ asset('images/pluie.jpeg') }}" alt="Effet de pluie" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.7; mix-blend-mode: overlay;">
+                <video autoplay muted loop playsinline style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.7; mix-blend-mode: overlay;">
+                    <source src="{{ asset('media/raindrops.mp4') }}" type="video/mp4">
+                </video>
             </div>
             <img src="{{ asset('images/cartet.jpeg') }}" alt="Sirius-Solar - Carte de Visite" class="carte-visite">
         </div>
