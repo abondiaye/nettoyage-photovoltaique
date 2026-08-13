@@ -633,18 +633,15 @@
         reset() {
             this.x = Math.random() * canvas.width;
             this.y = Math.random() * canvas.height * 0.5 - 50;
-            this.vx = (Math.random() - 0.5) * 2;
-            this.vy = Math.random() * 3 + 2;
-            this.length = Math.random() * 15 + 10;
-            this.opacity = Math.random() * 0.5 + 0.3;
-            this.width = Math.random() * 1.5 + 0.5;
+            this.vy = Math.random() * 4 + 3;
+            this.size = Math.random() * 5 + 3;
+            this.opacity = Math.random() * 0.6 + 0.4;
         }
 
         update() {
             this.y += this.vy;
-            this.x += this.vx;
 
-            if (this.y > canvas.height || this.x < 0 || this.x > canvas.width) {
+            if (this.y > canvas.height) {
                 this.reset();
             }
         }
@@ -652,14 +649,18 @@
         draw() {
             ctx.save();
             ctx.globalAlpha = this.opacity;
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
-            ctx.lineWidth = this.width;
-            ctx.lineCap = 'round';
 
+            // Goutte principale (circulaire)
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
             ctx.beginPath();
-            ctx.moveTo(this.x, this.y);
-            ctx.lineTo(this.x + this.vx * this.length, this.y + this.vy * this.length);
-            ctx.stroke();
+            ctx.arc(this.x, this.y, this.size / 2, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Reflet lumineux (highlight)
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+            ctx.beginPath();
+            ctx.arc(this.x - this.size / 4, this.y - this.size / 4, this.size / 5, 0, Math.PI * 2);
+            ctx.fill();
 
             ctx.restore();
         }
