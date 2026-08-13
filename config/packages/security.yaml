@@ -6,6 +6,9 @@ security:
       entity:
         class: App\Entity\User
         property: email
+    # used to reload user from session & other features (e.g. switch_user)
+    app_user_provider:
+      id: App\Security\UserProvider
 
   password_hashers:
     Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
