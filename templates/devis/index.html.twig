@@ -364,6 +364,211 @@
         color: var(--dore);
     }
 
+    /* ===== PRICING CALCULATOR SECTION ===== */
+    .pricing-wrap {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 80px 20px;
+    }
+
+    .pricing-head {
+        text-align: center;
+        margin-bottom: 60px;
+    }
+
+    .pricing-head h2 {
+        font-size: clamp(1.8rem, 3vw, 2.4rem);
+        font-weight: 900;
+        margin-bottom: 15px;
+        background: linear-gradient(135deg, var(--vert-fonce) 0%, var(--vert-clair) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .pricing-head p {
+        color: #666;
+        font-size: 1.05rem;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .pricing-mode {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 30px;
+    }
+
+    .pricing-mode__label {
+        color: #666;
+        font-size: 0.95rem;
+        font-weight: 600;
+    }
+
+    /* Toggle Switch */
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+    }
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+        border-radius: 34px;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+        border-radius: 50%;
+    }
+
+    input:checked + .slider {
+        background-color: var(--dore);
+    }
+
+    input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
+
+    .pricing-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 60px;
+    }
+
+    .pricing-card {
+        background: white;
+        border-radius: 20px;
+        padding: 40px 30px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .pricing-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 60px rgba(212, 168, 66, 0.2);
+        border-color: var(--dore);
+    }
+
+    .pricing-card.featured {
+        border-color: var(--dore);
+        background: linear-gradient(135deg, rgba(212, 168, 66, 0.05) 0%, rgba(244, 208, 63, 0.05) 100%);
+        transform: scale(1.05);
+    }
+
+    .pricing-card.featured:hover {
+        transform: scale(1.08) translateY(-8px);
+    }
+
+    .pricing-card__head {
+        margin-bottom: 25px;
+        border-bottom: 2px solid #f0f0f0;
+        padding-bottom: 20px;
+    }
+
+    .pricing-card__title {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--vert-fonce);
+        margin-bottom: 8px;
+    }
+
+    .pricing-card__sub {
+        font-size: 14px;
+        color: #999;
+        margin: 0;
+    }
+
+    .pricing-card__price {
+        font-size: 42px;
+        font-weight: 900;
+        color: var(--dore);
+        margin-bottom: 5px;
+    }
+
+    .pricing-card__period {
+        font-size: 14px;
+        color: #999;
+        margin-bottom: 25px;
+    }
+
+    .pricing-features {
+        flex-grow: 1;
+        margin-bottom: 30px;
+    }
+
+    .pricing-features li {
+        list-style: none;
+        padding: 12px 0;
+        border-bottom: 1px solid #f0f0f0;
+        font-size: 14px;
+        color: #333;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .pricing-features li:before {
+        content: "✓";
+        color: var(--dore);
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    .pricing-features li:last-child {
+        border-bottom: none;
+    }
+
+    .pricing-card__btn {
+        background: linear-gradient(135deg, var(--dore), var(--dore-clair));
+        color: #121212;
+        border: none;
+        padding: 14px 28px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .pricing-card__btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 30px rgba(212, 168, 66, 0.3);
+    }
+
     /* ===== RESPONSIVE ===== */
     @media (max-width: 768px) {
         .devis-header {
@@ -407,6 +612,22 @@
             gap: 15px;
             text-align: center;
         }
+
+        .pricing-card.featured {
+            transform: scale(1);
+        }
+
+        .pricing-card.featured:hover {
+            transform: translateY(-8px) scale(1);
+        }
+
+        .pricing-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .pricing-head h2 {
+            font-size: 28px;
+        }
     }
 </style>
 
@@ -415,8 +636,89 @@
     <a href="{{ path('app_home') }}" style="position: absolute; top: 20px; right: 40px; color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: all 0.3s ease;">
         ← Retour à l'accueil
     </a>
-    <h1>Demande de Devis Gratuit</h1>
-    <p>Remplissez le formulaire ci-dessous et nos experts Sirius-Solar vous répondront dans les 48 heures</p>
+    <h1>Nos Tarifs & Devis Gratuit</h1>
+    <p>Découvrez nos offres de nettoyage de panneaux solaires et demandez votre devis personnalisé</p>
+</div>
+
+<!-- Pricing Calculator Section -->
+<div class="pricing-wrap">
+    <div class="pricing-head">
+        <h2>Nos Offres de Nettoyage</h2>
+        <p>Sirius-Solar propose des solutions adaptées à tous les types d'installations solaires</p>
+
+        <div class="pricing-mode">
+            <label class="switch">
+                <input type="checkbox" id="ttcToggle">
+                <span class="slider"></span>
+            </label>
+            <span class="pricing-mode__label">Afficher en TTC (TVA 20%)</span>
+        </div>
+    </div>
+
+    <div class="pricing-grid">
+        <!-- PACK BASIQUE -->
+        <div class="pricing-card" data-pack="basique">
+            <header class="pricing-card__head">
+                <h3 class="pricing-card__title">Nettoyage Basique</h3>
+                <p class="pricing-card__sub">Pour petites installations</p>
+            </header>
+
+            <div class="pricing-card__price" data-price-ht="150">150 €</div>
+            <p class="pricing-card__period">par intervention • HT</p>
+
+            <ul class="pricing-features">
+                <li>Jusqu'à 10 panneaux</li>
+                <li>Nettoyage à l'eau osmosée</li>
+                <li>Séchage sans traces</li>
+                <li>Devis valide 30 jours</li>
+            </ul>
+
+            <button class="pricing-card__btn">Sélectionner</button>
+        </div>
+
+        <!-- PACK STANDARD (Featured) -->
+        <div class="pricing-card featured" data-pack="standard">
+            <header class="pricing-card__head">
+                <h3 class="pricing-card__title">⭐ Pack Standard</h3>
+                <p class="pricing-card__sub">Notre offre la plus populaire</p>
+            </header>
+
+            <div class="pricing-card__price" data-price-ht="280">280 €</div>
+            <p class="pricing-card__period">par intervention • HT</p>
+
+            <ul class="pricing-features">
+                <li>Jusqu'à 25 panneaux</li>
+                <li>Nettoyage complet premium</li>
+                <li>Inspection technique gratuite</li>
+                <li>Rapport d'intervention</li>
+                <li>Devis valide 60 jours</li>
+            </ul>
+
+            <button class="pricing-card__btn">Sélectionner</button>
+        </div>
+
+        <!-- PACK PREMIUM -->
+        <div class="pricing-card" data-pack="premium">
+            <header class="pricing-card__head">
+                <h3 class="pricing-card__title">Nettoyage Premium</h3>
+                <p class="pricing-card__sub">Pour grandes installations</p>
+            </header>
+
+            <div class="pricing-card__price" data-price-ht="450">450 €</div>
+            <p class="pricing-card__period">par intervention • HT</p>
+
+            <ul class="pricing-features">
+                <li>Plus de 25 panneaux</li>
+                <li>Nettoyage haute pression</li>
+                <li>Sealant de protection</li>
+                <li>Diagnostic performance</li>
+                <li>Suivi trimestriel inclus</li>
+                <li>Devis valide 90 jours</li>
+            </ul>
+
+            <button class="pricing-card__btn">Sélectionner</button>
+        </div>
+    </div>
 </div>
 
 <!-- Form Section -->
@@ -573,7 +875,35 @@
 </section>
 
 <script>
-    // Calculate total price based on selected lavage types
+    // ===== PRICING CALCULATOR =====
+    const TVARATE = 0.20; // 20%
+    const euro = n => new Intl.NumberFormat('fr-FR', {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(n) + ' €';
+
+    const isTTC = () => document.getElementById('ttcToggle').checked;
+
+    function updatePricingDisplay() {
+        const pricingCards = document.querySelectorAll('.pricing-card');
+
+        pricingCards.forEach(card => {
+            const priceHT = parseFloat(card.querySelector('[data-price-ht]').getAttribute('data-price-ht'));
+            const priceElement = card.querySelector('.pricing-card__price');
+            const periodElement = card.querySelector('.pricing-card__period');
+
+            if (isTTC()) {
+                const priceTTC = priceHT * (1 + TVARATE);
+                priceElement.textContent = euro(priceTTC);
+                periodElement.textContent = 'par intervention • TTC';
+            } else {
+                priceElement.textContent = euro(priceHT);
+                periodElement.textContent = 'par intervention • HT';
+            }
+        });
+    }
+
+    // Add toggle listener
+    document.getElementById('ttcToggle').addEventListener('change', updatePricingDisplay);
+
+    // ===== CALCULATE TOTAL PRICE FOR LAVAGE TYPES =====
     function updateTotalPrice() {
         let total = 0;
         const checkboxes = document.querySelectorAll('input[name="lavage_types[]"]');
@@ -600,6 +930,7 @@
 
     // Initialize on page load
     updateTotalPrice();
+    updatePricingDisplay();
 </script>
 
 {% endblock %}
