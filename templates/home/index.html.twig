@@ -130,54 +130,136 @@
         }
     }
 
-    @keyframes raindropFall {
+    @keyframes bubbleRise {
         0% {
-            transform: translateY(-150px);
-            opacity: 0.8;
+            bottom: -50px;
+            opacity: 0;
         }
-        85% {
-            opacity: 0.8;
+        10% {
+            opacity: 0.7;
+        }
+        90% {
+            opacity: 0.7;
         }
         100% {
-            transform: translateY(350px);
+            bottom: 100%;
             opacity: 0;
+            transform: translateX(50px);
+        }
+    }
+
+    @keyframes bubbleRise2 {
+        0% {
+            bottom: -50px;
+            opacity: 0;
+        }
+        10% {
+            opacity: 0.6;
+        }
+        90% {
+            opacity: 0.6;
+        }
+        100% {
+            bottom: 100%;
+            opacity: 0;
+            transform: translateX(-40px);
+        }
+    }
+
+    @keyframes bubbleRise3 {
+        0% {
+            bottom: -50px;
+            opacity: 0;
+        }
+        10% {
+            opacity: 0.65;
+        }
+        90% {
+            opacity: 0.65;
+        }
+        100% {
+            bottom: 100%;
+            opacity: 0;
+            transform: translateX(30px);
         }
     }
 
     .hero-card::before {
         content: '';
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
         bottom: 0;
-        border-radius: 20px;
+        left: 10%;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
         pointer-events: none;
-        background-image:
-            radial-gradient(circle, rgba(255, 255, 255, 0.9) 3px, transparent 3px),
-            radial-gradient(circle, rgba(255, 255, 255, 0.85) 2.5px, transparent 2.5px),
-            radial-gradient(circle, rgba(255, 255, 255, 0.95) 3px, transparent 3px),
-            radial-gradient(circle, rgba(255, 255, 255, 0.8) 2px, transparent 2px),
-            radial-gradient(circle, rgba(255, 255, 255, 0.9) 2.5px, transparent 2.5px),
-            radial-gradient(circle, rgba(255, 255, 255, 0.85) 3px, transparent 3px),
-            radial-gradient(circle, rgba(255, 255, 255, 0.8) 2px, transparent 2px);
-        background-size:
-            60px 150px,
-            100px 180px,
-            80px 140px,
-            120px 160px,
-            70px 170px,
-            110px 150px,
-            90px 160px;
-        background-position:
-            0 0,
-            30px 20px,
-            50px 40px,
-            10px 60px,
-            40px 80px,
-            60px 100px,
-            20px 120px;
-        animation: raindropFall 3s linear infinite;
+        background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4));
+        box-shadow:
+            inset -2px -2px 5px rgba(0, 0, 0, 0.1),
+            inset 2px 2px 5px rgba(255, 255, 255, 0.4);
+        animation: bubbleRise 4s ease-in infinite;
+    }
+
+    .hero-card::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 40%;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        pointer-events: none;
+        background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.35));
+        box-shadow:
+            inset -2px -2px 5px rgba(0, 0, 0, 0.1),
+            inset 2px 2px 5px rgba(255, 255, 255, 0.4);
+        animation: bubbleRise2 5s ease-in 0.5s infinite;
+    }
+
+    .bubble {
+        position: absolute;
+        bottom: -50px;
+        border-radius: 50%;
+        pointer-events: none;
+        background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.3));
+        box-shadow:
+            inset -2px -2px 5px rgba(0, 0, 0, 0.15),
+            inset 2px 2px 5px rgba(255, 255, 255, 0.5);
+    }
+
+    .bubble-1 {
+        width: 35px;
+        height: 35px;
+        left: 15%;
+        animation: bubbleRise 6s ease-in infinite;
+    }
+
+    .bubble-2 {
+        width: 25px;
+        height: 25px;
+        left: 35%;
+        animation: bubbleRise2 5.5s ease-in 0.8s infinite;
+    }
+
+    .bubble-3 {
+        width: 30px;
+        height: 30px;
+        left: 55%;
+        animation: bubbleRise 7s ease-in 1.2s infinite;
+    }
+
+    .bubble-4 {
+        width: 20px;
+        height: 20px;
+        left: 70%;
+        animation: bubbleRise2 6s ease-in 0.4s infinite;
+    }
+
+    .bubble-5 {
+        width: 28px;
+        height: 28px;
+        left: 85%;
+        animation: bubbleRise3 6.5s ease-in 1.6s infinite;
     }
 
     /* ===== SERVICES SECTION ===== */
@@ -483,6 +565,12 @@
     <div class="hero-gradient-bg"></div>
 
     <div class="hero-card">
+        <div class="bubble bubble-1"></div>
+        <div class="bubble bubble-2"></div>
+        <div class="bubble bubble-3"></div>
+        <div class="bubble bubble-4"></div>
+        <div class="bubble bubble-5"></div>
+
         <h1 class="hero-title">Optimisez votre rendement solaire</h1>
         <p class="hero-subtitle">Eau osmosée • Zéro produit chimique • Jusqu'à 25% regagné</p>
 
