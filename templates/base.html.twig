@@ -1018,17 +1018,24 @@
             document.addEventListener('click', (e) => {
                 const target = e.target.closest('a[href*="#"]');
                 if (target && target.href) {
-                    const url = new URL(target.href);
-                    const currentUrl = window.location.href;
-                    const hash = url.hash;
+                    try {
+                        const url = new URL(target.href);
+                        const hash = url.hash;
 
-                    // If the link is to an anchor on the same page or home page with anchor
-                    if (hash && (url.pathname === window.location.pathname || url.pathname === '/')) {
-                        e.preventDefault();
-                        const element = document.querySelector(hash);
-                        if (element) {
-                            element.scrollIntoView({ behavior: 'auto', block: 'start' });
+                        // If the link is to an anchor on the same page or home page with anchor
+                        if (hash && (url.pathname === window.location.pathname || url.pathname === '/' || url.pathname === '/index.php')) {
+                            e.preventDefault();
+                            const element = document.querySelector(hash);
+                            if (element) {
+                                // Scroll to the element
+                                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                // Update URL without full page reload
+                                window.history.pushState(null, null, hash);
+                            }
                         }
+                    } catch (err) {
+                        // If URL parsing fails, let default behavior handle it
+                        console.error('Error handling anchor link:', err);
                     }
                 }
             });
