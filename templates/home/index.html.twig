@@ -24,6 +24,26 @@
         background: linear-gradient(135deg, #001a33 0%, #0d4d6d 40%, #1a7a99 60%, #2d5a6f 100%);
         border-radius: 20px;
         z-index: 0;
+        overflow: hidden;
+    }
+
+    .hero-gradient-bg img,
+    .hero-gradient-bg video {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 20px;
+    }
+
+    .hero-gradient-bg img {
+        z-index: 1;
+        opacity: 1;
+    }
+
+    .hero-gradient-bg video {
+        z-index: 2;
+        opacity: 0.8;
     }
 
     .hero-card {
@@ -509,10 +529,14 @@
 
 <!-- Hero Section -->
 <section class="hero-container">
-    <div class="hero-gradient-bg"></div>
+    <div class="hero-gradient-bg">
+        <img src="/images/panneaux-solaires-sous-la-pluie.png" alt="Panneaux solaires sous la pluie">
+        <video autoplay muted loop playsinline>
+            <source src="/media/raindrops.mp4" type="video/mp4">
+        </video>
+    </div>
 
     <div class="hero-card">
-        <img src="/images/panneaux-solaires-sous-la-pluie.png" alt="Panneaux solaires sous la pluie" class="raindrops-image">
 
         <h1 class="hero-title">Optimisez votre rendement solaire</h1>
         <p class="hero-subtitle">Eau osmosée • Zéro produit chimique • Jusqu'à 25% regagné</p>
