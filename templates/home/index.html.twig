@@ -568,9 +568,9 @@
 <!-- Hero Section -->
 <section class="hero-container">
     <div class="hero-gradient-bg">
-        <img src="/images/SOLAR.jpeg" alt="Panneaux solaires">
+        <img src="{{ asset('images/SOLAR.jpeg') }}" alt="Panneaux solaires">
         <video autoplay muted loop playsinline>
-            <source src="/media/raindrops.mp4" type="video/mp4">
+            <source src="{{ asset('media/raindrops.mp4') }}" type="video/mp4">
         </video>
     </div>
 
@@ -596,7 +596,7 @@
 
         <div class="processus-video">
             <video controls autoplay loop muted playsinline>
-                <source src="/media/cleaning-process.mp4" type="video/mp4">
+                <source src="{{ asset('media/cleaning-process.mp4') }}" type="video/mp4">
                 Votre navigateur ne supporte pas la vidéo HTML5.
             </video>
         </div>
@@ -749,7 +749,7 @@
         <div class="carte-visite-container">
             <div class="carte-visite-background">
                 <video autoplay muted loop playsinline>
-                    <source src="/media/raindrops.mp4" type="video/mp4">
+                    <source src="{{ asset('media/raindrops.mp4') }}" type="video/mp4">
                 </video>
             </div>
             <img src="{{ asset('images/cartet.jpeg') }}" alt="Sirius-Solar - Carte de Visite" class="carte-visite">
