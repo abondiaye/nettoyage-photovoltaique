@@ -197,6 +197,45 @@
                 color: var(--dore);
             }
 
+            .language-selector {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-right: 15px;
+            }
+
+            .lang-link {
+                color: rgba(255, 255, 255, 0.8);
+                text-decoration: none;
+                font-size: 12px;
+                font-weight: 600;
+                transition: all 0.3s ease;
+                padding: 5px 8px;
+                border-radius: 4px;
+            }
+
+            .lang-link:hover {
+                color: var(--dore);
+                background: rgba(212, 168, 66, 0.1);
+            }
+
+            .lang-separator {
+                color: rgba(255, 255, 255, 0.4);
+                font-size: 12px;
+            }
+
+            @media (max-width: 768px) {
+                .language-selector {
+                    margin-right: 10px;
+                    gap: 5px;
+                }
+
+                .lang-link {
+                    font-size: 11px;
+                    padding: 3px 5px;
+                }
+            }
+
             .btn-login {
                 background: transparent;
                 color: white;
@@ -907,6 +946,15 @@
         </ul>
 
         <div class="nav-buttons">
+            <!-- Language Selector -->
+            <div class="language-selector">
+                <a href="{{ path('set_locale', {locale: 'fr'}) }}" class="lang-link" title="Français">🇫🇷 FR</a>
+                <span class="lang-separator">|</span>
+                <a href="{{ path('set_locale', {locale: 'de'}) }}" class="lang-link" title="Deutsch">🇩🇪 DE</a>
+                <span class="lang-separator">|</span>
+                <a href="{{ path('set_locale', {locale: 'it'}) }}" class="lang-link" title="Italiano">🇮🇹 IT</a>
+            </div>
+
             <button id="theme-toggle" class="btn-theme" title="Basculer le mode clair/sombre">
                 <span class="theme-icon">🌙</span>
             </button>
