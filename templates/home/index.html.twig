@@ -525,6 +525,43 @@
         font-weight: 700;
         letter-spacing: -1px;
     }
+
+    /* ===== SCROLL BUTTONS ===== */
+    .scroll-button {
+        position: fixed;
+        right: 30px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--dore), var(--dore-clair));
+        border: none;
+        color: #121212;
+        font-size: 24px;
+        cursor: pointer;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 15px rgba(212, 168, 66, 0.4);
+        transition: all 0.3s ease;
+        z-index: 999;
+    }
+
+    .scroll-button:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 20px rgba(212, 168, 66, 0.6);
+    }
+
+    .scroll-button.active {
+        display: flex;
+    }
+
+    #scrollUp {
+        bottom: 100px;
+    }
+
+    #scrollDown {
+        bottom: 30px;
+    }
 </style>
 
 <!-- Hero Section -->
@@ -713,5 +750,50 @@
     </div>
 </footer>
 
+<!-- Scroll Buttons -->
+<button id="scrollUp" class="scroll-button" title="Remonter">↑</button>
+<button id="scrollDown" class="scroll-button" title="Descendre">↓</button>
+
+<script>
+// Scroll Buttons Functionality
+const scrollUpBtn = document.getElementById('scrollUp');
+const scrollDownBtn = document.getElementById('scrollDown');
+
+// Show/hide scroll buttons based on scroll position
+window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+    // Show scroll up button if not at top
+    if (scrollTop > 300) {
+        scrollUpBtn.classList.add('active');
+    } else {
+        scrollUpBtn.classList.remove('active');
+    }
+
+    // Show scroll down button if not at bottom
+    if (scrollTop < scrollHeight - 300) {
+        scrollDownBtn.classList.add('active');
+    } else {
+        scrollDownBtn.classList.remove('active');
+    }
+});
+
+// Scroll up
+scrollUpBtn.addEventListener('click', () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
+
+// Scroll down
+scrollDownBtn.addEventListener('click', () => {
+    window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: 'smooth'
+    });
+});
+</script>
 
 {% endblock %}
