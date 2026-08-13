@@ -177,6 +177,26 @@
                 align-items: center;
             }
 
+            .btn-theme {
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                color: white;
+                padding: 10px 15px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 16px;
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .btn-theme:hover {
+                background: rgba(255, 255, 255, 0.2);
+                border-color: var(--dore);
+                color: var(--dore);
+            }
+
             .btn-login {
                 background: transparent;
                 color: white;
@@ -290,6 +310,44 @@
                 border-bottom: none;
             }
 
+            /* Dark Mode */
+            body.dark-mode {
+                background: #1a1a1a;
+                color: #e0e0e0;
+            }
+
+            body.dark-mode .navbar {
+                background: rgba(30, 30, 30, 0.95);
+            }
+
+            body.dark-mode .hero-card {
+                background: rgba(255, 255, 255, 0.05);
+                border-color: rgba(255, 255, 255, 0.1);
+            }
+
+            body.dark-mode .service-card {
+                background: rgba(255, 255, 255, 0.03);
+                border-color: rgba(255, 255, 255, 0.1);
+            }
+
+            body.dark-mode .pricing-card {
+                background: #2a2a2a;
+                color: #e0e0e0;
+                border-color: rgba(212, 168, 66, 0.2);
+            }
+
+            body.dark-mode .pricing-head h2 {
+                color: var(--dore);
+            }
+
+            body.dark-mode .btn-theme .theme-icon {
+                display: inline;
+            }
+
+            .btn-theme .theme-icon.hidden {
+                display: none;
+            }
+
             /* Responsive Mobile */
             @media (max-width: 768px) {
                 .navbar {
@@ -389,6 +447,10 @@
         </ul>
 
         <div class="nav-buttons">
+            <button id="theme-toggle" class="btn-theme" title="Basculer le mode clair/sombre">
+                <span class="theme-icon">🌙</span>
+            </button>
+
             {% if app.user %}
                 {# Utilisateur connecté #}
                 <a href="{{ path('app_user_dashboard') }}" class="btn-login">📊 Mon Compte</a>
@@ -462,6 +524,33 @@
                 if (!e.target.closest('.navbar') && !e.target.closest('#mobileMenu')) {
                     hamburger.classList.remove('active');
                     mobileMenu.classList.remove('active');
+                }
+            });
+
+            // Theme Toggle
+            const themeToggle = document.getElementById('theme-toggle');
+            const html = document.documentElement;
+            const themeIcon = themeToggle.querySelector('.theme-icon');
+
+            // Check for saved theme preference or default to light mode
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            if (currentTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                html.setAttribute('data-theme', 'dark');
+                themeIcon.textContent = '☀️';
+            }
+
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+
+                if (document.body.classList.contains('dark-mode')) {
+                    html.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('theme', 'dark');
+                    themeIcon.textContent = '☀️';
+                } else {
+                    html.setAttribute('data-theme', 'light');
+                    localStorage.setItem('theme', 'light');
+                    themeIcon.textContent = '🌙';
                 }
             });
         </script>
