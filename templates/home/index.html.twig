@@ -937,27 +937,19 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// Scroll up by 500px (one step)
+// Scroll up by 500px (one step) - instantaneous
 scrollUpBtn.addEventListener('click', () => {
     const currentScroll = window.scrollY;
     const targetScroll = Math.max(currentScroll - 500, 0);
-
-    window.scrollTo({
-        top: targetScroll,
-        behavior: 'smooth'
-    });
+    window.scrollTo(0, targetScroll);
 });
 
-// Scroll down by 500px (one step)
+// Scroll down by 500px (one step) - instantaneous
 scrollDownBtn.addEventListener('click', () => {
     const currentScroll = window.scrollY;
     const targetScroll = currentScroll + 500;
     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-
-    window.scrollTo({
-        top: Math.min(targetScroll, maxScroll),
-        behavior: 'smooth'
-    });
+    window.scrollTo(0, Math.min(targetScroll, maxScroll));
 });
 </script>
 
