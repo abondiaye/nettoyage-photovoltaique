@@ -41,7 +41,7 @@
             <div style="
                 background: rgba(255, 255, 255, 0.1);
                 backdrop-filter: blur(20px);
-                border: 1px solid rgba(212, 168, 66, 0.3);
+                border: 1px solid rgba(160, 160, 160, 0.3);
                 border-radius: 15px;
                 padding: 25px;
                 animation: fadeInUp 0.6s ease-out;
@@ -59,7 +59,7 @@
             <div style="
                 background: rgba(255, 255, 255, 0.1);
                 backdrop-filter: blur(20px);
-                border: 1px solid rgba(212, 168, 66, 0.3);
+                border: 1px solid rgba(160, 160, 160, 0.3);
                 border-radius: 15px;
                 padding: 25px;
                 animation: fadeInUp 0.6s ease-out 0.1s both;
@@ -80,7 +80,7 @@
             <div style="
                 background: rgba(255, 255, 255, 0.1);
                 backdrop-filter: blur(20px);
-                border: 1px solid rgba(212, 168, 66, 0.3);
+                border: 1px solid rgba(160, 160, 160, 0.3);
                 border-radius: 15px;
                 padding: 25px;
                 animation: fadeInUp 0.6s ease-out 0.2s both;
@@ -114,8 +114,8 @@
                 text-align: center;
                 font-weight: 600;
                 transition: all 0.3s ease;
-                box-shadow: 0 8px 20px rgba(212, 168, 66, 0.3);
-            " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 12px 30px rgba(212, 168, 66, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 20px rgba(212, 168, 66, 0.3)'">
+                box-shadow: 0 8px 20px rgba(160, 160, 160, 0.3);
+            " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 12px 30px rgba(160, 160, 160, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 20px rgba(160, 160, 160, 0.3)'">
                 📝 Demander un Devis
             </a>
 
@@ -127,9 +127,9 @@
                 text-decoration: none;
                 text-align: center;
                 font-weight: 600;
-                border: 1px solid rgba(212, 168, 66, 0.3);
+                border: 1px solid rgba(160, 160, 160, 0.3);
                 transition: all 0.3s ease;
-            " onmouseover="this.style.background='rgba(212, 168, 66, 0.15)'; this.style.borderColor='var(--dore)'; this.style.color='var(--dore)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.borderColor='rgba(212, 168, 66, 0.3)'; this.style.color='white'">
+            " onmouseover="this.style.background='rgba(160, 160, 160, 0.15)'; this.style.borderColor='var(--dore)'; this.style.color='var(--dore)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.borderColor='rgba(160, 160, 160, 0.3)'; this.style.color='white'">
                 📊 Mes Devis
             </a>
 
@@ -141,9 +141,9 @@
                 text-decoration: none;
                 text-align: center;
                 font-weight: 600;
-                border: 1px solid rgba(212, 168, 66, 0.3);
+                border: 1px solid rgba(160, 160, 160, 0.3);
                 transition: all 0.3s ease;
-            " onmouseover="this.style.background='rgba(212, 168, 66, 0.15)'; this.style.borderColor='var(--dore)'; this.style.color='var(--dore)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.borderColor='rgba(212, 168, 66, 0.3)'; this.style.color='white'">
+            " onmouseover="this.style.background='rgba(160, 160, 160, 0.15)'; this.style.borderColor='var(--dore)'; this.style.color='var(--dore)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.borderColor='rgba(160, 160, 160, 0.3)'; this.style.color='white'">
                 👤 Mon Profil
             </a>
         </div>
@@ -152,7 +152,7 @@
         <div style="
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(212, 168, 66, 0.3);
+            border: 1px solid rgba(160, 160, 160, 0.3);
             border-radius: 15px;
             padding: 30px;
             animation: fadeInUp 0.6s ease-out 0.3s both;
@@ -167,7 +167,7 @@
                 <div style="overflow-x: auto;">
                     <table style="width: 100%; border-collapse: collapse;">
                         <thead>
-                            <tr style="border-bottom: 2px solid rgba(212, 168, 66, 0.3);">
+                            <tr style="border-bottom: 2px solid rgba(160, 160, 160, 0.3);">
                                 <th style="text-align: left; color: rgba(255,255,255, 0.7); padding: 12px 0; font-weight: 600;">Date</th>
                                 <th style="text-align: left; color: rgba(255,255,255, 0.7); padding: 12px 0; font-weight: 600;">Type</th>
                                 <th style="text-align: left; color: rgba(255,255,255, 0.7); padding: 12px 0; font-weight: 600;">Panneaux</th>
@@ -176,7 +176,7 @@
                         </thead>
                         <tbody>
                             {% for d in app.user.devis|reverse %}
-                                <tr style="border-bottom: 1px solid rgba(212, 168, 66, 0.2);">
+                                <tr style="border-bottom: 1px solid rgba(160, 160, 160, 0.2);">
                                     <td style="color: rgba(255,255,255, 0.8); padding: 15px 0;">{{ d.dateCreation|date('d/m/Y') }}</td>
                                     <td style="color: rgba(255,255,255, 0.8); padding: 15px 0;">{{ d.typeInstallation }}</td>
                                     <td style="color: rgba(255,255,255, 0.8); padding: 15px 0;">{{ d.nombrePanneaux }}</td>

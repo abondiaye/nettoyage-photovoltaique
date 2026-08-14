@@ -39,8 +39,8 @@
             :root {
                 --vert-fonce: #0A3D35;
                 --vert-clair: #2D6B55;
-                --dore: #D4A842;
-                --dore-clair: #f4d03f;
+                --dore: #a8a8a8;
+                --dore-clair: #e8e8e8;
                 --blanc: #FFFFFF;
                 --noir: #121212;
                 --gris-clair: #F0F4F8;
@@ -66,7 +66,7 @@
                 /* Glasmorphism */
                 background: rgba(10, 61, 53, 0.85);
                 backdrop-filter: blur(25px);
-                border-bottom: 2px solid rgba(212, 168, 66, 0.4);
+                border-bottom: 2px solid rgba(160, 160, 160, 0.4);
 
                 height: 140px;
                 padding: 0 40px;
@@ -109,8 +109,8 @@
                 flex-shrink: 0;
                 background: rgba(255, 255, 255, 0.08);
                 border-radius: 16px;
-                border: 3px solid rgba(212, 168, 66, 0.5);
-                box-shadow: 0 16px 40px rgba(212, 168, 66, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+                border: 3px solid rgba(160, 160, 160, 0.5);
+                box-shadow: 0 16px 40px rgba(160, 160, 160, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
                 transition: all 0.3s ease;
             }
 
@@ -120,13 +120,13 @@
                 object-fit: contain;
                 padding: 12px;
                 border-radius: 12px;
-                filter: drop-shadow(0 4px 8px rgba(212, 168, 66, 0.4));
+                filter: drop-shadow(0 4px 8px rgba(160, 160, 160, 0.4));
             }
 
             .nav-brand:hover .nav-brand-icon {
-                background: rgba(212, 168, 66, 0.18);
+                background: rgba(160, 160, 160, 0.18);
                 border-color: var(--dore-clair);
-                box-shadow: 0 20px 50px rgba(212, 168, 66, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+                box-shadow: 0 20px 50px rgba(160, 160, 160, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
                 transform: translateY(-3px);
             }
 
@@ -216,7 +216,7 @@
 
             .lang-link:hover {
                 color: var(--dore);
-                background: rgba(212, 168, 66, 0.1);
+                background: rgba(160, 160, 160, 0.1);
             }
 
             .lang-separator {
@@ -268,7 +268,7 @@
 
             .btn-signup:hover {
                 transform: scale(1.05);
-                box-shadow: 0 10px 30px rgba(212, 168, 66, 0.4);
+                box-shadow: 0 10px 30px rgba(160, 160, 160, 0.4);
             }
 
             /* Hamburger Menu */
@@ -313,7 +313,7 @@
                 list-style: none;
                 padding: 0;
                 margin: 0;
-                border-bottom: 1px solid rgba(212, 168, 66, 0.3);
+                border-bottom: 1px solid rgba(160, 160, 160, 0.3);
                 max-height: calc(100vh - 140px);
                 overflow-y: auto;
                 z-index: 999;
@@ -325,7 +325,7 @@
             }
 
             .nav-menu-mobile li {
-                border-bottom: 1px solid rgba(212, 168, 66, 0.2);
+                border-bottom: 1px solid rgba(160, 160, 160, 0.2);
                 width: 100%;
             }
 
@@ -342,7 +342,7 @@
 
             .nav-menu-mobile a:hover {
                 color: var(--dore);
-                background: rgba(212, 168, 66, 0.1);
+                background: rgba(160, 160, 160, 0.1);
             }
 
             .nav-menu-mobile li:last-child {
@@ -413,12 +413,12 @@
 
             body.dark-mode .navbar {
                 background: rgba(15, 15, 15, 0.98);
-                border-bottom-color: rgba(212, 168, 66, 0.3);
+                border-bottom-color: rgba(160, 160, 160, 0.3);
             }
 
             body.dark-mode .hero-card {
                 background: rgba(255, 255, 255, 0.08);
-                border-color: rgba(212, 168, 66, 0.3);
+                border-color: rgba(160, 160, 160, 0.3);
             }
 
             body.dark-mode .hero-title,
@@ -428,22 +428,22 @@
 
             body.dark-mode .service-card {
                 background: rgba(255, 255, 255, 0.05);
-                border-color: rgba(212, 168, 66, 0.2);
+                border-color: rgba(160, 160, 160, 0.2);
                 color: #e8e8e8;
             }
 
             body.dark-mode .service-card:hover {
-                background: rgba(212, 168, 66, 0.08);
+                background: rgba(160, 160, 160, 0.08);
             }
 
             body.dark-mode .pricing-card {
                 background: #1a1a1a;
                 color: #e8e8e8;
-                border-color: rgba(212, 168, 66, 0.3);
+                border-color: rgba(160, 160, 160, 0.3);
             }
 
             body.dark-mode .pricing-card.featured {
-                background: rgba(212, 168, 66, 0.1);
+                background: rgba(160, 160, 160, 0.1);
             }
 
             body.dark-mode .pricing-card__title {
@@ -521,7 +521,7 @@
 
             body.dark-mode .footer {
                 background: #0a0a0a;
-                border-top: 1px solid rgba(212, 168, 66, 0.3);
+                border-top: 1px solid rgba(160, 160, 160, 0.3);
                 color: #b0b0b0;
             }
 
@@ -563,7 +563,7 @@
 
             body.dark-mode .advantage-card {
                 background: rgba(30, 30, 30, 0.9) !important;
-                border-color: rgba(212, 168, 66, 0.5) !important;
+                border-color: rgba(160, 160, 160, 0.5) !important;
                 backdrop-filter: blur(20px) !important;
             }
 
@@ -577,7 +577,7 @@
 
             body.dark-mode .service-card {
                 background: rgba(30, 30, 30, 0.9) !important;
-                border-color: rgba(212, 168, 66, 0.5) !important;
+                border-color: rgba(160, 160, 160, 0.5) !important;
                 backdrop-filter: blur(20px) !important;
             }
 
@@ -613,16 +613,16 @@
             body.dark-mode table {
                 background: #1a1a1a;
                 color: #e8e8e8;
-                border-color: rgba(212, 168, 66, 0.2);
+                border-color: rgba(160, 160, 160, 0.2);
             }
 
             body.dark-mode th, body.dark-mode td {
-                border-color: rgba(212, 168, 66, 0.2);
+                border-color: rgba(160, 160, 160, 0.2);
                 color: #e8e8e8;
             }
 
             body.dark-mode th {
-                background: rgba(212, 168, 66, 0.1);
+                background: rgba(160, 160, 160, 0.1);
                 color: #f5f5f5;
             }
 
@@ -643,17 +643,17 @@
             body.dark-mode code {
                 background: rgba(255, 255, 255, 0.08);
                 color: #e8e8e8;
-                border-color: rgba(212, 168, 66, 0.2);
+                border-color: rgba(160, 160, 160, 0.2);
             }
 
             body.dark-mode pre {
                 background: rgba(255, 255, 255, 0.05);
-                border-color: rgba(212, 168, 66, 0.2);
+                border-color: rgba(160, 160, 160, 0.2);
                 color: #e8e8e8;
             }
 
             body.dark-mode hr {
-                border-color: rgba(212, 168, 66, 0.2);
+                border-color: rgba(160, 160, 160, 0.2);
             }
 
             body.dark-mode img {
@@ -702,13 +702,13 @@
             }
 
             body.dark-mode .modal-header {
-                background: rgba(212, 168, 66, 0.08);
-                border-color: rgba(212, 168, 66, 0.2);
+                background: rgba(160, 160, 160, 0.08);
+                border-color: rgba(160, 160, 160, 0.2);
             }
 
             body.dark-mode .modal-footer {
-                background: rgba(212, 168, 66, 0.05);
-                border-color: rgba(212, 168, 66, 0.2);
+                background: rgba(160, 160, 160, 0.05);
+                border-color: rgba(160, 160, 160, 0.2);
             }
 
             body.dark-mode .nav-menu-mobile {
@@ -805,7 +805,7 @@
 
             body.dark-mode .card {
                 background: rgba(30, 30, 30, 0.9) !important;
-                border-color: rgba(212, 168, 66, 0.3) !important;
+                border-color: rgba(160, 160, 160, 0.3) !important;
                 color: #e8e8e8 !important;
             }
 

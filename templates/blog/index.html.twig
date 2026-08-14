@@ -50,7 +50,7 @@
 
     .project-card:hover {
         transform: translateY(-10px);
-        box-shadow: 0 20px 60px rgba(212, 168, 66, 0.3);
+        box-shadow: 0 20px 60px rgba(160, 160, 160, 0.3);
     }
 
     .project-images {
@@ -126,7 +126,7 @@
     .project-badge {
         display: inline-block;
         background: linear-gradient(135deg, #0A3D35 0%, #2D6B55 100%);
-        color: #D4A842;
+        color: #a8a8a8;
         padding: 8px 16px;
         border-radius: 50px;
         font-size: 12px;
@@ -157,7 +157,7 @@
     }
 
     body.dark-mode .project-title {
-        color: #D4A842;
+        color: #a8a8a8;
     }
 
     body.dark-mode .project-description {
@@ -202,7 +202,7 @@
 <section class="blog-container">
     {% if app.user and is_granted('ROLE_ADMIN') %}
     <div style="text-align: center; margin-bottom: 40px;">
-        <a href="{{ path('app_admin_blog_create') }}" class="btn" style="background: linear-gradient(135deg, #0A3D35 0%, #2D6B55 100%); color: #D4A842; padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: 600; display: inline-block;">
+        <a href="{{ path('app_admin_blog_create') }}" class="btn" style="background: linear-gradient(135deg, #0A3D35 0%, #2D6B55 100%); color: #a8a8a8; padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: 600; display: inline-block;">
             ➕ Ajouter une Réalisation
         </a>
     </div>
