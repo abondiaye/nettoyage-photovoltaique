@@ -345,16 +345,51 @@
         animation-fill-mode: both;
 
         transition: all 0.3s ease;
+        position: relative;
+        padding-top: 60px;
+    }
+
+    .advantage-card::before {
+        content: attr(data-number);
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #0A3D35 0%, #2D6B55 100%);
+        border: 3px solid #D4A842;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 28px;
+        color: #D4A842;
+        box-shadow: 0 8px 20px rgba(212, 168, 66, 0.5);
+        transition: all 0.3s ease;
     }
 
     .advantage-card:nth-child(1) { animation-delay: 0.1s; }
+    .advantage-card:nth-child(1)::before { content: "1"; }
+
     .advantage-card:nth-child(2) { animation-delay: 0.2s; }
+    .advantage-card:nth-child(2)::before { content: "2"; }
+
     .advantage-card:nth-child(3) { animation-delay: 0.3s; }
+    .advantage-card:nth-child(3)::before { content: "3"; }
+
     .advantage-card:nth-child(4) { animation-delay: 0.4s; }
+    .advantage-card:nth-child(4)::before { content: "4"; }
 
     .advantage-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 15px 35px rgba(212, 168, 66, 0.15);
+    }
+
+    .advantage-card:hover::before {
+        transform: translateX(-50%) scale(1.15);
+        box-shadow: 0 12px 30px rgba(212, 168, 66, 0.7);
     }
 
     .advantage-icon {
@@ -866,6 +901,23 @@
             <p style="text-align: center; margin-top: 40px; color: rgba(255, 255, 255, 0.7); font-size: 14px; letter-spacing: 1px;">
                 ✨ Vos cartes de visite professionnelles Sirius-Solar
             </p>
+
+            {% if app.user %}
+            <!-- Boutons Contact pour Connectés -->
+            <div style="text-align: center; margin-top: 30px; display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <a href="#contact" style="background: #D4A842; color: #0A3D35; padding: 12px 25px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 14px; transition: all 0.3s ease; display: inline-block;" onmouseover="this.style.boxShadow='0 10px 30px rgba(212, 168, 66, 0.5)'" onmouseout="this.style.boxShadow='none'">
+                    📞 Nous Contacter
+                </a>
+                <a href="/devis" style="background: rgba(212, 168, 66, 0.2); color: #D4A842; padding: 12px 25px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 14px; border: 2px solid #D4A842; transition: all 0.3s ease; display: inline-block;" onmouseover="this.style.background='rgba(212, 168, 66, 0.3)'" onmouseout="this.style.background='rgba(212, 168, 66, 0.2)'">
+                    📋 Demander un Devis
+                </a>
+            </div>
+            {% else %}
+            <!-- Message pour non-connectés -->
+            <p style="text-align: center; margin-top: 30px; color: rgba(212, 168, 66, 0.8); font-size: 13px; letter-spacing: 0.5px;">
+                <a href="{{ path('app_login') }}" style="color: #D4A842; text-decoration: underline;">Connectez-vous</a> pour voir les options de contact
+            </p>
+            {% endif %}
         </div>
     </div>
 
