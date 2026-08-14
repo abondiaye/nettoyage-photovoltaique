@@ -558,28 +558,41 @@
         }
     }
 
-    /* ===== CHROME SEPARATOR ===== */
+    /* ===== METALLIC SEPARATOR WITH CYAN LEDS ===== */
     .processus-section::before,
     .services-section::before,
     .advantages-section::before,
     .cta-section::before {
         content: '';
         display: block;
-        height: 6px;
+        height: 12px;
+        margin: 50px 0;
         background:
-            linear-gradient(90deg,
-                rgba(255, 255, 255, 0),
-                rgba(255, 255, 255, 0.4) 10%,
-                rgba(160, 160, 160, 1) 25%,
-                rgba(255, 215, 0, 0.8) 50%,
-                rgba(160, 160, 160, 1) 75%,
-                rgba(255, 255, 255, 0.4) 90%,
-                rgba(255, 255, 255, 0)
+            /* LED Cyan glow spots */
+            radial-gradient(circle at 10% 50%, #01d6ff 0%, rgba(1, 214, 255, 0.4) 8%, transparent 15%),
+            radial-gradient(circle at 25% 50%, #01d6ff 0%, rgba(1, 214, 255, 0.4) 8%, transparent 15%),
+            radial-gradient(circle at 40% 50%, #01d6ff 0%, rgba(1, 214, 255, 0.4) 8%, transparent 15%),
+            radial-gradient(circle at 55% 50%, #01d6ff 0%, rgba(1, 214, 255, 0.4) 8%, transparent 15%),
+            radial-gradient(circle at 70% 50%, #01d6ff 0%, rgba(1, 214, 255, 0.4) 8%, transparent 15%),
+            radial-gradient(circle at 85% 50%, #01d6ff 0%, rgba(1, 214, 255, 0.4) 8%, transparent 15%),
+            /* Metallic rays conic gradient */
+            conic-gradient(
+                #cdcdcd, #9d9d9d, #808080,
+                #bcbcbc, #c4c4c4, #e6e6e6,
+                #dddddd, #a1a1a1, #7f7f7f,
+                #8b8b8b, #bfbfbf, #e3e3e3,
+                #d2d2d2, #a6a6a6, #858585,
+                #8d8d8d, #c0c0c0, #e5e5e5,
+                #d6d6d6, #9e9e9e, #828282,
+                #8f8f8f, #bdbdbd, #e3e3e3,
+                #cdcdcd
             );
         box-shadow:
-            inset 0 1px 2px rgba(255, 255, 255, 0.6),
-            inset 0 -1px 2px rgba(100, 80, 0, 0.4),
-            0 2px 5px rgba(160, 160, 160, 0.4);
+            inset 0 1px 3px rgba(255, 255, 255, 0.5),
+            inset 0 -1px 3px rgba(0, 0, 0, 0.6),
+            0 0 20px rgba(1, 214, 255, 0.4),
+            0 4px 12px rgba(0, 0, 0, 0.3);
+        border-radius: 3px;
         position: relative;
         z-index: 10;
     }
