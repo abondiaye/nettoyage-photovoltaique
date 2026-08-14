@@ -1006,6 +1006,9 @@
         {% block body %}{% endblock %}
     </main>
 
+    <!-- Circular Navigation Wheel -->
+    {% include 'components/circular-navbar.html.twig' %}
+
     {% block javascripts %}
         {{ encore_entry_script_tags('app') }}
         <script>
