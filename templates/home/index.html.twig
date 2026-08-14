@@ -21,10 +21,11 @@
     .hero-gradient-bg {
         position: absolute;
         inset: 20px;
-        background: linear-gradient(135deg, #001a33 0%, #0d4d6d 40%, #1a7a99 60%, #2d5a6f 100%);
+        background: linear-gradient(135deg, #003d5c 0%, #1a6b8f 40%, #2a9cc0 60%, #3d7ba0 100%);
         border-radius: 20px;
         z-index: 0;
         overflow: hidden;
+        filter: brightness(1.15) contrast(1.1);
     }
 
     .hero-gradient-bg img,
@@ -38,13 +39,14 @@
 
     .hero-gradient-bg img {
         z-index: 1;
-        opacity: 1;
+        opacity: 1.2;
+        filter: brightness(1.2) contrast(1.15);
     }
 
     .hero-gradient-bg video {
         z-index: 2;
-        opacity: 0.7;
-        mix-blend-mode: overlay;
+        opacity: 0.4;
+        mix-blend-mode: lighten;
     }
 
     .hero-card {
@@ -57,9 +59,9 @@
         justify-content: center;
 
         /* Glasmorphism */
-        background: rgba(0, 0, 0, 0.1);
+        background: rgba(0, 0, 0, 0.25);
         backdrop-filter: blur(30px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.3);
 
         border-radius: 20px;
         padding: 80px 60px;
