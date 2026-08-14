@@ -47,6 +47,10 @@
                 --gris-moyen: #888888;
             }
 
+            html {
+                scroll-behavior: smooth;
+            }
+
             html, body {
                 height: 100%;
                 font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -1307,10 +1311,10 @@
         <!-- Desktop Menu -->
         <ul class="nav-menu" id="navMenu">
             <li><a href="{{ path('app_home') }}" class="nav-link" data-path="home">Accueil</a></li>
-            <li><a href="{{ path('app_home') }}#avantages" class="nav-link" data-path="about">À propos</a></li>
-            <li><a href="{{ path('app_home') }}#services" class="nav-link" data-path="services">Services</a></li>
+            <li><a href="#avantages" class="nav-link" data-path="about">À propos</a></li>
+            <li><a href="#services" class="nav-link" data-path="services">Services</a></li>
             <li><a href="{{ path('app_cartes_animees') }}" class="nav-link" data-path="gallery">Gallery</a></li>
-            <li><a href="{{ path('app_home') }}#contact" class="nav-link" data-path="contact">Contact</a></li>
+            <li><a href="#contact" class="nav-link" data-path="contact">Contact</a></li>
         </ul>
 
         <div class="nav-buttons">
@@ -1353,10 +1357,10 @@
     <div class="nav-menu-mobile" id="mobileMenu">
         <ul>
             <li><a href="{{ path('app_home') }}" class="nav-link" data-path="home">Accueil</a></li>
-            <li><a href="{{ path('app_home') }}#avantages" class="nav-link" data-path="about">À propos</a></li>
-            <li><a href="{{ path('app_home') }}#services" class="nav-link" data-path="services">Services</a></li>
+            <li><a href="#avantages" class="nav-link" data-path="about">À propos</a></li>
+            <li><a href="#services" class="nav-link" data-path="services">Services</a></li>
             <li><a href="{{ path('app_cartes_animees') }}" class="nav-link" data-path="gallery">Gallery</a></li>
-            <li><a href="{{ path('app_home') }}#contact" class="nav-link" data-path="contact">Contact</a></li>
+            <li><a href="#contact" class="nav-link" data-path="contact">Contact</a></li>
         </ul>
     </div>
 
