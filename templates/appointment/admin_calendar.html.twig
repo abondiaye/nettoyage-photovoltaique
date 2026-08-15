@@ -388,9 +388,53 @@
         color: #ffed4e;
         text-decoration: underline;
     }
+
+    .back-button-wrapper {
+        margin-bottom: 30px;
+    }
+
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(192, 192, 192, 0.15));
+        border: 2px solid rgba(192, 192, 192, 0.4);
+        color: rgba(192, 192, 192, 0.85);
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 13px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .back-btn:hover {
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.25), rgba(192, 192, 192, 0.25));
+        border-color: rgba(192, 192, 192, 0.7);
+        color: #ffd700;
+        transform: translateX(-3px);
+    }
+
+    .back-arrow {
+        font-size: 16px;
+        transition: transform 0.3s ease;
+    }
+
+    .back-btn:hover .back-arrow {
+        transform: translateX(-2px);
+    }
 </style>
 
 <div class="admin-calendar-container">
+    <!-- Back Button -->
+    <div class="back-button-wrapper">
+        <a href="{{ path('app_admin_dashboard') }}" class="back-btn">
+            <span class="back-arrow">←</span>
+            Retour
+        </a>
+    </div>
+
     <div class="calendar-header">
         <h1>📅 Calendrier Rendez-vous</h1>
         <p>Gérez les demandes d'intervention des clients</p>
