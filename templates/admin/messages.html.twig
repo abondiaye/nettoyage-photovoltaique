@@ -188,6 +188,33 @@
         transform: translateX(3px);
     }
 
+    .admin-footer {
+        background: rgba(10, 61, 53, 0.4);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid rgba(192, 192, 192, 0.2);
+        padding: 30px 40px;
+        margin-top: 60px;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .admin-footer p {
+        margin: 0;
+        line-height: 1.6;
+    }
+
+    .admin-footer a {
+        color: #ffd700;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .admin-footer a:hover {
+        color: #ffed4e;
+        text-decoration: underline;
+    }
+
     /* Mobile */
     @media (max-width: 768px) {
         .messages-container {
@@ -271,6 +298,13 @@
             <span class="arrow arrow-right">→</span>
         </a>
     </div>
+
+    <!-- Footer -->
+    <footer class="admin-footer">
+        <p>© 2026 <strong>Sirius-Solar</strong> — Nettoyage & Entretien de Panneaux Photovoltaïques</p>
+        <p>Eau osmosée • Zéro produit chimique • Jusqu'à 25% de rendement regagné</p>
+        <p><a href="{{ path('app_home') }}">Retour à l'accueil</a> | <a href="{{ path('app_devis') }}">Demander un devis</a></p>
+    </footer>
 </div>
 
 {% endblock %}
