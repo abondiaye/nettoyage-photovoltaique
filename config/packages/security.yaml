@@ -20,25 +20,6 @@ security:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
 
-    login:
-      pattern: ^/login$
-      security: false
-
-    admin:
-      pattern: ^/admin
-      provider: users
-      form_login:
-        login_path: app_login
-        check_path: app_login
-        username_parameter: email
-        password_parameter: password
-      logout:
-        path: app_logout
-        target: home
-      remember_me:
-        secret: '%kernel.secret%'
-        lifetime: 604800 # 7 jours
-
     main:
       lazy: true
       provider: users
@@ -49,7 +30,10 @@ security:
         password_parameter: password
       logout:
         path: app_logout
-        target: home
+        target: app_home
+      remember_me:
+        secret: '%kernel.secret%'
+        lifetime: 604800
 
   # Easy way to control access for large sections of your site
   # Note: Only the *first* access control that matches will be used
