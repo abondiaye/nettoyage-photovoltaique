@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="fr">
+{% set routeName = app.request.attributes.get('_route')|default('NOROUTE') %}
+<html lang="fr" data-x="{{ routeName }}" {% if routeName|slice(0, 6) == 'admin_' %}class="is-admin"{% endif %}>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -31,24 +32,9 @@
         {% set currentRoute = app.request.attributes.get('_route')|default('') %}
         {% if currentRoute|slice(0, 6) == 'admin_' or app.request.pathInfo|default('')|slice(0, 6) == '/admin' %}
         <style>
-            /* Hide navbar and circular nav on all admin pages */
-            html .navbar {
-                display: none !important;
-                visibility: hidden !important;
-                height: 0 !important;
-                position: absolute !important;
-                top: -9999px !important;
-            }
-
-            html .circular-nav-container {
-                display: none !important;
-                visibility: hidden !important;
-                height: 0 !important;
-                width: 0 !important;
-                position: absolute !important;
-                top: -9999px !important;
-                left: -9999px !important;
-            }
+            /* Hide navbar and circular nav by DEFAULT (on ALL pages) */
+            .navbar { display: none !important; visibility: hidden !important; height: 0 !important; margin: 0 !important; padding: 0 !important; }
+            .circular-nav-container { display: none !important; visibility: hidden !important; height: 0 !important; width: 0 !important; margin: 0 !important; padding: 0 !important; }
 
             html footer {
                 display: none !important;
@@ -1328,34 +1314,9 @@
     {% endblock %}
 </head>
 <body>
-    <script>
-    // Hide navbar, circular-nav, and footer on ALL admin pages
-    (function() {
-        function hideAdminElements() {
-            if (window.location.pathname.startsWith('/admin')) {
-                const navbar = document.querySelector('.navbar');
-                const circNav = document.querySelector('.circular-nav-container');
-                const footer = document.querySelector('footer');
-
-                if (navbar) navbar.style.cssText = 'display: none !important; visibility: hidden !important;';
-                if (circNav) circNav.style.cssText = 'display: none !important; visibility: hidden !important;';
-                if (footer) footer.style.cssText = 'display: none !important; visibility: hidden !important;';
-            }
-        }
-
-        // Run immediately
-        hideAdminElements();
-
-        // Run when DOM is ready
-        document.addEventListener('DOMContentLoaded', hideAdminElements);
-
-        // Run on every page load
-        window.addEventListener('load', hideAdminElements);
-    })();
-    </script>
 
     <!-- Navigation -->
-    <nav class="navbar" {% if app.request.attributes.get('_route')|default('')|slice(0, 6) == 'admin_' %}style="display: none !important;"{% endif %}>
+    <nav class="navbar">
         <a href="{{ path('app_home') }}" class="nav-brand">
             <div class="nav-brand-icon">
                 <img src="{{ asset('images/logo1.jpeg') }}" alt="Sirius-Solar Logo">
@@ -1425,8 +1386,7 @@
     </main>
 
     <!-- Circular Navigation Wheel (not in admin) -->
-    {% set currentRoute = app.request.attributes.get('_route')|default('') %}
-    {% if currentRoute|slice(0, 6) != 'admin_' %}
+    {% if not (app.request.pathInfo|default('')|length > 0 and '/admin' in app.request.pathInfo) %}
         {% include 'components/circular-navbar.html.twig' %}
     {% endif %}
 
