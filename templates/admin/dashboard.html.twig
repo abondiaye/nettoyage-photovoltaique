@@ -46,8 +46,8 @@
         overflow-y: auto;
     }
 
-    /* Hide navbar in admin - high specificity */
-    body .navbar {
+    /* Hide navbar with extreme specificity */
+    html body .navbar {
         display: none !important;
         visibility: hidden !important;
         height: 0 !important;
@@ -56,6 +56,14 @@
         padding: 0 !important;
         border: none !important;
         width: 0 !important;
+        position: absolute !important;
+        top: -9999px !important;
+        left: -9999px !important;
+    }
+
+    /* Also target by direct selector */
+    .navbar {
+        display: none !important;
     }
 
     .admin-container {
