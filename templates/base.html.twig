@@ -28,6 +28,35 @@
 
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
+        {% set currentRoute = app.request.attributes.get('_route')|default('') %}
+        {% if currentRoute|slice(0, 6) == 'admin_' or app.request.pathInfo|default('')|slice(0, 6) == '/admin' %}
+        <style>
+            /* Hide navbar and circular nav on all admin pages */
+            html .navbar {
+                display: none !important;
+                visibility: hidden !important;
+                height: 0 !important;
+                position: absolute !important;
+                top: -9999px !important;
+            }
+
+            html .circular-nav-container {
+                display: none !important;
+                visibility: hidden !important;
+                height: 0 !important;
+                width: 0 !important;
+                position: absolute !important;
+                top: -9999px !important;
+                left: -9999px !important;
+            }
+
+            html footer {
+                display: none !important;
+                visibility: hidden !important;
+                height: 0 !important;
+            }
+        </style>
+        {% endif %}
         <style>
             /* ===== RESET & VARIABLES ===== */
             * {
@@ -1299,6 +1328,32 @@
     {% endblock %}
 </head>
 <body>
+    <script>
+    // Hide navbar, circular-nav, and footer on ALL admin pages
+    (function() {
+        function hideAdminElements() {
+            if (window.location.pathname.startsWith('/admin')) {
+                const navbar = document.querySelector('.navbar');
+                const circNav = document.querySelector('.circular-nav-container');
+                const footer = document.querySelector('footer');
+
+                if (navbar) navbar.style.cssText = 'display: none !important; visibility: hidden !important;';
+                if (circNav) circNav.style.cssText = 'display: none !important; visibility: hidden !important;';
+                if (footer) footer.style.cssText = 'display: none !important; visibility: hidden !important;';
+            }
+        }
+
+        // Run immediately
+        hideAdminElements();
+
+        // Run when DOM is ready
+        document.addEventListener('DOMContentLoaded', hideAdminElements);
+
+        // Run on every page load
+        window.addEventListener('load', hideAdminElements);
+    })();
+    </script>
+
     <!-- Navigation -->
     <nav class="navbar" {% if app.request.attributes.get('_route')|default('')|slice(0, 6) == 'admin_' %}style="display: none !important;"{% endif %}>
         <a href="{{ path('app_home') }}" class="nav-brand">
@@ -1434,5 +1489,31 @@
             });
         </script>
     {% endblock %}
+
+    <script>
+    // Hide navbar, circular-nav, and footer on ALL admin pages
+    console.log('Admin hide script running. Pathname:', window.location.pathname);
+    if (window.location.pathname.startsWith('/admin')) {
+        console.log('IS ADMIN PAGE - hiding elements');
+        const navbar = document.querySelector('.navbar');
+        const circNav = document.querySelector('.circular-nav-container');
+        const footer = document.querySelector('footer');
+
+        console.log('Found elements:', {navbar: !!navbar, circNav: !!circNav, footer: !!footer});
+
+        if (navbar) {
+            navbar.style.cssText = 'display: none !important; visibility: hidden !important;';
+            console.log('Navbar hidden');
+        }
+        if (circNav) {
+            circNav.style.cssText = 'display: none !important; visibility: hidden !important;';
+            console.log('CircNav hidden');
+        }
+        if (footer) {
+            footer.style.cssText = 'display: none !important; visibility: hidden !important;';
+            console.log('Footer hidden');
+        }
+    }
+    </script>
 </body>
 </html>
