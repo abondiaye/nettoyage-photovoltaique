@@ -1300,7 +1300,7 @@
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar">
+    <nav class="navbar" {% if app.request.attributes.get('_route')|default('')|slice(0, 6) == 'admin_' %}style="display: none !important;"{% endif %}>
         <a href="{{ path('app_home') }}" class="nav-brand">
             <div class="nav-brand-icon">
                 <img src="{{ asset('images/logo1.jpeg') }}" alt="Sirius-Solar Logo">

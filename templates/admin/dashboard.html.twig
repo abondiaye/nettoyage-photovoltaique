@@ -5,16 +5,32 @@
 {% block body %}
 
 <script>
-// Hide navbar immediately
-document.addEventListener('DOMContentLoaded', () => {
-    const navbar = document.querySelector('.navbar');
-    if (navbar) {
-        navbar.style.display = 'none';
-        navbar.style.visibility = 'hidden';
-        navbar.style.height = '0';
-        navbar.style.overflow = 'hidden';
+// Hide navbar in admin - execute immediately and aggressively
+(function() {
+    function hideNavbar() {
+        const navbar = document.querySelector('.navbar');
+        if (navbar) {
+            navbar.style.cssText = 'display: none !important; visibility: hidden !important; height: 0 !important; margin: 0 !important; padding: 0 !important; overflow: hidden !important;';
+        }
     }
-});
+
+    // Try immediately
+    hideNavbar();
+
+    // Try on DOM ready
+    document.addEventListener('DOMContentLoaded', hideNavbar);
+
+    // Try after load
+    window.addEventListener('load', hideNavbar);
+
+    // Keep trying until hidden
+    let attempts = 0;
+    const interval = setInterval(() => {
+        hideNavbar();
+        attempts++;
+        if (attempts > 20) clearInterval(interval);
+    }, 100);
+})();
 </script>
 
 <style>
