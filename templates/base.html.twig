@@ -1369,8 +1369,10 @@
         {% block body %}{% endblock %}
     </main>
 
-    <!-- Circular Navigation Wheel -->
-    {% include 'components/circular-navbar.html.twig' %}
+    <!-- Circular Navigation Wheel (not in admin) -->
+    {% if app.request.pathInfo|default('')|starts_with('/admin') == false %}
+        {% include 'components/circular-navbar.html.twig' %}
+    {% endif %}
 
     {% block javascripts %}
         {{ encore_entry_script_tags('app') }}
