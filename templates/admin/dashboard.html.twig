@@ -5,30 +5,36 @@
 {% block body %}
 
 <script>
-// Hide navbar in admin - execute immediately and aggressively
+// Hide navbar and circular nav in admin - execute immediately and aggressively
 (function() {
-    function hideNavbar() {
+    function hideElements() {
         const navbar = document.querySelector('.navbar');
+        const circularNav = document.querySelector('.circular-nav-container');
+
         if (navbar) {
-            navbar.style.cssText = 'display: none !important; visibility: hidden !important; height: 0 !important; margin: 0 !important; padding: 0 !important; overflow: hidden !important;';
+            navbar.style.cssText = 'display: none !important; visibility: hidden !important; height: 0 !important; margin: 0 !important; padding: 0 !important; overflow: hidden !important; position: absolute !important; top: -9999px !important; left: -9999px !important;';
+        }
+
+        if (circularNav) {
+            circularNav.style.cssText = 'display: none !important; visibility: hidden !important; height: 0 !important; width: 0 !important; margin: 0 !important; padding: 0 !important; overflow: hidden !important; position: absolute !important; top: -9999px !important; left: -9999px !important;';
         }
     }
 
     // Try immediately
-    hideNavbar();
+    hideElements();
 
     // Try on DOM ready
-    document.addEventListener('DOMContentLoaded', hideNavbar);
+    document.addEventListener('DOMContentLoaded', hideElements);
 
     // Try after load
-    window.addEventListener('load', hideNavbar);
+    window.addEventListener('load', hideElements);
 
     // Keep trying until hidden
     let attempts = 0;
     const interval = setInterval(() => {
-        hideNavbar();
+        hideElements();
         attempts++;
-        if (attempts > 20) clearInterval(interval);
+        if (attempts > 30) clearInterval(interval);
     }, 100);
 })();
 </script>
@@ -295,63 +301,33 @@
         box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
     }
 
-    /* Admin Circular Nav - Quick Access */
-    .circular-nav-admin {
-        position: fixed;
-        bottom: 40px;
-        right: 40px;
-        z-index: 999;
-        width: 280px;
-        height: 280px;
-    }
-
-    .circular-nav-admin .circular-nav-center {
-        background: linear-gradient(135deg, #ffd700, #ffed4e) !important;
-        border-color: #ffd700 !important;
-        box-shadow: 0 0 50px rgba(255, 215, 0, 0.6), 0 0 80px rgba(255, 215, 0, 0.3) !important;
-    }
-
-    .circular-nav-admin .circular-nav-center:hover {
-        box-shadow: 0 0 80px rgba(255, 215, 0, 0.8), 0 0 120px rgba(255, 215, 0, 0.5) !important;
-        transform: translate(-50%, -50%) scale(1.15) !important;
-    }
-
-    .circular-nav-admin .center-text {
-        color: #0A3D35 !important;
-        font-weight: 700 !important;
-    }
-
-    .circular-nav-admin .nav-link {
-        background: linear-gradient(135deg, #ffd700, #ffed4e) !important;
-        color: #0A3D35 !important;
-        border-color: #ffd700 !important;
-        font-weight: 700 !important;
-    }
-
-    .circular-nav-admin .nav-link:hover {
-        background: linear-gradient(135deg, #ffed4e, #ffd700) !important;
-        color: #0A3D35 !important;
-        box-shadow: 0 10px 40px rgba(255, 215, 0, 0.6) !important;
-    }
-
-    .circular-nav-admin .nav-icon {
-        font-size: 24px !important;
-    }
-
-    .circular-nav-admin .nav-label {
-        color: #0A3D35 !important;
-        font-weight: 700 !important;
-        font-size: 11px !important;
-    }
-
-    /* Hide public nav elements in admin */
-    .navbar {
+    /* Hide public navigation elements in admin */
+    html body .circular-nav-container {
         display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        overflow: hidden !important;
+        position: absolute !important;
+        top: -9999px !important;
+        left: -9999px !important;
     }
 
-    /* Hide public circular nav in admin */
-    .circular-nav-container:not(.circular-nav-admin) {
+    html body .navbar {
         display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        overflow: hidden !important;
+        position: absolute !important;
+        top: -9999px !important;
+        left: -9999px !important;
+    }
+
+    /* Hide footer in admin */
+    html body footer {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        overflow: hidden !important;
     }
 
     /* Mobile */
@@ -386,51 +362,6 @@
         }
     }
 </style>
-
-<!-- Admin Circular Nav -->
-<div class="circular-nav-container circular-nav-admin">
-    <div class="circular-nav-center">
-        <div class="center-text">⚙️<br>Admin</div>
-    </div>
-    <div class="circular-nav-wheel">
-        <div class="nav-item" style="--angle: 0deg;">
-            <a href="{{ path('app_admin_dashboard') }}" class="nav-link" data-tooltip="Dashboard">
-                <span class="nav-icon">📊</span>
-                <span class="nav-label">Dashboard</span>
-            </a>
-        </div>
-        <div class="nav-item" style="--angle: 60deg;">
-            <a href="{{ path('app_devis') }}" class="nav-link" data-tooltip="Devis">
-                <span class="nav-icon">📋</span>
-                <span class="nav-label">Devis</span>
-            </a>
-        </div>
-        <div class="nav-item" style="--angle: 120deg;">
-            <a href="{{ path('app_admin_messages') }}" class="nav-link" data-tooltip="Messages">
-                <span class="nav-icon">💬</span>
-                <span class="nav-label">Messages</span>
-            </a>
-        </div>
-        <div class="nav-item" style="--angle: 180deg;">
-            <a href="{{ path('app_admin_calendar') }}" class="nav-link" data-tooltip="Calendrier">
-                <span class="nav-icon">📅</span>
-                <span class="nav-label">Calendrier</span>
-            </a>
-        </div>
-        <div class="nav-item" style="--angle: 240deg;">
-            <a href="{{ path('app_blog') }}" class="nav-link" data-tooltip="Blog">
-                <span class="nav-icon">🖼️</span>
-                <span class="nav-label">Blog</span>
-            </a>
-        </div>
-        <div class="nav-item" style="--angle: 300deg;">
-            <a href="{{ path('app_home') }}" class="nav-link" data-tooltip="Accueil">
-                <span class="nav-icon">🏠</span>
-                <span class="nav-label">Accueil</span>
-            </a>
-        </div>
-    </div>
-</div>
 
 <div class="admin-container">
     <!-- Sidebar -->
