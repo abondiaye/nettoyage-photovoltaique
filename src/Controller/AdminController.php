@@ -16,30 +16,11 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class AdminController extends AbstractController
 {
     #[Route('/dashboard', name: 'app_admin_dashboard')]
-    public function dashboard(
-        AppointmentRepository $appointmentRepo,
-        UserRepository $userRepo,
-        CommentRepository $commentRepo,
-        PointRepository $pointRepo,
-    ): Response {
-        $totalAppointments = $appointmentRepo->count([]);
-        $completedAppointments = $appointmentRepo->count(['status' => 'COMPLETED']);
-        $totalMembers = $userRepo->countByRole('ROLE_MEMBER');
-        $pendingComments = $commentRepo->count(['status' => 'PENDING']);
-
-        $members = $userRepo->findByRole('ROLE_MEMBER');
-        $allAppointments = $appointmentRepo->findAll();
-        $allComments = $commentRepo->findBy([], ['createdAt' => 'DESC']);
-
+    public function dashboard(): Response {
         return $this->render('admin/dashboard.html.twig', [
-            'totalAppointments' => $totalAppointments,
-            'completedAppointments' => $completedAppointments,
-            'completionRate' => $totalAppointments > 0 ? round(($completedAppointments / $totalAppointments) * 100) : 0,
-            'totalMembers' => $totalMembers,
-            'pendingComments' => $pendingComments,
-            'members' => $members,
-            'appointments' => $allAppointments,
-            'comments' => $allComments,
+            'project_count' => 0,
+            'user_count' => 0,
+            'quote_count' => 0,
         ]);
     }
 
