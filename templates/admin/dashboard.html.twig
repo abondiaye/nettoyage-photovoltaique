@@ -330,6 +330,51 @@
         overflow: hidden !important;
     }
 
+    .nav-buttons {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        margin-top: 60px;
+        padding: 40px 0 40px 0;
+    }
+
+    .nav-btn {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 24px;
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(192, 192, 192, 0.2));
+        border: 2px solid rgba(192, 192, 192, 0.5);
+        color: rgba(192, 192, 192, 0.9);
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .nav-btn:hover {
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.3), rgba(192, 192, 192, 0.3));
+        border-color: rgba(192, 192, 192, 0.8);
+        color: #ffd700;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(192, 192, 192, 0.2);
+    }
+
+    .arrow {
+        font-size: 18px;
+        transition: transform 0.3s ease;
+    }
+
+    .nav-btn:hover .arrow-left {
+        transform: translateX(-3px);
+    }
+
+    .nav-btn:hover .arrow-right {
+        transform: translateX(3px);
+    }
+
     /* Mobile */
     @media (max-width: 768px) {
         .admin-sidebar {
@@ -470,6 +515,18 @@
             <div style="margin-top: 15px; text-align: center;">
                 <a href="{{ path('app_admin_messages') }}" style="color: #ffd700; text-decoration: none; font-size: 13px;">→ Voir tous les messages</a>
             </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="nav-buttons">
+            <a href="{{ path('app_admin_calendar') }}" class="nav-btn">
+                <span class="arrow arrow-left">←</span>
+                Rendez-vous
+            </a>
+            <a href="{{ path('app_admin_messages') }}" class="nav-btn">
+                Messages
+                <span class="arrow arrow-right">→</span>
+            </a>
         </div>
     </main>
 </div>
