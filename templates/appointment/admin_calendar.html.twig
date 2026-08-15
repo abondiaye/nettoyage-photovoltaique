@@ -9,12 +9,14 @@
         min-height: 100vh;
         background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
         padding: 40px 20px;
-        margin-top: 70px;
+        margin-top: 0;
+        display: flex;
+        flex-direction: column;
     }
 
     .calendar-header {
-        max-width: 1400px;
-        margin: 0 auto 40px;
+        width: 100%;
+        margin-bottom: 40px;
     }
 
     .calendar-header h1 {
@@ -46,10 +48,10 @@
     }
 
     .calendar-grid {
-        max-width: 1400px;
-        margin: 0 auto;
+        width: 100%;
         display: grid;
         gap: 20px;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     }
 
     .appointment-card {
