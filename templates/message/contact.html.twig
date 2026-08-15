@@ -1,0 +1,200 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Envoyer un message - Sirius-Solar{% endblock %}
+
+{% block body %}
+
+<style>
+    .contact-container {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #0A3D35, #2D6B55);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        margin-top: 70px;
+    }
+
+    .contact-card {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        padding: 50px 40px;
+        max-width: 550px;
+        width: 100%;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    .contact-card h1 {
+        font-size: 32px;
+        color: white;
+        margin: 0 0 10px 0;
+        text-align: center;
+    }
+
+    .contact-card p {
+        color: rgba(255, 255, 255, 0.8);
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 14px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 8px;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="date"],
+    .form-group textarea {
+        width: 100%;
+        padding: 12px 15px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 8px;
+        color: white;
+        font-size: 14px;
+        font-family: inherit;
+        transition: all 0.3s ease;
+    }
+
+    .form-group input[type="text"]::placeholder,
+    .form-group input[type="email"]::placeholder,
+    .form-group input[type="date"]::placeholder,
+    .form-group textarea::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    .form-group input[type="text"]:focus,
+    .form-group input[type="email"]:focus,
+    .form-group input[type="date"]:focus,
+    .form-group textarea:focus {
+        outline: none;
+        background: rgba(255, 255, 255, 0.15);
+        border-color: #ffd700;
+        box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+    }
+
+    .form-group textarea {
+        resize: vertical;
+        min-height: 120px;
+    }
+
+    .btn-submit {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(135deg, #ffd700, #ffed4e);
+        color: #0A3D35;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 20px;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+    }
+
+    .success-message {
+        background: rgba(76, 175, 80, 0.2);
+        border: 1px solid rgba(76, 175, 80, 0.4);
+        color: #a8d5ba;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-size: 13px;
+    }
+
+    .error-message {
+        background: rgba(220, 53, 69, 0.2);
+        border: 1px solid rgba(220, 53, 69, 0.4);
+        color: #ffc9d4;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-size: 13px;
+    }
+
+    /* Dark mode */
+    body.dark-mode .contact-container {
+        background: linear-gradient(135deg, #1a4d42, #2D6B55);
+    }
+
+    body.dark-mode .contact-card {
+        background: rgba(30, 30, 30, 0.8);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Mobile */
+    @media (max-width: 600px) {
+        .contact-card {
+            padding: 30px 20px;
+        }
+
+        .contact-card h1 {
+            font-size: 24px;
+        }
+    }
+
+    /* Date input styling */
+    input[type="date"] {
+        cursor: pointer;
+    }
+
+    input[type="date"]::-webkit-calendar-picker-indicator {
+        filter: invert(1) brightness(1.2);
+        cursor: pointer;
+    }
+</style>
+
+<div class="contact-container">
+    <div class="contact-card">
+        <h1>📧 Envoyer un message</h1>
+        <p>Laissez-nous un message et nous vous recontacterons au plus tôt</p>
+
+        {% if success %}
+            <div class="success-message">
+                ✅ Votre message a été reçu avec succès! Nous vous recontacterons bientôt.
+            </div>
+        {% endif %}
+
+        <form method="POST" action="{{ path('app_contact_submit') }}">
+            <div class="form-group">
+                <label for="nom">Votre nom *</label>
+                <input type="text" id="nom" name="nom" placeholder="Jean Dupont" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Votre email *</label>
+                <input type="email" id="email" name="email" placeholder="jean@example.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="message">Votre message *</label>
+                <textarea id="message" name="message" placeholder="Décrivez votre demande ici..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="datePreferee">Date préférée d'intervention</label>
+                <input type="date" id="datePreferee" name="datePreferee">
+            </div>
+
+            <button type="submit" class="btn-submit">Envoyer le message</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
