@@ -1,0 +1,245 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Calendrier de Rendez-vous - Sirius-Solar{% endblock %}
+
+{% block body %}
+
+<style>
+    .calendar-container {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #0A3D35, #2D6B55);
+        padding: 40px 20px;
+        margin-top: 70px;
+    }
+
+    .calendar-header {
+        max-width: 1200px;
+        margin: 0 auto 40px;
+    }
+
+    .calendar-header h1 {
+        color: white;
+        font-size: 32px;
+        margin-bottom: 10px;
+    }
+
+    .calendar-header p {
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .calendar-content {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin-bottom: 40px;
+    }
+
+    .appointment-card {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 16px;
+        padding: 20px;
+        color: white;
+        transition: all 0.3s ease;
+    }
+
+    .appointment-card:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 215, 0, 0.5);
+        transform: translateY(-3px);
+    }
+
+    .appointment-card.confirmed {
+        border-left: 4px solid #4caf50;
+    }
+
+    .appointment-card.pending {
+        border-left: 4px solid #ff9800;
+    }
+
+    .appointment-card.refused {
+        border-left: 4px solid #f44336;
+        opacity: 0.7;
+    }
+
+    .appointment-card.proposed {
+        border-left: 4px solid #2196f3;
+    }
+
+    .appointment-status {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
+
+    .status-confirmed {
+        background: rgba(76, 175, 80, 0.2);
+        color: #4caf50;
+    }
+
+    .status-pending {
+        background: rgba(255, 152, 0, 0.2);
+        color: #ff9800;
+    }
+
+    .status-refused {
+        background: rgba(244, 67, 54, 0.2);
+        color: #f44336;
+    }
+
+    .status-proposed {
+        background: rgba(33, 150, 243, 0.2);
+        color: #2196f3;
+    }
+
+    .appointment-date {
+        font-size: 18px;
+        font-weight: 600;
+        color: #ffd700;
+        margin-bottom: 10px;
+    }
+
+    .appointment-detail {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.8);
+        margin-bottom: 8px;
+        display: flex;
+        gap: 8px;
+    }
+
+    .appointment-detail strong {
+        color: rgba(255, 255, 255, 0.9);
+        min-width: 80px;
+    }
+
+    .appointment-notes {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.7);
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .empty-state h2 {
+        color: white;
+        margin-bottom: 10px;
+    }
+
+    .calendar-mini {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 16px;
+        padding: 20px;
+        color: white;
+        max-width: 400px;
+        margin: 0 auto 40px;
+    }
+
+    .calendar-mini h3 {
+        text-align: center;
+        margin-top: 0;
+        color: #ffd700;
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+        .calendar-container {
+            padding: 20px 10px;
+        }
+
+        .calendar-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .calendar-header h1 {
+            font-size: 24px;
+        }
+    }
+</style>
+
+<div class="calendar-container">
+    <div class="calendar-header">
+        <h1>📅 Mes Rendez-vous</h1>
+        <p>Suivi de vos demandes d'intervention</p>
+    </div>
+
+    <div class="calendar-content">
+        {% if appointments|length > 0 %}
+            <div class="calendar-grid">
+                {% for appointment in appointments %}
+                    <div class="appointment-card {{ appointment.status }}">
+                        <span class="appointment-status status-{{ appointment.status }}">
+                            {% if appointment.status == 'confirmed' %}
+                                ✅ Confirmé
+                            {% elseif appointment.status == 'pending' %}
+                                ⏳ En attente
+                            {% elseif appointment.status == 'refused' %}
+                                ❌ Refusé
+                            {% else %}
+                                ℹ️ Proposition
+                            {% endif %}
+                        </span>
+
+                        <div class="appointment-date">
+                            📅 {{ (appointment.confirmedDate ?? appointment.requestedDate)|date('d/m/Y') }}
+                        </div>
+
+                        <div class="appointment-detail">
+                            <strong>👤 Client:</strong>
+                            <span>{{ appointment.clientName }}</span>
+                        </div>
+
+                        <div class="appointment-detail">
+                            <strong>📧 Email:</strong>
+                            <span>{{ appointment.clientEmail }}</span>
+                        </div>
+
+                        {% if appointment.clientPhone %}
+                            <div class="appointment-detail">
+                                <strong>📱 Téléphone:</strong>
+                                <span>{{ appointment.clientPhone }}</span>
+                            </div>
+                        {% endif %}
+
+                        {% if appointment.status == 'pending' %}
+                            <div class="appointment-detail">
+                                <strong>📅 Demandé:</strong>
+                                <span>{{ appointment.requestedDate|date('d/m/Y') }}</span>
+                            </div>
+                        {% endif %}
+
+                        {% if appointment.adminNotes %}
+                            <div class="appointment-notes">
+                                <strong>💬 Notes:</strong><br>
+                                {{ appointment.adminNotes }}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <h2>📭 Aucun rendez-vous</h2>
+                <p>Vous n'avez pas encore de rendez-vous programmé.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
