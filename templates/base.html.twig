@@ -1370,7 +1370,7 @@
     </main>
 
     <!-- Circular Navigation Wheel (not in admin) -->
-    {% if app.request.pathInfo|default('')|starts_with('/admin') == false %}
+    {% if app.request.pathInfo|default('')|slice(0, 6) != '/admin' %}
         {% include 'components/circular-navbar.html.twig' %}
     {% endif %}
 
