@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SOLARCLEAN ADMIN{% endblock %}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            min-height: 100vh;
+        }
+
+        .admin-wrapper {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .admin-sidebar {
+            background: rgba(20, 20, 30, 0.95);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px 0;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            overflow-y: auto;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffd700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu > li {
+            margin-bottom: 5px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 14px;
+            border-left: 3px solid transparent;
+            cursor: pointer;
+        }
+
+        .menu-item:hover,
+        .menu-item.active {
+            background: rgba(255, 215, 0, 0.1);
+            color: #ffd700;
+            border-left-color: #ffd700;
+        }
+
+        .menu-label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            padding: 12px 20px 5px;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+
+        .submenu {
+            list-style: none;
+            padding-left: 20px;
+            display: none;
+        }
+
+        .submenu.active {
+            display: block;
+        }
+
+        .submenu li {
+            margin-bottom: 3px;
+        }
+
+        .submenu-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 13px;
+            border-left: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .submenu-item:hover,
+        .submenu-item.active {
+            color: #ffd700;
+            border-left-color: #ffd700;
+        }
+
+        /* Main Content */
+        .admin-main {
+            margin-left: 280px;
+            padding: 30px;
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .page-subtitle {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+        }
+
+        .content-area {
+            color: white;
+        }
+
+        /* Scrollbar */
+        .admin-sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .admin-sidebar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .admin-sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255, 215, 0, 0.3);
+            border-radius: 3px;
+        }
+
+        .admin-sidebar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 215, 0, 0.5);
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .admin-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-sidebar {
+                position: fixed;
+                left: -280px;
+                transition: left 0.3s;
+            }
+
+            .admin-sidebar.active {
+                left: 0;
+            }
+
+            .admin-main {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .page-title {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    ☀️ SOLARCLEAN
+                </div>
+                <div style="font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 5px;">Admin Panel</div>
+            </div>
+
+            <ul class="sidebar-menu">
+                <!-- Dashboard -->
+                <li>
+                    <a href="{{ path('app_admin_panel_dashboard') }}" class="menu-item {% if current_page == 'dashboard' %}active{% endif %}">
+                        📊 Dashboard
+                    </a>
+                </li>
+
+                <!-- Calendrier -->
+                <li>
+                    <a href="javascript:void(0)" class="menu-item" onclick="toggleSubmenu(event, 'calendrier')">
+                        📅 Calendrier
+                    </a>
+                    <ul class="submenu {% if current_page == 'calendrier' %}active{% endif %}" id="calendrier-submenu">
+                        <li><a href="{{ path('app_admin_panel_calendar', {view: 'today'}) }}" class="submenu-item">Aujourd'hui</a></li>
+                        <li><a href="{{ path('app_admin_panel_calendar', {view: 'week'}) }}" class="submenu-item">Semaine</a></li>
+                        <li><a href="{{ path('app_admin_panel_calendar', {view: 'month'}) }}" class="submenu-item">Mois</a></li>
+                    </ul>
+                </li>
+
+                <!-- Réservations -->
+                <li>
+                    <a href="javascript:void(0)" class="menu-item" onclick="toggleSubmenu(event, 'reservations')">
+                        📋 Réservations
+                    </a>
+                    <ul class="submenu {% if current_page == 'reservations' %}active{% endif %}" id="reservations-submenu">
+                        <li><a href="{{ path('app_admin_panel_reservations', {status: 'pending'}) }}" class="submenu-item">En attente</a></li>
+                        <li><a href="{{ path('app_admin_panel_reservations', {status: 'confirmed'}) }}" class="submenu-item">Confirmées</a></li>
+                        <li><a href="{{ path('app_admin_panel_reservations', {status: 'in_progress'}) }}" class="submenu-item">En cours</a></li>
+                        <li><a href="{{ path('app_admin_panel_reservations', {status: 'completed'}) }}" class="submenu-item">Terminées</a></li>
+                        <li><a href="{{ path('app_admin_panel_reservations', {status: 'cancelled'}) }}" class="submenu-item">Annulées</a></li>
+                    </ul>
+                </li>
+
+                <!-- Clients -->
+                <li>
+                    <a href="{{ path('app_admin_panel_clients') }}" class="menu-item {% if current_page == 'clients' %}active{% endif %}">
+                        👥 Clients
+                    </a>
+                </li>
+
+                <!-- Techniciens -->
+                <li>
+                    <a href="{{ path('app_admin_panel_technicians') }}" class="menu-item {% if current_page == 'technicians' %}active{% endif %}">
+                        👷 Techniciens
+                    </a>
+                </li>
+
+                <!-- Prestations -->
+                <li>
+                    <a href="{{ path('app_admin_panel_services') }}" class="menu-item {% if current_page == 'services' %}active{% endif %}">
+                        🧽 Prestations
+                    </a>
+                </li>
+
+                <!-- Paiements -->
+                <li>
+                    <a href="javascript:void(0)" class="menu-item" onclick="toggleSubmenu(event, 'payments')">
+                        💳 Paiements
+                    </a>
+                    <ul class="submenu {% if current_page == 'payments' %}active{% endif %}" id="payments-submenu">
+                        <li><a href="{{ path('app_admin_panel_payments') }}" class="submenu-item">Paiements</a></li>
+                        <li><a href="{{ path('app_admin_panel_invoices') }}" class="submenu-item">Factures</a></li>
+                    </ul>
+                </li>
+
+                <!-- Interventions -->
+                <li>
+                    <a href="javascript:void(0)" class="menu-item" onclick="toggleSubmenu(event, 'interventions')">
+                        📸 Interventions
+                    </a>
+                    <ul class="submenu {% if current_page == 'interventions' %}active{% endif %}" id="interventions-submenu">
+                        <li><a href="{{ path('app_admin_panel_interventions') }}" class="submenu-item">Photos avant/après</a></li>
+                        <li><a href="{{ path('app_admin_panel_reports') }}" class="submenu-item">Rapports</a></li>
+                    </ul>
+                </li>
+
+                <!-- Avis Clients -->
+                <li>
+                    <a href="{{ path('app_admin_panel_reviews') }}" class="menu-item {% if current_page == 'reviews' %}active{% endif %}">
+                        ⭐ Avis clients
+                    </a>
+                </li>
+
+                <!-- Zones -->
+                <li>
+                    <a href="{{ path('app_admin_panel_zones') }}" class="menu-item {% if current_page == 'zones' %}active{% endif %}">
+                        📍 Zones d'intervention
+                    </a>
+                </li>
+
+                <!-- Statistiques -->
+                <li>
+                    <a href="{{ path('app_admin_panel_statistics') }}" class="menu-item {% if current_page == 'statistics' %}active{% endif %}">
+                        📈 Statistiques
+                    </a>
+                </li>
+
+                <!-- Notifications -->
+                <li>
+                    <a href="{{ path('app_admin_panel_notifications') }}" class="menu-item {% if current_page == 'notifications' %}active{% endif %}">
+                        🔔 Notifications
+                    </a>
+                </li>
+
+                <!-- Paramètres -->
+                <li style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+                    <a href="{{ path('app_admin_panel_settings') }}" class="menu-item {% if current_page == 'settings' %}active{% endif %}">
+                        ⚙️ Paramètres
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ path('app_logout') }}" class="menu-item" style="color: #ff6b6b; margin-top: 10px;">
+                        🚪 Déconnexion
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div class="page-header">
+                <h1 class="page-title">{% block page_title %}{% endblock %}</h1>
+                <p class="page-subtitle">{% block page_subtitle %}{% endblock %}</p>
+            </div>
+
+            <div class="content-area">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function toggleSubmenu(event, submenuId) {
+            event.preventDefault();
+            const submenu = document.getElementById(submenuId + '-submenu');
+            const isActive = submenu.classList.contains('active');
+
+            // Close all submenus
+            document.querySelectorAll('.submenu').forEach(m => {
+                m.classList.remove('active');
+            });
+
+            // Open clicked submenu if it wasn't active
+            if (!isActive) {
+                submenu.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>

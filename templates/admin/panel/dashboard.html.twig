@@ -1,0 +1,208 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block page_title %}Dashboard{% endblock %}
+{% block page_subtitle %}Vue d'ensemble de votre activité{% endblock %}
+
+{% block content %}
+
+<style>
+    .dashboard-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 40px;
+    }
+
+    .stat-card {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 12px;
+        padding: 25px;
+        transition: all 0.3s;
+    }
+
+    .stat-card:hover {
+        background: rgba(255, 255, 255, 0.15);
+        transform: translateY(-5px);
+        border-color: rgba(255, 215, 0, 0.5);
+    }
+
+    .stat-icon {
+        font-size: 32px;
+        margin-bottom: 10px;
+    }
+
+    .stat-label {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.7);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+    }
+
+    .stat-value {
+        font-size: 32px;
+        font-weight: 700;
+        color: #ffd700;
+    }
+
+    .stat-change {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.6);
+        margin-top: 8px;
+    }
+
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+    }
+
+    .panel-card {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 12px;
+        padding: 25px;
+    }
+
+    .panel-card h3 {
+        font-size: 16px;
+        margin-bottom: 20px;
+        color: #ffd700;
+    }
+
+    .quick-link {
+        display: block;
+        padding: 12px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        margin-bottom: 10px;
+        transition: all 0.3s;
+        border-left: 3px solid transparent;
+    }
+
+    .quick-link:hover {
+        background: rgba(255, 215, 0, 0.1);
+        color: #ffd700;
+        border-left-color: #ffd700;
+    }
+
+    .activity-item {
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 13px;
+    }
+
+    .activity-item:last-child {
+        border-bottom: none;
+    }
+
+    .activity-time {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.5);
+    }
+</style>
+
+<div class="dashboard-stats">
+    <div class="stat-card">
+        <div class="stat-icon">📅</div>
+        <div class="stat-label">Rendez-vous aujourd'hui</div>
+        <div class="stat-value">8</div>
+        <div class="stat-change">+2 depuis hier</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon">⏳</div>
+        <div class="stat-label">En attente de validation</div>
+        <div class="stat-value">15</div>
+        <div class="stat-change">3 prioritaires</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon">✅</div>
+        <div class="stat-label">Confirmées ce mois</div>
+        <div class="stat-value">42</div>
+        <div class="stat-change">+8 cette semaine</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-label">Clients actifs</div>
+        <div class="stat-value">127</div>
+        <div class="stat-change">+12 nouveaux</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon">👷</div>
+        <div class="stat-label">Techniciens actifs</div>
+        <div class="stat-value">8</div>
+        <div class="stat-change">Tous disponibles</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon">💳</div>
+        <div class="stat-label">Revenus ce mois</div>
+        <div class="stat-value">12,450€</div>
+        <div class="stat-change">+25% vs mois dernier</div>
+    </div>
+</div>
+
+<div class="dashboard-grid">
+    <div class="panel-card">
+        <h3>📋 Actions rapides</h3>
+        <a href="{{ path('app_admin_panel_reservations', {status: 'pending'}) }}" class="quick-link">
+            ➕ Nouvelle réservation
+        </a>
+        <a href="{{ path('app_admin_panel_clients') }}" class="quick-link">
+            👥 Ajouter un client
+        </a>
+        <a href="{{ path('app_admin_panel_technicians') }}" class="quick-link">
+            👷 Ajouter un technicien
+        </a>
+        <a href="{{ path('app_admin_panel_interventions') }}" class="quick-link">
+            📸 Ajouter intervention
+        </a>
+    </div>
+
+    <div class="panel-card">
+        <h3>🔔 Activité récente</h3>
+        <div class="activity-item">
+            <div>✅ Réservation confirmée #2847</div>
+            <div class="activity-time">Il y a 2 heures</div>
+        </div>
+        <div class="activity-item">
+            <div>📸 Photos intervention #2843 ajoutées</div>
+            <div class="activity-time">Il y a 5 heures</div>
+        </div>
+        <div class="activity-item">
+            <div>💳 Paiement reçu 850€</div>
+            <div class="activity-time">Il y a 8 heures</div>
+        </div>
+        <div class="activity-item">
+            <div>⭐ Nouvel avis 5/5 - Michel D.</div>
+            <div class="activity-time">Il y a 1 jour</div>
+        </div>
+    </div>
+
+    <div class="panel-card">
+        <h3>📅 Prochains RV</h3>
+        <div class="activity-item">
+            <div>Jean Dupont - Aujourd'hui 14h00</div>
+            <div class="activity-time">Nettoyage complet</div>
+        </div>
+        <div class="activity-item">
+            <div>Marie Blanc - Demain 10h00</div>
+            <div class="activity-time">Inspection + nettoyage</div>
+        </div>
+        <div class="activity-item">
+            <div>Carlos Rodriguez - Demain 15h30</div>
+            <div class="activity-time">Entretien mensuel</div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
