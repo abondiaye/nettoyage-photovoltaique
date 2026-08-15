@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\AppointmentRepository;
 use App\Repository\CommentRepository;
+use App\Repository\MessageRepository;
 use App\Repository\PointRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,11 +17,27 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class AdminController extends AbstractController
 {
     #[Route('/dashboard', name: 'app_admin_dashboard')]
-    public function dashboard(): Response {
+    public function dashboard(
+        AppointmentRepository $appointmentRepo,
+        MessageRepository $messageRepo
+    ): Response {
+        $totalAppointments = $appointmentRepo->count([]);
+        $pendingAppointments = $appointmentRepo->count(['status' => 'pending']);
+        $confirmedAppointments = $appointmentRepo->count(['status' => 'confirmed']);
+        $proposedAppointments = $appointmentRepo->count(['status' => 'proposed']);
+        $refusedAppointments = $appointmentRepo->count(['status' => 'refused']);
+
+        $totalMessages = $messageRepo->count([]);
+        $recentMessages = $messageRepo->findBy([], ['createdAt' => 'DESC'], 5);
+
         return $this->render('admin/dashboard.html.twig', [
-            'project_count' => 0,
-            'user_count' => 0,
-            'quote_count' => 0,
+            'total_appointments' => $totalAppointments,
+            'pending_appointments' => $pendingAppointments,
+            'confirmed_appointments' => $confirmedAppointments,
+            'proposed_appointments' => $proposedAppointments,
+            'refused_appointments' => $refusedAppointments,
+            'total_messages' => $totalMessages,
+            'recent_messages' => $recentMessages,
         ]);
     }
 

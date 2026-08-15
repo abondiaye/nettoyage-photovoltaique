@@ -315,54 +315,77 @@
 
         <!-- Stats Grid -->
         <div class="dashboard-grid">
-            <div class="dashboard-card">
-                <div class="card-icon">📱</div>
-                <div class="card-title">Réalisations</div>
-                <div class="card-value">{{ project_count ?? 0 }}</div>
-                <div class="card-description">Projets publiés</div>
-            </div>
+            <a href="{{ path('app_admin_calendar') }}" class="dashboard-card" style="text-decoration: none; cursor: pointer;">
+                <div class="card-icon">📅</div>
+                <div class="card-title">Rendez-vous Total</div>
+                <div class="card-value" style="color: #2196f3;">{{ total_appointments ?? 0 }}</div>
+                <div class="card-description">Toutes les demandes</div>
+            </a>
 
-            <div class="dashboard-card">
-                <div class="card-icon">👥</div>
-                <div class="card-title">Utilisateurs</div>
-                <div class="card-value">{{ user_count ?? 0 }}</div>
-                <div class="card-description">Comptes actifs</div>
-            </div>
+            <a href="{{ path('app_admin_calendar') }}" class="dashboard-card" style="text-decoration: none; cursor: pointer;">
+                <div class="card-icon">⏳</div>
+                <div class="card-title">En Attente</div>
+                <div class="card-value" style="color: #ff9800;">{{ pending_appointments ?? 0 }}</div>
+                <div class="card-description">À valider</div>
+            </a>
 
-            <div class="dashboard-card">
-                <div class="card-icon">📊</div>
-                <div class="card-title">Devis</div>
-                <div class="card-value">{{ quote_count ?? 0 }}</div>
-                <div class="card-description">Demandes reçues</div>
-            </div>
+            <a href="{{ path('app_admin_calendar') }}" class="dashboard-card" style="text-decoration: none; cursor: pointer;">
+                <div class="card-icon">✅</div>
+                <div class="card-title">Confirmés</div>
+                <div class="card-value" style="color: #4caf50;">{{ confirmed_appointments ?? 0 }}</div>
+                <div class="card-description">Approuvés</div>
+            </a>
+
+            <a href="{{ path('app_admin_calendar') }}" class="dashboard-card" style="text-decoration: none; cursor: pointer;">
+                <div class="card-icon">ℹ️</div>
+                <div class="card-title">Proposés</div>
+                <div class="card-value" style="color: #2196f3;">{{ proposed_appointments ?? 0 }}</div>
+                <div class="card-description">Dates alternatives</div>
+            </a>
+
+            <a href="{{ path('app_admin_calendar') }}" class="dashboard-card" style="text-decoration: none; cursor: pointer;">
+                <div class="card-icon">❌</div>
+                <div class="card-title">Refusés</div>
+                <div class="card-value" style="color: #f44336;">{{ refused_appointments ?? 0 }}</div>
+                <div class="card-description">Rejettés</div>
+            </a>
+
+            <a href="{{ path('app_admin_messages') }}" class="dashboard-card" style="text-decoration: none; cursor: pointer;">
+                <div class="card-icon">📬</div>
+                <div class="card-title">Messages</div>
+                <div class="card-value" style="color: #ffd700;">{{ total_messages ?? 0 }}</div>
+                <div class="card-description">Demandes clients</div>
+            </a>
         </div>
 
         <!-- Recent Activity -->
         <div class="activity-section">
-            <h2>📈 Activité Récente</h2>
+            <h2>📨 Messages Récents</h2>
             <ul class="activity-list">
-                <li class="activity-item">
-                    <div class="activity-icon">✅</div>
-                    <div class="activity-text">
-                        <p>Dashboard admin créé</p>
-                        <div class="activity-time">Aujourd'hui - Admin Haroun</div>
-                    </div>
-                </li>
-                <li class="activity-item">
-                    <div class="activity-icon">🔐</div>
-                    <div class="activity-text">
-                        <p>Authentification admin activée</p>
-                        <div class="activity-time">Maintenant</div>
-                    </div>
-                </li>
-                <li class="activity-item">
-                    <div class="activity-icon">🎨</div>
-                    <div class="activity-text">
-                        <p>Design Frosted Glass appliqué</p>
-                        <div class="activity-time">Maintenant - Premium Edition</div>
-                    </div>
-                </li>
+                {% if recent_messages|length > 0 %}
+                    {% for message in recent_messages %}
+                        <li class="activity-item">
+                            <div class="activity-icon">📧</div>
+                            <div class="activity-text">
+                                <p><strong>{{ message.nom }}</strong> - {{ message.email }}</p>
+                                <div class="activity-time">{{ message.createdAt|date('d/m/Y H:i') }}</div>
+                                <div style="font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 5px;">{{ message.message|slice(0, 60) }}{% if message.message|length > 60 %}...{% endif %}</div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <li class="activity-item">
+                        <div class="activity-icon">📭</div>
+                        <div class="activity-text">
+                            <p>Aucun message pour le moment</p>
+                            <div class="activity-time">En attente de contact client</div>
+                        </div>
+                    </li>
+                {% endif %}
             </ul>
+            <div style="margin-top: 15px; text-align: center;">
+                <a href="{{ path('app_admin_messages') }}" style="color: #ffd700; text-decoration: none; font-size: 13px;">→ Voir tous les messages</a>
+            </div>
         </div>
     </main>
 </div>
