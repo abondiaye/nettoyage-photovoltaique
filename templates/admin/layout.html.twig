@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}SOLARCLEAN ADMIN{% endblock %}</title>
+    <title>{% block title %}☀️ SOLARCLEAN ADMIN{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,45 +13,57 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0A3D35 0%, #2D6B55 50%, #1a5a4a 100%);
             min-height: 100vh;
+            color: #ffffff;
         }
 
         .admin-wrapper {
             display: grid;
-            grid-template-columns: 280px 1fr;
+            grid-template-columns: 260px 1fr;
             min-height: 100vh;
         }
 
         /* Sidebar */
         .admin-sidebar {
-            background: rgba(20, 20, 30, 0.95);
-            border-right: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 20px 0;
+            background: rgba(10, 61, 53, 0.95);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 25px 0;
             position: fixed;
             left: 0;
             top: 0;
-            width: 280px;
+            width: 260px;
             height: 100vh;
             overflow-y: auto;
             backdrop-filter: blur(10px);
             z-index: 1000;
+            box-shadow: 2px 0 15px rgba(0, 0, 0, 0.2);
         }
 
         .sidebar-header {
-            padding: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 20px;
+            padding: 25px;
+            border-bottom: 1px solid rgba(45, 107, 85, 0.5);
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.05) 0%, rgba(45, 107, 85, 0.1) 100%);
         }
 
         .sidebar-logo {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
             color: #ffd700;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar-logo-subtitle {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .sidebar-menu {
@@ -58,42 +71,50 @@
         }
 
         .sidebar-menu > li {
-            margin-bottom: 5px;
+            margin-bottom: 2px;
         }
 
         .menu-item {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 12px 20px;
-            color: rgba(255, 255, 255, 0.7);
+            padding: 13px 18px;
+            color: rgba(255, 255, 255, 0.65);
             text-decoration: none;
-            transition: all 0.3s;
-            font-size: 14px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 13px;
             border-left: 3px solid transparent;
             cursor: pointer;
+            font-weight: 500;
         }
 
-        .menu-item:hover,
-        .menu-item.active {
-            background: rgba(255, 215, 0, 0.1);
-            color: #ffd700;
+        .menu-item:hover {
+            background: rgba(45, 107, 85, 0.4);
+            color: rgba(255, 255, 255, 0.9);
             border-left-color: #ffd700;
         }
 
+        .menu-item.active {
+            background: linear-gradient(90deg, rgba(45, 107, 85, 0.6) 0%, rgba(45, 107, 85, 0.2) 100%);
+            color: #ffd700;
+            border-left-color: #ffd700;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
         .menu-label {
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.5);
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.4);
             text-transform: uppercase;
-            padding: 12px 20px 5px;
-            font-weight: 600;
-            margin-top: 15px;
+            padding: 15px 18px 8px;
+            font-weight: 700;
+            margin-top: 18px;
+            letter-spacing: 1px;
         }
 
         .submenu {
             list-style: none;
-            padding-left: 20px;
             display: none;
+            background: rgba(0, 0, 0, 0.15);
         }
 
         .submenu.active {
@@ -101,46 +122,52 @@
         }
 
         .submenu li {
-            margin-bottom: 3px;
+            margin-bottom: 0;
         }
 
         .submenu-item {
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 20px;
-            color: rgba(255, 255, 255, 0.6);
+            padding: 10px 18px 10px 40px;
+            color: rgba(255, 255, 255, 0.55);
             text-decoration: none;
-            font-size: 13px;
+            font-size: 12px;
             border-left: 2px solid transparent;
-            transition: all 0.3s;
+            transition: all 0.25s;
+            font-weight: 500;
         }
 
         .submenu-item:hover,
         .submenu-item.active {
-            color: #ffd700;
+            color: rgba(255, 255, 255, 0.9);
             border-left-color: #ffd700;
+            background: rgba(45, 107, 85, 0.3);
         }
 
         /* Main Content */
         .admin-main {
-            margin-left: 280px;
-            padding: 30px;
+            margin-left: 260px;
+            padding: 40px 45px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, transparent 100%);
         }
 
         .page-header {
-            margin-bottom: 30px;
+            margin-bottom: 40px;
         }
 
         .page-title {
-            font-size: 28px;
+            font-size: 32px;
+            font-weight: 700;
             color: white;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
         }
 
         .page-subtitle {
-            color: rgba(255, 255, 255, 0.6);
+            color: rgba(255, 255, 255, 0.65);
             font-size: 14px;
+            font-weight: 400;
         }
 
         .content-area {
@@ -153,16 +180,16 @@
         }
 
         .admin-sidebar::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.03);
         }
 
         .admin-sidebar::-webkit-scrollbar-thumb {
-            background: rgba(255, 215, 0, 0.3);
+            background: rgba(45, 107, 85, 0.5);
             border-radius: 3px;
         }
 
         .admin-sidebar::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 215, 0, 0.5);
+            background: rgba(45, 107, 85, 0.7);
         }
 
         /* Mobile */
@@ -173,8 +200,9 @@
 
             .admin-sidebar {
                 position: fixed;
-                left: -280px;
+                left: -260px;
                 transition: left 0.3s;
+                width: 260px;
             }
 
             .admin-sidebar.active {
@@ -183,11 +211,11 @@
 
             .admin-main {
                 margin-left: 0;
-                padding: 20px;
+                padding: 25px 20px;
             }
 
             .page-title {
-                font-size: 20px;
+                font-size: 24px;
             }
         }
     </style>
