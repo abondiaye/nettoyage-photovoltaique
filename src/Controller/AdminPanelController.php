@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Repository\AppointmentRepository;
+use App\Repository\MessageRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -12,10 +15,45 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class AdminPanelController extends AbstractController
 {
     #[Route('/dashboard', name: 'app_admin_panel_dashboard')]
-    public function dashboard(): Response
-    {
+    public function dashboard(
+        AppointmentRepository $appointmentRepo,
+        MessageRepository $messageRepo,
+        UserRepository $userRepo
+    ): Response {
+        $today = new \DateTime('today');
+        $todayEnd = (new \DateTime('today'))->modify('+1 day');
+        $thisMonth = new \DateTime('first day of this month');
+        $nextMonth = (new \DateTime('first day of this month'))->modify('+1 month');
+
+        $todayAppointments = $appointmentRepo->createQueryBuilder('a')
+            ->where('a.requestedDate >= :today AND a.requestedDate < :todayEnd')
+            ->setParameter('today', $today)
+            ->setParameter('todayEnd', $todayEnd)
+            ->getQuery()->getResult();
+
+        $pendingAppointments = $appointmentRepo->findBy(['status' => 'pending']);
+        $confirmedAppointments = $appointmentRepo->findBy(['status' => 'confirmed']);
+        $monthlyAppointments = $appointmentRepo->createQueryBuilder('a')
+            ->where('a.requestedDate >= :start AND a.requestedDate < :end')
+            ->setParameter('start', $thisMonth)
+            ->setParameter('end', $nextMonth)
+            ->getQuery()->getResult();
+
+        $activeUsers = $userRepo->createQueryBuilder('u')
+            ->where('u.isActive = true')
+            ->getQuery()->getResult();
+
         return $this->render('admin/panel/dashboard.html.twig', [
             'current_page' => 'dashboard',
+            'today_appointments' => count($todayAppointments),
+            'pending_appointments' => count($pendingAppointments),
+            'confirmed_appointments' => count($confirmedAppointments),
+            'monthly_appointments' => count($monthlyAppointments),
+            'total_appointments' => $appointmentRepo->count([]),
+            'total_messages' => $messageRepo->count([]),
+            'active_clients' => count($activeUsers),
+            'recent_messages' => $messageRepo->findBy([], ['createdAt' => 'DESC'], 5),
+            'recent_appointments' => $appointmentRepo->findBy([], ['requestedDate' => 'DESC'], 5),
         ]);
     }
 

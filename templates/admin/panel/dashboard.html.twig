@@ -224,8 +224,8 @@
     <div class="stat-card">
         <div class="stat-content">
             <div class="stat-label">Rendez-vous aujourd'hui</div>
-            <div class="stat-value">8</div>
-            <div class="stat-subtitle">+2 depuis hier</div>
+            <div class="stat-value">{{ today_appointments }}</div>
+            <div class="stat-subtitle">{{ total_appointments }} total</div>
         </div>
         <div class="stat-icon-box stat-icon-blue">📅</div>
     </div>
@@ -233,8 +233,8 @@
     <div class="stat-card">
         <div class="stat-content">
             <div class="stat-label">En attente</div>
-            <div class="stat-value">15</div>
-            <div class="stat-subtitle">3 prioritaires</div>
+            <div class="stat-value">{{ pending_appointments }}</div>
+            <div class="stat-subtitle">À valider</div>
         </div>
         <div class="stat-icon-box stat-icon-orange">⏳</div>
     </div>
@@ -242,19 +242,19 @@
     <div class="stat-card">
         <div class="stat-content">
             <div class="stat-label">Confirmées</div>
-            <div class="stat-value">42</div>
-            <div class="stat-subtitle">+8 cette semaine</div>
+            <div class="stat-value">{{ confirmed_appointments }}</div>
+            <div class="stat-subtitle">Ce mois: {{ monthly_appointments }}</div>
         </div>
         <div class="stat-icon-box stat-icon-green">✅</div>
     </div>
 
     <div class="stat-card">
         <div class="stat-content">
-            <div class="stat-label">Revenus ce mois</div>
-            <div class="stat-value">12,450€</div>
-            <div class="stat-subtitle">+25% vs mois dernier</div>
+            <div class="stat-label">Clients actifs</div>
+            <div class="stat-value">{{ active_clients }}</div>
+            <div class="stat-subtitle">Utilisateurs inscrits</div>
         </div>
-        <div class="stat-icon-box stat-icon-purple">💳</div>
+        <div class="stat-icon-box stat-icon-purple">👥</div>
     </div>
 </div>
 
@@ -305,15 +305,15 @@
         <h3>👥 Statistiques clients</h3>
         <div class="info-item">
             <div class="info-label">Clients actifs</div>
-            <div class="info-value">127</div>
+            <div class="info-value">{{ active_clients }}</div>
         </div>
         <div class="info-item">
-            <div class="info-label">Nouveaux ce mois</div>
-            <div class="info-value">12</div>
+            <div class="info-label">Messages reçus</div>
+            <div class="info-value">{{ total_messages }}</div>
         </div>
         <div class="info-item">
-            <div class="info-label">Satisfaction moyenne</div>
-            <div class="info-value">4.8/5 ⭐</div>
+            <div class="info-label">Total rendez-vous</div>
+            <div class="info-value">{{ total_appointments }}</div>
         </div>
     </div>
 
