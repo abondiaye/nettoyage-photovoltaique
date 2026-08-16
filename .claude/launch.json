@@ -4,8 +4,9 @@
     {
       "name": "symfony-dev",
       "runtimeExecutable": "/bin/bash",
-      "runtimeArgs": ["-c", "cd /Users/abdoulayendiaye/Desktop/nettoyage-photovoltaique/nettoyage-photovoltaique && symfony server:start --port=8000"],
-      "port": 8000
+      "runtimeArgs": ["-c", "cd /Users/abdoulayendiaye/Desktop/nettoyage-photovoltaique/nettoyage-photovoltaique && symfony server:start --port=$PORT"],
+      "port": 8000,
+      "autoPort": true
     },
     {
       "name": "bisceglie-static",
