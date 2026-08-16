@@ -1381,15 +1381,33 @@
 
 @media (max-width: 768px) {
     .scroll-nav-bar {
-        right: 10px;
-        gap: 6px;
-        padding: 8px;
+        right: 6px !important;
+        gap: 2px !important;
+        padding: 4px !important;
+        background: rgba(255, 255, 255, 0.02) !important;
+        border-radius: 25px !important;
+        border: none !important;
+        box-shadow: none !important;
     }
 
     .scroll-nav-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 14px;
+        width: 30px !important;
+        height: 30px !important;
+        font-size: 10px !important;
+        border: none !important;
+        background: rgba(255, 255, 255, 0.01) !important;
+        color: rgba(255, 255, 255, 0.3) !important;
+    }
+
+    .scroll-nav-btn:hover {
+        background: rgba(255, 255, 255, 0.1) !important;
+        color: rgba(255, 255, 255, 0.8) !important;
+        transform: scale(1.05);
+    }
+
+    .scroll-nav-btn.active {
+        background: rgba(160, 160, 160, 0.15) !important;
+        color: rgba(255, 255, 255, 0.9) !important;
     }
 
     /* Mobile fixes for business card container */
