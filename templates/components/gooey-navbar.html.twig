@@ -26,7 +26,11 @@
   opacity: 0.999;
   background: rgba(10, 61, 53, 0.08);
   backdrop-filter: blur(9px) brightness(1.1);
-  border-radius: 0;
+  border-radius: 0 0 20px 20px;
+  margin: 0 auto;
+  left: 10px;
+  right: 10px;
+  width: calc(100% - 20px);
   box-shadow:
     0 4px 20px rgba(10, 61, 53, 0.15),
     0 4px 10px rgba(10, 61, 53, 0.075),
@@ -62,6 +66,79 @@
   margin: 0;
   color: white;
   text-shadow: 0 1px 1px rgba(10, 61, 53, 0.2);
+}
+
+/* Right Section */
+.gooey-nav-right {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* Theme Toggle Button */
+.gooey-btn-theme {
+  background: rgba(192, 192, 192, 0.2);
+  color: white;
+  border: 1.5px solid rgba(192, 192, 192, 0.4);
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gooey-btn-theme:hover {
+  background: rgba(192, 192, 192, 0.3);
+  border-color: rgba(192, 192, 192, 0.7);
+  transform: scale(1.05);
+}
+
+/* Auth Buttons */
+.gooey-btn-auth {
+  position: relative;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 12px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gooey-btn-auth-light {
+  background: rgba(192, 192, 192, 0.15);
+  color: rgba(255, 255, 255, 0.8);
+  border: 1.5px solid rgba(192, 192, 192, 0.3);
+}
+
+.gooey-btn-auth-light:hover {
+  background: rgba(192, 192, 192, 0.25);
+  border-color: rgba(192, 192, 192, 0.6);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.gooey-btn-auth-dark {
+  background: rgba(10, 61, 53, 0.4);
+  color: white;
+  border: 1.5px solid rgba(192, 192, 192, 0.4);
+}
+
+.gooey-btn-auth-dark:hover {
+  background: rgba(10, 61, 53, 0.6);
+  border-color: rgba(192, 192, 192, 0.7);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(10, 61, 53, 0.3);
 }
 
 /* Navigation Links */
@@ -293,6 +370,30 @@
         <a href="{{ path('app_home') }}#contact" class="gooey-nav-link">Contact</a>
     </div>
 
+    <!-- Right Section -->
+    <div class="gooey-nav-right">
+        <!-- Theme Toggle Button -->
+        <button id="themeToggle" class="gooey-btn-theme" title="Toggle dark/light mode">
+            <span class="theme-icon">🌙</span>
+        </button>
+
+        <!-- Auth Buttons -->
+        {% if app.user %}
+            <a href="{{ path('app_admin_dashboard') }}" class="gooey-btn-auth gooey-btn-auth-dark">
+                👤 Admin
+            </a>
+            <a href="{{ path('app_logout') }}" class="gooey-btn-auth gooey-btn-auth-light">
+                Déconnexion
+            </a>
+        {% else %}
+            <a href="{{ path('app_login') }}" class="gooey-btn-auth gooey-btn-auth-light">
+                S'identifier
+            </a>
+            <a href="{{ path('app_register') }}" class="gooey-btn-auth gooey-btn-auth-dark">
+                Créer un compte
+            </a>
+        {% endif %}
+    </div>
 
     <!-- Effect Elements -->
     <div class="effect filter" id="effectFilter"></div>
@@ -424,6 +525,31 @@ navCenter.querySelectorAll('.gooey-nav-link').forEach(($el) => {
         e.preventDefault();
         activate($el);
     });
+});
+
+// Theme Toggle
+const themeToggle = document.getElementById('themeToggle');
+const html = document.documentElement;
+const themeIcon = themeToggle.querySelector('.theme-icon');
+
+const currentTheme = localStorage.getItem('theme') || 'light';
+if (currentTheme === 'dark') {
+    document.body.classList.add('dark-mode');
+    html.setAttribute('data-theme', 'dark');
+    themeIcon.textContent = '☀️';
+}
+
+themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    if (document.body.classList.contains('dark-mode')) {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+        themeIcon.textContent = '☀️';
+    } else {
+        html.setAttribute('data-theme', 'light');
+        localStorage.setItem('theme', 'light');
+        themeIcon.textContent = '🌙';
+    }
 });
 
 // Initialize
