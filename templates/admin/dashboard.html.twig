@@ -8,7 +8,7 @@
 // Hide navbar and circular nav in admin - execute immediately and aggressively
 (function() {
     function hideElements() {
-        const navbar = document.querySelector('.navbar');
+        const navbar = document.querySelector('.gooey-navbar');
         const circularNav = document.querySelector('.circular-nav-container');
 
         if (navbar) {
@@ -53,7 +53,7 @@
     }
 
     /* Hide navbar with extreme specificity */
-    html body .navbar {
+    html body .gooey-navbar {
         display: none !important;
         visibility: hidden !important;
         height: 0 !important;
@@ -68,7 +68,7 @@
     }
 
     /* Also target by direct selector */
-    .navbar {
+    .gooey-navbar {
         display: none !important;
     }
 
@@ -312,7 +312,7 @@
         left: -9999px !important;
     }
 
-    html body .navbar {
+    html body .gooey-navbar {
         display: none !important;
         visibility: hidden !important;
         height: 0 !important;

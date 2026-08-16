@@ -33,7 +33,7 @@
         {% if currentRoute|slice(0, 6) == 'admin_' or app.request.pathInfo|default('')|slice(0, 6) == '/admin' %}
         <style>
             /* Hide navbar and circular nav by DEFAULT (on ALL pages) */
-            .navbar { display: none !important; visibility: hidden !important; height: 0 !important; margin: 0 !important; padding: 0 !important; }
+            .gooey-navbar { display: none !important; visibility: hidden !important; height: 0 !important; margin: 0 !important; padding: 0 !important; }
             .circular-nav-container { display: none !important; visibility: hidden !important; height: 0 !important; width: 0 !important; margin: 0 !important; padding: 0 !important; }
 
             html footer {
@@ -581,7 +581,7 @@
 
             /* Responsive Mobile */
             @media (max-width: 768px) {
-                .navbar {
+                .gooey-navbar {
                     padding: 0 20px;
                 }
 
