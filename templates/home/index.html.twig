@@ -1056,7 +1056,7 @@
 </section>
 
 <!-- CTA Section -->
-<section class="cta-section">
+<section class="cta-section" id="cta">
     <div class="cta-content">
         <h2 class="cta-title">Prêt à optimiser votre installation ?</h2>
         <p class="cta-text">Contactez nos experts Sirius-Solar pour un diagnostic gratuit et une solution adaptée à vos panneaux photovoltaïques.</p>
@@ -1275,40 +1275,134 @@
     </div>
 </footer>
 
-<!-- Scroll Buttons -->
-<button id="scrollUp" class="scroll-button" title="Remonter">↑</button>
-<button id="scrollDown" class="scroll-button" title="Descendre">↓</button>
+<!-- Scroll Navigation Bar -->
+<div class="scroll-nav-bar" id="scrollNavBar">
+    <button class="scroll-nav-btn" data-target="hero" title="Accueil">🏠</button>
+    <button class="scroll-nav-btn" data-target="processus" title="Processus">🔄</button>
+    <button class="scroll-nav-btn" data-target="services" title="Services">⚙️</button>
+    <button class="scroll-nav-btn" data-target="avantages" title="Avantages">💡</button>
+    <button class="scroll-nav-btn" data-target="promotions" title="Promotions">🎁</button>
+    <button class="scroll-nav-btn" data-target="cta" title="Optimiser">🚀</button>
+    <button class="scroll-nav-btn" data-target="contact" title="Contact">📍</button>
+</div>
+
+<style>
+/* Scroll Navigation Bar */
+.scroll-nav-bar {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 998;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 12px;
+    border-radius: 50px;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.scroll-nav-btn {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.scroll-nav-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: scale(1.1);
+}
+
+.scroll-nav-btn.active {
+    background: rgba(10, 61, 53, 0.4);
+    border-color: rgba(160, 160, 160, 0.6);
+}
+
+@media (max-width: 768px) {
+    .scroll-nav-bar {
+        right: 10px;
+        gap: 6px;
+        padding: 8px;
+    }
+
+    .scroll-nav-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 14px;
+    }
+}
+</style>
 
 <script>
-// Scroll Buttons Functionality
-const scrollUpBtn = document.getElementById('scrollUp');
-const scrollDownBtn = document.getElementById('scrollDown');
+// Scroll Navigation Bar Functionality
+const scrollNavButtons = document.querySelectorAll('.scroll-nav-btn');
+const scrollNavBar = document.getElementById('scrollNavBar');
 
-// Show/hide scroll buttons based on scroll position
-window.addEventListener('scroll', () => {
-    const scrollTop = window.scrollY;
-    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+// Handle button clicks
+scrollNavButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const targetId = btn.dataset.target;
+        const targetElement = targetId === 'hero'
+            ? document.querySelector('.hero-container')
+            : document.getElementById(targetId);
 
-    // Show scroll up button if not at top
-    if (scrollTop > 300) {
-        scrollUpBtn.classList.add('active');
-    } else {
-        scrollUpBtn.classList.remove('active');
-    }
-
-    // Show scroll down button if not at bottom
-    if (scrollTop < scrollHeight - 300) {
-        scrollDownBtn.classList.add('active');
-    } else {
-        scrollDownBtn.classList.remove('active');
-    }
+        if (targetElement) {
+            targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
 });
 
-// Scroll up by 500px (one step) - instantaneous
-scrollUpBtn.addEventListener('click', () => {
-    const currentScroll = window.scrollY;
-    const targetScroll = Math.max(currentScroll - 500, 0);
-    window.scrollTo(0, targetScroll);
+// Update active button based on scroll position
+window.addEventListener('scroll', () => {
+    let currentSection = 'hero';
+
+    const sections = [
+        { id: 'hero', element: document.querySelector('.hero-container'), offset: 0 },
+        { id: 'processus', element: document.getElementById('processus'), offset: 200 },
+        { id: 'services', element: document.getElementById('services'), offset: 200 },
+        { id: 'avantages', element: document.getElementById('avantages'), offset: 200 },
+        { id: 'promotions', element: document.getElementById('promotions'), offset: 200 },
+        { id: 'cta', element: document.getElementById('cta'), offset: 200 },
+        { id: 'contact', element: document.getElementById('contact'), offset: 200 }
+    ];
+
+    sections.forEach(section => {
+        if (section.element) {
+            const rect = section.element.getBoundingClientRect();
+            if (rect.top <= section.offset && rect.bottom > section.offset) {
+                currentSection = section.id;
+            }
+        }
+    });
+
+    scrollNavButtons.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.target === currentSection) {
+            btn.classList.add('active');
+        }
+    });
+
+    // Show/hide scroll bar based on scroll position
+    if (window.scrollY > 300) {
+        scrollNavBar.style.opacity = '1';
+        scrollNavBar.style.pointerEvents = 'auto';
+    } else {
+        scrollNavBar.style.opacity = '0.3';
+        scrollNavBar.style.pointerEvents = 'none';
+    }
 });
 
 // Scroll down by 500px (one step) - instantaneous
