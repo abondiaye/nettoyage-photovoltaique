@@ -1391,6 +1391,31 @@
         height: 40px;
         font-size: 14px;
     }
+
+    /* Mobile fixes for business card container */
+    .carte-visite-container {
+        height: auto !important;
+        padding: 20px 15px !important;
+    }
+
+    .carte-visite-container > div[style*="display"] {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 20px !important;
+        max-width: 100% !important;
+        margin: 0 auto !important;
+    }
+
+    .carte-visite-container > div[style*="display"] > div {
+        height: 250px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .carte-visite-container > p {
+        margin-top: 20px !important;
+        font-size: 12px !important;
+    }
 }
 </style>
 
