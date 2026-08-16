@@ -883,6 +883,41 @@
         font-style: italic;
     }
 
+    /* Light mode adjustments for promotions */
+    body:not(.dark-mode) .promo-card {
+        background: linear-gradient(135deg, rgba(168, 168, 168, 0.2), rgba(192, 192, 192, 0.15));
+        backdrop-filter: blur(20px);
+        border: 2px solid rgba(130, 130, 130, 0.4);
+    }
+
+    body:not(.dark-mode) .promo-card:hover {
+        background: linear-gradient(135deg, rgba(168, 168, 168, 0.3), rgba(192, 192, 192, 0.25));
+        border-color: rgba(130, 130, 130, 0.6);
+    }
+
+    body:not(.dark-mode) .promo-badge {
+        background: linear-gradient(135deg, #888888, #c0c0c0);
+        color: #ffffff;
+        box-shadow: 0 4px 15px rgba(130, 130, 130, 0.4);
+    }
+
+    body:not(.dark-mode) .promo-value {
+        background: linear-gradient(135deg, #888888, #c0c0c0);
+    }
+
+    body:not(.dark-mode) .promo-cta {
+        background: linear-gradient(135deg, #888888, #c0c0c0);
+        color: #ffffff;
+    }
+
+    body:not(.dark-mode) .promo-cta:hover {
+        box-shadow: 0 8px 25px rgba(130, 130, 130, 0.6);
+    }
+
+    body:not(.dark-mode) .promo-validity {
+        color: rgba(100, 100, 100, 0.9);
+    }
+
     /* ===== RESPONSIVE MOBILE ===== */
     @media (max-width: 768px) {
         .promotions-section {
