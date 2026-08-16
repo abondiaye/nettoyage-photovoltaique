@@ -266,22 +266,18 @@
   z-index: 999;
 }
 
-/* Text effect */
+/* Text effect - hidden since text is visible in links */
 .effect.text {
-  color: white;
-  z-index: 999;
-  transition: color 0s ease;
-  font-weight: 600;
-  font-size: 14px;
+  display: none !important;
+  pointer-events: none;
 }
 
 .effect.text.active {
-  color: #0A3D35;
-  transition: color 1.8s var(--linear-ease) 0.2s;
+  display: none !important;
 }
 
 .effect.text.hidden {
-  opacity: 0;
+  display: none !important;
 }
 
 /* Filter effect */
