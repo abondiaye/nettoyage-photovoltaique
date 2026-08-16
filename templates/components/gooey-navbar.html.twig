@@ -141,6 +141,72 @@
   box-shadow: 0 8px 20px rgba(10, 61, 53, 0.3);
 }
 
+/* Brand/Logo */
+.gooey-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.gooey-brand-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: rgba(192, 192, 192, 0.1);
+  border: 1px solid rgba(192, 192, 192, 0.3);
+}
+
+.gooey-brand-icon img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.gooey-brand:hover {
+  transform: translateY(-2px);
+  color: #ffd700;
+}
+
+/* Language Selector */
+.gooey-lang-selector {
+  display: flex;
+  align-items: center;
+}
+
+.gooey-lang-select {
+  background: rgba(192, 192, 192, 0.15);
+  color: rgba(255, 255, 255, 0.9);
+  border: 1.5px solid rgba(192, 192, 192, 0.3);
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+.gooey-lang-select:hover {
+  background: rgba(192, 192, 192, 0.25);
+  border-color: rgba(192, 192, 192, 0.6);
+}
+
+.gooey-lang-select:focus {
+  outline: none;
+  background: rgba(192, 192, 192, 0.3);
+  border-color: rgba(192, 192, 192, 0.7);
+  box-shadow: 0 0 10px rgba(192, 192, 192, 0.2);
+}
+
 /* Navigation Links */
 .gooey-nav-link {
   padding: 0.6em 1.2em;
@@ -361,7 +427,15 @@
 </style>
 
 <nav class="gooey-navbar" id="gooeyNav">
-    <!-- Navigation Links Only -->
+    <!-- Logo/Brand -->
+    <a href="{{ path('app_home') }}" class="gooey-brand">
+        <div class="gooey-brand-icon">
+            <img src="{{ asset('images/logo.svg') }}" alt="Sirius-Solar">
+        </div>
+        <span>SIRIUS-SOLAR</span>
+    </a>
+
+    <!-- Navigation Links -->
     <div class="gooey-nav-center" id="navCenter">
         <a href="{{ path('app_home') }}" class="gooey-nav-link">Accueil</a>
         <a href="{{ path('app_home') }}#avantages" class="gooey-nav-link">À propos</a>
@@ -372,6 +446,16 @@
 
     <!-- Right Section -->
     <div class="gooey-nav-right">
+        <!-- Language Selector -->
+        <div class="gooey-lang-selector">
+            <select id="languageSelect" class="gooey-lang-select" title="Select language">
+                <option value="fr" {% if app.request.locale == 'fr' %}selected{% endif %}>FR</option>
+                <option value="de" {% if app.request.locale == 'de' %}selected{% endif %}>DE</option>
+                <option value="it" {% if app.request.locale == 'it' %}selected{% endif %}>IT</option>
+                <option value="rm" {% if app.request.locale == 'rm' %}selected{% endif %}>RM</option>
+            </select>
+        </div>
+
         <!-- Theme Toggle Button -->
         <button id="themeToggle" class="gooey-btn-theme" title="Toggle dark/light mode">
             <span class="theme-icon">🌙</span>
