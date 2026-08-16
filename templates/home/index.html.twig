@@ -885,37 +885,50 @@
 
     /* Light mode adjustments for promotions */
     body:not(.dark-mode) .promo-card {
-        background: linear-gradient(135deg, rgba(168, 168, 168, 0.2), rgba(192, 192, 192, 0.15));
-        backdrop-filter: blur(20px);
-        border: 2px solid rgba(130, 130, 130, 0.4);
+        background: linear-gradient(135deg, rgba(220, 220, 220, 0.7), rgba(200, 200, 200, 0.6));
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(100, 100, 100, 0.5);
     }
 
     body:not(.dark-mode) .promo-card:hover {
-        background: linear-gradient(135deg, rgba(168, 168, 168, 0.3), rgba(192, 192, 192, 0.25));
-        border-color: rgba(130, 130, 130, 0.6);
+        background: linear-gradient(135deg, rgba(200, 200, 200, 0.8), rgba(180, 180, 180, 0.7));
+        border-color: rgba(80, 80, 80, 0.7);
     }
 
     body:not(.dark-mode) .promo-badge {
-        background: linear-gradient(135deg, #888888, #c0c0c0);
+        background: linear-gradient(135deg, #707070, #909090);
         color: #ffffff;
-        box-shadow: 0 4px 15px rgba(130, 130, 130, 0.4);
+        box-shadow: 0 4px 15px rgba(100, 100, 100, 0.5);
     }
 
     body:not(.dark-mode) .promo-value {
-        background: linear-gradient(135deg, #888888, #c0c0c0);
+        background: linear-gradient(135deg, #505050, #707070);
+        color: transparent;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
     }
 
     body:not(.dark-mode) .promo-cta {
-        background: linear-gradient(135deg, #888888, #c0c0c0);
+        background: linear-gradient(135deg, #707070, #909090);
         color: #ffffff;
     }
 
     body:not(.dark-mode) .promo-cta:hover {
-        box-shadow: 0 8px 25px rgba(130, 130, 130, 0.6);
+        background: linear-gradient(135deg, #606060, #808080);
+        box-shadow: 0 8px 25px rgba(100, 100, 100, 0.6);
     }
 
     body:not(.dark-mode) .promo-validity {
-        color: rgba(100, 100, 100, 0.9);
+        color: rgba(60, 60, 60, 0.9);
+    }
+
+    body:not(.dark-mode) .promo-title {
+        color: #0A3D35;
+    }
+
+    body:not(.dark-mode) .promo-desc {
+        color: rgba(50, 50, 50, 0.9);
     }
 
     /* ===== RESPONSIVE MOBILE ===== */
