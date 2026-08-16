@@ -647,11 +647,17 @@ const activate = ($el) => {
     }
 };
 
-// Navigation links
+// Navigation links - adapted for gooey-navbar
 navCenter.querySelectorAll('.gooey-nav-link').forEach(($el) => {
     $el.addEventListener('click', (e) => {
-        e.preventDefault();
         activate($el);
+    });
+
+    $el.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            activate($el);
+        }
     });
 });
 
