@@ -49,42 +49,6 @@
   }
 }
 
-/* Logo/Brand */
-.gooey-brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  text-decoration: none;
-  color: white;
-  font-weight: 700;
-  font-size: 18px;
-  flex-shrink: 0;
-  transition: all 0.3s ease;
-}
-
-.gooey-brand:hover {
-  transform: scale(1.05);
-}
-
-.gooey-brand-icon {
-  width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(192, 192, 192, 0.3);
-  border-radius: 10px;
-  border: 2px solid rgba(192, 192, 192, 0.7);
-}
-
-.gooey-brand-icon img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  padding: 6px;
-  filter: brightness(1.1);
-}
-
 /* Center Navigation */
 .gooey-nav-center {
   display: flex;
@@ -144,95 +108,6 @@
   scale: 1;
 }
 
-/* Right Section */
-.gooey-nav-right {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  flex-shrink: 0;
-}
-
-/* Language Selector */
-.gooey-language {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  background: rgba(192, 192, 192, 0.1);
-  padding: 6px 12px;
-  border-radius: 8px;
-  border: 1px solid rgba(192, 192, 192, 0.2);
-}
-
-.gooey-lang-item {
-  color: rgba(255, 255, 255, 0.7);
-  text-decoration: none;
-  font-size: 11px;
-  font-weight: 600;
-  padding: 4px 6px;
-  border-radius: 4px;
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.gooey-lang-item:hover,
-.gooey-lang-item.active {
-  color: #ffffff;
-  background: rgba(192, 192, 192, 0.2);
-}
-
-.gooey-lang-separator {
-  color: rgba(255, 255, 255, 0.3);
-  font-size: 10px;
-}
-
-/* Auth Buttons */
-.gooey-auth-buttons {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
-.gooey-btn {
-  position: relative;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 13px;
-  cursor: pointer;
-  border: none;
-  transition: all 0.4s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  overflow: hidden;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.gooey-btn-login {
-  background: rgba(192, 192, 192, 0.1);
-  color: rgba(255, 255, 255, 0.8);
-  border: 1.5px solid rgba(192, 192, 192, 0.4);
-}
-
-.gooey-btn-login:hover {
-  background: rgba(192, 192, 192, 0.2);
-  border-color: rgba(192, 192, 192, 0.8);
-  color: #ffffff;
-  transform: translateY(-2px);
-}
-
-.gooey-btn-signup {
-  background: linear-gradient(135deg, rgba(192, 192, 192, 0.4), rgba(192, 192, 192, 0.2));
-  color: #ffffff;
-  border: none;
-}
-
-.gooey-btn-signup:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 30px rgba(192, 192, 192, 0.3);
-}
 
 /* Effect element for animations */
 .effect {
@@ -381,61 +256,6 @@
   }
 }
 
-/* Hamburger Menu */
-.gooey-hamburger {
-  display: none;
-  flex-direction: column;
-  cursor: pointer;
-  gap: 6px;
-}
-
-.gooey-hamburger span {
-  width: 25px;
-  height: 2.5px;
-  background: rgba(255, 255, 255, 0.8);
-  border-radius: 2px;
-  transition: all 0.3s ease;
-}
-
-.gooey-hamburger.active span:nth-child(1) {
-  transform: rotate(45deg) translate(8px, 8px);
-}
-
-.gooey-hamburger.active span:nth-child(2) {
-  opacity: 0;
-}
-
-.gooey-hamburger.active span:nth-child(3) {
-  transform: rotate(-45deg) translate(7px, -7px);
-}
-
-/* Mobile Menu */
-.gooey-mobile-menu {
-  position: fixed;
-  top: 80px;
-  left: 0;
-  right: 0;
-  background: rgba(10, 61, 53, 0.95);
-  backdrop-filter: blur(20px);
-  padding: 20px;
-  display: none;
-  flex-direction: column;
-  gap: 15px;
-  max-height: calc(100vh - 80px);
-  overflow-y: auto;
-  z-index: 999;
-  border-bottom: 1px solid rgba(192, 192, 192, 0.2);
-}
-
-.gooey-mobile-menu.active {
-  display: flex;
-}
-
-.gooey-mobile-menu .gooey-nav-link {
-  padding: 12px 16px;
-  width: 100%;
-  text-align: left;
-}
 
 /* Responsive */
 @media (max-width: 1024px) {
@@ -459,44 +279,19 @@
     height: 70px;
   }
 
-  .gooey-brand {
-    gap: 10px;
-    font-size: 16px;
-  }
-
-  .gooey-brand-icon {
-    width: 40px;
-    height: 40px;
-  }
-
   .gooey-nav-center {
-    display: none;
+    gap: 0.3em;
   }
 
-  .gooey-nav-right {
-    display: none;
-  }
-
-  .gooey-hamburger {
-    display: flex;
-  }
-
-  .gooey-mobile-menu {
-    top: 70px;
+  .gooey-nav-link {
+    font-size: 12px;
+    padding: 0.5em 0.8em;
   }
 }
 </style>
 
 <nav class="gooey-navbar" id="gooeyNav">
-    <!-- Brand/Logo -->
-    <a href="{{ path('app_home') }}" class="gooey-brand">
-        <div class="gooey-brand-icon">
-            <img src="{{ asset('images/logo.svg') }}" alt="Sirius-Solar">
-        </div>
-        <span>SIRIUS-SOLAR</span>
-    </a>
-
-    <!-- Center Navigation -->
+    <!-- Navigation Links Only -->
     <div class="gooey-nav-center" id="navCenter">
         <a href="{{ path('app_home') }}" class="gooey-nav-link">Accueil</a>
         <a href="{{ path('app_home') }}#avantages" class="gooey-nav-link">À propos</a>
@@ -505,54 +300,6 @@
         <a href="{{ path('app_home') }}#contact" class="gooey-nav-link">Contact</a>
     </div>
 
-    <!-- Right Section -->
-    <div class="gooey-nav-right">
-        <!-- Language Selector -->
-        <div class="gooey-language">
-            <a href="#" class="gooey-lang-item active" data-lang="fr">FR</a>
-            <span class="gooey-lang-separator">|</span>
-            <a href="#" class="gooey-lang-item" data-lang="de">DE</a>
-            <span class="gooey-lang-separator">|</span>
-            <a href="#" class="gooey-lang-item" data-lang="it">IT</a>
-            <span class="gooey-lang-separator">|</span>
-            <a href="#" class="gooey-lang-item" data-lang="rm">RM</a>
-        </div>
-
-        <!-- Auth Buttons -->
-        <div class="gooey-auth-buttons">
-            {% if app.user %}
-                <a href="{{ path('app_admin_dashboard') }}" class="gooey-btn gooey-btn-login">
-                    👤 Tableau de bord
-                </a>
-                <a href="{{ path('app_logout') }}" class="gooey-btn gooey-btn-signup">
-                    Déconnexion
-                </a>
-            {% else %}
-                <a href="{{ path('app_login') }}" class="gooey-btn gooey-btn-login">
-                    S'identifier
-                </a>
-                <a href="{{ path('app_register') }}" class="gooey-btn gooey-btn-signup">
-                    Créer un compte
-                </a>
-            {% endif %}
-        </div>
-    </div>
-
-    <!-- Mobile Hamburger -->
-    <div class="gooey-hamburger" id="gooeyHamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
-
-    <!-- Mobile Menu -->
-    <div class="gooey-mobile-menu" id="gooeyMobileMenu">
-        <a href="{{ path('app_home') }}" class="gooey-nav-link">Accueil</a>
-        <a href="{{ path('app_home') }}#avantages" class="gooey-nav-link">À propos</a>
-        <a href="{{ path('app_home') }}#services" class="gooey-nav-link">Services</a>
-        <a href="{{ path('app_blog') }}" class="gooey-nav-link">Gallery</a>
-        <a href="{{ path('app_home') }}#contact" class="gooey-nav-link">Contact</a>
-    </div>
 
     <!-- Effect Elements -->
     <div class="effect filter" id="effectFilter"></div>
@@ -678,34 +425,11 @@ const activate = ($el) => {
     }
 };
 
-// Desktop menu
+// Navigation links
 navCenter.querySelectorAll('.gooey-nav-link').forEach(($el) => {
     $el.addEventListener('click', (e) => {
         e.preventDefault();
         activate($el);
-    });
-});
-
-// Mobile menu toggle
-hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    mobileMenu.classList.toggle('active');
-});
-
-// Close mobile menu when clicking links
-mobileMenu.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-        hamburger.classList.remove('active');
-        mobileMenu.classList.remove('active');
-    });
-});
-
-// Language selector
-document.querySelectorAll('.gooey-lang-item').forEach(item => {
-    item.addEventListener('click', (e) => {
-        e.preventDefault();
-        document.querySelectorAll('.gooey-lang-item').forEach(li => li.classList.remove('active'));
-        item.classList.add('active');
     });
 });
 
