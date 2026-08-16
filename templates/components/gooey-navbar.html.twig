@@ -548,59 +548,64 @@ body:not(.dark-mode) .gooey-lang-select {
 @media (max-width: 480px) {
   .gooey-navbar {
     height: 36px;
-    padding: 0 16px;
+    padding: 0 12px;
     gap: 4px;
+    width: calc(100vw - 20px);
+    max-width: calc(100vw - 20px);
+    overflow: hidden;
   }
 
   .gooey-brand {
-    display: none;
+    display: none !important;
   }
 
   .gooey-nav-center {
-    padding: 0 0.4em;
-    gap: 0.2em;
+    padding: 0 0.3em;
+    gap: 0.15em;
   }
 
   .gooey-nav-center li a {
-    font-size: 11px;
-    padding: 0.4em 0.6em;
+    font-size: 10px;
+    padding: 0.3em 0.4em;
   }
 
   .gooey-brand-icon {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
+    display: none;
   }
 
   .gooey-brand-icon img {
-    width: 14px;
-    height: 14px;
+    width: 12px;
+    height: 12px;
   }
 
   .gooey-btn-theme {
-    padding: 4px 6px;
-    font-size: 11px;
+    padding: 3px 5px;
+    font-size: 10px;
   }
 
   .gooey-btn-auth {
-    padding: 4px 8px;
+    padding: 3px 6px;
     font-size: 8px;
     letter-spacing: 0px;
   }
 
   .gooey-lang-select {
-    padding: 4px 6px;
-    font-size: 9px;
+    padding: 3px 5px;
+    font-size: 8px;
   }
 
   .gooey-nav-right {
-    gap: 4px;
+    gap: 3px;
   }
 }
 
 @media (max-width: 768px) {
   .gooey-navbar {
-    width: 95%;
-    max-width: 350px;
+    width: calc(100vw - 20px);
+    max-width: calc(100vw - 20px);
+    overflow: hidden;
   }
 }
 </style>
