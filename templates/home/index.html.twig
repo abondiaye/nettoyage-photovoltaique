@@ -691,6 +691,166 @@
     #scrollDown {
         bottom: 30px;
     }
+
+    /* ===== PROMOTIONS SECTION ===== */
+    .promotions-section {
+        padding: 100px 40px;
+        background: linear-gradient(180deg, rgba(10, 61, 53, 0.08) 0%, rgba(10, 61, 53, 0.03) 100%);
+    }
+
+    .promotions-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .promo-card {
+        position: relative;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+        backdrop-filter: blur(20px);
+        border: 2px solid rgba(255, 215, 0, 0.3);
+        border-radius: 16px;
+        padding: 40px;
+        text-align: center;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        cursor: pointer;
+        animation: fadeInUp 0.6s ease-out;
+        animation-fill-mode: both;
+    }
+
+    .promo-card:nth-child(1) { animation-delay: 0.1s; }
+    .promo-card:nth-child(2) { animation-delay: 0.2s; }
+    .promo-card:nth-child(3) { animation-delay: 0.3s; }
+
+    .promo-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 70%);
+        animation: promoGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes promoGlow {
+        0%, 100% {
+            opacity: 0.5;
+            transform: translate(0, 0);
+        }
+        50% {
+            opacity: 0.8;
+            transform: translate(-10px, -10px);
+        }
+    }
+
+    .promo-card:hover {
+        transform: translateY(-8px);
+        border-color: rgba(255, 215, 0, 0.6);
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 215, 0, 0.08));
+        box-shadow: 0 20px 50px rgba(255, 215, 0, 0.25), inset 0 0 20px rgba(255, 215, 0, 0.1);
+    }
+
+    .promo-badge {
+        position: relative;
+        z-index: 2;
+        display: inline-block;
+        background: linear-gradient(135deg, #ffd700, #ffed4e);
+        color: #3d2817;
+        padding: 10px 20px;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 14px;
+        margin-bottom: 15px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+    }
+
+    .promo-title {
+        position: relative;
+        z-index: 2;
+        font-size: 24px;
+        color: white;
+        margin-bottom: 10px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700;
+    }
+
+    .promo-desc {
+        position: relative;
+        z-index: 2;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+
+    .promo-value {
+        position: relative;
+        z-index: 2;
+        font-size: 32px;
+        font-weight: 900;
+        background: linear-gradient(135deg, #ffd700, #ffed4e);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 15px;
+    }
+
+    .promo-cta {
+        position: relative;
+        z-index: 2;
+        display: inline-block;
+        background: linear-gradient(135deg, #ffd700, #ffed4e);
+        color: #3d2817;
+        padding: 12px 28px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+    }
+
+    .promo-cta:hover {
+        transform: scale(1.08);
+        box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5);
+    }
+
+    .promo-validity {
+        position: relative;
+        z-index: 2;
+        font-size: 11px;
+        color: rgba(255, 215, 0, 0.8);
+        margin-top: 15px;
+        font-style: italic;
+    }
+
+    /* ===== RESPONSIVE MOBILE ===== */
+    @media (max-width: 768px) {
+        .promotions-section {
+            padding: 60px 20px;
+        }
+
+        .promo-card {
+            padding: 30px 20px;
+        }
+
+        .promo-title {
+            font-size: 20px;
+        }
+
+        .promo-value {
+            font-size: 28px;
+        }
+    }
 </style>
 
 <!-- Hero Section -->
@@ -799,6 +959,43 @@
             <h3>Devis en 48h</h3>
             <p>Service rapide et efficace, réponse garantie en moins de 2 jours</p>
         </div>
+        </div>
+    </div>
+</section>
+
+<!-- Promotions Section -->
+<section class="promotions-section" id="promotions">
+    <h2 class="section-title">✨ Promotions du Mois</h2>
+
+    <div class="promotions-grid">
+        <!-- Promo 1: Nettoyage + Inspection -->
+        <div class="promo-card">
+            <div class="promo-badge">🎁 Offre Spéciale</div>
+            <h3 class="promo-title">Nettoyage + Inspection</h3>
+            <p class="promo-desc">Package complet nettoyage et diagnostic professionnel</p>
+            <div class="promo-value">-20%</div>
+            <a href="{{ path('app_devis') }}" class="promo-cta">Réserver Maintenant</a>
+            <p class="promo-validity">Valide jusqu'au 30 septembre 2026</p>
+        </div>
+
+        <!-- Promo 2: Maintenance Annuelle -->
+        <div class="promo-card">
+            <div class="promo-badge">🔄 Contrat</div>
+            <h3 class="promo-title">Maintenance Annuelle</h3>
+            <p class="promo-desc">4 nettoyages programmés + support prioritaire</p>
+            <div class="promo-value">-30%</div>
+            <a href="{{ path('app_devis') }}" class="promo-cta">Souscrire</a>
+            <p class="promo-validity">Valide jusqu'au 30 septembre 2026</p>
+        </div>
+
+        <!-- Promo 3: Inspection Gratuite -->
+        <div class="promo-card">
+            <div class="promo-badge">🆓 Gratuit</div>
+            <h3 class="promo-title">Inspection Gratuite</h3>
+            <p class="promo-desc">Diagnostic complet + rapport détaillé sans engagement</p>
+            <div class="promo-value">CHF 0.-</div>
+            <a href="{{ path('app_devis') }}" class="promo-cta">Réserver</a>
+            <p class="promo-validity">Offre limitée - Septembre 2026</p>
         </div>
     </div>
 </section>

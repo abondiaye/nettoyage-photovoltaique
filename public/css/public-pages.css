@@ -1,0 +1,20 @@
+/* Show navbar and circular nav on public pages */
+.navbar {
+    display: flex !important;
+    visibility: visible !important;
+    height: 70px !important;
+    margin: unset !important;
+    padding: unset !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1000 !important;
+}
+
+.circular-nav-container {
+    display: block !important;
+    visibility: visible !important;
+    height: 280px !important;
+    width: 280px !important;
+    margin: unset !important;
+    padding: unset !important;
+}
