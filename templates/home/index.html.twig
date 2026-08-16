@@ -4,10 +4,17 @@
 
 {% block body %}
 <style>
-    /* Show navbar and circular nav on home page */
-    .gooey-navbar { display: flex !important; visibility: visible !important; height: 70px !important; min-height: 70px !important; max-height: 70px !important; margin: 0 !important; padding: 0 40px !important; }
+    /* Show navbar on home page - positioned over hero */
+    .gooey-navbar { display: flex !important; visibility: visible !important; height: 70px !important; min-height: 70px !important; max-height: 70px !important; margin: 0 !important; padding: 0 40px !important; position: relative !important; z-index: 1001 !important; }
     .gooey-navbar * { max-height: none !important; height: auto !important; }
-    .circular-nav-container { display: block !important; visibility: visible !important; height: 280px !important; width: 280px !important; margin: unset !important; padding: unset !important; }
+
+    /* Hide circular nav - it duplicates links */
+    .circular-nav-container { display: none !important; visibility: hidden !important; height: 0 !important; width: 0 !important; }
+
+    /* Remove body padding so navbar overlays hero */
+    body {
+        padding-top: 0 !important;
+    }
 
     /* ===== HERO SECTION ===== */
     .hero-container {
