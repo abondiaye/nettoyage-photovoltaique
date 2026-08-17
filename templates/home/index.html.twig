@@ -252,35 +252,36 @@
         background-size: cover;
         background-position: center;
         position: relative;
+        background-blend-mode: overlay;
     }
 
-    /* Light mode - darker overlay */
+    /* Light mode - minimal overlay for image visibility */
     @media (prefers-color-scheme: light) {
         .services-section {
-            filter: brightness(1) contrast(1);
+            filter: brightness(1.05) contrast(1.02);
         }
 
         .services-section::after {
             content: '';
             position: absolute;
             inset: 0;
-            background: rgba(10, 61, 53, 0.3);
+            background: rgba(10, 61, 53, 0.15);
             pointer-events: none;
             z-index: 0;
         }
     }
 
-    /* Dark mode - lighter/no overlay to show image */
+    /* Dark mode - enhance brightness to show image clearly */
     @media (prefers-color-scheme: dark) {
         .services-section {
-            filter: brightness(1.15) contrast(1.08);
+            filter: brightness(1.2) contrast(1.1);
         }
 
         .services-section::after {
             content: '';
             position: absolute;
             inset: 0;
-            background: rgba(0, 0, 0, 0.05);
+            background: rgba(0, 0, 0, 0);
             pointer-events: none;
             z-index: 0;
         }
