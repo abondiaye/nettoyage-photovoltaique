@@ -1,301 +1,383 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Réserver un nettoyage - Sirius Solar{% endblock %}
+{% block title %}Demande de nettoyage - Sirius Solar{% endblock %}
 
-{% block content %}
-<div style="max-width: 800px; margin: 60px auto; padding: 40px; background: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-    <h1 style="text-align: center; margin-bottom: 10px; color: #1a3a52;">☀️ Réservez votre nettoyage</h1>
-    <p style="text-align: center; color: #666; margin-bottom: 40px;">Remplissez ce formulaire pour demander un nettoyage de vos panneaux solaires</p>
-
-    <form id="reservationForm" style="display: grid; gap: 20px;">
-        <!-- Section 1: Informations Personnelles -->
-        <fieldset style="border: 1px solid #eee; padding: 20px; border-radius: 8px;">
-            <legend style="font-weight: 600; padding: 0 10px; color: #1a3a52;">👤 Informations Personnelles</legend>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                <div class="form-group">
-                    <label for="nom">Nom *</label>
-                    <input type="text" id="nom" name="nom" required>
-                    <small class="error-message"></small>
-                </div>
-                <div class="form-group">
-                    <label for="prenom">Prénom *</label>
-                    <input type="text" id="prenom" name="prenom" required>
-                    <small class="error-message"></small>
-                </div>
-            </div>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                <div class="form-group">
-                    <label for="email">Email *</label>
-                    <input type="email" id="email" name="email" required>
-                    <small class="error-message"></small>
-                </div>
-                <div class="form-group">
-                    <label for="telephone">Téléphone *</label>
-                    <input type="tel" id="telephone" name="telephone" required pattern="[0-9\s\-\+]{10,}">
-                    <small class="error-message"></small>
-                </div>
-            </div>
-        </fieldset>
-
-        <!-- Section 2: Adresse -->
-        <fieldset style="border: 1px solid #eee; padding: 20px; border-radius: 8px;">
-            <legend style="font-weight: 600; padding: 0 10px; color: #1a3a52;">📍 Adresse</legend>
-
-            <div class="form-group">
-                <label for="adresse">Adresse complète *</label>
-                <input type="text" id="adresse" name="adresse" placeholder="Rue, numéro" required>
-                <small class="error-message"></small>
-            </div>
-
-            <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 15px;">
-                <div class="form-group">
-                    <label for="codePostal">Code Postal *</label>
-                    <input type="text" id="codePostal" name="codePostal" placeholder="1200" required pattern="[0-9]{4}">
-                    <small class="error-message"></small>
-                </div>
-                <div class="form-group">
-                    <label for="ville">Ville *</label>
-                    <input type="text" id="ville" name="ville" required>
-                    <small class="error-message"></small>
-                </div>
-            </div>
-        </fieldset>
-
-        <!-- Section 3: Détails Intervention -->
-        <fieldset style="border: 1px solid #eee; padding: 20px; border-radius: 8px;">
-            <legend style="font-weight: 600; padding: 0 10px; color: #1a3a52;">🔧 Détails de l'intervention</legend>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                <div class="form-group">
-                    <label for="dateSouhaitee">Date souhaitée *</label>
-                    <input type="date" id="dateSouhaitee" name="dateSouhaitee" required>
-                    <small class="error-message"></small>
-                </div>
-                <div class="form-group">
-                    <label for="heureSouhaitee">Heure souhaitée *</label>
-                    <input type="time" id="heureSouhaitee" name="heureSouhaitee" required>
-                    <small class="error-message"></small>
-                </div>
-            </div>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                <div class="form-group">
-                    <label for="nombrePanneaux">Nombre de panneaux *</label>
-                    <input type="number" id="nombrePanneaux" name="nombrePanneaux" min="1" max="200" required>
-                    <small class="error-message"></small>
-                </div>
-                <div class="form-group">
-                    <label for="typeToiture">Type de toiture *</label>
-                    <select id="typeToiture" name="typeToiture" required>
-                        <option value="">-- Sélectionnez --</option>
-                        <option value="plat">Toiture plate</option>
-                        <option value="incline_leger">Inclinaison légère (< 30°)</option>
-                        <option value="incline_moyen">Inclinaison moyenne (30-50°)</option>
-                        <option value="incline_fort">Inclinaison forte (> 50°)</option>
-                        <option value="avec_obstacles">Avec obstacles (cheminées, etc.)</option>
-                    </select>
-                    <small class="error-message"></small>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="notes">Notes supplémentaires</label>
-                <textarea id="notes" name="notes" placeholder="Accès spécial, allergies, etc." style="resize: vertical; min-height: 80px;"></textarea>
-            </div>
-        </fieldset>
-
-        <!-- Section 4: Estimation du Prix -->
-        <div style="background: #f0f8ff; padding: 20px; border-radius: 8px; border-left: 4px solid #007bff;">
-            <h3 style="color: #1a3a52; margin-bottom: 10px;">💰 Estimation du prix</h3>
-            <p id="priceEstimate" style="font-size: 20px; font-weight: bold; color: #28a745;">
-                CHF <span id="priceValue">0.00</span>
-            </p>
-            <p style="font-size: 12px; color: #666; margin-top: 10px;">
-                *Prix estimé basé sur le nombre de panneaux et le type de toiture. Le prix final sera confirmé par notre équipe.
-            </p>
-        </div>
-
-        <!-- Section 5: Conditions -->
-        <div class="form-group">
-            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                <input type="checkbox" id="agree" name="agree" required style="width: 20px; height: 20px;">
-                <span>J'accepte que mes données soient traitées pour traiter ma demande *</span>
-            </label>
-            <small class="error-message"></small>
-        </div>
-
-        <!-- Boutons -->
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 30px;">
-            <button type="reset" class="btn" style="background: #6c757d; color: white; padding: 12px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;">
-                ↻ Réinitialiser
-            </button>
-            <button type="submit" class="btn" id="submitBtn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: 600;">
-                📬 Envoyer ma demande
-            </button>
-        </div>
-
-        <div id="successMessage" style="display: none; background: #d4edda; color: #155724; padding: 20px; border-radius: 8px; border: 1px solid #c3e6cb; margin-top: 20px;">
-            <h3 style="margin-bottom: 10px;">✅ Demande enregistrée avec succès!</h3>
-            <p style="margin-bottom: 10px;">Votre numéro de réservation: <strong id="reservationNumber"></strong></p>
-            <p>Notre équipe examinera votre demande et vous contactera dans les 24h pour confirmer ou discuter des détails.</p>
-            <p style="margin-top: 15px;">
-                <a href="/" style="color: #155724; text-decoration: underline;">← Retour à l'accueil</a>
-            </p>
-        </div>
-
-        <div id="errorMessage" style="display: none; background: #f8d7da; color: #721c24; padding: 20px; border-radius: 8px; border: 1px solid #f5c6cb; margin-top: 20px;">
-            <h3 style="margin-bottom: 10px;">❌ Erreur lors de l'envoi</h3>
-            <p id="errorText"></p>
-        </div>
-    </form>
-</div>
-
+{% block body %}
 <style>
-.form-group {
-    display: flex;
-    flex-direction: column;
-}
+    .reservation-page { padding: 2rem; }
+    .reservation-page .hero { text-align: center; margin-bottom: 3rem; }
+    .reservation-page .hero h1 { font-size: 28px; font-weight: 600; margin-bottom: 1rem; }
+    .reservation-page .hero p { font-size: 16px; color: #666; max-width: 600px; margin: 0 auto; }
 
-.form-group label {
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: #333;
-}
+    .steps-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
+    .step-card { text-align: center; }
+    .step-number { width: 50px; height: 50px; border-radius: 50%; background: var(--vert-clair); color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 20px; margin: 0 auto 1rem; }
+    .step-card h3 { font-weight: 600; margin-bottom: 0.5rem; }
+    .step-card p { color: #999; font-size: 14px; }
 
-.form-group input,
-.form-group textarea,
-.form-group select {
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
-    font-family: inherit;
-    transition: all 0.3s;
-}
+    .form-container { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; max-width: 1200px; margin: 0 auto; }
+    .form-wrapper { background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .form-section { margin-bottom: 2rem; }
+    .form-section:last-child { margin-bottom: 0; }
+    .form-section h2 { font-size: 16px; font-weight: 600; margin-bottom: 1.5rem; color: var(--vert-fonce); }
 
-.form-group input:focus,
-.form-group textarea:focus,
-.form-group select:focus {
-    outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    .form-row.full { grid-template-columns: 1fr; }
 
-.form-group input.error,
-.form-group textarea.error,
-.form-group select.error {
-    border-color: #dc3545;
-    background: #fff5f5;
-}
+    .form-group { display: flex; flex-direction: column; }
+    .form-group label { font-weight: 500; margin-bottom: 0.5rem; font-size: 14px; }
+    .form-group input, .form-group select, .form-group textarea { padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--vert-clair); }
 
-.error-message {
-    color: #dc3545;
-    font-size: 12px;
-    margin-top: 4px;
-    display: none;
-}
+    .radio-group { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+    .radio-option { position: relative; }
+    .radio-option input { display: none; }
+    .radio-option label { display: block; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; text-align: center; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+    .radio-option input:checked + label { background: var(--vert-clair); color: white; border-color: var(--vert-clair); }
 
-.form-group input.error ~ .error-message,
-.form-group textarea.error ~ .error-message,
-.form-group select.error ~ .error-message {
-    display: block;
-}
+    .sidebar-card { background: white; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .sidebar-card h3 { font-weight: 600; margin-bottom: 1rem; font-size: 14px; }
+    .sidebar-card ul { list-style: none; }
+    .sidebar-card li { padding: 0.5rem 0; font-size: 13px; color: #555; display: flex; gap: 0.5rem; }
+    .sidebar-card li:before { content: "✓"; color: var(--vert-clair); font-weight: bold; }
 
-@media (max-width: 600px) {
-    div[style*="grid-template-columns: 1fr 1fr"] {
-        grid-template-columns: 1fr !important;
+    .estimator { background: linear-gradient(135deg, rgba(45, 107, 85, 0.1), rgba(45, 107, 85, 0.05)); border: 1px solid var(--vert-clair); border-radius: 12px; padding: 1.5rem; }
+    .estimate-row { display: flex; justify-content: space-between; margin-bottom: 0.75rem; font-size: 13px; }
+    .estimate-gain { background: var(--vert-clair); color: white; padding: 1rem; border-radius: 8px; text-align: center; font-weight: 600; margin-top: 1rem; }
+
+    .reviews { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .review { margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #eee; }
+    .review:last-child { border: none; margin: 0; }
+    .stars { color: #fbbf24; font-size: 12px; margin-bottom: 0.5rem; }
+    .review-text { font-size: 12px; color: #555; line-height: 1.5; margin-bottom: 0.5rem; }
+    .review-author { font-size: 11px; font-weight: 500; color: #999; }
+
+    .form-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+    .btn { padding: 1rem; border-radius: 8px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; }
+    .btn-secondary { background: #f0f0f0; color: #333; }
+    .btn-secondary:hover { background: #e0e0e0; }
+    .btn-primary { background: var(--vert-clair); color: white; }
+    .btn-primary:hover { background: var(--vert-fonce); }
+
+    .success-box { display: none; background: #d4edda; color: #155724; padding: 1.5rem; border-radius: 8px; border: 1px solid #c3e6cb; margin-top: 1.5rem; }
+    .error-box { display: none; background: #f8d7da; color: #721c24; padding: 1.5rem; border-radius: 8px; border: 1px solid #f5c6cb; margin-top: 1.5rem; }
+
+    @media (max-width: 768px) {
+        .form-container { grid-template-columns: 1fr; }
+        .form-row { grid-template-columns: 1fr; }
+        .radio-group { grid-template-columns: 1fr; }
+        .form-actions { grid-template-columns: 1fr; }
     }
-
-    div[style*="grid-template-columns: 1fr 2fr"] {
-        grid-template-columns: 1fr !important;
-    }
-}
 </style>
+
+<div class="reservation-page">
+    <div class="hero">
+        <h1>🌞 Optimisez vos panneaux solaires</h1>
+        <p>En 3 étapes simples, obtenez un devis personnalisé pour le nettoyage professionnel</p>
+    </div>
+
+    <div class="steps-section">
+        <div class="step-card">
+            <div class="step-number">1</div>
+            <h3>Votre installation</h3>
+            <p>Décrivez vos panneaux</p>
+        </div>
+        <div class="step-card">
+            <div class="step-number">2</div>
+            <h3>État & localisation</h3>
+            <p>Détails de votre site</p>
+        </div>
+        <div class="step-card">
+            <div class="step-number">3</div>
+            <h3>Devis gratuit</h3>
+            <p>Recevez votre proposition</p>
+        </div>
+    </div>
+
+    <div class="form-container">
+        <div class="form-wrapper">
+            <form id="reservationForm">
+                <!-- Section 1: Installation -->
+                <div class="form-section">
+                    <h2>📱 Votre installation</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Puissance estimée (kWc)</label>
+                            <input type="number" id="puissance" name="puissance" placeholder="ex: 5" min="0" step="0.5">
+                        </div>
+                        <div class="form-group">
+                            <label>Nombre de panneaux *</label>
+                            <input type="number" id="nombrePanneaux" name="nombrePanneaux" placeholder="ex: 12" min="0" required>
+                        </div>
+                    </div>
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label>Type de panneaux</label>
+                            <select id="typePanneaux" name="typePanneaux">
+                                <option value="">Sélectionner...</option>
+                                <option value="mono">Silicium monocristallin</option>
+                                <option value="poly">Silicium polycristallin</option>
+                                <option value="hybrid">Panneaux hybrides</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Location -->
+                <div class="form-section">
+                    <h2>📍 Localisation</h2>
+                    <div class="form-row full" style="margin-bottom: 1.5rem;">
+                        <div class="form-group">
+                            <label>Où sont vos panneaux?</label>
+                            <div class="radio-group">
+                                <div class="radio-option">
+                                    <input type="radio" id="roof" name="localisation" value="plat" checked>
+                                    <label for="roof">Toit</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="ground" name="localisation" value="incline_leger">
+                                    <label for="ground">Sol</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="facade" name="localisation" value="incline_moyen">
+                                    <label for="facade">Façade</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Inclinaison *</label>
+                            <select id="inclinaison" name="typeToiture" required>
+                                <option value="">Sélectionner...</option>
+                                <option value="plat">Plat (0-10°)</option>
+                                <option value="incline_leger">Faible (10-25°)</option>
+                                <option value="incline_moyen">Moyen (25-35°)</option>
+                                <option value="incline_fort">Escarpé (35°+)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Niveau de saleté</label>
+                            <select id="saleté" name="saleté">
+                                <option value="">Sélectionner...</option>
+                                <option value="light">Léger (poussière)</option>
+                                <option value="medium">Moyen (résidu)</option>
+                                <option value="severe">Sévère (mousse/algues)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 3: Contact -->
+                <div class="form-section">
+                    <h2>👤 Vos coordonnées</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Prénom *</label>
+                            <input type="text" id="prenom" name="prenom" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Nom *</label>
+                            <input type="text" id="nom" name="nom" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Email *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Téléphone *</label>
+                            <input type="tel" id="telephone" name="telephone" required>
+                        </div>
+                    </div>
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label>Adresse</label>
+                            <input type="text" id="adresse" name="adresse">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Code Postal</label>
+                            <input type="text" id="codePostal" name="codePostal">
+                        </div>
+                        <div class="form-group">
+                            <label>Ville</label>
+                            <input type="text" id="ville" name="ville">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 4: Availability -->
+                <div class="form-section">
+                    <h2>📅 Disponibilités</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Date préférée *</label>
+                            <input type="date" id="dateSouhaitee" name="dateSouhaitee" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Créneau *</label>
+                            <select id="creneau" name="heureSouhaitee" required>
+                                <option value="">Sélectionner...</option>
+                                <option value="08:00">Matin (8h-12h)</option>
+                                <option value="14:00">Après-midi (14h-18h)</option>
+                                <option value="flexible">Flexible</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label>Notes supplémentaires</label>
+                            <textarea id="notes" name="notes" placeholder="Informations utiles..." style="min-height: 80px; resize: vertical;"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label style="display: flex; gap: 0.5rem; cursor: pointer;">
+                        <input type="checkbox" id="agree" name="agree" required>
+                        <span style="font-size: 13px;">J'accepte que mes données soient traitées *</span>
+                    </label>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary">← Continuer plus tard</button>
+                    <button type="submit" class="btn btn-primary" id="submitBtn">Obtenir mon devis →</button>
+                </div>
+
+                <div class="success-box" id="successMessage">
+                    <h3>✅ Demande enregistrée!</h3>
+                    <p>Numéro: <strong id="reservationNumber"></strong></p>
+                    <p style="font-size: 13px; margin-top: 0.5rem;">Notre équipe vous contactera sous 24h.</p>
+                </div>
+
+                <div class="error-box" id="errorMessage">
+                    <h3>❌ Erreur</h3>
+                    <p id="errorText"></p>
+                </div>
+            </form>
+        </div>
+
+        <div>
+            <div class="sidebar-card">
+                <h3>✨ Pourquoi maintenant?</h3>
+                <ul>
+                    <li>Gain de rendement: 15-25%</li>
+                    <li>Détection précoce des défauts</li>
+                    <li>Durée de vie augmentée</li>
+                    <li>Protection future garantie</li>
+                </ul>
+            </div>
+
+            <div class="estimator">
+                <h3>📊 Votre potentiel</h3>
+                <div class="estimate-row">
+                    <span>Production annuelle:</span>
+                    <span id="productionEstimate">~6,000 kWh</span>
+                </div>
+                <div class="estimate-row">
+                    <span>Perte estimée:</span>
+                    <span style="color: #dc2626;" id="lossEstimate">-1,200 kWh</span>
+                </div>
+                <div class="estimate-gain" id="gainEstimate">
+                    ↑ Gain: +1,200€/an
+                </div>
+            </div>
+
+            <div class="reviews">
+                <h3>⭐ Avis clients</h3>
+                <div class="review">
+                    <div class="stars">★★★★★</div>
+                    <div class="review-text">Excellent! +22% de rendement en 1 mois.</div>
+                    <div class="review-author">Sophie M.</div>
+                </div>
+                <div class="review">
+                    <div class="stars">★★★★★</div>
+                    <div class="review-text">Service rapide et professionnel. Recommande!</div>
+                    <div class="review-author">Pierre B.</div>
+                </div>
+                <div class="review">
+                    <div class="stars">★★★★★</div>
+                    <div class="review-text">Gain visible immédiatement. Parfait!</div>
+                    <div class="review-author">Marie D.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
 const form = document.getElementById('reservationForm');
 const submitBtn = document.getElementById('submitBtn');
 const successMessage = document.getElementById('successMessage');
 const errorMessage = document.getElementById('errorMessage');
-
-// Calcul du prix en temps réel
 const nombrePanneaux = document.getElementById('nombrePanneaux');
-const typeToiture = document.getElementById('typeToiture');
-const priceValue = document.getElementById('priceValue');
+const gainEstimate = document.getElementById('gainEstimate');
+const productionEstimate = document.getElementById('productionEstimate');
+const lossEstimate = document.getElementById('lossEstimate');
 
-function calculatePrice() {
+// Calcul dynamique du gain estimé
+function calculateGain() {
     const panneaux = parseInt(nombrePanneaux.value) || 0;
-    const toiture = typeToiture.value;
+    if (panneaux === 0) return;
 
-    const prixBase = 50;
-    const multiplicateurs = {
-        'plat': 1.0,
-        'incline_leger': 1.1,
-        'incline_moyen': 1.2,
-        'incline_fort': 1.3,
-        'avec_obstacles': 1.5,
-    };
+    const productionParPanneau = 300; // kWh par an
+    const production = panneaux * productionParPanneau;
+    const loss = production * 0.2; // 20% de perte estimée
+    const gain = loss * 1.0; // 1€ par kWh
 
-    const multiplicateur = multiplicateurs[toiture] || 1.0;
-    const prixEstime = panneaux * prixBase * multiplicateur;
-
-    priceValue.textContent = prixEstime.toFixed(2);
+    productionEstimate.textContent = `~${production.toLocaleString()} kWh`;
+    lossEstimate.textContent = `-${Math.round(loss).toLocaleString()} kWh`;
+    gainEstimate.textContent = `↑ Gain après nettoyage: +${Math.round(gain).toLocaleString()}€/an`;
 }
 
-nombrePanneaux.addEventListener('change', calculatePrice);
-nombrePanneaux.addEventListener('input', calculatePrice);
-typeToiture.addEventListener('change', calculatePrice);
+nombrePanneaux.addEventListener('change', calculateGain);
+nombrePanneaux.addEventListener('input', calculateGain);
 
 // Validation du formulaire
 function validateForm() {
     let isValid = true;
-    const fields = form.querySelectorAll('input, textarea, select');
+    const fields = form.querySelectorAll('[required]');
 
     fields.forEach(field => {
-        field.classList.remove('error');
-        const errorMsg = field.parentElement.querySelector('.error-message');
-        if (errorMsg) errorMsg.textContent = '';
-
-        if (!field.value && field.hasAttribute('required')) {
-            field.classList.add('error');
-            if (errorMsg) errorMsg.textContent = 'Ce champ est obligatoire';
+        if (!field.value) {
+            field.style.borderColor = '#dc2626';
             isValid = false;
-        }
-
-        if (field.type === 'email' && field.value && !field.value.includes('@')) {
-            field.classList.add('error');
-            if (errorMsg) errorMsg.textContent = 'Email invalide';
-            isValid = false;
-        }
-
-        if (field.id === 'telephone' && field.value) {
-            const cleanPhone = field.value.replace(/[\s\-\+]/g, '');
-            if (cleanPhone.length < 10 || !/^\d+$/.test(cleanPhone)) {
-                field.classList.add('error');
-                if (errorMsg) errorMsg.textContent = 'Numéro de téléphone invalide (min 10 chiffres)';
-                isValid = false;
-            }
-        }
-
-        if (field.id === 'dateSouhaitee' && field.value) {
-            const selectedDate = new Date(field.value);
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            if (selectedDate < today) {
-                field.classList.add('error');
-                if (errorMsg) errorMsg.textContent = 'La date doit être dans le futur';
-                isValid = false;
-            }
+        } else {
+            field.style.borderColor = '';
         }
     });
 
+    const email = document.getElementById('email');
+    if (email.value && !email.value.includes('@')) {
+        email.style.borderColor = '#dc2626';
+        isValid = false;
+    }
+
+    const telephone = document.getElementById('telephone');
+    if (telephone.value) {
+        const cleanPhone = telephone.value.replace(/[\s\-\+]/g, '');
+        if (cleanPhone.length < 10) {
+            telephone.style.borderColor = '#dc2626';
+            isValid = false;
+        }
+    }
+
+    const dateSouhaitee = document.getElementById('dateSouhaitee');
+    if (dateSouhaitee.value) {
+        const selectedDate = new Date(dateSouhaitee.value);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        if (selectedDate < today) {
+            dateSouhaitee.style.borderColor = '#dc2626';
+            isValid = false;
+        }
+    }
+
     const agree = document.getElementById('agree');
     if (!agree.checked) {
-        agree.classList.add('error');
-        const errorMsg = agree.parentElement.querySelector('.error-message');
-        if (errorMsg) errorMsg.textContent = 'Vous devez accepter les conditions';
         isValid = false;
     }
 
@@ -328,6 +410,7 @@ form.addEventListener('submit', async (e) => {
             document.getElementById('reservationNumber').textContent = data.reservationNumber;
             successMessage.style.display = 'block';
             form.style.display = 'none';
+            window.scrollTo({top: 0, behavior: 'smooth'});
         } else {
             document.getElementById('errorText').textContent = data.message;
             errorMessage.style.display = 'block';
@@ -337,7 +420,7 @@ form.addEventListener('submit', async (e) => {
         errorMessage.style.display = 'block';
     } finally {
         submitBtn.disabled = false;
-        submitBtn.textContent = '📬 Envoyer ma demande';
+        submitBtn.textContent = 'Obtenir mon devis gratuit →';
     }
 });
 
@@ -346,5 +429,18 @@ const dateSouhaitee = document.getElementById('dateSouhaitee');
 const tomorrow = new Date();
 tomorrow.setDate(tomorrow.getDate() + 1);
 dateSouhaitee.min = tomorrow.toISOString().split('T')[0];
+
+// Initialiser l'estimateur
+calculateGain();
 </script>
-{% endblock %}
+
+<script>
+// Ajouter des icones Tabler si pas présentes
+if (!window.TaTablerIcons) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://cdn.jsdelivr.net/npm/@tabler/icons@latest/tabler-icons.min.css';
+    document.head.appendChild(link);
+}
+</script>
+{% endblock %} {# end block body #}

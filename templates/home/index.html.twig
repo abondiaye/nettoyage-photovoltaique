@@ -249,6 +249,25 @@
     .services-section {
         padding: 100px 40px;
         background-attachment: fixed;
+        background-blend-mode: overlay;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+        filter: brightness(0.95) contrast(1.05);
+    }
+
+    .services-section::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: rgba(30, 30, 30, 0.15);
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .services-section > * {
+        position: relative;
+        z-index: 1;
     }
 
     .section-title {
@@ -1001,7 +1020,7 @@
 </section>
 
 <!-- Services Section -->
-<section class="services-section" id="services" style="background: linear-gradient(180deg, rgba(10, 61, 53, 0.5) 0%, rgba(10, 61, 53, 0.4) 100%), url('/images/lav1.jpeg') center/cover no-repeat fixed;">
+<section class="services-section" id="services" style="background: linear-gradient(180deg, rgba(30, 30, 30, 0.3) 0%, rgba(30, 30, 30, 0.25) 100%), url('/images/lav1.jpeg') center/cover no-repeat fixed;">
     <h2 class="section-title">Nos Services</h2>
 
     <div class="services-grid">
