@@ -67,11 +67,12 @@ class SecurityController extends AbstractController
                     $em->flush();
 
                     $resetLink = $this->generateUrl('app_reset_password', ['token' => $token], 0);
-                    $resetUrl = $_ENV['MAILER_FROM_ADDRESS'] ? str_replace('//', '://', str_replace('://', '//', $_SERVER['HTTP_HOST'])) : '';
                     $resetUrl = $request->getSchemeAndHttpHost() . $resetLink;
 
+                    $fromEmail = getenv('MAILER_FROM_ADDRESS') ?: 'noreply@sirius-solar.ch';
+
                     $emailMessage = (new Email())
-                        ->from($_ENV['MAILER_FROM_ADDRESS'] ?? 'noreply@sirius-solar.ch')
+                        ->from($fromEmail)
                         ->to($email)
                         ->subject('🔑 Réinitialiser votre mot de passe - Sirius-Solar')
                         ->html($this->renderView('emails/reset_password.html.twig', [
