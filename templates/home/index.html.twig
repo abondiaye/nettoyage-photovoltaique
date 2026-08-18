@@ -260,11 +260,24 @@
         font-size: 42px;
         text-align: center;
         margin-bottom: 60px;
-        color: var(--vert-fonce);
-        animation: fadeInDown 0.6s ease-out;
+        background: linear-gradient(135deg, #ffd700 0%, #4DB8A8 35%, #00d4ff 70%, #ffffff 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: liquidTitleFlow 6s ease-in-out infinite, fadeInDown 0.6s ease-out;
         font-family: 'Space Grotesk', sans-serif;
         font-weight: 700;
         letter-spacing: -1px;
+        text-shadow: 0 4px 20px rgba(255, 215, 0, 0.15);
+    }
+
+    @keyframes liquidTitleFlow {
+        0%, 100% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
     }
 
     .services-grid {
@@ -318,10 +331,19 @@
     }
 
     .service-card:hover {
-        transform: translateY(-10px);
-        border-color: rgba(255, 255, 255, 0.4);
+        transform: translateY(-10px) scale(1.02);
+        border-color: rgba(255, 215, 0, 0.6);
+        box-shadow: 0 20px 60px rgba(255, 215, 0, 0.3), 0 0 30px rgba(77, 184, 168, 0.2);
+        animation: liquidGlow 1.5s ease-in-out;
+    }
 
-        box-shadow: 0 20px 40px rgba(160, 160, 160, 0.2);
+    @keyframes liquidGlow {
+        0%, 100% {
+            box-shadow: 0 20px 60px rgba(255, 215, 0, 0.3), 0 0 30px rgba(77, 184, 168, 0.2);
+        }
+        50% {
+            box-shadow: 0 20px 60px rgba(255, 215, 0, 0.5), 0 0 50px rgba(77, 184, 168, 0.4);
+        }
     }
 
     .card-icon {
@@ -471,13 +493,30 @@
     .advantage-card:nth-child(4)::before { content: "4"; }
 
     .advantage-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 35px rgba(160, 160, 160, 0.15);
+        transform: translateY(-8px) scale(1.01);
+        box-shadow: 0 15px 45px rgba(255, 215, 0, 0.2), 0 0 30px rgba(77, 184, 168, 0.15);
+        border-color: rgba(255, 215, 0, 0.5);
+        animation: liquidCardPulse 2s ease-in-out;
+    }
+
+    @keyframes liquidCardPulse {
+        0%, 100% {
+            box-shadow: 0 15px 45px rgba(255, 215, 0, 0.2), 0 0 30px rgba(77, 184, 168, 0.15);
+        }
+        50% {
+            box-shadow: 0 15px 45px rgba(255, 215, 0, 0.4), 0 0 40px rgba(77, 184, 168, 0.3);
+        }
     }
 
     .advantage-card:hover::before {
-        transform: translateX(-50%) scale(1.15);
-        box-shadow: 0 12px 30px rgba(160, 160, 160, 0.7);
+        transform: translateX(-50%) scale(1.2);
+        box-shadow: 0 12px 30px rgba(255, 215, 0, 0.6), 0 0 20px rgba(255, 215, 0, 0.4);
+        animation: goldenPulse 1.5s ease-in-out;
+    }
+
+    @keyframes goldenPulse {
+        0%, 100% { filter: brightness(1); }
+        50% { filter: brightness(1.3); }
     }
 
     .advantage-icon {
@@ -1753,12 +1792,15 @@ window.addEventListener('scroll', () => {
 });
 
 // Scroll down by 500px (one step) - instantaneous
-scrollDownBtn.addEventListener('click', () => {
-    const currentScroll = window.scrollY;
-    const targetScroll = currentScroll + 500;
-    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-    window.scrollTo(0, Math.min(targetScroll, maxScroll));
-});
+const scrollDownBtn = document.querySelector('[data-scroll-down]');
+if (scrollDownBtn) {
+    scrollDownBtn.addEventListener('click', () => {
+        const currentScroll = window.scrollY;
+        const targetScroll = currentScroll + 500;
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        window.scrollTo(0, Math.min(targetScroll, maxScroll));
+    });
+}
 </script>
 
 {% endblock %}
