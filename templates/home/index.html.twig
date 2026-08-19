@@ -137,9 +137,19 @@
         font-size: 48px;
         font-weight: 700;
         margin-bottom: 20px;
-        text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        background: linear-gradient(90deg, #ffffff 0%, #00d4ff 50%, #0099cc 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: none;
         font-family: 'Space Grotesk', sans-serif;
         letter-spacing: -1px;
+        animation: titleGlow 4s ease-in-out infinite;
+    }
+
+    @keyframes titleGlow {
+        0%, 100% { filter: brightness(1); }
+        50% { filter: brightness(1.2); }
     }
 
     .hero-subtitle {
@@ -1036,7 +1046,7 @@
             <img src="{{ asset('images/logo1.jpeg') }}" alt="Sirius-Solar Logo">
         </div>
 
-        <h1 class="hero-title">Optimisez votre rendement solaire</h1>
+        <h1 class="hero-title">Nettoyage & entretien de vos panneaux photovoltaïques</h1>
         <p class="hero-subtitle">Eau osmosée • Zéro produit chimique • Jusqu'à 25% regagné</p>
 
         <div class="hero-features">
