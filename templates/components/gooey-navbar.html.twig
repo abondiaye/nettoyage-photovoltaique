@@ -36,6 +36,12 @@
     inset 0 -1px 2px hsl(205deg 70% 90% / 0.5),
     inset 0 12px 16px hsl(205deg 30% 10% / 0.15);
   animation: slideDown 0.6s ease-out;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.gooey-navbar::-webkit-scrollbar {
+  display: none;
 }
 
 /* Noise texture layer 1 */
@@ -559,12 +565,14 @@ body:not(.dark-mode) .gooey-lang-select {
 /* Mobile responsive */
 @media (max-width: 480px) {
   .gooey-navbar {
-    height: 36px;
-    padding: 0 12px;
-    gap: 4px;
-    width: calc(100vw - 20px);
-    max-width: calc(100vw - 20px);
-    overflow: hidden;
+    height: auto;
+    padding: 6px 8px;
+    gap: 2px;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    box-sizing: border-box;
   }
 
   .gooey-brand {
@@ -572,13 +580,16 @@ body:not(.dark-mode) .gooey-lang-select {
   }
 
   .gooey-nav-center {
-    padding: 0 0.3em;
-    gap: 0.15em;
+    padding: 0;
+    gap: 2px;
+    min-width: fit-content;
   }
 
-  .gooey-nav-center li a {
-    font-size: 10px;
-    padding: 0.3em 0.4em;
+  .gooey-nav-link {
+    font-size: 9px;
+    padding: 0.3em 0.5em;
+    min-width: fit-content;
+    white-space: nowrap;
   }
 
   .gooey-brand-icon {
@@ -593,23 +604,28 @@ body:not(.dark-mode) .gooey-lang-select {
   }
 
   .gooey-btn-theme {
-    padding: 3px 5px;
+    padding: 4px 6px;
     font-size: 10px;
+    flex-shrink: 0;
   }
 
   .gooey-btn-auth {
-    padding: 3px 6px;
-    font-size: 8px;
-    letter-spacing: 0px;
+    padding: 4px 8px;
+    font-size: 9px;
+    letter-spacing: 0;
+    flex-shrink: 0;
+    white-space: nowrap;
   }
 
   .gooey-lang-select {
-    padding: 3px 5px;
-    font-size: 8px;
+    padding: 4px 6px;
+    font-size: 9px;
+    flex-shrink: 0;
   }
 
   .gooey-nav-right {
-    gap: 3px;
+    gap: 2px;
+    flex-shrink: 0;
   }
 }
 

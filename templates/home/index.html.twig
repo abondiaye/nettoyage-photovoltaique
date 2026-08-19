@@ -5,7 +5,20 @@
 {% block body %}
 <style>
     /* Show navbar on home page - positioned over hero */
-    .gooey-navbar { display: flex !important; visibility: visible !important; height: 70px !important; min-height: 70px !important; max-height: 70px !important; margin: 0 !important; padding: 0 40px !important; position: relative !important; z-index: 1001 !important; }
+    .gooey-navbar {
+        display: flex !important;
+        visibility: visible !important;
+        height: auto !important;
+        min-height: 50px !important;
+        margin: 0 !important;
+        padding: 0 20px !important;
+        position: relative !important;
+        z-index: 1001 !important;
+        width: 100% !important;
+        box-sizing: border-box;
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
     .gooey-navbar * { max-height: none !important; height: auto !important; }
 
     /* Hide circular nav - it duplicates links */
@@ -15,12 +28,17 @@
     html {
         margin: 0 !important;
         padding: 0 !important;
+        overflow-x: hidden !important;
+        width: 100% !important;
     }
 
     body {
         padding-top: 0 !important;
         padding: 0 !important;
         margin: 0 !important;
+        overflow-x: hidden !important;
+        width: 100% !important;
+        box-sizing: border-box;
     }
 
     /* ===== HERO SECTION ===== */
@@ -1455,6 +1473,12 @@
         inset 0 0 20px rgba(0, 212, 255, 0.05),
         0 0 20px rgba(0, 212, 255, 0.1);
     perspective: 1000px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.scroll-nav-bar::-webkit-scrollbar {
+    display: none;
 }
 
 .scroll-nav-btn {
@@ -1570,40 +1594,41 @@
 
 @media (max-width: 768px) {
     .scroll-nav-bar {
-        right: 8px !important;
+        right: 0 !important;
+        left: 0 !important;
         top: auto !important;
-        bottom: 20px !important;
+        bottom: 0 !important;
         transform: none !important;
-        gap: 6px !important;
-        padding: 8px !important;
+        gap: 4px !important;
+        padding: 6px !important;
         flex-direction: row !important;
         background: rgba(10, 61, 53, 0.2) !important;
-        border-radius: 12px !important;
+        border-radius: 0 !important;
         border: 1px solid rgba(0, 212, 255, 0.2) !important;
-        width: calc(100% - 40px) !important;
-        max-width: 500px !important;
-        left: 20px !important;
+        border-bottom: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
         overflow-x: auto !important;
+        overflow-y: hidden !important;
+        box-sizing: border-box;
     }
 
     .scroll-nav-btn {
-        width: 70px !important;
-        height: 40px !important;
+        width: 65px !important;
+        height: 38px !important;
+        min-width: 65px !important;
         font-size: 8px !important;
         border-radius: 8px !important;
-        flex-shrink: 0;
+        flex-shrink: 0 !important;
+        padding: 0 !important;
     }
 
     .scroll-nav-btn:hover {
-        transform:
-            rotateY(-10deg)
-            scale(1.02) !important;
+        transform: scale(1.02) !important;
     }
 
     .scroll-nav-btn.active {
-        transform:
-            rotateY(-12deg)
-            scale(1.05) !important;
+        transform: scale(1.03) !important;
     }
 
     /* Mobile fixes for business card container */
