@@ -257,6 +257,7 @@ body:not(.dark-mode) .gooey-brand {
   border-radius: 4px;
   background: rgba(192, 192, 192, 0.1);
   border: 1px solid rgba(192, 192, 192, 0.3);
+  flex-shrink: 0;
 }
 
 .gooey-brand-icon img {
@@ -577,6 +578,20 @@ body:not(.dark-mode) .gooey-lang-select {
 
   .gooey-brand {
     display: none !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .gooey-brand-icon {
+    display: none !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
   .gooey-nav-center {
