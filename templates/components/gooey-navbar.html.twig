@@ -564,16 +564,23 @@ body:not(.dark-mode) .gooey-lang-select {
 }
 
 /* Mobile responsive */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .gooey-navbar {
     height: auto;
-    padding: 6px 8px;
-    gap: 2px;
+    padding: 4px 4px;
+    gap: 1px;
     width: 100%;
     max-width: 100%;
+    left: 0;
+    right: 0;
+    transform: none;
     overflow-x: auto;
     overflow-y: hidden;
     box-sizing: border-box;
+    border-radius: 0;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
   }
 
   .gooey-brand {
@@ -601,8 +608,8 @@ body:not(.dark-mode) .gooey-lang-select {
   }
 
   .gooey-nav-link {
-    font-size: 9px;
-    padding: 0.3em 0.5em;
+    font-size: 8px;
+    padding: 0.2em 0.3em;
     min-width: fit-content;
     white-space: nowrap;
   }
@@ -626,7 +633,7 @@ body:not(.dark-mode) .gooey-lang-select {
 
   .gooey-btn-auth {
     padding: 4px 8px;
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: 0;
     flex-shrink: 0;
     white-space: nowrap;
@@ -634,21 +641,13 @@ body:not(.dark-mode) .gooey-lang-select {
 
   .gooey-lang-select {
     padding: 4px 6px;
-    font-size: 9px;
+    font-size: 10px;
     flex-shrink: 0;
   }
 
   .gooey-nav-right {
     gap: 2px;
     flex-shrink: 0;
-  }
-}
-
-@media (max-width: 768px) {
-  .gooey-navbar {
-    width: calc(100vw - 20px);
-    max-width: calc(100vw - 20px);
-    overflow: hidden;
   }
 }
 </style>
