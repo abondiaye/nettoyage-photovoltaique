@@ -1,886 +1,341 @@
 <style>
-/* ===== FROSTED GLASS GOOEY NAVBAR WITH PARTICLES ===== */
-
-/* Custom animation easing function */
-:root {
-  --linear-ease: linear(0, 0.068, 0.19 2.7%, 0.804 8.1%, 1.037, 1.199 13.2%, 1.245, 1.27 15.8%, 1.274, 1.272 17.4%, 1.249 19.1%, 0.996 28%, 0.949, 0.928 33.3%, 0.926, 0.933 36.8%, 1.001 45.6%, 1.013, 1.019 50.8%, 1.018 54.4%, 1 63.1%, 0.995 68%, 1.001 85%, 1);
-  --color-1: #ffd700;
-  --color-2: #c0c0c0;
-  --color-3: #a8a8a8;
-  --color-4: #ffffff;
-}
-
-/* Navigation styling with premium frosted glass effect */
+/* ===== MOBILE BOTTOM NAVBAR (Sevenpion Style) ===== */
 .gooey-navbar {
-  display: flex;
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
-  height: 40px;
-  align-items: center;
-  justify-content: center;
-  padding: 0 28px;
-  opacity: 0.999;
-  background: hsl(205deg 0% 0% / 0.1);
-  backdrop-filter: blur(12px) brightness(1.15);
-  -webkit-backdrop-filter: blur(12px) brightness(1.15);
-  border-radius: 50px;
-  border: none;
-  box-shadow:
-    0 8px 32px hsl(205deg 50% 30% / 0.2),
-    0 4px 10px hsl(205deg 30% 10% / 0.1),
-    inset 0 -6px 16px 8px hsl(205deg 70% 95% / 0.35),
-    inset 0 -3px 8px hsl(205deg 70% 90% / 0.25),
-    inset 0 -1px 2px hsl(205deg 70% 90% / 0.5),
-    inset 0 12px 16px hsl(205deg 30% 10% / 0.15);
-  animation: slideDown 0.6s ease-out;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
-.gooey-navbar::-webkit-scrollbar {
-  display: none;
+/* Top Right Navigation Bar */
+.bottom-nav {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    background:
+        radial-gradient(circle at 30% 30%, rgba(255, 255, 200, 0.3), transparent 50%),
+        radial-gradient(circle at 70% 70%, rgba(100, 80, 0, 0.2), transparent 50%),
+        linear-gradient(135deg, #ffd700 0%, #ffed4e 25%, #d4a842 50%, #b8860b 75%, #cd853f 100%);
+    backdrop-filter: blur(10px);
+    border: 3px solid #d4a842;
+    border-radius: 15px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    box-shadow: 0 8px 32px rgba(212, 168, 66, 0.5), inset 0 1px 0 rgba(255, 255, 200, 0.3);
 }
 
-/* Noise texture layer 1 */
-.gooey-navbar::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 50px;
-  backdrop-filter: blur(7px) brightness(1.05);
-  background: hsl(205deg 0% 100% / 0.05);
-  pointer-events: none;
-  z-index: 0;
+/* Wave effect - hidden for top nav */
+.bottom-nav::before {
+    display: none;
 }
 
-/* Noise texture layer 2 */
-.gooey-navbar::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 50px;
-  backdrop-filter: blur(5px) brightness(0.95);
-  background: hsl(205deg 0% 20% / 0.02);
-  box-shadow:
-    inset 0 -4px 15px 5px hsl(205deg 70% 90% / 0.2),
-    inset 0 -2px 5px hsl(205deg 70% 90% / 0.1),
-    inset 0 -1px 1px hsl(205deg 70% 90% / 0.3);
-  pointer-events: none;
-  z-index: 0;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-100%);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Light mode adjustments */
-body:not(.dark-mode) .gooey-navbar {
-  background: hsl(205deg 30% 90% / 0.6);
-  box-shadow:
-    0 8px 32px hsl(205deg 50% 50% / 0.2),
-    0 4px 10px hsl(205deg 30% 50% / 0.15),
-    inset 0 -6px 16px 8px hsl(205deg 70% 95% / 0.4),
-    inset 0 -3px 8px hsl(205deg 70% 90% / 0.3),
-    inset 0 -1px 2px hsl(205deg 70% 90% / 0.6),
-    inset 0 12px 16px hsl(205deg 30% 30% / 0.08);
-}
-
-body:not(.dark-mode) .gooey-navbar::before {
-  background: hsl(205deg 0% 100% / 0.3);
-}
-
-body:not(.dark-mode) .gooey-navbar::after {
-  background: hsl(205deg 0% 20% / 0.04);
-  box-shadow:
-    inset 0 -4px 15px 5px hsl(205deg 70% 90% / 0.3),
-    inset 0 -2px 5px hsl(205deg 70% 90% / 0.2),
-    inset 0 -1px 1px hsl(205deg 70% 90% / 0.4);
-}
-
-body:not(.dark-mode) .gooey-nav-center {
-  color: #0A3D35;
-  text-shadow: none;
-}
-
-body:not(.dark-mode) .gooey-btn-theme {
-  color: #0A3D35;
-  border: 1px solid rgba(10, 61, 53, 0.3);
-}
-
-body:not(.dark-mode) .gooey-btn-auth,
-body:not(.dark-mode) .gooey-btn-auth-light {
-  color: #0A3D35;
-}
-
-body:not(.dark-mode) .gooey-lang-select {
-  color: #0A3D35;
-  border: 1px solid rgba(10, 61, 53, 0.3);
-}
-
-body:not(.dark-mode) .gooey-brand {
-  color: #0A3D35;
-}
-
-/* Center Navigation */
-.gooey-nav-center {
-  display: flex;
-  gap: 0.3em;
-  align-items: center;
-  flex: 1;
-  justify-content: center;
-  position: relative;
-  list-style: none;
-  padding: 0 0.8em;
-  margin: 0;
-  color: white;
-  text-shadow: 0 1px 1px rgba(10, 61, 53, 0.2);
-  z-index: 2;
-}
-
-/* Right Section */
-.gooey-nav-right {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  flex-shrink: 0;
-  z-index: 2;
-  position: relative;
-}
-
-/* Theme Toggle Button */
-.gooey-btn-theme {
-  background: rgba(192, 192, 192, 0.2);
-  color: #ffffff;
-  font-weight: 700;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(192, 192, 192, 0.4);
-  padding: 5px 8px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 13px;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.gooey-btn-theme:hover {
-  background: rgba(192, 192, 192, 0.3);
-  border-color: rgba(192, 192, 192, 0.7);
-  transform: scale(1.05);
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-}
-
-/* Auth Buttons */
-.gooey-btn-auth {
-  position: relative;
-  padding: 5px 12px;
-  border-radius: 5px;
-  font-weight: 700;
-  font-size: 10px;
-  cursor: pointer;
-  border: none;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-}
-
-.gooey-btn-auth-light {
-  background: rgba(255, 255, 255, 0.05);
-  color: #ffffff;
-  border: 1.5px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-}
-
-.gooey-btn-auth-light:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.4);
-  color: #ffffff;
-  transform: translateY(-2px);
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-}
-
-.gooey-btn-auth-dark {
-  background: rgba(10, 61, 53, 0.15);
-  color: #ffffff;
-  font-weight: 700;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-  border: 1.5px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-}
-
-.gooey-btn-auth-dark:hover {
-  background: rgba(10, 61, 53, 0.3);
-  border-color: rgba(255, 255, 255, 0.4);
-  transform: translateY(-2px);
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1) inset;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-}
-
-/* Brand/Logo */
-.gooey-brand {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  text-decoration: none;
-  color: #ffffff;
-  font-weight: 700;
-  font-size: 12px;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-  transition: all 0.3s ease;
-  flex-shrink: 0;
-  z-index: 2;
-  position: relative;
-}
-
-.gooey-brand-icon {
-  width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 4px;
-  background: rgba(192, 192, 192, 0.1);
-  border: 1px solid rgba(192, 192, 192, 0.3);
-  flex-shrink: 0;
-}
-
-.gooey-brand-icon img {
-  width: 18px;
-  height: 18px;
-  object-fit: contain;
-}
-
-.gooey-brand:hover {
-  transform: translateY(-2px);
-  color: #ffd700;
-}
-
-/* Language Selector */
-.gooey-lang-selector {
-  display: flex;
-  align-items: center;
-}
-
-.gooey-lang-select {
-  background: rgba(192, 192, 192, 0.15);
-  color: #ffffff;
-  font-weight: 700;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(192, 192, 192, 0.3);
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 11px;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-}
-
-.gooey-lang-select:hover {
-  background: rgba(192, 192, 192, 0.25);
-  border-color: rgba(192, 192, 192, 0.6);
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-}
-
-.gooey-lang-select:focus {
-  outline: none;
-  background: rgba(192, 192, 192, 0.3);
-  border-color: rgba(192, 192, 192, 0.7);
-  box-shadow: 0 0 10px rgba(192, 192, 192, 0.2);
-}
-
-/* Navigation Links */
-.gooey-nav-link {
-  padding: 0.6em 1.2em;
-  border-radius: 100vw;
-  position: relative;
-  transition: all 1.8s var(--linear-ease) 0.2s, box-shadow 0.3s ease;
-  color: #ffffff;
-  font-weight: 700;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
-  cursor: pointer;
-  text-decoration: none;
-  font-size: 14px;
-  display: block;
-  box-shadow: 0 0 0.5px 1.5px transparent;
-}
-
-.gooey-nav-link:focus-visible {
-  box-shadow: 0 0 0.5px 1.5px white;
-  outline: none;
-}
-
-/* Pill background for links */
-.gooey-nav-link::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 100vw;
-  background: white;
-  opacity: 0;
-  scale: 0;
-  transition: all 2s var(--linear-ease) 0.2s;
-  z-index: -1;
-}
-
-/* Active state */
-.gooey-nav-link.active {
-  color: #0A3D35;
-  text-shadow: none;
-}
-
-.gooey-nav-link.active::after {
-  opacity: 1;
-  scale: 1;
-}
-
-
-/* Effect element for animations */
-.effect {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 0px;
-  height: 0px;
-  opacity: 1;
-  pointer-events: none;
-  display: grid;
-  place-items: center;
-  z-index: 999;
-}
-
-/* Text effect - hidden since text is visible in links */
-.effect.text {
-  display: none !important;
-  pointer-events: none;
-}
-
-.effect.text.active {
-  display: none !important;
-}
-
-.effect.text.hidden {
-  display: none !important;
-}
-
-/* Filter effect */
-.effect.filter {
-  filter: blur(7px) contrast(20) blur(0);
-  mix-blend-mode: lighten;
-  position: fixed;
-  display: none;
-}
-
-.effect.filter::after {
-  content: '';
-  position: absolute;
-  inset: 0px;
-  background: white;
-  scale: 0;
-  opacity: 0;
-  z-index: -1;
-  border-radius: 100vw;
-}
-
-.effect.active::after {
-  animation: pill 2s var(--linear-ease) 0.2s both;
-}
-
-/* Particle container */
-.particles {
-  position: absolute;
-  inset: 0;
-  transform: translate3d(0, 0, 0px);
-}
-
-/* Particles */
-.particle, .point {
-  display: block;
-  opacity: 0;
-  width: 20px;
-  height: 20px;
-  border-radius: 100%;
-}
-
-.particle {
-  --time: 5s;
-  opacity: 0;
-  position: absolute;
-  top: calc(50% - 8px);
-  left: calc(50% - 8px);
-  animation: particle calc(var(--time)) ease 1 -350ms;
-}
-
-.point {
-  background: var(--color);
-  opacity: 1;
-  animation: point calc(var(--time)) ease 1 -350ms;
-}
-
-/* Animations */
-@keyframes particle {
-  0% {
-    transform: rotate(0deg) translate(calc(var(--start-x) * 1), calc(var(--start-y) * 1));
-    opacity: 1;
-    animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
-  }
-  70% {
-    transform: rotate(calc(var(--rotate) * 0.5)) translate(calc(var(--end-x) * 1.2), calc(var(--end-y) * 1.2));
-    opacity: 1;
-  }
-  85% {
-    transform: rotate(calc(var(--rotate) * 0.66)) translate(calc(var(--end-x) * 1), calc(var(--end-y) * 1));
-    opacity: 1;
-  }
-  100% {
-    transform: rotate(calc(var(--rotate) * 1.2)) translate(calc(var(--end-x) * 0.5), calc(var(--end-y) * 0.5));
-    opacity: 1;
-  }
-}
-
-@keyframes point {
-  0% {
-    scale: 0;
-    opacity: 0;
-    animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
-  }
-  25% {
-    scale: calc(var(--scale) * 0.25);
-  }
-  38% {
-    opacity: 1;
-  }
-  65% {
-    scale: var(--scale);
-    opacity: 1;
-  }
-  85% {
-    scale: var(--scale);
-    opacity: 1;
-  }
-  100% {
-    scale: 0;
-    opacity: 0;
-  }
-}
-
-@keyframes pill {
-  to {
-    scale: 1;
-    opacity: 1;
-  }
-}
-
-
-/* Responsive */
-@media (max-width: 1024px) {
-  .gooey-navbar {
-    padding: 0 20px;
-  }
-
-  .gooey-nav-center {
-    gap: 10px;
-  }
-
-  .gooey-nav-link {
-    font-size: 13px;
-    padding: 0.5em 1em;
-  }
-}
-
-@media (max-width: 768px) {
-  .gooey-navbar {
-    padding: 0 15px;
-    height: 70px;
-  }
-
-  .gooey-nav-center {
-    gap: 0.3em;
-  }
-
-  .gooey-nav-link {
+/* Navigation items - hidden by default in navbar */
+.nav-item {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    color: #ffffff;
+    text-decoration: none;
     font-size: 12px;
-    padding: 0.5em 0.8em;
-  }
+    font-weight: 600;
+    transition: all 0.3s ease;
+    padding: 10px;
+    position: relative;
+    z-index: 2;
 }
 
-/* Light Mode - visible text on light background */
-body:not(.dark-mode) .gooey-navbar {
-  background: rgba(255, 255, 255, 0.9) !important;
-  border-bottom: 1px solid rgba(192, 192, 192, 0.3);
+.nav-item svg {
+    width: 28px;
+    height: 28px;
+    stroke: #ffffff;
+    stroke-width: 1.5;
+    fill: none;
 }
 
-body:not(.dark-mode) .gooey-nav-center {
-  color: #0A3D35 !important;
-  text-shadow: none !important;
+.nav-item:hover {
+    color: #00d4ff;
+    transform: scale(1.15);
 }
 
-body:not(.dark-mode) .gooey-nav-link {
-  color: #0A3D35 !important;
-  text-shadow: none !important;
+.nav-item:hover svg {
+    stroke: #00d4ff;
 }
 
-body:not(.dark-mode) .gooey-brand {
-  color: #0A3D35 !important;
+/* Hamburger Button - Part of navbar */
+.hamburger-center {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 25%, #d4a842 50%, #b8860b 75%, #cd853f 100%);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    box-shadow: 0 4px 15px rgba(212, 168, 66, 0.5), inset 0 1px 0 rgba(255, 255, 200, 0.3);
+    transition: all 0.3s ease;
+    flex-shrink: 0;
 }
 
-body:not(.dark-mode) .gooey-btn-theme {
-  color: #ffd700 !important;
-  background: rgba(192, 192, 192, 0.1) !important;
-  border-color: rgba(192, 192, 192, 0.3) !important;
+.hamburger-center:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 25px rgba(212, 168, 66, 0.7), inset 0 1px 0 rgba(255, 255, 200, 0.5);
 }
 
-body:not(.dark-mode) .gooey-btn-auth-light {
-  color: #0A3D35 !important;
-  border-color: rgba(10, 61, 53, 0.3) !important;
-  background: rgba(10, 61, 53, 0.08) !important;
+.hamburger-center:active {
+    transform: scale(0.95);
 }
 
-body:not(.dark-mode) .gooey-btn-auth-dark {
-  color: white !important;
-  background: rgba(10, 61, 53, 0.6) !important;
-  border-color: rgba(10, 61, 53, 0.7) !important;
+.hamburger-center span {
+    width: 28px;
+    height: 2.5px;
+    background: #3d2817;
+    display: block;
+    transition: all 0.3s ease;
+    border-radius: 2px;
 }
 
-body:not(.dark-mode) .gooey-lang-select {
-  color: #0A3D35 !important;
-  background: rgba(10, 61, 53, 0.08) !important;
-  border-color: rgba(10, 61, 53, 0.2) !important;
-}
-
-/* Mobile responsive */
-@media (max-width: 768px) {
-  .gooey-navbar {
-    height: auto;
-    padding: 4px 4px;
-    gap: 1px;
-    width: 100%;
-    max-width: 100%;
-    left: 0;
-    right: 0;
-    transform: none;
-    overflow-x: auto;
-    overflow-y: hidden;
-    box-sizing: border-box;
-    border-radius: 0;
+/* Mobile menu overlay */
+.mobile-menu {
     position: fixed;
     top: 0;
-    z-index: 1000;
-  }
-
-  .gooey-brand {
-    display: none !important;
-    visibility: hidden !important;
-    width: 0 !important;
-    height: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  .gooey-brand-icon {
-    display: none !important;
-    visibility: hidden !important;
-    width: 0 !important;
-    height: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  .gooey-nav-center {
-    padding: 0;
-    gap: 2px;
-    min-width: fit-content;
-  }
-
-  .gooey-nav-link {
-    font-size: 7px;
-    padding: 0.15em 0.25em;
-    min-width: fit-content;
-    white-space: nowrap;
-  }
-
-  .gooey-brand-icon {
-    width: 20px;
-    height: 20px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(10, 31, 63, 0.95);
     display: none;
-  }
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    gap: 30px;
+}
 
-  .gooey-brand-icon img {
-    width: 12px;
-    height: 12px;
-  }
+.mobile-menu.active {
+    display: flex;
+}
 
-  .gooey-btn-theme {
-    padding: 3px 4px;
-    font-size: 8px;
-    flex-shrink: 0;
-  }
+.mobile-menu a {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
 
-  .gooey-btn-auth {
-    padding: 3px 4px;
-    font-size: 7px;
-    letter-spacing: 0;
-    flex-shrink: 0;
-    white-space: nowrap;
-  }
+.mobile-menu a:hover {
+    color: #00d4ff;
+    transform: scale(1.1);
+}
 
-  .gooey-lang-select {
-    padding: 3px 4px;
-    font-size: 8px;
-    flex-shrink: 0;
-  }
+.close-menu {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 40px;
+    color: #ffd700;
+    cursor: pointer;
+    background: none;
+    border: none;
+    transition: all 0.3s ease;
+}
 
-  .gooey-nav-right {
-    gap: 2px;
-    flex-shrink: 0;
-  }
+.close-menu:hover {
+    transform: rotate(90deg);
+}
+
+/* No padding needed for top right navbar */
+html { }
+body { }
+
+/* Responsive - show bottom nav on all devices */
+@media (max-width: 1024px) {
+    .bottom-nav {
+        height: 100px;
+    }
+
+    .nav-item {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 768px) {
+    .hamburger-center {
+        width: 70px;
+        height: 70px;
+        bottom: 25px;
+    }
+}
+
+/* Light mode */
+body:not(.dark-mode) .bottom-nav {
+    background: linear-gradient(180deg, #0a1f3f 0%, #1a3a5a 100%) !important;
+}
+
+body:not(.dark-mode) .hamburger-center {
+    background: #ffd700;
 }
 </style>
 
+<!-- Bottom Navigation Bar -->
+<nav class="bottom-nav">
+    <a href="{{ path('app_home') }}" class="nav-item" title="Accueil">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 12l9-9 9 9M5 11v7a2 2 0 002 2h10a2 2 0 002-2v-7"/>
+            <path d="M9 21v-6h6v6"/>
+        </svg>
+        <span>Accueil</span>
+    </a>
+
+    <a href="{{ path('app_home') }}#avantages" class="nav-item" title="À propos">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="8" r="4"/>
+            <path d="M4 20c0-4 3.5-7 8-7s8 3 8 7"/>
+        </svg>
+        <span>À propos</span>
+    </a>
+
+    <a href="{{ path('app_home') }}#services" class="nav-item" title="Services">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="3" width="8" height="8"/>
+            <rect x="13" y="3" width="8" height="8"/>
+            <rect x="3" y="13" width="8" height="8"/>
+            <rect x="13" y="13" width="8" height="8"/>
+        </svg>
+        <span>Services</span>
+    </a>
+
+    <a href="{{ path('app_blog') }}" class="nav-item" title="Gallery">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <path d="M3 15l5-5 5 5 9-9"/>
+        </svg>
+        <span>Gallery</span>
+    </a>
+
+    <a href="{{ path('app_home') }}#contact" class="nav-item" title="Contact">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 8l8.5-6 8.5 6v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+            <path d="M9 13h6v6H9z"/>
+        </svg>
+        <span>Contact</span>
+    </a>
+</nav>
+
+<!-- Center Hamburger Button -->
+<button class="hamburger-center" id="hamburgerCenter" aria-label="Menu">
+    <span></span>
+    <span></span>
+    <span></span>
+</button>
+
+<!-- Mobile Menu Overlay -->
+<div class="mobile-menu" id="mobileMenu">
+    <button class="close-menu" id="closeMenu">×</button>
+    <a href="{{ path('app_home') }}">Accueil</a>
+    <a href="{{ path('app_home') }}#avantages">À propos</a>
+    <a href="{{ path('app_home') }}#services">Services</a>
+    <a href="{{ path('app_blog') }}">Gallery</a>
+    <a href="{{ path('app_home') }}#contact">Contact</a>
+    {% if app.user %}
+        <a href="{{ path('app_admin_dashboard') }}">👤 Admin</a>
+        <a href="{{ path('app_logout') }}">Déconnexion</a>
+    {% else %}
+        <a href="{{ path('app_login') }}">Se connecter</a>
+        <a href="{{ path('app_register') }}">S'inscrire</a>
+    {% endif %}
+</div>
+
 <nav class="gooey-navbar" id="gooeyNav">
+    <!-- Hamburger Menu Button -->
+    <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
     <!-- Logo/Brand -->
-    <a href="{{ path('app_home') }}" class="gooey-brand">
-        <div class="gooey-brand-icon">
-            <img src="{{ asset('images/logo.svg') }}" alt="Sirius-Solar">
-        </div>
-        <span>SIRIUS-SOLAR</span>
+    <a href="{{ path('app_home') }}" class="brand">
+        SIRIUS-SOLAR
     </a>
 
     <!-- Navigation Links -->
-    <div class="gooey-nav-center" id="navCenter">
-        <a href="{{ path('app_home') }}" class="gooey-nav-link">Accueil</a>
-        <a href="{{ path('app_home') }}#avantages" class="gooey-nav-link">À propos</a>
-        <a href="{{ path('app_home') }}#services" class="gooey-nav-link">Services</a>
-        <a href="{{ path('app_blog') }}" class="gooey-nav-link">Gallery</a>
-        <a href="{{ path('app_home') }}#contact" class="gooey-nav-link">Contact</a>
+    <div class="nav-links" id="navLinks">
+        <a href="{{ path('app_home') }}">Accueil</a>
+        <a href="{{ path('app_home') }}#avantages">À propos</a>
+        <a href="{{ path('app_home') }}#services">Services</a>
+        <a href="{{ path('app_blog') }}">Gallery</a>
+        <a href="{{ path('app_home') }}#contact">Contact</a>
     </div>
 
-    <!-- Right Section -->
-    <div class="gooey-nav-right">
-        <!-- Language Selector -->
-        <div class="gooey-lang-selector">
-            <select id="languageSelect" class="gooey-lang-select" title="Select language">
-                <option value="fr" {% if app.request.locale == 'fr' %}selected{% endif %}>FR</option>
-                <option value="de" {% if app.request.locale == 'de' %}selected{% endif %}>DE</option>
-                <option value="it" {% if app.request.locale == 'it' %}selected{% endif %}>IT</option>
-                <option value="rm" {% if app.request.locale == 'rm' %}selected{% endif %}>RM</option>
-            </select>
-        </div>
-
-        <!-- Theme Toggle Button -->
-        <button id="themeToggle" class="gooey-btn-theme" title="Toggle dark/light mode">
-            <span class="theme-icon">🌙</span>
-        </button>
-
-        <!-- Auth Buttons -->
+    <!-- Auth Buttons -->
+    <div class="auth-buttons">
         {% if app.user %}
-            <a href="{{ path('app_admin_dashboard') }}" class="gooey-btn-auth gooey-btn-auth-dark">
+            <a href="{{ path('app_admin_dashboard') }}" class="btn-login">
                 👤 Admin
             </a>
-            <a href="{{ path('app_logout') }}" class="gooey-btn-auth gooey-btn-auth-light">
+            <a href="{{ path('app_logout') }}" class="btn-signup">
                 Déconnexion
             </a>
         {% else %}
-            <a href="{{ path('app_login') }}" class="gooey-btn-auth gooey-btn-auth-light">
-                S'identifier
+            <a href="{{ path('app_login') }}" class="btn-login">
+                Se connecter
             </a>
-            <a href="{{ path('app_register') }}" class="gooey-btn-auth gooey-btn-auth-dark">
-                Créer un compte
+            <a href="{{ path('app_register') }}" class="btn-signup">
+                S'inscrire
             </a>
         {% endif %}
     </div>
-
-    <!-- Effect Elements -->
-    <div class="effect filter" id="effectFilter"></div>
-    <div class="effect text" id="effectText"></div>
 </nav>
 
 <script>
-const nav = document.querySelector('.gooey-navbar');
-const effectEl = document.getElementById('effectFilter');
-const textEl = document.getElementById('effectText');
-const navCenter = document.getElementById('navCenter');
-const hamburger = document.getElementById('gooeyHamburger');
-const mobileMenu = document.getElementById('gooeyMobileMenu');
+// Mobile menu functionality
+const hamburgerBtn = document.getElementById('hamburgerCenter');
+const mobileMenu = document.getElementById('mobileMenu');
+const closeBtn = document.getElementById('closeMenu');
 
-let animationTime = 600;
-let pCount = 15;
-const maxRotate = 75;
-const colors = [1, 2, 3, 1, 2, 3, 1, 4];
-const timeVariance = 300;
-
-function noise(n = 1) {
-    return n / 2 - Math.random() * n;
-}
-
-function getXY(distance, pointIndex, totalPoints) {
-    const x = distance * Math.cos(((360 + noise(8)) / totalPoints * pointIndex) * Math.PI / 180);
-    const y = distance * Math.sin(((360 + noise(8)) / totalPoints * pointIndex) * Math.PI / 180);
-    return [x, y];
-}
-
-function makeParticles($el) {
-    const d = [90, 10];
-    const r = 100;
-    const bubbleTime = animationTime * 2 + timeVariance;
-    $el.style.setProperty('--time', bubbleTime + 'ms');
-
-    for (let i = 0; i < pCount; i++) {
-        const t = animationTime * 2 + noise(timeVariance * 2);
-        const p = createParticle(i, t, d, r);
-        const $place = $el;
-
-        if ($place) {
-            $place.classList.remove('active');
-            setTimeout(() => {
-                const $particle = document.createElement('span');
-                const $point = document.createElement('span');
-                $particle.classList.add('particle');
-                $particle.style = `
-                  --start-x: ${p.start[0]}px;
-                  --start-y: ${p.start[1]}px;
-                  --end-x: ${p.end[0]}px;
-                  --end-y: ${p.end[1]}px;
-                  --time: ${p.time}ms;
-                  --scale: ${p.scale};
-                  --color: var(--color-${p.color}, white);
-                  --rotate: ${p.rotate}deg;
-                `;
-                $point.classList.add('point');
-                $particle.append($point);
-                $place.append($particle);
-
-                requestAnimationFrame(() => {
-                    $place.classList.add('active');
-                });
-
-                setTimeout(() => {
-                    try {
-                        $place.removeChild($particle);
-                    } catch(e) {}
-                }, t);
-            }, 30);
-        }
-    }
-}
-
-function createParticle(i, t, d, r) {
-    let rotate = noise(r / 10);
-    let minDistance = d[0];
-    let maxDistance = d[1];
-    return {
-        start: getXY(minDistance, pCount - i, pCount),
-        end: getXY(maxDistance + noise(7), pCount - i, pCount),
-        time: t,
-        scale: 1 + noise(0.2),
-        color: colors[Math.floor(Math.random() * colors.length)],
-        rotate: rotate > 0 ? (rotate + r / 20) * 10 : (rotate - r / 20) * 10
-    };
-}
-
-function updateEffectPosition(element) {
-    const pos = element.getBoundingClientRect();
-    const styles = {
-        left: `${pos.x}px`,
-        top: `${pos.y}px`,
-        width: `${pos.width}px`,
-        height: `${pos.height}px`
-    };
-
-    Object.assign(effectEl.style, styles);
-    Object.assign(textEl.style, styles);
-    textEl.classList.remove('hidden');
-    textEl.innerText = element.innerText;
-}
-
-const activate = ($el) => {
-    updateEffectPosition($el);
-
-    if (!$el.classList.contains('active')) {
-        navCenter.querySelectorAll('.gooey-nav-link').forEach(($el) => {
-            $el.classList.remove('active');
-        });
-        effectEl.querySelectorAll('.particle').forEach(($el) => {
-            try { effectEl.removeChild($el); } catch(e) {}
-        });
-        $el.classList.add('active');
-        textEl.classList.remove('active');
-
-        setTimeout(() => {
-            textEl.classList.add('active');
-        }, 100);
-
-        makeParticles(effectEl);
-    }
-};
-
-// Navigation links - adapted for gooey-navbar
-navCenter.querySelectorAll('.gooey-nav-link').forEach(($el) => {
-    $el.addEventListener('click', (e) => {
-        activate($el);
+if (hamburgerBtn) {
+    hamburgerBtn.addEventListener('click', () => {
+        mobileMenu.classList.add('active');
     });
+}
 
-    $el.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            activate($el);
-        }
+if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+        mobileMenu.classList.remove('active');
+    });
+}
+
+// Close menu when a link is clicked
+document.querySelectorAll('.mobile-menu a').forEach(link => {
+    link.addEventListener('click', () => {
+        mobileMenu.classList.remove('active');
     });
 });
 
-// Theme Toggle
-const themeToggle = document.getElementById('themeToggle');
-const html = document.documentElement;
-const themeIcon = themeToggle.querySelector('.theme-icon');
+// Close menu when clicking outside
+mobileMenu.addEventListener('click', (e) => {
+    if (e.target === mobileMenu) {
+        mobileMenu.classList.remove('active');
+    }
+});
 
+// Theme Toggle
+const html = document.documentElement;
 const currentTheme = localStorage.getItem('theme') || 'light';
 if (currentTheme === 'dark') {
     document.body.classList.add('dark-mode');
     html.setAttribute('data-theme', 'dark');
-    themeIcon.textContent = '☀️';
 }
-
-themeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
-    if (document.body.classList.contains('dark-mode')) {
-        html.setAttribute('data-theme', 'dark');
-        localStorage.setItem('theme', 'dark');
-        themeIcon.textContent = '☀️';
-    } else {
-        html.setAttribute('data-theme', 'light');
-        localStorage.setItem('theme', 'light');
-        themeIcon.textContent = '🌙';
-    }
-});
-
-// Initialize
-setTimeout(() => {
-    const firstLink = navCenter.querySelector('.gooey-nav-link');
-    if (firstLink) activate(firstLink);
-}, 200);
-
-// Resize Observer
-const resizeObserver = new ResizeObserver(() => {
-    const activeEl = navCenter.querySelector('.gooey-nav-link.active');
-    if (activeEl) {
-        updateEffectPosition(activeEl);
-    }
-});
-
-resizeObserver.observe(document.body);
 </script>
