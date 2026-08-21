@@ -1,14 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}My Appointments - Solar Cleaning{% endblock %}
+{% block title %}{{ 'member.appointments.title'|trans }} - Sirius-Solar{% endblock %}
 
 {% block body %}
 <div class="container mx-auto px-4 py-8">
-    <h1 class="text-4xl font-bold text-bleu-nuit mb-8">My Appointments</h1>
+    <h1 class="text-4xl font-bold text-bleu-nuit mb-8">{{ 'member.appointments.title'|trans }}</h1>
 
     <div class="mb-8">
         <a href="{{ path('app_appointment_book') }}" class="bg-jaune-solaire text-bleu-nuit font-bold py-3 px-6 rounded-lg hover:bg-opacity-90 transition">
-            Book New Appointment
+            {{ 'member.appointments.book_new'|trans }}
         </a>
     </div>
 
@@ -25,7 +25,7 @@
                             <h3 class="text-xl font-bold text-bleu-nuit">
                                 {{ appointment.date ? appointment.date.format('l, d F Y') : 'N/A' }}
                             </h3>
-                            <p class="text-gray-600">Time: {{ appointment.timeSlot }}</p>
+                            <p class="text-gray-600">{{ 'member.appointments.time'|trans }} {{ appointment.timeSlot }}</p>
                             <p class="text-sm text-gray-500 mt-2">{{ appointment.notes }}</p>
                         </div>
                         <span class="px-3 py-1 rounded-full text-white font-semibold
@@ -33,13 +33,13 @@
                             {% elseif appointment.status == 'COMPLETED' %}bg-green-500
                             {% else %}bg-red-500
                             {% endif %}">
-                            {{ appointment.status }}
+                            {{ ('status.' ~ appointment.status|lower)|trans }}
                         </span>
                     </div>
                     {% if appointment.status == 'SCHEDULED' %}
                         <form method="POST" action="{{ path('app_appointment_cancel', {id: appointment.id}) }}" class="mt-4">
                             <button type="submit" class="text-red-600 hover:text-red-800 text-sm font-semibold">
-                                Cancel Appointment
+                                {{ 'member.appointments.cancel'|trans }}
                             </button>
                         </form>
                     {% endif %}
@@ -47,10 +47,18 @@
             {% endfor %}
         {% else %}
             <div class="bg-gray-100 rounded-lg p-8 text-center">
-                <p class="text-gray-600 text-lg">No appointments yet.</p>
-                <a href="{{ path('app_appointment_book') }}" class="text-bleu-panneau font-semibold hover:underline">Book your first appointment</a>
+                <p class="text-gray-600 text-lg">{{ 'member.appointments.none'|trans }}</p>
+                <a href="{{ path('app_appointment_book') }}" class="text-bleu-panneau font-semibold hover:underline">{{ 'member.appointments.book_first'|trans }}</a>
             </div>
         {% endif %}
     </div>
 </div>
+{% endblock %}
+
+{% block page_nav_prev %}
+    <a href="{{ path('app_member_dashboard') }}" class="page-nav-link">← {{ 'pagenav.member_dashboard'|trans }}</a>
+{% endblock %}
+
+{% block page_nav_next %}
+    <a href="{{ path('app_appointment_book') }}" class="page-nav-link">{{ 'pagenav.book_appointment'|trans }} →</a>
 {% endblock %}

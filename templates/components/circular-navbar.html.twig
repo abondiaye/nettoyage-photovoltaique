@@ -1,0 +1,313 @@
+<div class="circular-nav-container">
+    <div class="circular-nav-center">
+        <img src="{{ asset('images/panneaux-solaires-sous-la-pluie.png') }}" alt="Sirius-Solar" class="center-icon">
+        <div class="center-text">Sirius<br>Solar</div>
+    </div>
+
+    <div class="circular-nav-wheel">
+        <!-- Services -->
+        <div class="nav-item" style="--angle: 0deg;">
+            <a href="#services" class="nav-link" data-tooltip="Services">
+                <span class="nav-icon">💧</span>
+                <span class="nav-label">Services</span>
+            </a>
+        </div>
+
+        <!-- Avantages -->
+        <div class="nav-item" style="--angle: 60deg;">
+            <a href="#avantages" class="nav-link" data-tooltip="Avantages">
+                <span class="nav-icon">⚡</span>
+                <span class="nav-label">Avantages</span>
+            </a>
+        </div>
+
+        <!-- Devis -->
+        <div class="nav-item" style="--angle: 120deg;">
+            <a href="/devis" class="nav-link" data-tooltip="Devis">
+                <span class="nav-icon">📋</span>
+                <span class="nav-label">Devis</span>
+            </a>
+        </div>
+
+        <!-- Contact -->
+        <div class="nav-item" style="--angle: 180deg;">
+            <a href="#contact" class="nav-link" data-tooltip="Contact">
+                <span class="nav-icon">📞</span>
+                <span class="nav-label">Contact</span>
+            </a>
+        </div>
+
+        <!-- À propos -->
+        <div class="nav-item" style="--angle: 240deg;">
+            <a href="/about" class="nav-link" data-tooltip="À propos">
+                <span class="nav-icon">ℹ️</span>
+                <span class="nav-label">À propos</span>
+            </a>
+        </div>
+
+        <!-- Blog -->
+        <div class="nav-item" style="--angle: 300deg;">
+            <a href="/blog" class="nav-link" data-tooltip="Blog">
+                <span class="nav-icon">📰</span>
+                <span class="nav-label">Blog</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+.circular-nav-container {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    z-index: 999;
+    width: 280px;
+    height: 280px;
+    background-color: transparent !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.circular-nav-center {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, #0A3D35 0%, #2D6B55 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    cursor: pointer;
+    box-shadow: none;
+    border: 3px solid rgba(160, 160, 160, 0.8);
+    transition: all 0.3s ease;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.circular-nav-center:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+    box-shadow: 0 0 50px rgba(160, 160, 160, 0.8),
+                0 0 80px rgba(160, 160, 160, 0.4);
+}
+
+.center-icon {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+    border-radius: 50%;
+    opacity: 0.8;
+}
+
+.center-text {
+    font-size: 12px;
+    font-weight: 700;
+    color: #ffffff;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 1.2;
+}
+
+.circular-nav-wheel {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    pointer-events: auto;
+}
+
+.nav-item {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    left: 50%;
+    top: 50%;
+    transform-origin: 0 0;
+    transform:
+        translate(-50%, -50%)
+        rotate(var(--angle))
+        translateY(-105px)
+        rotate(calc(var(--angle) * -1));
+    transition: all 0.3s ease;
+}
+
+.nav-item:hover {
+    transform:
+        translate(-50%, -50%)
+        rotate(var(--angle))
+        translateY(-120px)
+        rotate(calc(var(--angle) * -1))
+        scale(1.15);
+}
+
+.nav-link {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    background: linear-gradient(135deg, #2D6B55 0%, #0A3D35 100%);
+    border-radius: 50%;
+    text-decoration: none;
+    color: #a8a8a8;
+    font-weight: 600;
+    font-size: 11px;
+    border: 2px solid rgba(160, 160, 160, 0.6);
+    box-shadow: none;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.nav-link::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(160, 160, 160, 0.2) 0%, transparent 70%);
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.nav-link:hover {
+    background: linear-gradient(135deg, #3d7ba0 0%, #2D6B55 100%);
+    border-color: #a8a8a8;
+    color: #ffffff;
+    box-shadow: 0 10px 40px rgba(160, 160, 160, 0.5);
+}
+
+.nav-link:hover::before {
+    opacity: 1;
+}
+
+.nav-icon {
+    font-size: 20px;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.nav-link:hover .nav-icon {
+    transform: scale(1.2) rotate(10deg);
+}
+
+.nav-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Tooltip */
+.nav-link[data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -35px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(160, 160, 160, 0.9);
+    color: #0A3D35;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 20;
+}
+
+.nav-link:hover[data-tooltip]::after {
+    opacity: 1;
+}
+
+/* Animation de rotation douce */
+@keyframes wheelSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.circular-nav-wheel:hover {
+    animation: wheelSpin 20s linear infinite;
+    animation-play-state: paused;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .circular-nav-container {
+        bottom: 20px;
+        right: 20px;
+        width: 200px;
+        height: 200px;
+    }
+
+    .circular-nav-center {
+        width: 70px;
+        height: 70px;
+    }
+
+    .center-text {
+        font-size: 10px;
+    }
+
+    .nav-item {
+        width: 50px;
+        height: 50px;
+    }
+
+    .nav-item:hover {
+        transform:
+            translate(-50%, -50%)
+            rotate(var(--angle))
+            translateY(-85px)
+            rotate(calc(var(--angle) * -1))
+            scale(1.1);
+    }
+
+    .nav-link {
+        font-size: 9px;
+    }
+
+    .nav-icon {
+        font-size: 16px;
+    }
+}
+
+/* Remove black background */
+html .circular-nav-container {
+    background: transparent !important;
+    background-color: transparent !important;
+    mix-blend-mode: screen !important;
+}
+
+/* Mobile - Hide on mobile screens */
+@media (max-width: 768px) {
+    .circular-nav-container {
+        display: none !important;
+    }
+}
+
+/* Dark mode */
+body.dark-mode .circular-nav-center {
+    background: linear-gradient(135deg, #0A3D35 0%, #1a4d42 100%);
+    box-shadow: 0 0 30px rgba(160, 160, 160, 0.6),
+                0 0 60px rgba(160, 160, 160, 0.3);
+}
+
+body.dark-mode .nav-link {
+    background: linear-gradient(135deg, #1a4d42 0%, #0A3D35 100%);
+}
+
+body.dark-mode .nav-link:hover {
+    background: linear-gradient(135deg, #2D6B55 0%, #1a4d42 100%);
+}
+</style>

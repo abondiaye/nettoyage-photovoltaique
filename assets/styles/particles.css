@@ -1,0 +1,204 @@
+/* === ANIMATED PARTICLES FOR CARDS === */
+
+/* Floating bubble animation */
+@keyframes float-up {
+  0% {
+    opacity: 0.6;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-150px);
+  }
+}
+
+@keyframes float-up-delay {
+  0% {
+    opacity: 0.5;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-180px);
+  }
+}
+
+/* Service cards - Large visible bubbles */
+.service-card-modern {
+  position: relative;
+  overflow: hidden;
+}
+
+.service-card-modern::before {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  left: 10%;
+  width: 40px;
+  height: 40px;
+  background: radial-gradient(circle at 30% 30%, rgba(212, 168, 66, 0.8), rgba(212, 168, 66, 0.3));
+  border: 2px solid rgba(212, 168, 66, 0.6);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: float-up 5s ease-in infinite;
+  z-index: 0;
+  box-shadow: inset -2px -2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.service-card-modern::after {
+  content: '';
+  position: absolute;
+  bottom: -30px;
+  right: 15%;
+  width: 30px;
+  height: 30px;
+  background: radial-gradient(circle at 30% 30%, rgba(212, 168, 66, 0.7), rgba(212, 168, 66, 0.2));
+  border: 2px solid rgba(212, 168, 66, 0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: float-up-delay 6s ease-in infinite;
+  z-index: 0;
+  box-shadow: inset -1px -1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.service-card-modern > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Pillar cards - Visible bubbles */
+.pillar-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.pillar-card::before {
+  content: '';
+  position: absolute;
+  bottom: -25px;
+  left: 20%;
+  width: 35px;
+  height: 35px;
+  background: radial-gradient(circle at 30% 30%, rgba(212, 168, 66, 0.75), rgba(212, 168, 66, 0.25));
+  border: 2px solid rgba(212, 168, 66, 0.55);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: float-up 5.5s ease-in infinite;
+  z-index: 0;
+  box-shadow: inset -2px -2px 4px rgba(0, 0, 0, 0.25);
+}
+
+.pillar-card::after {
+  content: '';
+  position: absolute;
+  bottom: -35px;
+  right: 20%;
+  width: 25px;
+  height: 25px;
+  background: radial-gradient(circle at 30% 30%, rgba(212, 168, 66, 0.6), rgba(212, 168, 66, 0.15));
+  border: 1.5px solid rgba(212, 168, 66, 0.45);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: float-up-delay 6.5s ease-in infinite;
+  z-index: 0;
+  box-shadow: inset -1px -1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.pillar-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Hero section - Large bubble */
+.hero-modern {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-modern::after {
+  content: '';
+  position: absolute;
+  bottom: 20px;
+  left: 15%;
+  width: 50px;
+  height: 50px;
+  background: radial-gradient(circle at 30% 30%, rgba(212, 168, 66, 0.6), rgba(212, 168, 66, 0.1));
+  border: 2px solid rgba(212, 168, 66, 0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: float-up 7s ease-in infinite;
+  z-index: 1;
+  box-shadow: inset -3px -3px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Contact section bubbles */
+.contact-item {
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-item::before {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  left: 15%;
+  width: 32px;
+  height: 32px;
+  background: radial-gradient(circle at 30% 30%, rgba(212, 168, 66, 0.7), rgba(212, 168, 66, 0.2));
+  border: 1.5px solid rgba(212, 168, 66, 0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: float-up 5.2s ease-in infinite;
+  z-index: 0;
+  box-shadow: inset -1.5px -1.5px 3px rgba(0, 0, 0, 0.2);
+}
+
+.contact-item > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Dark mode - Brighter gold bubbles */
+:root[data-theme="dark"] .service-card-modern::before,
+:root[data-theme="dark"] .service-card-modern::after,
+:root[data-theme="dark"] .pillar-card::before,
+:root[data-theme="dark"] .pillar-card::after,
+:root[data-theme="dark"] .hero-modern::after,
+:root[data-theme="dark"] .contact-item::before {
+  background: radial-gradient(circle at 30% 30%, rgba(255, 215, 0, 0.9), rgba(255, 215, 0, 0.3)) !important;
+  border-color: rgba(255, 215, 0, 0.7) !important;
+  box-shadow: inset -2px -2px 6px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .service-card-modern::before {
+    width: 30px;
+    height: 30px;
+  }
+
+  .service-card-modern::after {
+    width: 22px;
+    height: 22px;
+  }
+
+  .pillar-card::before {
+    width: 28px;
+    height: 28px;
+  }
+
+  .pillar-card::after {
+    width: 20px;
+    height: 20px;
+  }
+
+  .hero-modern::after {
+    width: 40px;
+    height: 40px;
+  }
+
+  .contact-item::before {
+    width: 25px;
+    height: 25px;
+  }
+}

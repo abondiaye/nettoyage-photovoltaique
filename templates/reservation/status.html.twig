@@ -1,0 +1,175 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Suivi réservation {{ reservation.numero }} - Sirius Solar{% endblock %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 60px auto; padding: 40px;">
+    <div style="background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        <h1 style="text-align: center; color: #1a3a52; margin-bottom: 30px;">📊 Suivi de votre réservation</h1>
+
+        <!-- Numéro de réservation -->
+        <div style="text-align: center; margin-bottom: 40px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+            <p style="color: #666; font-size: 12px; margin-bottom: 5px;">NUMÉRO DE RÉSERVATION</p>
+            <p style="font-size: 24px; font-weight: bold; color: #1a3a52;">{{ reservation.numero }}</p>
+        </div>
+
+        <!-- Timeline Statut -->
+        <div style="margin-bottom: 40px;">
+            <h3 style="color: #1a3a52; margin-bottom: 20px;">📈 État de votre demande</h3>
+
+            {% set statuses = {
+                'EN_ATTENTE': {icon: '⏳', label: 'Demande reçue', color: '#ffc107'},
+                'CONFIRMEE': {icon: '✅', label: 'Confirmée', color: '#17a2b8'},
+                'REALISEE': {icon: '✨', label: 'Réalisée', color: '#28a745'},
+                'REFUSEE': {icon: '❌', label: 'Refusée', color: '#dc3545'},
+                'ANNULEE_ADMIN': {icon: '🚫', label: 'Annulée', color: '#6c757d'}
+            } %}
+
+            {% set statusOrder = ['EN_ATTENTE', 'CONFIRMEE', 'REALISEE'] %}
+
+            <div style="position: relative; padding: 20px 0;">
+                {% for status in statusOrder %}
+                    {% set statusInfo = statuses[status] %}
+                    {% set isActive = reservation.statut == status %}
+                    {% set isCompleted = (status == 'EN_ATTENTE') or (status == 'CONFIRMEE' and reservation.statut in ['CONFIRMEE', 'REALISEE']) or (status == 'REALISEE' and reservation.statut == 'REALISEE') %}
+
+                    <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                        <div style="
+                            width: 50px;
+                            height: 50px;
+                            border-radius: 50%;
+                            background: {{ isCompleted or isActive ? statusInfo.color : '#e9ecef' }};
+                            color: white;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 24px;
+                            flex-shrink: 0;
+                            position: relative;
+                            z-index: 2;
+                        ">
+                            {{ statusInfo.icon }}
+                        </div>
+
+                        <div style="flex: 1; margin-left: 20px;">
+                            <p style="font-weight: 600; color: {{ isCompleted or isActive ? '#1a3a52' : '#999' }}; margin: 0;">
+                                {{ statusInfo.label }}
+                            </p>
+                            {% if isActive %}
+                                <p style="font-size: 12px; color: #666; margin: 5px 0 0 0;">
+                                    ← Vous êtes ici
+                                </p>
+                            {% endif %}
+                        </div>
+
+                        {% if not loop.last %}
+                            <div style="
+                                position: absolute;
+                                left: 24px;
+                                top: 50px;
+                                width: 2px;
+                                height: 20px;
+                                background: {{ isCompleted ? '#28a745' : '#e9ecef' }};
+                                z-index: 1;
+                            "></div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Informations détaillées -->
+        <div style="border-top: 2px solid #eee; padding-top: 30px; margin-bottom: 30px;">
+            <h3 style="color: #1a3a52; margin-bottom: 20px;">📋 Informations de votre intervention</h3>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                <div>
+                    <p style="color: #666; font-size: 12px; font-weight: 600; margin-bottom: 5px;">CLIENT</p>
+                    <p style="font-size: 16px; font-weight: 600; color: #1a3a52; margin-bottom: 20px;">
+                        {{ reservation.customer.prenom }} {{ reservation.customer.nom }}
+                    </p>
+
+                    <p style="color: #666; font-size: 12px; font-weight: 600; margin-bottom: 5px;">EMAIL</p>
+                    <p style="margin-bottom: 20px;">{{ reservation.customer.email }}</p>
+
+                    <p style="color: #666; font-size: 12px; font-weight: 600; margin-bottom: 5px;">TÉLÉPHONE</p>
+                    <p style="margin-bottom: 20px;">{{ reservation.customer.telephone }}</p>
+                </div>
+
+                <div>
+                    <p style="color: #666; font-size: 12px; font-weight: 600; margin-bottom: 5px;">DATE SOUHAITÉE</p>
+                    <p style="font-size: 16px; font-weight: 600; color: #1a3a52; margin-bottom: 20px;">
+                        {{ reservation.dateSouhaitee.format('d/m/Y') }} à {{ reservation.heureSouhaitee.format('H:i') }}
+                    </p>
+
+                    <p style="color: #666; font-size: 12px; font-weight: 600; margin-bottom: 5px;">NOMBRE DE PANNEAUX</p>
+                    <p style="margin-bottom: 20px;">{{ reservation.nombrePanneaux }} panneaux</p>
+
+                    <p style="color: #666; font-size: 12px; font-weight: 600; margin-bottom: 5px;">PRIX ESTIMÉ</p>
+                    <p style="font-size: 18px; font-weight: 600; color: #28a745;">CHF {{ reservation.prixEstime|number_format(2, '.', '') }}</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+                <p style="color: #666; font-size: 12px; font-weight: 600; margin-bottom: 5px;">ADRESSE D'INTERVENTION</p>
+                <p style="margin: 0;">
+                    {{ reservation.customer.adresse }}<br>
+                    {{ reservation.customer.codePostal }} {{ reservation.customer.ville }}
+                </p>
+            </div>
+
+            {% if reservation.notes %}
+                <div style="margin-top: 20px; padding: 20px; background: #f0f8ff; border-left: 4px solid #007bff; border-radius: 4px;">
+                    <p style="color: #666; font-size: 12px; font-weight: 600; margin-bottom: 5px;">NOTES SUPPLÉMENTAIRES</p>
+                    <p style="margin: 0;">{{ reservation.notes }}</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Messages selon statut -->
+        {% if reservation.statut == 'EN_ATTENTE' %}
+            <div style="background: #fff3cd; padding: 20px; border-radius: 8px; border-left: 4px solid #ffc107; margin-bottom: 30px;">
+                <p style="font-weight: 600; color: #856404; margin: 0;">⏳ Demande en cours d'examen</p>
+                <p style="color: #856404; margin: 10px 0 0 0; font-size: 14px;">Notre équipe examinera votre demande et vous contactera dans les 24 heures pour confirmer l'intervention.</p>
+            </div>
+
+        {% elseif reservation.statut == 'CONFIRMEE' %}
+            <div style="background: #d1ecf1; padding: 20px; border-radius: 8px; border-left: 4px solid #17a2b8; margin-bottom: 30px;">
+                <p style="font-weight: 600; color: #0c5460; margin: 0;">✅ Intervention confirmée!</p>
+                <p style="color: #0c5460; margin: 10px 0 0 0; font-size: 14px;">Votre intervention est confirmée pour le {{ reservation.dateSouhaitee.format('d/m/Y') }} à {{ reservation.heureSouhaitee.format('H:i') }}. Notre équipe sera à l'heure convenue.</p>
+            </div>
+
+        {% elseif reservation.statut == 'REALISEE' %}
+            <div style="background: #d4edda; padding: 20px; border-radius: 8px; border-left: 4px solid #28a745; margin-bottom: 30px;">
+                <p style="font-weight: 600; color: #155724; margin: 0;">✨ Intervention réalisée!</p>
+                <p style="color: #155724; margin: 10px 0 0 0; font-size: 14px;">Merci de votre confiance! Votre intervention a été réalisée avec succès. Vos panneaux solaires sont maintenant optimisés.</p>
+            </div>
+
+        {% elseif reservation.statut == 'REFUSEE' %}
+            <div style="background: #f8d7da; padding: 20px; border-radius: 8px; border-left: 4px solid #dc3545; margin-bottom: 30px;">
+                <p style="font-weight: 600; color: #721c24; margin: 0;">❌ Demande refusée</p>
+                <p style="color: #721c24; margin: 10px 0 0 0; font-size: 14px;">Malheureusement, votre demande ne peut pas être acceptée pour le moment. Notre équipe peut vous contacter pour discuter d'alternatives.</p>
+            </div>
+
+        {% elseif reservation.statut == 'ANNULEE_ADMIN' %}
+            <div style="background: #e2e3e5; padding: 20px; border-radius: 8px; border-left: 4px solid #6c757d; margin-bottom: 30px;">
+                <p style="font-weight: 600; color: #383d41; margin: 0;">🚫 Intervention annulée</p>
+                <p style="color: #383d41; margin: 10px 0 0 0; font-size: 14px;">Votre intervention a été annulée. Veuillez nous contacter si vous avez des questions.</p>
+            </div>
+        {% endif %}
+
+        <!-- Contact -->
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; text-align: center;">
+            <p style="font-weight: 600; color: #1a3a52; margin-bottom: 10px;">❓ Des questions?</p>
+            <p style="color: #666; margin: 0;">Contactez notre équipe: <strong>077 909 64 13</strong> ou <strong>ndiayeharouna1991@gmail.com</strong></p>
+        </div>
+
+        <!-- Boutons -->
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="/" style="display: inline-block; padding: 12px 30px; background: #1a3a52; color: white; text-decoration: none; border-radius: 4px; font-weight: 600;">
+                ← Retour à l'accueil
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

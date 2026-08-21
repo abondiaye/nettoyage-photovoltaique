@@ -1,0 +1,886 @@
+<style>
+/* ===== FROSTED GLASS GOOEY NAVBAR WITH PARTICLES ===== */
+
+/* Custom animation easing function */
+:root {
+  --linear-ease: linear(0, 0.068, 0.19 2.7%, 0.804 8.1%, 1.037, 1.199 13.2%, 1.245, 1.27 15.8%, 1.274, 1.272 17.4%, 1.249 19.1%, 0.996 28%, 0.949, 0.928 33.3%, 0.926, 0.933 36.8%, 1.001 45.6%, 1.013, 1.019 50.8%, 1.018 54.4%, 1 63.1%, 0.995 68%, 1.001 85%, 1);
+  --color-1: #ffd700;
+  --color-2: #c0c0c0;
+  --color-3: #a8a8a8;
+  --color-4: #ffffff;
+}
+
+/* Navigation styling with premium frosted glass effect */
+.gooey-navbar {
+  display: flex;
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 28px;
+  opacity: 0.999;
+  background: hsl(205deg 0% 0% / 0.1);
+  backdrop-filter: blur(12px) brightness(1.15);
+  -webkit-backdrop-filter: blur(12px) brightness(1.15);
+  border-radius: 50px;
+  border: none;
+  box-shadow:
+    0 8px 32px hsl(205deg 50% 30% / 0.2),
+    0 4px 10px hsl(205deg 30% 10% / 0.1),
+    inset 0 -6px 16px 8px hsl(205deg 70% 95% / 0.35),
+    inset 0 -3px 8px hsl(205deg 70% 90% / 0.25),
+    inset 0 -1px 2px hsl(205deg 70% 90% / 0.5),
+    inset 0 12px 16px hsl(205deg 30% 10% / 0.15);
+  animation: slideDown 0.6s ease-out;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.gooey-navbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Noise texture layer 1 */
+.gooey-navbar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50px;
+  backdrop-filter: blur(7px) brightness(1.05);
+  background: hsl(205deg 0% 100% / 0.05);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Noise texture layer 2 */
+.gooey-navbar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50px;
+  backdrop-filter: blur(5px) brightness(0.95);
+  background: hsl(205deg 0% 20% / 0.02);
+  box-shadow:
+    inset 0 -4px 15px 5px hsl(205deg 70% 90% / 0.2),
+    inset 0 -2px 5px hsl(205deg 70% 90% / 0.1),
+    inset 0 -1px 1px hsl(205deg 70% 90% / 0.3);
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Light mode adjustments */
+body:not(.dark-mode) .gooey-navbar {
+  background: hsl(205deg 30% 90% / 0.6);
+  box-shadow:
+    0 8px 32px hsl(205deg 50% 50% / 0.2),
+    0 4px 10px hsl(205deg 30% 50% / 0.15),
+    inset 0 -6px 16px 8px hsl(205deg 70% 95% / 0.4),
+    inset 0 -3px 8px hsl(205deg 70% 90% / 0.3),
+    inset 0 -1px 2px hsl(205deg 70% 90% / 0.6),
+    inset 0 12px 16px hsl(205deg 30% 30% / 0.08);
+}
+
+body:not(.dark-mode) .gooey-navbar::before {
+  background: hsl(205deg 0% 100% / 0.3);
+}
+
+body:not(.dark-mode) .gooey-navbar::after {
+  background: hsl(205deg 0% 20% / 0.04);
+  box-shadow:
+    inset 0 -4px 15px 5px hsl(205deg 70% 90% / 0.3),
+    inset 0 -2px 5px hsl(205deg 70% 90% / 0.2),
+    inset 0 -1px 1px hsl(205deg 70% 90% / 0.4);
+}
+
+body:not(.dark-mode) .gooey-nav-center {
+  color: #0A3D35;
+  text-shadow: none;
+}
+
+body:not(.dark-mode) .gooey-btn-theme {
+  color: #0A3D35;
+  border: 1px solid rgba(10, 61, 53, 0.3);
+}
+
+body:not(.dark-mode) .gooey-btn-auth,
+body:not(.dark-mode) .gooey-btn-auth-light {
+  color: #0A3D35;
+}
+
+body:not(.dark-mode) .gooey-lang-select {
+  color: #0A3D35;
+  border: 1px solid rgba(10, 61, 53, 0.3);
+}
+
+body:not(.dark-mode) .gooey-brand {
+  color: #0A3D35;
+}
+
+/* Center Navigation */
+.gooey-nav-center {
+  display: flex;
+  gap: 0.3em;
+  align-items: center;
+  flex: 1;
+  justify-content: center;
+  position: relative;
+  list-style: none;
+  padding: 0 0.8em;
+  margin: 0;
+  color: white;
+  text-shadow: 0 1px 1px rgba(10, 61, 53, 0.2);
+  z-index: 2;
+}
+
+/* Right Section */
+.gooey-nav-right {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-shrink: 0;
+  z-index: 2;
+  position: relative;
+}
+
+/* Theme Toggle Button */
+.gooey-btn-theme {
+  background: rgba(192, 192, 192, 0.2);
+  color: #ffffff;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(192, 192, 192, 0.4);
+  padding: 5px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gooey-btn-theme:hover {
+  background: rgba(192, 192, 192, 0.3);
+  border-color: rgba(192, 192, 192, 0.7);
+  transform: scale(1.05);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+/* Auth Buttons */
+.gooey-btn-auth {
+  position: relative;
+  padding: 5px 12px;
+  border-radius: 5px;
+  font-weight: 700;
+  font-size: 10px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.gooey-btn-auth-light {
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.gooey-btn-auth-light:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #ffffff;
+  transform: translateY(-2px);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.gooey-btn-auth-dark {
+  background: rgba(10, 61, 53, 0.15);
+  color: #ffffff;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.gooey-btn-auth-dark:hover {
+  background: rgba(10, 61, 53, 0.3);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1) inset;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+/* Brand/Logo */
+.gooey-brand {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 12px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  z-index: 2;
+  position: relative;
+}
+
+.gooey-brand-icon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  background: rgba(192, 192, 192, 0.1);
+  border: 1px solid rgba(192, 192, 192, 0.3);
+  flex-shrink: 0;
+}
+
+.gooey-brand-icon img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.gooey-brand:hover {
+  transform: translateY(-2px);
+  color: #ffd700;
+}
+
+/* Language Selector */
+.gooey-lang-selector {
+  display: flex;
+  align-items: center;
+}
+
+.gooey-lang-select {
+  background: rgba(192, 192, 192, 0.15);
+  color: #ffffff;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(192, 192, 192, 0.3);
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 11px;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+.gooey-lang-select:hover {
+  background: rgba(192, 192, 192, 0.25);
+  border-color: rgba(192, 192, 192, 0.6);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.gooey-lang-select:focus {
+  outline: none;
+  background: rgba(192, 192, 192, 0.3);
+  border-color: rgba(192, 192, 192, 0.7);
+  box-shadow: 0 0 10px rgba(192, 192, 192, 0.2);
+}
+
+/* Navigation Links */
+.gooey-nav-link {
+  padding: 0.6em 1.2em;
+  border-radius: 100vw;
+  position: relative;
+  transition: all 1.8s var(--linear-ease) 0.2s, box-shadow 0.3s ease;
+  color: #ffffff;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 14px;
+  display: block;
+  box-shadow: 0 0 0.5px 1.5px transparent;
+}
+
+.gooey-nav-link:focus-visible {
+  box-shadow: 0 0 0.5px 1.5px white;
+  outline: none;
+}
+
+/* Pill background for links */
+.gooey-nav-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 100vw;
+  background: white;
+  opacity: 0;
+  scale: 0;
+  transition: all 2s var(--linear-ease) 0.2s;
+  z-index: -1;
+}
+
+/* Active state */
+.gooey-nav-link.active {
+  color: #0A3D35;
+  text-shadow: none;
+}
+
+.gooey-nav-link.active::after {
+  opacity: 1;
+  scale: 1;
+}
+
+
+/* Effect element for animations */
+.effect {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 0px;
+  height: 0px;
+  opacity: 1;
+  pointer-events: none;
+  display: grid;
+  place-items: center;
+  z-index: 999;
+}
+
+/* Text effect - hidden since text is visible in links */
+.effect.text {
+  display: none !important;
+  pointer-events: none;
+}
+
+.effect.text.active {
+  display: none !important;
+}
+
+.effect.text.hidden {
+  display: none !important;
+}
+
+/* Filter effect */
+.effect.filter {
+  filter: blur(7px) contrast(20) blur(0);
+  mix-blend-mode: lighten;
+  position: fixed;
+  display: none;
+}
+
+.effect.filter::after {
+  content: '';
+  position: absolute;
+  inset: 0px;
+  background: white;
+  scale: 0;
+  opacity: 0;
+  z-index: -1;
+  border-radius: 100vw;
+}
+
+.effect.active::after {
+  animation: pill 2s var(--linear-ease) 0.2s both;
+}
+
+/* Particle container */
+.particles {
+  position: absolute;
+  inset: 0;
+  transform: translate3d(0, 0, 0px);
+}
+
+/* Particles */
+.particle, .point {
+  display: block;
+  opacity: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+}
+
+.particle {
+  --time: 5s;
+  opacity: 0;
+  position: absolute;
+  top: calc(50% - 8px);
+  left: calc(50% - 8px);
+  animation: particle calc(var(--time)) ease 1 -350ms;
+}
+
+.point {
+  background: var(--color);
+  opacity: 1;
+  animation: point calc(var(--time)) ease 1 -350ms;
+}
+
+/* Animations */
+@keyframes particle {
+  0% {
+    transform: rotate(0deg) translate(calc(var(--start-x) * 1), calc(var(--start-y) * 1));
+    opacity: 1;
+    animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
+  }
+  70% {
+    transform: rotate(calc(var(--rotate) * 0.5)) translate(calc(var(--end-x) * 1.2), calc(var(--end-y) * 1.2));
+    opacity: 1;
+  }
+  85% {
+    transform: rotate(calc(var(--rotate) * 0.66)) translate(calc(var(--end-x) * 1), calc(var(--end-y) * 1));
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(calc(var(--rotate) * 1.2)) translate(calc(var(--end-x) * 0.5), calc(var(--end-y) * 0.5));
+    opacity: 1;
+  }
+}
+
+@keyframes point {
+  0% {
+    scale: 0;
+    opacity: 0;
+    animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
+  }
+  25% {
+    scale: calc(var(--scale) * 0.25);
+  }
+  38% {
+    opacity: 1;
+  }
+  65% {
+    scale: var(--scale);
+    opacity: 1;
+  }
+  85% {
+    scale: var(--scale);
+    opacity: 1;
+  }
+  100% {
+    scale: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes pill {
+  to {
+    scale: 1;
+    opacity: 1;
+  }
+}
+
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .gooey-navbar {
+    padding: 0 20px;
+  }
+
+  .gooey-nav-center {
+    gap: 10px;
+  }
+
+  .gooey-nav-link {
+    font-size: 13px;
+    padding: 0.5em 1em;
+  }
+}
+
+@media (max-width: 768px) {
+  .gooey-navbar {
+    padding: 0 15px;
+    height: 70px;
+  }
+
+  .gooey-nav-center {
+    gap: 0.3em;
+  }
+
+  .gooey-nav-link {
+    font-size: 12px;
+    padding: 0.5em 0.8em;
+  }
+}
+
+/* Light Mode - visible text on light background */
+body:not(.dark-mode) .gooey-navbar {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border-bottom: 1px solid rgba(192, 192, 192, 0.3);
+}
+
+body:not(.dark-mode) .gooey-nav-center {
+  color: #0A3D35 !important;
+  text-shadow: none !important;
+}
+
+body:not(.dark-mode) .gooey-nav-link {
+  color: #0A3D35 !important;
+  text-shadow: none !important;
+}
+
+body:not(.dark-mode) .gooey-brand {
+  color: #0A3D35 !important;
+}
+
+body:not(.dark-mode) .gooey-btn-theme {
+  color: #ffd700 !important;
+  background: rgba(192, 192, 192, 0.1) !important;
+  border-color: rgba(192, 192, 192, 0.3) !important;
+}
+
+body:not(.dark-mode) .gooey-btn-auth-light {
+  color: #0A3D35 !important;
+  border-color: rgba(10, 61, 53, 0.3) !important;
+  background: rgba(10, 61, 53, 0.08) !important;
+}
+
+body:not(.dark-mode) .gooey-btn-auth-dark {
+  color: white !important;
+  background: rgba(10, 61, 53, 0.6) !important;
+  border-color: rgba(10, 61, 53, 0.7) !important;
+}
+
+body:not(.dark-mode) .gooey-lang-select {
+  color: #0A3D35 !important;
+  background: rgba(10, 61, 53, 0.08) !important;
+  border-color: rgba(10, 61, 53, 0.2) !important;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .gooey-navbar {
+    height: auto;
+    padding: 4px 4px;
+    gap: 1px;
+    width: 100%;
+    max-width: 100%;
+    left: 0;
+    right: 0;
+    transform: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+    box-sizing: border-box;
+    border-radius: 0;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+  }
+
+  .gooey-brand {
+    display: none !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .gooey-brand-icon {
+    display: none !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .gooey-nav-center {
+    padding: 0;
+    gap: 2px;
+    min-width: fit-content;
+  }
+
+  .gooey-nav-link {
+    font-size: 7px;
+    padding: 0.15em 0.25em;
+    min-width: fit-content;
+    white-space: nowrap;
+  }
+
+  .gooey-brand-icon {
+    width: 20px;
+    height: 20px;
+    display: none;
+  }
+
+  .gooey-brand-icon img {
+    width: 12px;
+    height: 12px;
+  }
+
+  .gooey-btn-theme {
+    padding: 3px 4px;
+    font-size: 8px;
+    flex-shrink: 0;
+  }
+
+  .gooey-btn-auth {
+    padding: 3px 4px;
+    font-size: 7px;
+    letter-spacing: 0;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .gooey-lang-select {
+    padding: 3px 4px;
+    font-size: 8px;
+    flex-shrink: 0;
+  }
+
+  .gooey-nav-right {
+    gap: 2px;
+    flex-shrink: 0;
+  }
+}
+</style>
+
+<nav class="gooey-navbar" id="gooeyNav">
+    <!-- Logo/Brand -->
+    <a href="{{ path('app_home') }}" class="gooey-brand">
+        <div class="gooey-brand-icon">
+            <img src="{{ asset('images/logo.svg') }}" alt="Sirius-Solar">
+        </div>
+        <span>SIRIUS-SOLAR</span>
+    </a>
+
+    <!-- Navigation Links -->
+    <div class="gooey-nav-center" id="navCenter">
+        <a href="{{ path('app_home') }}" class="gooey-nav-link">Accueil</a>
+        <a href="{{ path('app_home') }}#avantages" class="gooey-nav-link">À propos</a>
+        <a href="{{ path('app_home') }}#services" class="gooey-nav-link">Services</a>
+        <a href="{{ path('app_blog') }}" class="gooey-nav-link">Gallery</a>
+        <a href="{{ path('app_home') }}#contact" class="gooey-nav-link">Contact</a>
+    </div>
+
+    <!-- Right Section -->
+    <div class="gooey-nav-right">
+        <!-- Language Selector -->
+        <div class="gooey-lang-selector">
+            <select id="languageSelect" class="gooey-lang-select" title="Select language">
+                <option value="fr" {% if app.request.locale == 'fr' %}selected{% endif %}>FR</option>
+                <option value="de" {% if app.request.locale == 'de' %}selected{% endif %}>DE</option>
+                <option value="it" {% if app.request.locale == 'it' %}selected{% endif %}>IT</option>
+                <option value="rm" {% if app.request.locale == 'rm' %}selected{% endif %}>RM</option>
+            </select>
+        </div>
+
+        <!-- Theme Toggle Button -->
+        <button id="themeToggle" class="gooey-btn-theme" title="Toggle dark/light mode">
+            <span class="theme-icon">🌙</span>
+        </button>
+
+        <!-- Auth Buttons -->
+        {% if app.user %}
+            <a href="{{ path('app_admin_dashboard') }}" class="gooey-btn-auth gooey-btn-auth-dark">
+                👤 Admin
+            </a>
+            <a href="{{ path('app_logout') }}" class="gooey-btn-auth gooey-btn-auth-light">
+                Déconnexion
+            </a>
+        {% else %}
+            <a href="{{ path('app_login') }}" class="gooey-btn-auth gooey-btn-auth-light">
+                S'identifier
+            </a>
+            <a href="{{ path('app_register') }}" class="gooey-btn-auth gooey-btn-auth-dark">
+                Créer un compte
+            </a>
+        {% endif %}
+    </div>
+
+    <!-- Effect Elements -->
+    <div class="effect filter" id="effectFilter"></div>
+    <div class="effect text" id="effectText"></div>
+</nav>
+
+<script>
+const nav = document.querySelector('.gooey-navbar');
+const effectEl = document.getElementById('effectFilter');
+const textEl = document.getElementById('effectText');
+const navCenter = document.getElementById('navCenter');
+const hamburger = document.getElementById('gooeyHamburger');
+const mobileMenu = document.getElementById('gooeyMobileMenu');
+
+let animationTime = 600;
+let pCount = 15;
+const maxRotate = 75;
+const colors = [1, 2, 3, 1, 2, 3, 1, 4];
+const timeVariance = 300;
+
+function noise(n = 1) {
+    return n / 2 - Math.random() * n;
+}
+
+function getXY(distance, pointIndex, totalPoints) {
+    const x = distance * Math.cos(((360 + noise(8)) / totalPoints * pointIndex) * Math.PI / 180);
+    const y = distance * Math.sin(((360 + noise(8)) / totalPoints * pointIndex) * Math.PI / 180);
+    return [x, y];
+}
+
+function makeParticles($el) {
+    const d = [90, 10];
+    const r = 100;
+    const bubbleTime = animationTime * 2 + timeVariance;
+    $el.style.setProperty('--time', bubbleTime + 'ms');
+
+    for (let i = 0; i < pCount; i++) {
+        const t = animationTime * 2 + noise(timeVariance * 2);
+        const p = createParticle(i, t, d, r);
+        const $place = $el;
+
+        if ($place) {
+            $place.classList.remove('active');
+            setTimeout(() => {
+                const $particle = document.createElement('span');
+                const $point = document.createElement('span');
+                $particle.classList.add('particle');
+                $particle.style = `
+                  --start-x: ${p.start[0]}px;
+                  --start-y: ${p.start[1]}px;
+                  --end-x: ${p.end[0]}px;
+                  --end-y: ${p.end[1]}px;
+                  --time: ${p.time}ms;
+                  --scale: ${p.scale};
+                  --color: var(--color-${p.color}, white);
+                  --rotate: ${p.rotate}deg;
+                `;
+                $point.classList.add('point');
+                $particle.append($point);
+                $place.append($particle);
+
+                requestAnimationFrame(() => {
+                    $place.classList.add('active');
+                });
+
+                setTimeout(() => {
+                    try {
+                        $place.removeChild($particle);
+                    } catch(e) {}
+                }, t);
+            }, 30);
+        }
+    }
+}
+
+function createParticle(i, t, d, r) {
+    let rotate = noise(r / 10);
+    let minDistance = d[0];
+    let maxDistance = d[1];
+    return {
+        start: getXY(minDistance, pCount - i, pCount),
+        end: getXY(maxDistance + noise(7), pCount - i, pCount),
+        time: t,
+        scale: 1 + noise(0.2),
+        color: colors[Math.floor(Math.random() * colors.length)],
+        rotate: rotate > 0 ? (rotate + r / 20) * 10 : (rotate - r / 20) * 10
+    };
+}
+
+function updateEffectPosition(element) {
+    const pos = element.getBoundingClientRect();
+    const styles = {
+        left: `${pos.x}px`,
+        top: `${pos.y}px`,
+        width: `${pos.width}px`,
+        height: `${pos.height}px`
+    };
+
+    Object.assign(effectEl.style, styles);
+    Object.assign(textEl.style, styles);
+    textEl.classList.remove('hidden');
+    textEl.innerText = element.innerText;
+}
+
+const activate = ($el) => {
+    updateEffectPosition($el);
+
+    if (!$el.classList.contains('active')) {
+        navCenter.querySelectorAll('.gooey-nav-link').forEach(($el) => {
+            $el.classList.remove('active');
+        });
+        effectEl.querySelectorAll('.particle').forEach(($el) => {
+            try { effectEl.removeChild($el); } catch(e) {}
+        });
+        $el.classList.add('active');
+        textEl.classList.remove('active');
+
+        setTimeout(() => {
+            textEl.classList.add('active');
+        }, 100);
+
+        makeParticles(effectEl);
+    }
+};
+
+// Navigation links - adapted for gooey-navbar
+navCenter.querySelectorAll('.gooey-nav-link').forEach(($el) => {
+    $el.addEventListener('click', (e) => {
+        activate($el);
+    });
+
+    $el.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            activate($el);
+        }
+    });
+});
+
+// Theme Toggle
+const themeToggle = document.getElementById('themeToggle');
+const html = document.documentElement;
+const themeIcon = themeToggle.querySelector('.theme-icon');
+
+const currentTheme = localStorage.getItem('theme') || 'light';
+if (currentTheme === 'dark') {
+    document.body.classList.add('dark-mode');
+    html.setAttribute('data-theme', 'dark');
+    themeIcon.textContent = '☀️';
+}
+
+themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    if (document.body.classList.contains('dark-mode')) {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+        themeIcon.textContent = '☀️';
+    } else {
+        html.setAttribute('data-theme', 'light');
+        localStorage.setItem('theme', 'light');
+        themeIcon.textContent = '🌙';
+    }
+});
+
+// Initialize
+setTimeout(() => {
+    const firstLink = navCenter.querySelector('.gooey-nav-link');
+    if (firstLink) activate(firstLink);
+}, 200);
+
+// Resize Observer
+const resizeObserver = new ResizeObserver(() => {
+    const activeEl = navCenter.querySelector('.gooey-nav-link.active');
+    if (activeEl) {
+        updateEffectPosition(activeEl);
+    }
+});
+
+resizeObserver.observe(document.body);
+</script>

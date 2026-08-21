@@ -1,0 +1,70 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Notifications{% endblock %}
+{% block page_title %}🔔 Notifications{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card">
+        <h2 style="margin-bottom: 20px;">Filtres</h2>
+        <form method="GET" style="display: flex; gap: 10px;">
+            <select name="type" style="flex: 1;">
+                <option value="">Tous les types</option>
+                <option value="confirmation">Confirmation</option>
+                <option value="refusal">Refus</option>
+                <option value="reschedule">Report</option>
+                <option value="cancellation">Annulation</option>
+                <option value="completion">Réalisation</option>
+                <option value="reminder">Rappel</option>
+                <option value="new_request">Nouvelle demande</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Filtrer</button>
+        </form>
+    </div>
+
+    {% if notifications %}
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 30px;"></th>
+                    <th>Titre</th>
+                    <th>Message</th>
+                    <th>Type</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for notification in notifications %}
+                    <tr style="background: {% if not notification.lue %}#f8f9fa{% endif %};">
+                        <td>
+                            {% if not notification.lue %}
+                                <span style="display: inline-block; width: 8px; height: 8px; background: #007bff; border-radius: 50%;"></span>
+                            {% endif %}
+                        </td>
+                        <td><strong>{{ notification.titre }}</strong></td>
+                        <td>{{ notification.message }}</td>
+                        <td>
+                            <span class="status-badge" style="background: #e7f3ff; color: #004085;">
+                                {{ notification.type }}
+                            </span>
+                        </td>
+                        <td>{{ notification.dateCreation.format('d/m/Y H:i') }}</td>
+                        <td>
+                            {% if not notification.lue %}
+                                <form method="POST" action="{{ path('admin_notification_read', {id: notification.id}) }}" style="display: inline;">
+                                    <button type="submit" class="btn btn-sm" style="padding: 5px 10px; background: #28a745; color: white; border: none; cursor: pointer; border-radius: 4px;">Marquer lue</button>
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div style="text-align: center; padding: 40px; color: #999;">
+            <p style="font-size: 18px;">Aucune notification</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

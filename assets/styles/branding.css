@@ -1,0 +1,238 @@
+/* === BRANDING & IDENTITÉ VISUELLE === */
+/* Alignement avec le design des cartes de visite Sirius-Solar */
+
+/* Logo Refresh - Utiliser le nouveau style */
+.logo {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: -0.02em;
+}
+
+/* Tagline de la marque */
+.brand-tagline {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--jaune-solaire);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-md);
+}
+
+/* Section Bénéfices (4 piliers comme sur les cartes) */
+.benefits-section {
+  background: linear-gradient(135deg, var(--bleu-nuit) 0%, var(--bleu-panneau) 100%);
+  color: var(--blanc);
+  padding: var(--space-xl);
+  border-radius: var(--radius-xl);
+  margin: var(--space-3xl) 0;
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--space-lg);
+  margin-bottom: var(--space-lg);
+}
+
+.benefit-item {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.benefit-icon {
+  width: 60px;
+  height: 60px;
+  background: rgba(212, 168, 66, 0.15);
+  border: 2px solid var(--jaune-solaire);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.benefit-title {
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1.3;
+}
+
+.benefit-description {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.4;
+}
+
+/* Dividers entre les bénéfices */
+.benefits-grid .benefit-item:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: -var(--space-md);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 40px;
+  background: rgba(212, 168, 66, 0.3);
+}
+
+/* Hero avec tagline amélioré */
+.hero-tagline {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--jaune-solaire);
+  margin-top: var(--space-md);
+  font-weight: 500;
+}
+
+/* Contact Info Style (comme sur les cartes) */
+.contact-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+  padding: var(--space-md);
+  background: rgba(212, 168, 66, 0.05);
+  border-left: 3px solid var(--jaune-solaire);
+  border-radius: var(--radius-md);
+}
+
+.contact-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--bleu-nuit);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--jaune-solaire);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.contact-details h4 {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--bleu-nuit);
+}
+
+.contact-details p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--gris-texte-leger);
+}
+
+/* Section spécialité (comme "SPÉCIALISTE DU NETTOYAGE") */
+.speciality-badge {
+  display: inline-block;
+  background: var(--jaune-solaire);
+  color: var(--bleu-nuit);
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: var(--space-md);
+}
+
+/* CTA Band amélioré */
+.cta-band {
+  background: linear-gradient(135deg, var(--bleu-nuit) 0%, var(--bleu-panneau) 100%);
+  color: var(--blanc);
+  border-radius: var(--radius-xl);
+  margin: 0 var(--padding-container);
+  padding: var(--space-xl) var(--space-lg);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  box-shadow: 0 10px 30px rgba(27, 77, 62, 0.3);
+}
+
+.cta-band h2 {
+  font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+  max-width: 480px;
+  margin: 0;
+}
+
+/* Divider Doré */
+.divider-gold {
+  height: 2px;
+  background: linear-gradient(90deg, var(--jaune-solaire), transparent);
+  margin: var(--space-md) 0;
+}
+
+/* Service Cards avec accent de couleur */
+.service-card {
+  border-top: 3px solid transparent;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.service-card:hover {
+  border-top-color: var(--jaune-solaire);
+}
+
+/* Accent Color pour titres */
+.accent-gold {
+  color: var(--jaune-solaire);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .benefits-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-md);
+  }
+
+  .benefit-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+  }
+
+  .benefit-title {
+    font-size: 0.8rem;
+  }
+
+  .cta-band {
+    flex-direction: column;
+    text-align: center;
+    padding: var(--space-lg) var(--space-md);
+  }
+
+  .cta-band h2 {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .benefits-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .benefits-section {
+    padding: var(--space-lg) var(--space-md);
+  }
+
+  .benefit-item::after {
+    display: none;
+  }
+
+  .contact-info {
+    flex-direction: column;
+    text-align: center;
+    border-left: none;
+    border-top: 3px solid var(--jaune-solaire);
+  }
+}

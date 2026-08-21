@@ -41,4 +41,16 @@ class HomeController extends AbstractController
             'avantages' => $avantages,
         ]);
     }
+
+    #[Route('/cartes-animees', name: 'app_cartes_animees')]
+    public function cartesAnimees(): Response
+    {
+        return $this->render('carte_animee.html.twig');
+    }
+
+    #[Route('/about', name: 'app_about')]
+    public function about(): Response
+    {
+        return $this->render('about/index.html.twig');
+    }
 }

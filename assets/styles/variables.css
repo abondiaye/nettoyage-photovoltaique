@@ -1,0 +1,61 @@
+:root {
+  /* Couleurs - Thème SyriusPro (inspiré des cartes de visite) */
+  --bleu-nuit: #0A3D35;           /* Vert très foncé (brand color) */
+  --bleu-panneau: #1B5548;        /* Vert moyen foncé */
+  --jaune-solaire: #D4A842;       /* Or/Jaune doré (brand color) */
+  --gris-verre: #F5F3EF;          /* Fond crème léger */
+  --blanc: #FFFFFF;
+  --texte: #1B4D3E;               /* Texte vert foncé */
+  --gris-clair: #F9F7F4;
+  --gris-bordure: #E8DDD6;        /* Bordure plus chaleureuse */
+  --gris-texte-leger: #8B7B6F;
+  --gris-texte: #3D4A47;
+  --rouge-erreur: #C0392B;
+  --rouge-leger: #EF4444;
+  --rouge-bg: #FEE2E2;
+  --vert-succes: #2D6B55;
+  --vert-bg: #E8F4EF;
+  --vert-bordure: #2D6B5533;
+
+  /* Typographie */
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
+  /* Espacements */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-base: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 80px;
+
+  /* Rayons de bordure */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --radius-xl: 14px;
+  --radius-full: 999px;
+
+  /* Ombres */
+  --shadow-sm: 0 2px 4px rgba(11, 31, 51, 0.05);
+  --shadow-md: 0 4px 8px rgba(11, 31, 51, 0.08);
+  --shadow-lg: 0 12px 32px rgba(11, 31, 51, 0.08);
+  --shadow-xl: 0 12px 32px rgba(11, 31, 51, 0.25);
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.3s ease;
+  --transition-slow: 0.5s ease;
+
+  /* Container */
+  --max-container: 1100px;
+  --padding-container: 24px;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --padding-container: 16px;
+  }
+}

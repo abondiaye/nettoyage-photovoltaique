@@ -1,0 +1,301 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Blog - Réalisations Sirius-Solar{% endblock %}
+
+{% block body %}
+
+<style>
+    .gooey-navbar { display: flex !important; visibility: visible !important; height: 80px !important; margin: 0 !important; padding: 0 40px !important; }
+    .circular-nav-container { display: none !important; visibility: hidden !important; height: 0 !important; width: 0 !important; }
+
+    .back-button-wrapper {
+        max-width: 1200px;
+        margin: 40px auto 0;
+        padding: 0 40px;
+    }
+
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        background: linear-gradient(135deg, rgba(10, 61, 53, 0.15), rgba(192, 192, 192, 0.15));
+        border: 2px solid rgba(192, 192, 192, 0.5);
+        color: rgba(192, 192, 192, 0.85);
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 13px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .back-btn:hover {
+        background: linear-gradient(135deg, rgba(10, 61, 53, 0.25), rgba(192, 192, 192, 0.25));
+        border-color: rgba(192, 192, 192, 0.7);
+        color: #ffd700;
+        transform: translateX(-3px);
+    }
+
+    .back-arrow {
+        font-size: 16px;
+        transition: transform 0.3s ease;
+    }
+
+    .back-btn:hover .back-arrow {
+        transform: translateX(-2px);
+    }
+
+    .blog-hero {
+        background: linear-gradient(135deg, #003d5c 0%, #1a6b8f 40%, #2a9cc0 60%, #3d7ba0 100%);
+        padding: 80px 40px;
+        text-align: center;
+        color: white;
+    }
+
+    .blog-hero h1 {
+        font-size: 48px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .blog-hero p {
+        font-size: 18px;
+        opacity: 0.9;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .blog-container {
+        max-width: 1200px;
+        margin: 60px auto;
+        padding: 0 40px;
+    }
+
+    .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 40px;
+        margin-bottom: 60px;
+    }
+
+    .project-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+    }
+
+    .project-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 60px rgba(160, 160, 160, 0.3);
+    }
+
+    .project-images {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        height: 250px;
+        background: #f0f0f0;
+        position: relative;
+    }
+
+    .project-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: relative;
+    }
+
+    .image-label {
+        position: absolute;
+        top: 10px;
+        font-size: 12px;
+        font-weight: 600;
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        z-index: 2;
+    }
+
+    .before-label {
+        left: 5px;
+    }
+
+    .after-label {
+        right: 5px;
+    }
+
+    .project-content {
+        padding: 30px;
+    }
+
+    .project-title {
+        font-size: 22px;
+        font-weight: 700;
+        color: #0A3D35;
+        margin-bottom: 10px;
+        font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .project-description {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 15px;
+        line-height: 1.6;
+    }
+
+    .project-meta {
+        display: flex;
+        gap: 20px;
+        font-size: 13px;
+        color: #999;
+        margin-bottom: 20px;
+        border-top: 1px solid #eee;
+        padding-top: 15px;
+    }
+
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .project-badge {
+        display: inline-block;
+        background: linear-gradient(135deg, #0A3D35 0%, #2D6B55 100%);
+        color: #a8a8a8;
+        padding: 8px 16px;
+        border-radius: 50px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 40px;
+        color: #999;
+    }
+
+    .empty-state-icon {
+        font-size: 60px;
+        margin-bottom: 20px;
+    }
+
+    .empty-state h3 {
+        font-size: 24px;
+        color: #0A3D35;
+        margin-bottom: 10px;
+    }
+
+    /* Dark mode */
+    body.dark-mode .project-card {
+        background: #1a1a1a;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    body.dark-mode .project-title {
+        color: #a8a8a8;
+    }
+
+    body.dark-mode .project-description {
+        color: #ccc;
+    }
+
+    body.dark-mode .project-meta {
+        color: #999;
+        border-top-color: #333;
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+        .blog-hero {
+            padding: 50px 20px;
+        }
+
+        .blog-hero h1 {
+            font-size: 32px;
+        }
+
+        .blog-container {
+            padding: 0 20px;
+        }
+
+        .projects-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .project-content {
+            padding: 20px;
+        }
+    }
+</style>
+
+<!-- Back Button -->
+<div class="back-button-wrapper">
+    <a href="{{ path('app_home') }}" class="back-btn">
+        <span class="back-arrow">←</span>
+        Retour à l'accueil
+    </a>
+</div>
+
+<section class="blog-hero">
+    <h1>🏆 Nos Réalisations</h1>
+    <p>Découvrez nos derniers projets de nettoyage de panneaux solaires avec résultats avant/après</p>
+</section>
+
+<section class="blog-container">
+    {% if app.user and is_granted('ROLE_ADMIN') %}
+    <div style="text-align: center; margin-bottom: 40px;">
+        <a href="{{ path('app_admin_blog_create') }}" class="btn" style="background: linear-gradient(135deg, #0A3D35 0%, #2D6B55 100%); color: #a8a8a8; padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: 600; display: inline-block;">
+            ➕ Ajouter une Réalisation
+        </a>
+    </div>
+    {% endif %}
+
+    {% if projects|length > 0 %}
+        <div class="projects-grid">
+            {% for project in projects %}
+            <div class="project-card">
+                <div class="project-images">
+                    <div style="position: relative;">
+                        <img src="{{ project.image_before }}" alt="Avant" class="project-image">
+                        <span class="image-label before-label">AVANT</span>
+                    </div>
+                    <div style="position: relative;">
+                        <img src="{{ project.image_after }}" alt="Après" class="project-image">
+                        <span class="image-label after-label">APRÈS</span>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">{{ project.title }}</h3>
+                    <p class="project-description">{{ project.description }}</p>
+
+                    <div class="project-meta">
+                        <div class="meta-item">
+                            📍 {{ project.location }}
+                        </div>
+                        <div class="meta-item">
+                            📅 {{ project.date|date('d/m/Y') }}
+                        </div>
+                    </div>
+
+                    <span class="project-badge">✨ +25% Rendement</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-state-icon">📸</div>
+            <h3>Aucune réalisation</h3>
+            <p>Les réalisations seront bientôt disponibles...</p>
+        </div>
+    {% endif %}
+</section>
+
+{% endblock %}

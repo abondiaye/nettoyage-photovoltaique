@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}☀️ SOLARCLEAN ADMIN{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0A3D35 0%, #2D6B55 50%, #1a5a4a 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            padding-top: 0 !important;
+            margin-top: 0 !important;
+        }
+
+        .admin-wrapper {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .admin-sidebar {
+            background: rgba(10, 61, 53, 0.95);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 25px 0;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 260px;
+            height: 100vh;
+            overflow-y: auto;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            box-shadow: 2px 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .sidebar-header {
+            padding: 25px;
+            border-bottom: 1px solid rgba(45, 107, 85, 0.5);
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.05) 0%, rgba(45, 107, 85, 0.1) 100%);
+        }
+
+        .sidebar-logo {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffd700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar-logo-subtitle {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu > li {
+            margin-bottom: 2px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 13px 18px;
+            color: rgba(255, 255, 255, 0.65);
+            text-decoration: none;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 13px;
+            border-left: 3px solid transparent;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .menu-item:hover {
+            background: rgba(45, 107, 85, 0.4);
+            color: rgba(255, 255, 255, 0.9);
+            border-left-color: #ffd700;
+        }
+
+        .menu-item.active {
+            background: linear-gradient(90deg, rgba(45, 107, 85, 0.6) 0%, rgba(45, 107, 85, 0.2) 100%);
+            color: #ffd700;
+            border-left-color: #ffd700;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-label {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            padding: 15px 18px 8px;
+            font-weight: 700;
+            margin-top: 18px;
+            letter-spacing: 1px;
+        }
+
+        .submenu {
+            list-style: none;
+            display: none;
+            background: rgba(0, 0, 0, 0.15);
+        }
+
+        .submenu.active {
+            display: block;
+        }
+
+        .submenu li {
+            margin-bottom: 0;
+        }
+
+        .submenu-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px 10px 40px;
+            color: rgba(255, 255, 255, 0.55);
+            text-decoration: none;
+            font-size: 12px;
+            border-left: 2px solid transparent;
+            transition: all 0.25s;
+            font-weight: 500;
+        }
+
+        .submenu-item:hover,
+        .submenu-item.active {
+            color: rgba(255, 255, 255, 0.9);
+            border-left-color: #ffd700;
+            background: rgba(45, 107, 85, 0.3);
+        }
+
+        /* Main Content */
+        .admin-main {
+            margin-left: 260px;
+            padding: 40px 45px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, transparent 100%);
+            width: calc(100% - 260px);
+            box-sizing: border-box;
+        }
+
+        .page-header {
+            margin-bottom: 40px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .page-subtitle {
+            color: rgba(255, 255, 255, 0.65);
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        .content-area {
+            color: white;
+        }
+
+        /* Scrollbar */
+        .admin-sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .admin-sidebar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .admin-sidebar::-webkit-scrollbar-thumb {
+            background: rgba(45, 107, 85, 0.5);
+            border-radius: 3px;
+        }
+
+        .admin-sidebar::-webkit-scrollbar-thumb:hover {
+            background: rgba(45, 107, 85, 0.7);
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .admin-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-sidebar {
+                position: fixed;
+                left: -260px;
+                transition: left 0.3s;
+                width: 260px;
+            }
+
+            .admin-sidebar.active {
+                left: 0;
+            }
+
+            .admin-main {
+                margin-left: 0;
+                padding: 25px 20px;
+            }
+
+            .page-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    ☀️ SOLARCLEAN
+                </div>
+                <div style="font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 5px;">Admin Panel</div>
+            </div>
+
+            <ul class="sidebar-menu">
+                <!-- Dashboard -->
+                <li>
+                    <a href="{{ path('app_admin_panel_dashboard') }}" class="menu-item {% if current_page == 'dashboard' %}active{% endif %}">
+                        📊 Dashboard
+                    </a>
+                </li>
+
+                <!-- Calendrier -->
+                <li>
+                    <a href="javascript:void(0)" class="menu-item" onclick="toggleSubmenu(event, 'calendrier')">
+                        📅 Calendrier
+                    </a>
+                    <ul class="submenu {% if current_page == 'calendrier' %}active{% endif %}" id="calendrier-submenu">
+                        <li><a href="{{ path('app_admin_panel_calendar', {view: 'today'}) }}" class="submenu-item">Aujourd'hui</a></li>
+                        <li><a href="{{ path('app_admin_panel_calendar', {view: 'week'}) }}" class="submenu-item">Semaine</a></li>
+                        <li><a href="{{ path('app_admin_panel_calendar', {view: 'month'}) }}" class="submenu-item">Mois</a></li>
+                    </ul>
+                </li>
+
+                <!-- Réservations -->
+                <li>
+                    <a href="javascript:void(0)" class="menu-item" onclick="toggleSubmenu(event, 'reservations')">
+                        📋 Réservations
+                    </a>
+                    <ul class="submenu {% if current_page == 'reservations' %}active{% endif %}" id="reservations-submenu">
+                        <li><a href="{{ path('app_admin_panel_reservations', {status: 'pending'}) }}" class="submenu-item">En attente</a></li>
+                        <li><a href="{{ path('app_admin_panel_reservations', {status: 'confirmed'}) }}" class="submenu-item">Confirmées</a></li>
+                        <li><a href="{{ path('app_admin_panel_reservations', {status: 'in_progress'}) }}" class="submenu-item">En cours</a></li>
+                        <li><a href="{{ path('app_admin_panel_reservations', {status: 'completed'}) }}" class="submenu-item">Terminées</a></li>
+                        <li><a href="{{ path('app_admin_panel_reservations', {status: 'cancelled'}) }}" class="submenu-item">Annulées</a></li>
+                    </ul>
+                </li>
+
+                <!-- Clients -->
+                <li>
+                    <a href="{{ path('app_admin_panel_clients') }}" class="menu-item {% if current_page == 'clients' %}active{% endif %}">
+                        👥 Clients
+                    </a>
+                </li>
+
+                <!-- Techniciens -->
+                <li>
+                    <a href="{{ path('app_admin_panel_technicians') }}" class="menu-item {% if current_page == 'technicians' %}active{% endif %}">
+                        👷 Techniciens
+                    </a>
+                </li>
+
+                <!-- Prestations -->
+                <li>
+                    <a href="{{ path('app_admin_panel_services') }}" class="menu-item {% if current_page == 'services' %}active{% endif %}">
+                        🧽 Prestations
+                    </a>
+                </li>
+
+                <!-- Paiements -->
+                <li>
+                    <a href="javascript:void(0)" class="menu-item" onclick="toggleSubmenu(event, 'payments')">
+                        💳 Paiements
+                    </a>
+                    <ul class="submenu {% if current_page == 'payments' %}active{% endif %}" id="payments-submenu">
+                        <li><a href="{{ path('app_admin_panel_payments') }}" class="submenu-item">Paiements</a></li>
+                        <li><a href="{{ path('app_admin_panel_invoices') }}" class="submenu-item">Factures</a></li>
+                    </ul>
+                </li>
+
+                <!-- Interventions -->
+                <li>
+                    <a href="javascript:void(0)" class="menu-item" onclick="toggleSubmenu(event, 'interventions')">
+                        📸 Interventions
+                    </a>
+                    <ul class="submenu {% if current_page == 'interventions' %}active{% endif %}" id="interventions-submenu">
+                        <li><a href="{{ path('app_admin_panel_interventions') }}" class="submenu-item">Photos avant/après</a></li>
+                        <li><a href="{{ path('app_admin_panel_reports') }}" class="submenu-item">Rapports</a></li>
+                    </ul>
+                </li>
+
+                <!-- Avis Clients -->
+                <li>
+                    <a href="{{ path('app_admin_panel_reviews') }}" class="menu-item {% if current_page == 'reviews' %}active{% endif %}">
+                        ⭐ Avis clients
+                    </a>
+                </li>
+
+                <!-- Zones -->
+                <li>
+                    <a href="{{ path('app_admin_panel_zones') }}" class="menu-item {% if current_page == 'zones' %}active{% endif %}">
+                        📍 Zones d'intervention
+                    </a>
+                </li>
+
+                <!-- Statistiques -->
+                <li>
+                    <a href="{{ path('app_admin_panel_statistics') }}" class="menu-item {% if current_page == 'statistics' %}active{% endif %}">
+                        📈 Statistiques
+                    </a>
+                </li>
+
+                <!-- Notifications -->
+                <li>
+                    <a href="{{ path('app_admin_panel_notifications') }}" class="menu-item {% if current_page == 'notifications' %}active{% endif %}">
+                        🔔 Notifications
+                    </a>
+                </li>
+
+                <!-- Paramètres -->
+                <li style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+                    <a href="{{ path('app_admin_panel_settings') }}" class="menu-item {% if current_page == 'settings' %}active{% endif %}">
+                        ⚙️ Paramètres
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ path('app_logout') }}" class="menu-item" style="color: #ff6b6b; margin-top: 10px;">
+                        🚪 Déconnexion
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div class="page-header">
+                <h1 class="page-title">{% block page_title %}{% endblock %}</h1>
+                <p class="page-subtitle">{% block page_subtitle %}{% endblock %}</p>
+            </div>
+
+            <div class="content-area">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function toggleSubmenu(event, submenuId) {
+            event.preventDefault();
+            const submenu = document.getElementById(submenuId + '-submenu');
+            const isActive = submenu.classList.contains('active');
+
+            // Close all submenus
+            document.querySelectorAll('.submenu').forEach(m => {
+                m.classList.remove('active');
+            });
+
+            // Open clicked submenu if it wasn't active
+            if (!isActive) {
+                submenu.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>

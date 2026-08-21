@@ -37,3 +37,7 @@
     </div>
 </div>
 {% endblock %}
+
+{% block page_nav_prev %}
+    <a href="{{ path('app_admin_members') }}" class="page-nav-link">← {{ 'pagenav.admin_members'|trans }}</a>
+{% endblock %}

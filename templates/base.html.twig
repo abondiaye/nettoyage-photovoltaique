@@ -1,230 +1,768 @@
 <!DOCTYPE html>
-<html lang="fr">
+{% set routeName = app.request.attributes.get('_route')|default('NOROUTE') %}
+<html lang="fr" data-x="{{ routeName }}" {% if routeName|slice(0, 6) == 'admin_' %}class="is-admin"{% endif %}>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}SyriusPro — Nettoyage de panneaux photovoltaïques{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Sirius-Solar - Nettoyage & Entretien professionnel de panneaux photovoltaïques. Retrouvez jusqu'à 25% de rendement perdu. Eau osmosée, zéro produit chimique. Devis gratuit en 48h.">
+    <meta name="keywords" content="nettoyage panneaux solaires, Sirius-Solar, panneaux photovoltaïques, maintenance solar, eau osmosée">
+    <meta name="author" content="Sirius-Solar">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Sirius-Solar — Nettoyage & Entretien de Panneaux Photovoltaïques">
+    <meta property="og:description" content="Retrouvez jusqu'à 25% de rendement perdu. Eau osmosée, zéro produit chimique. Devis gratuit en 48h.">
+    <meta property="og:image" content="{{ asset('images/panneaux-solaires-sous-la-pluie.png') }}">
+
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#0A3D35">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <title>{% block title %}Sirius-Solar — Nettoyage & Entretien de Panneaux Photovoltaïques{% endblock %}</title>
+
+    <link rel="icon" href="{{ asset('images/panneaux-solaires-sous-la-pluie.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-     <link rel="icon" href="{{ asset('images/panneaux-solaires-sous-la-pluie.png') }}">{% block stylesheets %}
-    <style>
-        :root {
-            --bleu-nuit: #0B1F33;
-            --bleu-panneau: #1E5F8C;
-            --jaune-solaire: #F4B731;
-            --gris-verre: #F0F4F7;
-            --blanc: #FFFFFF;
-            --texte: #1A2733;
-        }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+        {% set currentRoute = app.request.attributes.get('_route')|default('') %}
+        {% if currentRoute|slice(0, 6) == 'admin_' or app.request.pathInfo|default('')|slice(0, 6) == '/admin' %}
+        <style>
+            /* Hide navbar and circular nav by DEFAULT (on ALL pages) */
+            .gooey-navbar { display: none !important; visibility: hidden !important; height: 0 !important; margin: 0 !important; padding: 0 !important; }
+            .circular-nav-container { display: none !important; visibility: hidden !important; height: 0 !important; width: 0 !important; margin: 0 !important; padding: 0 !important; }
 
-        html { scroll-behavior: smooth; }
+            html footer {
+                display: none !important;
+                visibility: hidden !important;
+                height: 0 !important;
+            }
+        </style>
+        {% endif %}
+        <style>
+            /* ===== RESET & VARIABLES ===== */
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            color: var(--texte);
-            background: var(--blanc);
-            line-height: 1.6;
-        }
+            :root {
+                --vert-fonce: #0A3D35;
+                --vert-clair: #2D6B55;
+                --dore: #a8a8a8;
+                --dore-clair: #e8e8e8;
+                --blanc: #FFFFFF;
+                --noir: #121212;
+                --gris-clair: #F0F4F8;
+                --gris-moyen: #888888;
+            }
 
-        h1, h2, h3, .display {
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 700;
-            letter-spacing: -0.01em;
-        }
+            html {
+                scroll-behavior: smooth;
+            }
 
-        a { color: inherit; }
+            html, body {
+                height: 100%;
+                font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+                background: white;
+                color: #333;
+                padding-top: 80px;
+            }
 
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
+            html.is-admin, html.is-admin body {
+                padding-top: 0 !important;
+                margin-top: 0 !important;
+            }
 
-        /* Header */
-        header.site {
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            background: var(--bleu-nuit);
-            color: var(--blanc);
-        }
+            main {
+                padding-top: 0;
+            }
 
-        .nav {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 18px 24px;           
-            max-width: 1100px;   
-            margin: 0 auto;
-        }
+            .nav-brand:hover {
+                transform: scale(1.03);
+                color: #c0c0c0;
+            }
 
-        .logo {
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 700;
-            font-size: 1.25rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            text-decoration: none;
-            color: var(--blanc);
-        }
+            /* ===== NAVBAR STYLES MOVED TO GOOEY-NAVBAR COMPONENT ===== */
+            /* All navbar CSS is now in templates/components/gooey-navbar.html.twig */
 
-        .logo-mark {
-            display: inline-grid;
-            grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: repeat(2, 1fr);
-            gap: 2px;
-            width: 22px;
-            height: 22px;
-        }
-        .logo-mark span {
-            background: var(--jaune-solaire);
-            border-radius: 2px;
-        }
-        .logo-mark span:nth-child(2),
-        .logo-mark span:nth-child(3) { background: var(--bleu-panneau); }
+            /* Dark Mode */
+            body.dark-mode {
+                background: #0f0f0f !important;
+                color: #e8e8e8;
+            }
 
-        .nav-links {
-            display: flex;
-            gap: 28px;
-            font-size: 0.95rem;
-            font-weight: 500;
-        }
-        .nav-links a {
-            text-decoration: none;
-            color: rgba(255,255,255,0.85);
-            transition: color 0.15s ease;
-        }
-        .nav-links a:hover { color: var(--jaune-solaire); }
+            body.dark-mode main {
+                background: #0f0f0f !important;
+                color: #e8e8e8;
+            }
 
-        .btn {
-            display: inline-block;
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 600;
-            text-decoration: none;
-            padding: 12px 24px;
-            border-radius: 6px;
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
-        }
-        .btn-primary {
-            background: var(--jaune-solaire);
-            color: var(--bleu-nuit);
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(244,183,49,0.35);
-        }
-        .btn-outline {
-            border: 1px solid rgba(255,255,255,0.4);
-            color: var(--blanc);
-        }
-        .btn-outline:hover { border-color: var(--jaune-solaire); color: var(--jaune-solaire); }
-        .btn-secondary { background: var(--bleu-panneau); color: var(--blanc); }
-        .btn-secondary:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(30,95,140,0.35); }
-        .btn-success { background: #16a34a; color: var(--blanc); }
-        .btn-success:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(22,163,74,0.35); }
+            body.dark-mode * {
+                border-color: inherit;
+            }
 
-        /* Footer */
-        footer.site {
-            background: var(--bleu-nuit);
-            color: rgba(255,255,255,0.7);
-            margin-top: 80px;
-        }
-        footer.site .container {
-            padding: 48px 24px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 32px;
-            font-size: 0.9rem;
-        }
-        footer.site h4 {
-            font-family: 'Space Grotesk', sans-serif;
-            color: var(--blanc);
-            margin-bottom: 12px;
-            font-size: 1rem;
-        }
-        footer.site a { text-decoration: none; color: inherit; }
-        footer.site a:hover { color: var(--jaune-solaire); }
-        .footer-bottom {
-            text-align: center;
-            font-size: 0.8rem;
-            padding: 16px 0 32px;
-            color: rgba(255,255,255,0.4);
-        }
+            body.dark-mode a {
+                color: var(--dore);
+            }
 
-        @media (max-width: 720px) {
-            .nav-links { display: none; }
-        }
-    </style>
+            body.dark-mode a:hover {
+                color: var(--dore-clair);
+            }
+
+            body.dark-mode h1, body.dark-mode h2, body.dark-mode h3,
+            body.dark-mode h4, body.dark-mode h5, body.dark-mode h6 {
+                color: #f5f5f5 !important;
+            }
+
+            body.dark-mode p {
+                color: #e8e8e8 !important;
+            }
+
+            body.dark-mode span {
+                color: #e8e8e8 !important;
+            }
+
+            body.dark-mode div {
+                background-color: inherit;
+            }
+
+            body.dark-mode section {
+                background: rgba(255, 255, 255, 0.02) !important;
+                color: #e8e8e8 !important;
+            }
+
+            body.dark-mode article {
+                background: rgba(255, 255, 255, 0.02) !important;
+                color: #e8e8e8 !important;
+            }
+
+            body.dark-mode strong, body.dark-mode b {
+                color: #f5f5f5 !important;
+            }
+
+            body.dark-mode small {
+                color: #d0d0d0 !important;
+            }
+
+            body.dark-mode em, body.dark-mode i {
+                color: #e8e8e8 !important;
+            }
+
+            body.dark-mode .hero-card {
+                background: rgba(255, 255, 255, 0.08);
+                border-color: rgba(160, 160, 160, 0.3);
+            }
+
+            body.dark-mode .hero-title,
+            body.dark-mode .hero-subtitle {
+                color: #f5f5f5;
+            }
+
+            body.dark-mode .service-card {
+                background: rgba(255, 255, 255, 0.05);
+                border-color: rgba(160, 160, 160, 0.2);
+                color: #e8e8e8;
+            }
+
+            body.dark-mode .service-card:hover {
+                background: rgba(160, 160, 160, 0.08);
+            }
+
+            body.dark-mode .pricing-card {
+                background: #1a1a1a;
+                color: #e8e8e8;
+                border-color: rgba(160, 160, 160, 0.3);
+            }
+
+            body.dark-mode .pricing-card.featured {
+                background: rgba(160, 160, 160, 0.1);
+            }
+
+            body.dark-mode .pricing-card__title {
+                color: #f5f5f5;
+            }
+
+            body.dark-mode .pricing-head h2 {
+                color: var(--dore);
+            }
+
+            body.dark-mode .section-title {
+                color: #f5f5f5;
+            }
+
+            body.dark-mode .devis-header {
+                background: rgba(10, 61, 53, 0.9);
+                color: #f5f5f5;
+            }
+
+            body.dark-mode .devis-form-card {
+                background: rgba(255, 255, 255, 0.08);
+            }
+
+            body.dark-mode .form-group label {
+                color: #e8e8e8;
+            }
+
+            body.dark-mode .form-group input,
+            body.dark-mode .form-group select,
+            body.dark-mode .form-group textarea {
+                background: rgba(255, 255, 255, 0.08);
+                border-color: rgba(255, 255, 255, 0.2);
+                color: #e8e8e8;
+            }
+
+            body.dark-mode .form-group input::placeholder,
+            body.dark-mode .form-group textarea::placeholder {
+                color: rgba(255, 255, 255, 0.6);
+            }
+
+            body.dark-mode .form-group input:focus,
+            body.dark-mode .form-group select:focus,
+            body.dark-mode .form-group textarea:focus {
+                background: rgba(255, 255, 255, 0.12);
+                border-color: var(--dore);
+            }
+
+            body.dark-mode .btn-login {
+                background: rgba(255, 255, 255, 0.08);
+                border-color: rgba(255, 255, 255, 0.2);
+                color: #e8e8e8;
+            }
+
+            body.dark-mode .btn-login:hover {
+                background: rgba(255, 255, 255, 0.15);
+                border-color: var(--dore);
+                color: var(--dore);
+            }
+
+            body.dark-mode .btn-submit {
+                background: linear-gradient(135deg, var(--dore), var(--dore-clair));
+                color: #1a1a1a;
+            }
+
+            body.dark-mode .btn-reset {
+                background: transparent;
+                border-color: rgba(255, 255, 255, 0.3);
+                color: #e8e8e8;
+            }
+
+            body.dark-mode .btn-reset:hover {
+                background: rgba(255, 255, 255, 0.1);
+                border-color: #e8e8e8;
+            }
+
+            body.dark-mode .footer {
+                background: #0a0a0a;
+                border-top: 1px solid rgba(160, 160, 160, 0.3);
+                color: #b0b0b0;
+            }
+
+            body.dark-mode .footer-column h3 {
+                color: var(--dore);
+            }
+
+            body.dark-mode .services-section {
+                background: rgba(255, 255, 255, 0.02);
+            }
+
+            body.dark-mode .processus-section {
+                background: rgba(255, 255, 255, 0.02);
+            }
+
+            body.dark-mode .processus-title {
+                color: #f5f5f5 !important;
+            }
+
+            body.dark-mode .section-title {
+                color: #f5f5f5 !important;
+            }
+
+            body.dark-mode .carte-visite-section {
+                background: rgba(255, 255, 255, 0.02);
+            }
+
+            body.dark-mode .carte-visite-title {
+                color: #f5f5f5 !important;
+            }
+
+            body.dark-mode .advantages-section {
+                background: rgba(255, 255, 255, 0.02);
+            }
+
+            body.dark-mode .advantages-title {
+                color: #f5f5f5 !important;
+            }
+
+            body.dark-mode .advantage-card {
+                background: rgba(30, 30, 30, 0.9) !important;
+                border-color: rgba(160, 160, 160, 0.5) !important;
+                backdrop-filter: blur(20px) !important;
+            }
+
+            body.dark-mode .advantage-card h3 {
+                color: #f5f5f5 !important;
+            }
+
+            body.dark-mode .advantage-card p {
+                color: #d0d0d0 !important;
+            }
+
+            body.dark-mode .service-card {
+                background: rgba(30, 30, 30, 0.9) !important;
+                border-color: rgba(160, 160, 160, 0.5) !important;
+                backdrop-filter: blur(20px) !important;
+            }
+
+            body.dark-mode .service-card h3 {
+                color: #f5f5f5 !important;
+            }
+
+            body.dark-mode .service-card p {
+                color: #d0d0d0 !important;
+            }
+
+            body.dark-mode .cta-section {
+                background: linear-gradient(135deg, var(--vert-fonce) 0%, var(--vert-clair) 100%);
+            }
+
+            body.dark-mode .btn-cta {
+                background: linear-gradient(135deg, var(--dore), var(--dore-clair));
+                color: #1a1a1a;
+            }
+
+            body.dark-mode .btn-learn {
+                background: transparent;
+                border: 2px solid var(--dore);
+                color: var(--dore);
+            }
+
+            body.dark-mode .btn-learn:hover {
+                background: var(--dore);
+                color: #1a1a1a;
+            }
+
+            /* Additional Dark Mode Coverage */
+            body.dark-mode table {
+                background: #1a1a1a;
+                color: #e8e8e8;
+                border-color: rgba(160, 160, 160, 0.2);
+            }
+
+            body.dark-mode th, body.dark-mode td {
+                border-color: rgba(160, 160, 160, 0.2);
+                color: #e8e8e8;
+            }
+
+            body.dark-mode th {
+                background: rgba(160, 160, 160, 0.1);
+                color: #f5f5f5;
+            }
+
+            body.dark-mode ul, body.dark-mode ol {
+                color: #e8e8e8;
+            }
+
+            body.dark-mode li {
+                color: #e8e8e8;
+            }
+
+            body.dark-mode blockquote {
+                background: rgba(255, 255, 255, 0.05);
+                border-left-color: var(--dore);
+                color: #d0d0d0;
+            }
+
+            body.dark-mode code {
+                background: rgba(255, 255, 255, 0.08);
+                color: #e8e8e8;
+                border-color: rgba(160, 160, 160, 0.2);
+            }
+
+            body.dark-mode pre {
+                background: rgba(255, 255, 255, 0.05);
+                border-color: rgba(160, 160, 160, 0.2);
+                color: #e8e8e8;
+            }
+
+            body.dark-mode hr {
+                border-color: rgba(160, 160, 160, 0.2);
+            }
+
+            body.dark-mode img {
+                opacity: 0.9;
+            }
+
+            body.dark-mode button {
+                color: #e8e8e8;
+            }
+
+            body.dark-mode label {
+                color: #e8e8e8;
+            }
+
+            body.dark-mode .alert-success {
+                background: rgba(76, 175, 80, 0.15);
+                border-color: rgba(76, 175, 80, 0.4);
+                color: #90EE90;
+            }
+
+            body.dark-mode .alert-danger {
+                background: rgba(244, 67, 54, 0.15);
+                border-color: rgba(244, 67, 54, 0.4);
+                color: #ff6b6b;
+            }
+
+            body.dark-mode .alert-warning {
+                background: rgba(255, 193, 7, 0.15);
+                border-color: rgba(255, 193, 7, 0.4);
+                color: #ffc107;
+            }
+
+            body.dark-mode .alert-info {
+                background: rgba(33, 150, 243, 0.15);
+                border-color: rgba(33, 150, 243, 0.4);
+                color: #2196F3;
+            }
+
+            body.dark-mode .carousel-inner {
+                background: #1a1a1a;
+            }
+
+            body.dark-mode .modal-content {
+                background: #1a1a1a;
+                color: #e8e8e8;
+            }
+
+            body.dark-mode .modal-header {
+                background: rgba(160, 160, 160, 0.08);
+                border-color: rgba(160, 160, 160, 0.2);
+            }
+
+            body.dark-mode .modal-footer {
+                background: rgba(160, 160, 160, 0.05);
+                border-color: rgba(160, 160, 160, 0.2);
+            }
+
+            body.dark-mode .nav-menu-mobile {
+                background: rgba(15, 15, 15, 0.98);
+            }
+
+            body.dark-mode .hamburger-menu span {
+                background: #e8e8e8;
+            }
+
+            body.dark-mode .btn-theme .theme-icon {
+                display: inline;
+            }
+
+            .btn-theme .theme-icon.hidden {
+                display: none;
+            }
+
+            /* Comprehensive Dark Mode Coverage */
+            body.dark-mode .container {
+                background: transparent !important;
+            }
+
+            body.dark-mode .wrapper {
+                background: transparent !important;
+            }
+
+            body.dark-mode .content {
+                background: transparent !important;
+                color: #e8e8e8 !important;
+            }
+
+            body.dark-mode .text-white {
+                color: #e8e8e8 !important;
+            }
+
+            body.dark-mode .text-dark {
+                color: #e8e8e8 !important;
+            }
+
+            body.dark-mode .text-muted {
+                color: #a0a0a0 !important;
+            }
+
+            body.dark-mode .bg-white {
+                background: #1a1a1a !important;
+                color: #e8e8e8 !important;
+            }
+
+            body.dark-mode .bg-light {
+                background: #1f1f1f !important;
+                color: #e8e8e8 !important;
+            }
+
+            body.dark-mode .bg-dark {
+                background: #0f0f0f !important;
+                color: #e8e8e8 !important;
+            }
+
+            body.dark-mode input[type="text"],
+            body.dark-mode input[type="email"],
+            body.dark-mode input[type="password"],
+            body.dark-mode input[type="number"],
+            body.dark-mode input[type="date"],
+            body.dark-mode input[type="time"],
+            body.dark-mode input[type="tel"],
+            body.dark-mode select,
+            body.dark-mode textarea {
+                background: rgba(255, 255, 255, 0.08) !important;
+                border-color: rgba(255, 255, 255, 0.2) !important;
+                color: #e8e8e8 !important;
+            }
+
+            body.dark-mode input::placeholder,
+            body.dark-mode textarea::placeholder {
+                color: rgba(255, 255, 255, 0.5) !important;
+            }
+
+            body.dark-mode button:not(.btn-signup):not(.btn-cta):not(.btn-submit) {
+                background: rgba(255, 255, 255, 0.1) !important;
+                border-color: rgba(255, 255, 255, 0.2) !important;
+                color: #e8e8e8 !important;
+            }
+
+            body.dark-mode .btn-primary {
+                background: var(--dore) !important;
+                color: #0f0f0f !important;
+            }
+
+            body.dark-mode .btn-secondary {
+                background: rgba(255, 255, 255, 0.15) !important;
+                color: #e8e8e8 !important;
+            }
+
+            body.dark-mode .card {
+                background: rgba(30, 30, 30, 0.9) !important;
+                border-color: rgba(160, 160, 160, 0.3) !important;
+                color: #e8e8e8 !important;
+            }
+
+            body.dark-mode .card-title {
+                color: #f5f5f5 !important;
+            }
+
+            body.dark-mode .card-body {
+                color: #e8e8e8 !important;
+            }
+
+            body.dark-mode .row {
+                background: transparent !important;
+            }
+
+            body.dark-mode .col, body.dark-mode [class*="col-"] {
+                background: transparent !important;
+                color: #e8e8e8 !important;
+            }
+
+            body.dark-mode .text-center {
+                color: #e8e8e8 !important;
+            }
+
+            body.dark-mode .text-right {
+                color: #e8e8e8 !important;
+            }
+
+            body.dark-mode .text-left {
+                color: #e8e8e8 !important;
+            }
+
+            body.dark-mode .pt-5, body.dark-mode .py-5, body.dark-mode .p-5 {
+                background: transparent !important;
+            }
+
+            body.dark-mode .section {
+                background: rgba(255, 255, 255, 0.02) !important;
+                color: #e8e8e8 !important;
+            }
+
+            /* Responsive Mobile */
+            @media (max-width: 768px) {
+                .gooey-navbar {
+                    padding: 0 20px;
+                }
+
+                .nav-menu, .nav-buttons {
+                    display: none;
+                }
+
+                .hamburger-menu {
+                    display: flex;
+                }
+
+                .nav-brand {
+                    font-size: 18px;
+                }
+
+                .nav-brand-icon {
+                    font-size: 24px;
+                }
+            }
+
+            /* ===== GLOBAL ANIMATIONS ===== */
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes fadeInDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes fadeInLeft {
+                from {
+                    opacity: 0;
+                    transform: translateX(-30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+
+            @keyframes pulse {
+                0%, 100% {
+                    opacity: 1;
+                }
+                50% {
+                    opacity: 0.7;
+                }
+            }
+
+            /* ===== UTILITY CLASSES ===== */
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 40px;
+            }
+
+            @media (max-width: 768px) {
+                .container {
+                    padding: 0 20px;
+                }
+            }
+        </style>
     {% endblock %}
- <link rel="icon" href="{{ asset('images/panneaux-solaires-sous-la-pluie.png') }}"></head>
+</head>
 <body>
-    <header class="site">
-        <nav class="nav"> 
-            <a href="{{ path('app_home') }}" class="logo">
-                <span class="logo-mark">
-                    <span></span><span></span><span></span><span></span>
-                </span>
-                SyriusPro
-            </a>
-            <div class="nav-links">
-                <a href="{{ path('app_home') }}#services">Services</a>
-                <a href="{{ path('app_home') }}#avantages">Pourquoi nous</a>
-                <a href="{{ path('app_devis') }}">Demander un devis</a>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ path('app_admin_dashboard') }}">Admin</a>
-                {% elseif is_granted('ROLE_MEMBER') %}
-                    <a href="{{ path('app_member_dashboard') }}">Espace Membre</a>
-                {% endif %}
-                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <a href="{{ path('app_logout') }}">Déconnexion</a>
-                {% else %}
-                    <a href="{{ path('app_login') }}">Connexion</a>
-                {% endif %}
-            </div>
-            <a href="{{ path('app_devis') }}" class="btn btn-primary" style="font-size:0.9rem; padding:10px 20px;">Devis gratuit</a>
-        </nav>
-    </header>
 
+    <!-- Frosted Glass Gooey Gravity Navigation -->
+    {% include 'components/gooey-navbar.html.twig' %}
+
+    <!-- Main Content -->
     <main>
-        {% for label, messages in app.flashes %}
-            {% for message in messages %}
-                <div class="flash flash-{{ label }} container" style="margin-top:24px;">
-                    <div style="background:#E7F6EC; border:1px solid #34A85333; color:#1F7A3F; padding:16px 20px; border-radius:8px; font-weight:500;">
-                        {{ message }}
-                    </div>
-                </div>
-            {% endfor %}
-        {% endfor %}
-
         {% block body %}{% endblock %}
     </main>
 
-    <footer class="site">
-        <div class="container">
-            <div>
-                <h4>SyriusPro</h4>
-                <p>Nettoyage professionnel de panneaux photovoltaïques pour particuliers, agriculteurs et entreprises.</p>
-            </div>
-            <div>
-                <h4>Navigation</h4>
-                <p><a href="{{ path('app_home') }}">Accueil</a></p>
-                <p><a href="{{ path('app_home') }}#services">Nos services</a></p>
-                <p><a href="{{ path('app_devis') }}">Demander un devis</a></p>
-            </div>
-            <div>
-                <h4>Contact</h4>
-                <p>contact@SyriusPro.fr</p>
-                <p>06 00 00 00 00</p> 
-            </div>
-        </div>
-        <div class="footer-bottom">
-            © {{ "now"|date("Y") }} SyriusPro — Tous droits réservés.
-        </div>
-    </footer>
+    <!-- Circular Navigation Wheel (not in admin) -->
+    {% if not (app.request.pathInfo|default('')|length > 0 and '/admin' in app.request.pathInfo) %}
+        {% include 'components/circular-navbar.html.twig' %}
+    {% endif %}
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+        <script>
+
+            // Theme Toggle
+            const themeToggle = document.getElementById('theme-toggle');
+            const html = document.documentElement;
+            const themeIcon = themeToggle.querySelector('.theme-icon');
+
+            // Check for saved theme preference or default to light mode
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            if (currentTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                html.setAttribute('data-theme', 'dark');
+                themeIcon.textContent = '☀️';
+            }
+
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+
+                if (document.body.classList.contains('dark-mode')) {
+                    html.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('theme', 'dark');
+                    themeIcon.textContent = '☀️';
+                } else {
+                    html.setAttribute('data-theme', 'light');
+                    localStorage.setItem('theme', 'light');
+                    themeIcon.textContent = '🌙';
+                }
+            });
+
+            // Handle anchor links properly
+            document.addEventListener('click', (e) => {
+                const target = e.target.closest('a[href*="#"]');
+                if (target && target.href) {
+                    try {
+                        const url = new URL(target.href);
+                        const hash = url.hash;
+
+                        // If the link is to an anchor on the same page or home page with anchor
+                        if (hash && (url.pathname === window.location.pathname || url.pathname === '/' || url.pathname === '/index.php')) {
+                            e.preventDefault();
+                            const element = document.querySelector(hash);
+                            if (element) {
+                                // Scroll to the element
+                                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                // Update URL without full page reload
+                                window.history.pushState(null, null, hash);
+                            }
+                        }
+                    } catch (err) {
+                        // If URL parsing fails, let default behavior handle it
+                        console.error('Error handling anchor link:', err);
+                    }
+                }
+            });
+        </script>
+    {% endblock %}
+
+    <script>
+    // Hide navbar, circular-nav, and footer on ALL admin pages
+    console.log('Admin hide script running. Pathname:', window.location.pathname);
+    if (window.location.pathname.startsWith('/admin')) {
+        console.log('IS ADMIN PAGE - hiding elements');
+        const navbar = document.querySelector('.navbar');
+        const circNav = document.querySelector('.circular-nav-container');
+        const footer = document.querySelector('footer');
+
+        console.log('Found elements:', {navbar: !!navbar, circNav: !!circNav, footer: !!footer});
+
+        if (navbar) {
+            navbar.style.cssText = 'display: none !important; visibility: hidden !important;';
+            console.log('Navbar hidden');
+        }
+        if (circNav) {
+            circNav.style.cssText = 'display: none !important; visibility: hidden !important;';
+            console.log('CircNav hidden');
+        }
+        if (footer) {
+            footer.style.cssText = 'display: none !important; visibility: hidden !important;';
+            console.log('Footer hidden');
+        }
+    }
+    </script>
 </body>
 </html>

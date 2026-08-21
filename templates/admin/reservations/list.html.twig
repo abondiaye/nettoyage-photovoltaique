@@ -1,0 +1,61 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Réservations{% endblock %}
+{% block page_title %}📋 Réservations{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="margin-bottom: 20px;">
+        <h2 style="margin-bottom: 15px;">Filtrer par statut</h2>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <a href="{{ path('admin_reservations_list') }}" class="btn {% if not currentStatut %}btn-primary{% else %}btn-secondary{% endif %}">Tous</a>
+            <a href="{{ path('admin_reservations_list', {statut: 'EN_ATTENTE'}) }}" class="btn {% if currentStatut == 'EN_ATTENTE' %}btn-primary{% else %}btn-secondary{% endif %}">En attente</a>
+            <a href="{{ path('admin_reservations_list', {statut: 'CONFIRMEE'}) }}" class="btn {% if currentStatut == 'CONFIRMEE' %}btn-primary{% else %}btn-secondary{% endif %}">Confirmée</a>
+            <a href="{{ path('admin_reservations_list', {statut: 'REALISEE'}) }}" class="btn {% if currentStatut == 'REALISEE' %}btn-primary{% else %}btn-secondary{% endif %}">Réalisée</a>
+            <a href="{{ path('admin_reservations_list', {statut: 'REFUSEE'}) }}" class="btn {% if currentStatut == 'REFUSEE' %}btn-primary{% else %}btn-secondary{% endif %}">Refusée</a>
+            <a href="{{ path('admin_reservations_list', {statut: 'ANNULEE_ADMIN'}) }}" class="btn {% if currentStatut == 'ANNULEE_ADMIN' %}btn-primary{% else %}btn-secondary{% endif %}">Annulée</a>
+        </div>
+    </div>
+
+    {% if reservations %}
+        <table>
+            <thead>
+                <tr>
+                    <th>N° Réservation</th>
+                    <th>Client</th>
+                    <th>Email</th>
+                    <th>Téléphone</th>
+                    <th>Date souhaitée</th>
+                    <th>Statut</th>
+                    <th>Prix estimé</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reservation in reservations %}
+                    <tr>
+                        <td><strong>{{ reservation.numero }}</strong></td>
+                        <td>{{ reservation.customer.prenom }} {{ reservation.customer.nom }}</td>
+                        <td>{{ reservation.customer.email }}</td>
+                        <td>{{ reservation.customer.telephone }}</td>
+                        <td>{{ reservation.dateSouhaitee.format('d/m/Y H:i') }}</td>
+                        <td>
+                            <span class="status-badge status-{{ reservation.statut|lower }}">
+                                {{ reservation.statut|replace({'_': ' '}) }}
+                            </span>
+                        </td>
+                        <td>CHF {{ reservation.prixEstime|number_format(2, '.', '') }}</td>
+                        <td>
+                            <a href="{{ path('admin_reservations_show', {id: reservation.id}) }}" class="btn btn-sm" style="padding: 5px 10px; background: #007bff; color: white; text-decoration: none; border-radius: 4px;">Détails</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div style="text-align: center; padding: 40px; color: #999;">
+            <p style="font-size: 18px;">Aucune réservation trouvée</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

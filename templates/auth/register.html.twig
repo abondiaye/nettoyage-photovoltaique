@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register - Solar Cleaning{% endblock %}
+{% block title %}{{ 'register.title'|trans }} - Sirius-Solar{% endblock %}
 
 {% block body %}
 <div class="min-h-screen bg-gradient-to-br from-bleu-nuit to-bleu-panneau flex items-center justify-center px-4 py-8">
     <div class="w-full max-w-md bg-white rounded-lg shadow-xl p-8">
-        <h1 class="text-3xl font-bold text-bleu-nuit mb-8 text-center">Create Account</h1>
+        <h1 class="text-3xl font-bold text-bleu-nuit mb-8 text-center">{{ 'register.title'|trans }}</h1>
 
         {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
             <div class="mb-6">
@@ -45,16 +45,20 @@
             </div>
 
             <button type="submit" class="w-full bg-jaune-solaire text-bleu-nuit font-bold py-3 rounded-lg hover:bg-opacity-90 transition duration-300">
-                Register
+                {{ 'register.submit'|trans }}
             </button>
         {{ form_end(form) }}
 
         <div class="mt-6 text-center">
             <p class="text-sm text-gray-600">
-                Already have an account?
-                <a href="{{ path('app_login') }}" class="text-bleu-panneau font-semibold hover:underline">Login here</a>
+                {{ 'register.has_account'|trans }}
+                <a href="{{ path('app_login') }}" class="text-bleu-panneau font-semibold hover:underline">{{ 'register.login_link'|trans }}</a>
             </p>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block page_nav_prev %}
+    <a href="{{ path('app_login') }}" class="page-nav-link">← {{ 'pagenav.login'|trans }}</a>
 {% endblock %}

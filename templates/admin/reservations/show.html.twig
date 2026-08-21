@@ -1,0 +1,126 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Détails réservation{% endblock %}
+{% block page_title %}📋 Réservation {{ reservation.numero }}{% endblock %}
+
+{% block content %}
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
+    <div>
+        <div class="card">
+            <h2 style="margin-bottom: 20px;">Informations client</h2>
+            <div class="form-row">
+                <div>
+                    <p><strong>Nom:</strong> {{ reservation.customer.nom }}</p>
+                    <p><strong>Prénom:</strong> {{ reservation.customer.prenom }}</p>
+                    <p><strong>Email:</strong> {{ reservation.customer.email }}</p>
+                </div>
+                <div>
+                    <p><strong>Téléphone:</strong> {{ reservation.customer.telephone }}</p>
+                    <p><strong>Adresse:</strong> {{ reservation.customer.adresse }}</p>
+                    <p><strong>Ville:</strong> {{ reservation.customer.codePostal }} {{ reservation.customer.ville }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 style="margin-bottom: 20px;">Détails intervention</h2>
+            <div class="form-row">
+                <div>
+                    <p><strong>Date souhaitée:</strong> {{ reservation.dateSouhaitee.format('d/m/Y') }}</p>
+                    <p><strong>Heure souhaitée:</strong> {{ reservation.heureSouhaitee.format('H:i') }}</p>
+                    <p><strong>Nombre de panneaux:</strong> {{ reservation.nombrePanneaux }}</p>
+                </div>
+                <div>
+                    <p><strong>Type de toiture:</strong> {{ reservation.typeToiture }}</p>
+                    <p><strong>Prix estimé:</strong> CHF {{ reservation.prixEstime|number_format(2, '.', '') }}</p>
+                    <p><strong>Créée le:</strong> {{ reservation.dateCreation.format('d/m/Y H:i') }}</p>
+                </div>
+            </div>
+            {% if reservation.notes %}
+                <hr style="margin: 20px 0;">
+                <p><strong>Notes:</strong></p>
+                <p style="background: #f8f9fa; padding: 10px; border-radius: 4px;">{{ reservation.notes }}</p>
+            {% endif %}
+        </div>
+
+        {% if reservation.interventions|length > 0 %}
+            <div class="card">
+                <h2 style="margin-bottom: 20px;">Interventions réalisées</h2>
+                {% for intervention in reservation.interventions %}
+                    <div style="padding: 15px; border-left: 3px solid #28a745; background: #f0f8f5; border-radius: 4px; margin-bottom: 10px;">
+                        <p><strong>Date:</strong> {{ intervention.dateIntervention.format('d/m/Y') }}</p>
+                        <p><strong>Technicien:</strong> {{ intervention.technicien }}</p>
+                        <p><strong>Prix réalisé:</strong> CHF {{ intervention.prixRealise|number_format(2, '.', '') }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    <div>
+        <div class="card">
+            <h2 style="margin-bottom: 20px;">Statut</h2>
+            <div style="margin-bottom: 20px;">
+                <span class="status-badge status-{{ reservation.statut|lower }}" style="font-size: 16px; padding: 8px 16px;">
+                    {{ reservation.statut|replace({'_': ' '}) }}
+                </span>
+            </div>
+
+            <h3 style="margin-bottom: 15px;">Actions</h3>
+
+            {% if reservation.statut == 'EN_ATTENTE' %}
+                <form method="POST" action="{{ path('admin_reservations_confirm', {id: reservation.id}) }}" style="margin-bottom: 10px;">
+                    <button type="submit" class="btn btn-success" style="width: 100%;">✅ Confirmer</button>
+                </form>
+
+                <form method="POST" action="{{ path('admin_reservations_refuse', {id: reservation.id}) }}" style="margin-bottom: 10px;">
+                    <input type="hidden" name="raison" value="Demande refusée par l'administrateur">
+                    <button type="submit" class="btn btn-danger" style="width: 100%;" onclick="return confirm('Êtes-vous sûr?')">❌ Refuser</button>
+                </form>
+            {% endif %}
+
+            {% if reservation.statut == 'CONFIRMEE' %}
+                <form method="POST" action="{{ path('admin_reservations_reschedule', {id: reservation.id}) }}" style="margin-bottom: 10px;">
+                    <input type="date" name="newDate" required style="width: 100%; margin-bottom: 10px;">
+                    <input type="time" name="newTime" required style="width: 100%; margin-bottom: 10px;">
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">📅 Reporter</button>
+                </form>
+
+                <form method="POST" action="{{ path('admin_reservations_complete', {id: reservation.id}) }}" style="margin-bottom: 10px;">
+                    <input type="number" name="prixRealise" placeholder="Prix réalisé" required style="width: 100%; margin-bottom: 10px;">
+                    <textarea name="commentaire" placeholder="Commentaire..." style="width: 100%; margin-bottom: 10px;"></textarea>
+                    <button type="submit" class="btn btn-success" style="width: 100%;">✨ Marquer réalisée</button>
+                </form>
+
+                <form method="POST" action="{{ path('admin_reservations_cancel', {id: reservation.id}) }}" style="margin-bottom: 10px;">
+                    <input type="hidden" name="motif" value="Annulée par l'administrateur">
+                    <button type="submit" class="btn btn-danger" style="width: 100%;" onclick="return confirm('Êtes-vous sûr?')">🚫 Annuler</button>
+                </form>
+            {% endif %}
+
+            {% if reservation.statut in ['EN_ATTENTE', 'CONFIRMEE'] %}
+                <a href="{{ path('admin_reservations_list') }}" class="btn btn-secondary" style="width: 100%;">Retour à la liste</a>
+            {% else %}
+                <a href="{{ path('admin_reservations_list') }}" class="btn btn-secondary" style="width: 100%;">Retour à la liste</a>
+            {% endif %}
+        </div>
+
+        {% if reservation.history|length > 0 %}
+            <div class="card">
+                <h3 style="margin-bottom: 15px;">📝 Historique</h3>
+                <div style="font-size: 12px;">
+                    {% for history in reservation.history %}
+                        <div style="padding: 10px; border-bottom: 1px solid #eee;">
+                            <p><strong>{{ history.action }}</strong></p>
+                            <p style="color: #999;">{{ history.dateAction.format('d/m/Y H:i') }} par {{ history.administrateur }}</p>
+                            <p style="color: #666; font-size: 11px;">
+                                {{ history.ancienneValeur }} → {{ history.nouvelleValeur }}
+                            </p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
