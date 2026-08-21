@@ -5,31 +5,157 @@
 {% block body %}
 <style>
     /* Show navbar on home page - positioned over hero */
+    /* ===== WAVY NAVBAR (Option 2 Style) ===== */
     .gooey-navbar {
         display: flex !important;
         visibility: visible !important;
         height: auto !important;
-        min-height: 50px !important;
+        min-height: 70px !important;
         margin: 0 !important;
-        padding: 0 20px !important;
+        padding: 0 !important;
         position: relative !important;
         z-index: 1001 !important;
         width: 100% !important;
         box-sizing: border-box;
-        overflow-x: auto;
-        overflow-y: hidden;
         background: linear-gradient(180deg, #0a1f3f 0%, #1a3a5a 100%) !important;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-        border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 40px !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
     }
 
-    .gooey-navbar a, .gooey-navbar button, .gooey-navbar span {
+    /* Wave shape at bottom */
+    .gooey-navbar::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 100%;
+        height: 60px;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 100" preserveAspectRatio="none"><path d="M0,50 Q300,0 600,50 T1200,50 L1200,100 L0,100 Z" fill="%231a3a5a" opacity="0.8"/></svg>');
+        background-size: cover;
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    /* Hamburger menu button */
+    .gooey-navbar .hamburger-btn {
+        background: #ffd700;
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+        transition: all 0.3s ease;
+    }
+
+    .gooey-navbar .hamburger-btn:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 25px rgba(255, 215, 0, 0.6);
+    }
+
+    .gooey-navbar .hamburger-btn span {
+        width: 24px;
+        height: 2px;
+        background: #0a1f3f;
+        display: block;
+        transition: all 0.3s ease;
+    }
+
+    /* Logo/Brand */
+    .gooey-navbar .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #ffffff;
+        font-size: 20px;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    /* Nav links container */
+    .gooey-navbar .nav-links {
+        display: flex;
+        gap: 30px;
+        align-items: center;
+        flex: 1;
+        justify-content: center;
+    }
+
+    .gooey-navbar .nav-links a {
         color: #ffffff !important;
+        text-decoration: none;
+        font-weight: 500;
+        position: relative;
+        transition: color 0.3s ease;
     }
 
-    .gooey-navbar a:hover {
+    .gooey-navbar .nav-links a::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: #00d4ff;
+        transition: width 0.3s ease;
+    }
+
+    .gooey-navbar .nav-links a:hover {
         color: #00d4ff !important;
     }
+
+    .gooey-navbar .nav-links a:hover::after {
+        width: 100%;
+    }
+
+    /* Auth buttons */
+    .gooey-navbar .auth-buttons {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+    }
+
+    .gooey-navbar .auth-buttons a, .gooey-navbar .auth-buttons button {
+        padding: 10px 20px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+    }
+
+    .gooey-navbar .btn-login {
+        background: transparent;
+        color: #ffffff !important;
+        border: 2px solid #00d4ff;
+    }
+
+    .gooey-navbar .btn-login:hover {
+        background: rgba(0, 212, 255, 0.1);
+        border-color: #ffd700;
+        color: #ffd700 !important;
+    }
+
+    .gooey-navbar .btn-signup {
+        background: #ffd700;
+        color: #0a1f3f !important;
+    }
+
+    .gooey-navbar .btn-signup:hover {
+        background: #ffed4e;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+    }
+
     .gooey-navbar * { max-height: none !important; height: auto !important; }
 
     /* Hide circular nav - it duplicates links */
