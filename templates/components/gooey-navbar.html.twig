@@ -12,7 +12,7 @@
 }
 
 body {
-    padding-top: 200px !important;
+    padding-top: 250px !important;
 }
 
 .navbar {
@@ -20,7 +20,7 @@ body {
     top: 20px;
     left: 50%;
     transform: translateX(-50%);
-    max-width: 90%;
+    width: 90%;
     z-index: 1000;
     display: flex;
     justify-content: flex-start;
@@ -30,7 +30,7 @@ body {
     column-gap: 8px;
     row-gap: 6px;
     padding: 8px 20px;
-    min-height: 140px;
+    min-height: auto;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
     border: 3px solid #d4a842;
@@ -133,20 +133,23 @@ body {
 /* Responsive */
 @media (max-width: 768px) {
     .navbar {
-        min-width: 90vw;
-        column-gap: 15px;
-        padding: 0 15px;
+        max-width: 95%;
+        column-gap: 6px;
+        row-gap: 4px;
+        padding: 6px 12px;
     }
 
     .navbar .nav-item {
-        width: 50px;
-        height: 60px;
-        font-size: 11px;
+        width: 45px;
+        height: 55px;
+        font-size: 9px;
+        gap: 2px;
+        padding: 2px;
     }
 
     .decorator {
-        width: 60px;
-        height: 60px;
+        width: 50px;
+        height: 50px;
     }
 }
 
