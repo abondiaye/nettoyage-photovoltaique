@@ -1,0 +1,64 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block content %}
+
+<style>
+    .page-content {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 12px;
+        padding: 40px;
+        text-align: center;
+        min-height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .page-icon {
+        font-size: 64px;
+        margin-bottom: 20px;
+    }
+
+    .page-message {
+        font-size: 24px;
+        color: #ffd700;
+        margin-bottom: 10px;
+    }
+
+    .page-description {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 14px;
+        margin-bottom: 30px;
+        max-width: 400px;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #ffd700, #ffed4e);
+        color: #0A3D35;
+        padding: 12px 30px;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
+    }
+</style>
+
+<div class="page-content">
+    <div class="page-icon">{{ icon }}</div>
+    <div class="page-message">{{ message }}</div>
+    <div class="page-description">{{ description }}</div>
+    <a href="{{ path('app_admin_panel_dashboard') }}" class="btn-primary">
+        ← Retour au dashboard
+    </a>
+</div>
+
+{% endblock %}

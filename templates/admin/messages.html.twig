@@ -1,0 +1,312 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Messages Clients - Admin Sirius-Solar{% endblock %}
+
+{% block body %}
+
+<style>
+    .gooey-navbar { display: none !important; visibility: hidden !important; height: 0 !important; margin: 0 !important; padding: 0 !important; }
+    .circular-nav-container { display: none !important; visibility: hidden !important; height: 0 !important; width: 0 !important; }
+    footer { display: none !important; visibility: hidden !important; height: 0 !important; }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+    }
+
+    main {
+        flex: 1;
+    }
+
+    .messages-container {
+        min-height: 100%;
+        background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+        padding: 40px 20px;
+        margin-top: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .messages-header {
+        max-width: 1200px;
+        margin: 0 auto 40px;
+    }
+
+    .messages-header h1 {
+        color: white;
+        font-size: 32px;
+        margin-bottom: 10px;
+    }
+
+    .messages-header p {
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .messages-list {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        gap: 20px;
+    }
+
+    .message-card {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 16px;
+        padding: 25px;
+        color: white;
+        transition: all 0.3s ease;
+    }
+
+    .message-card:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 215, 0, 0.5);
+        transform: translateY(-3px);
+    }
+
+    .message-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .message-from {
+        flex: 1;
+    }
+
+    .message-from h3 {
+        font-size: 18px;
+        margin: 0 0 5px 0;
+        color: #ffd700;
+    }
+
+    .message-from p {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.7);
+        margin: 0;
+    }
+
+    .message-date {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.6);
+        text-align: right;
+    }
+
+    .message-content {
+        margin-bottom: 15px;
+    }
+
+    .message-content p {
+        font-size: 14px;
+        line-height: 1.6;
+        color: rgba(255, 255, 255, 0.9);
+        margin: 0;
+    }
+
+    .message-footer {
+        display: flex;
+        gap: 20px;
+        padding-top: 15px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        flex-wrap: wrap;
+    }
+
+    .message-info {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.7);
+        display: flex;
+        gap: 5px;
+    }
+
+    .message-info strong {
+        color: #ffd700;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .empty-state h2 {
+        color: white;
+        margin-bottom: 10px;
+    }
+
+    .nav-buttons {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        margin-top: 60px;
+        padding: 40px 20px 0;
+    }
+
+    .nav-btn {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 24px;
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(192, 192, 192, 0.2));
+        border: 2px solid rgba(192, 192, 192, 0.5);
+        color: rgba(192, 192, 192, 0.9);
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .nav-btn:hover {
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.3), rgba(192, 192, 192, 0.3));
+        border-color: rgba(192, 192, 192, 0.8);
+        color: #ffd700;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(192, 192, 192, 0.2);
+    }
+
+    .nav-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .arrow {
+        font-size: 18px;
+        transition: transform 0.3s ease;
+    }
+
+    .nav-btn:hover .arrow-left {
+        transform: translateX(-3px);
+    }
+
+    .nav-btn:hover .arrow-right {
+        transform: translateX(3px);
+    }
+
+    .admin-footer {
+        background: rgba(10, 61, 53, 0.4);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid rgba(192, 192, 192, 0.2);
+        padding: 30px 40px;
+        margin-top: 60px;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .admin-footer p {
+        margin: 0;
+        line-height: 1.6;
+    }
+
+    .admin-footer a {
+        color: #ffd700;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .admin-footer a:hover {
+        color: #ffed4e;
+        text-decoration: underline;
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+        .messages-container {
+            padding: 20px 10px;
+        }
+
+        .messages-header {
+            margin-bottom: 20px;
+        }
+
+        .messages-header h1 {
+            font-size: 24px;
+        }
+
+        .message-header {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message-date {
+            text-align: left;
+        }
+    }
+</style>
+
+<div class="messages-container">
+    <div class="messages-header">
+        <h1>📬 Messages des Clients</h1>
+        <p>{{ messages|length }} message(s) reçu(s)</p>
+    </div>
+
+    <div class="messages-list">
+        {% if messages|length > 0 %}
+            {% for message in messages %}
+                <div class="message-card">
+                    <div class="message-header">
+                        <div class="message-from">
+                            <h3>👤 {{ message.nom }}</h3>
+                            <p>📧 {{ message.email }}</p>
+                        </div>
+                        <div class="message-date">
+                            📅 {{ message.createdAt|date('d/m/Y H:i') }}
+                        </div>
+                    </div>
+
+                    <div class="message-content">
+                        <p>{{ message.message }}</p>
+                    </div>
+
+                    <div class="message-footer">
+                        {% if message.datePreferee %}
+                            <div class="message-info">
+                                <strong>🗓️ Date préférée:</strong>
+                                {{ message.datePreferee|date('d/m/Y') }}
+                            </div>
+                        {% else %}
+                            <div class="message-info">
+                                <strong>🗓️ Date préférée:</strong>
+                                Non spécifiée
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <h2>📭 Aucun message</h2>
+                <p>Les clients pourront vous envoyer des messages via le formulaire de contact.</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="nav-buttons">
+        <a href="{{ path('app_admin_calendar') }}" class="nav-btn">
+            <span class="arrow arrow-left">←</span>
+            Rendez-vous
+        </a>
+        <a href="{{ path('app_admin_dashboard') }}" class="nav-btn">
+            Tableau de bord
+            <span class="arrow arrow-right">→</span>
+        </a>
+    </div>
+
+    <!-- Footer -->
+    <footer class="admin-footer">
+        <p>© 2026 <strong>Sirius-Solar</strong> — Nettoyage & Entretien de Panneaux Photovoltaïques</p>
+        <p>Eau osmosée • Zéro produit chimique • Jusqu'à 25% de rendement regagné</p>
+        <p><a href="{{ path('app_home') }}">Retour à l'accueil</a> | <a href="{{ path('app_devis') }}">Demander un devis</a></p>
+    </footer>
+</div>
+
+{% endblock %}

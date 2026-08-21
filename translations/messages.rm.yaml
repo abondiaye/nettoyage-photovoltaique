@@ -1,0 +1,194 @@
+# Rumantsch (RM)
+nav:
+  services: Servetschas
+  advantages: Avantaschas
+  booking: Prenotaziun
+  contact: Contactas
+  login: Endataziun
+  admin: Admin
+
+hero:
+  title: Optimaziun dal rendiment solar
+  subtitle: Aua osmosada • Nagin produit chimic • Fin 25% dal rendiment reprizzun
+  tag1: 💧 Aua pira
+  tag2: ⚡ Biaras prestatzas
+  tag3: ✅ Ecologic
+  cta: Dumonda in devis
+
+services:
+  title: Nossas servetschas
+  premium:
+    title: Netschada Premium
+    desc: Netschada cun aua ad altra preschun e aua osmosada per resultats garantids
+  inspection:
+    title: Inspectziun Cumpletta
+    desc: Diagnosa professiuonal cun rapport detaljad da vos installatschas
+  maintenance:
+    title: Manutentziun Regulara
+    desc: Contracts da manutentziun persunalidads per prestatzas durrablas
+  learn_more: Plievna pli
+
+advantages:
+  title: Pertge Sirius-Solar?
+  efficiency:
+    title: Rendiment +25%
+    desc: Recuperai fin 25% dal rendiment persi via sporchirida e deposits
+  water:
+    title: Aua Osmosada
+    desc: Netschada cun aua pira, senza residus, senza traces da aua
+  eco:
+    title: Nagin Chimic
+    desc: Abordadi ecologic che respecta l'ambient e vossas installatschas
+  fast:
+    title: Devis en 48h
+    desc: Servetschast svelt e efficac cun respunsa garantida entro 2dis
+
+cta:
+  title: Pronts per optimar vossa installatschas?
+  desc: Contactai nos experts da Sirius-Solar per ina diagnosa gratuida e ina soluziun adattada a vos panels.
+  button: Prenotai ina visita
+
+footer:
+  brand: Sirius-Solar
+  desc: Netschada e manutentziun da panellas fotovoltaicas cun aua osmosada
+  links_title: Links Utils
+  contact_title: Contactas
+  email: "Email: info@sirius-solar.ch"
+  phone: "Telefon: +41 XX XXX XX XX"
+  response: Respunsa garantida entro 48h
+  copyright: © 2026 Sirius-Solar. Tuts dretgs reserves.
+
+services_page:
+  title: Nossas servetschas professiualas
+  subtitle: Descubri nossas solutzias completas da netschada e manutentziun per panellas fotovoltaicas
+
+  service1:
+    title: Netschada ad alta preschun
+    desc: Netschada professiuonal cun aua osmosada e equipaments ad alta preschun.
+    feature1: Aua osmosada 100%
+    feature2: Nagin produit chimic
+    feature3: Tecnologia ecologic
+    feature4: Rendiment garantid +25%
+
+  service2:
+    title: Inspectziun Cumpletta
+    desc: Diagnosa professiuonal detaljada da vos installatschas solars cun rapport fotografic.
+    feature1: Rapport detaljad inclus
+    feature2: Fotos ad alta resolutziun
+    feature3: Recomendatschas persunalidadas
+    feature4: Gratuita per clients Sirius
+
+  service3:
+    title: Manutentziun Regulara
+    desc: Contracts da manutentziun persunalidads per prestaziuns optimadas l'entir onn.
+    feature1: Netschadas mensas/trimestras
+    feature2: Monitoradi en temps real
+    feature3: Tarifas preferidas
+    feature4: Intervents prioritaris
+
+  service4:
+    title: Protectziun e Segladura
+    desc: Applicatziun da produits da protectziun ecologic per prolongar la vita da vossas installatschas.
+    feature1: Protectziun 18 maisas
+    feature2: Reducescha la sporchirida
+    feature3: Senza silicona
+    feature4: Certificad ecologic
+
+  service5:
+    title: Analisa da Prestaziun
+    desc: Analisa detaljada dal rendiment da vossa installatschas cun propostas da optimatziun.
+    feature1: Datas da producziun
+    feature2: Cumpara cun standards
+    feature3: Plan da meliorami
+    feature4: Monitoradi mensas inclus
+
+  service6:
+    title: Interventi d'Emergenza
+    desc: Servetschast d'interventi svelt 24/7 per situatzias d'emergenza u problemas critics.
+    feature1: Respunsa entro 2 uras
+    feature2: Disponibilitad 24/7
+    feature3: Technicians experids
+    feature4: Preziis transparents
+
+pricing:
+  title: Preziis Transparents
+  residential:
+    name: Residential
+    note: Installatschas < 15 panellas
+    desc: Soluziun ideala per pitschas installatschas residentialas cun netschada regulara inclusa.
+    price: Cumenza da CHF 120
+  professional:
+    name: Professiunal
+    note: Installatschas 15-50 panellas
+    desc: Package cumpletta cun manutentziun regulara e support prioritari per installatschas pli grandas.
+    price: Cumenza da CHF 250
+  enterprise:
+    name: Enterpresa
+    note: Installatschas > 50 panellas
+    desc: Soluziun premium cun contract anunal, manutentziun planificada e team dedicada sin site.
+    price: Devis persunalidads
+
+devis:
+  title: Dumonda da Devis Gratuita
+  subtitle: Remplai il formulari sutvart e nos experts da Sirius-Solar vus respundran entro 48 uras
+  info_box: Tuts ils champs marcads cun * sun obligaturs. Vus garantiain ina respunsa svelta.
+
+  form_title: Formulari da Devis
+  form_subtitle: Infurmatschas da contact e installatschas
+
+  firstname: Prenom
+  lastname: Num
+  email: Email
+  phone: Telefon
+  address: Indrizz
+  postal: NPA
+  city: Citad
+  message: Messadi additivnal
+  placeholder_message: Descrivaziun vossas installatschas solars, numer da panellas, etc...
+
+  lavage_title: "🧹 Tipas da Netschada (Selecziunai ina u plirs)"
+  lavage_standard: Standard
+  lavage_premium: Premium
+  lavage_haute_pression: Alta Preschun
+  lavage_inspection: Inspectziun
+  lavage_protection: Protectziun
+  lavage_analyse: Analisa
+
+  total_price: "💰 Prezia Total Estimada"
+  submit: Trametta il devis
+  reset: Reinizialisaziun
+
+admin:
+  dashboard: Dashboard Admin
+  devis_recent: Demondas da Devis Recantas
+  total: Demondas Total
+  pending: Spetgond
+  confirmed: Conferma
+  notifications: Notificatschas
+
+  client_info: "👤 Infurmatschas da Client"
+  name: Num
+  address_info: Indrizz
+  status: Status
+
+  propose_date: "📅 Propona ina Data"
+  date: "Data da interventi propona"
+  time: "Ora da interventi"
+  selected_date: Selecziunai ina data e ora
+
+  response: "💬 Responda a la Dumonda"
+  message: Messadi da respunsa
+  placeholder_response: "Scrivan vossas respunsa al client..."
+  confirm: Confirma l'interventi
+  refuse: Refusar
+  delete: Stritga
+  back: "← Turna al Dashboard"
+
+login:
+  title: Endataziun Admin
+  subtitle: Administratziun Sirius-Solar
+  email: Indrizz Email
+  password: Pled-clav
+  signin: Endata
+  forgot: Pled-clav dimentichas?
+  back_home: "← Turna a casa"

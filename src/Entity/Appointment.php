@@ -3,43 +3,50 @@
 namespace App\Entity;
 
 use App\Repository\AppointmentRepository;
-use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AppointmentRepository::class)]
 class Appointment
 {
-    const STATUS_SCHEDULED = 'SCHEDULED';
-    const STATUS_COMPLETED = 'COMPLETED';
-    const STATUS_CANCELLED = 'CANCELLED';
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'appointments')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
+    #[ORM\Column(length: 255)]
+    private string $clientName = '';
 
-    #[ORM\Column(type: 'date_immutable')]
-    private ?DateTimeImmutable $date = null;
+    #[ORM\Column(length: 255)]
+    private string $clientEmail = '';
 
-    #[ORM\Column(length: 10)]
-    private string $timeSlot = '';
-
-    #[ORM\Column(length: 50)]
-    private string $status = self::STATUS_SCHEDULED;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $clientPhone = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $notes = null;
 
-    #[ORM\Column]
-    private ?DateTimeImmutable $createdAt = null;
+    #[ORM\Column(type: 'date')]
+    private \DateTimeInterface $requestedDate;
+
+    #[ORM\Column(type: 'date', nullable: true)]
+    private ?\DateTimeInterface $confirmedDate = null;
+
+    #[ORM\Column(length: 50)]
+    private string $status = 'pending'; // pending, confirmed, refused, proposed
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $adminNotes = null;
+
+    #[ORM\Column(type: 'datetime')]
+    private \DateTimeInterface $createdAt;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $updatedAt = null;
 
     public function __construct()
     {
-        $this->createdAt = new DateTimeImmutable();
+        $this->createdAt = new \DateTime();
+        $this->requestedDate = new \DateTime();
     }
 
     public function getId(): ?int
@@ -47,51 +54,36 @@ class Appointment
         return $this->id;
     }
 
-    public function getUser(): ?User
+    public function getClientName(): string
     {
-        return $this->user;
+        return $this->clientName;
     }
 
-    public function setUser(?User $user): static
+    public function setClientName(string $clientName): self
     {
-        $this->user = $user;
-
+        $this->clientName = $clientName;
         return $this;
     }
 
-    public function getDate(): ?DateTimeImmutable
+    public function getClientEmail(): string
     {
-        return $this->date;
+        return $this->clientEmail;
     }
 
-    public function setDate(DateTimeImmutable $date): static
+    public function setClientEmail(string $clientEmail): self
     {
-        $this->date = $date;
-
+        $this->clientEmail = $clientEmail;
         return $this;
     }
 
-    public function getTimeSlot(): string
+    public function getClientPhone(): ?string
     {
-        return $this->timeSlot;
+        return $this->clientPhone;
     }
 
-    public function setTimeSlot(string $timeSlot): static
+    public function setClientPhone(?string $clientPhone): self
     {
-        $this->timeSlot = $timeSlot;
-
-        return $this;
-    }
-
-    public function getStatus(): string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(string $status): static
-    {
-        $this->status = $status;
-
+        $this->clientPhone = $clientPhone;
         return $this;
     }
 
@@ -100,22 +92,76 @@ class Appointment
         return $this->notes;
     }
 
-    public function setNotes(?string $notes): static
+    public function setNotes(?string $notes): self
     {
         $this->notes = $notes;
-
         return $this;
     }
 
-    public function getCreatedAt(): ?DateTimeImmutable
+    public function getRequestedDate(): \DateTimeInterface
+    {
+        return $this->requestedDate;
+    }
+
+    public function setRequestedDate(\DateTimeInterface $requestedDate): self
+    {
+        $this->requestedDate = $requestedDate;
+        return $this;
+    }
+
+    public function getConfirmedDate(): ?\DateTimeInterface
+    {
+        return $this->confirmedDate;
+    }
+
+    public function setConfirmedDate(?\DateTimeInterface $confirmedDate): self
+    {
+        $this->confirmedDate = $confirmedDate;
+        return $this;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
+        $this->updatedAt = new \DateTime();
+        return $this;
+    }
+
+    public function getAdminNotes(): ?string
+    {
+        return $this->adminNotes;
+    }
+
+    public function setAdminNotes(?string $adminNotes): self
+    {
+        $this->adminNotes = $adminNotes;
+        return $this;
+    }
+
+    public function getCreatedAt(): \DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(DateTimeImmutable $createdAt): static
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+        return $this;
+    }
 
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
         return $this;
     }
 }

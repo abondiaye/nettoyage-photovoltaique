@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Sirius Solar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        a {
+            text-decoration: none;
+            color: #C06C84;
+            transition: all 300ms;
+        }
+
+        a:hover {
+            opacity: .7;
+        }
+
+        .container {
+            font-size: 1rem;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(10deg, #0A3D35, #2D6B55, #355C7D);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Card */
+        .card {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            margin: 0 auto 0 auto;
+            padding: 0 1.5rem 2rem;
+            color: #fafafa;
+            border: 2px solid rgba(255, 255, 255, .3);
+            border-radius: 20px;
+            box-shadow: inset 0 -1rem 1rem rgba(255, 255, 255, 0.1),
+                        0 0 0 1px rgba(255, 255, 255, 0.1),
+                        0.3rem 0.2rem 3rem rgba(160, 160, 160, 0.3);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Header */
+        .card__header {
+            padding: 2rem 0 1rem;
+            text-align: center;
+        }
+
+        .card__header h2.title {
+            text-transform: uppercase;
+            text-align: center;
+            letter-spacing: .2rem;
+            font-size: 1.8rem;
+            margin: 0;
+        }
+
+        .card__header h2.title span {
+            color: #d4a842;
+        }
+
+        .card__header .subtitle {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            letter-spacing: 0.1rem;
+        }
+
+        /* Body */
+        .card__body {
+            width: 100%;
+            padding-bottom: 1rem;
+        }
+
+        /* Label */
+        label {
+            display: block;
+            margin-bottom: .5rem;
+            font-size: .75em;
+            letter-spacing: .2rem;
+            text-transform: uppercase;
+        }
+
+        /* Input */
+        input[type="email"],
+        input[type="password"] {
+            display: block;
+            margin-bottom: 1.25rem;
+            padding-left: .8rem;
+            width: 100%;
+            height: 2.75rem;
+            font-size: 1rem;
+            color: rgba(250, 250, 250, .9);
+            background-color: rgba(255, 255, 255, 0);
+            border: 1px solid rgba(255, 255, 255, 1);
+            border-radius: 8px;
+            outline: none;
+            transition: all .5s;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        input[type="email"]::placeholder,
+        input[type="password"]::placeholder,
+        input::-webkit-input-placeholder  {
+            color: rgba(255, 255, 255, .5);
+        }
+
+        input[type="email"]:hover,
+        input[type="email"]:focus,
+        input[type="password"]:hover,
+        input[type="password"]:focus {
+            background-color: rgba(255, 255, 255, .15);
+            border-color: #d4a842;
+        }
+
+        /* Footer */
+        .card__footer {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Button */
+        .btn_sign-in-up {
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: rgba(0, 0, 0, .8);
+            padding: 1rem 2rem;
+            border: 1px transparent;
+            border-radius: 8px;
+            outline: none;
+            background: linear-gradient(135deg, #d4a842, #e8e8e8);
+            transition: all .5s;
+            width: 100%;
+            font-family: 'Quicksand', sans-serif;
+            letter-spacing: 0.1rem;
+        }
+
+        .btn_sign-in-up:hover {
+            background: linear-gradient(135deg, #e8e8e8, #d4a842);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(160, 160, 160, 0.4);
+        }
+
+        .card__footer p {
+            margin: 0;
+            font-size: .8rem;
+            text-align: center;
+        }
+
+        .card__footer a {
+            color: #d4a842;
+        }
+
+        .card__footer a:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+        .alert {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            background: rgba(220, 53, 69, 0.2);
+            color: #ffc9d4;
+            border: 1px solid rgba(220, 53, 69, 0.4);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 530px) {
+            .card {
+                margin-left: 2rem;
+                margin-right: 2rem;
+                max-width: calc(100% - 4rem);
+            }
+
+            .card__header h2.title {
+                font-size: 1.5rem;
+            }
+
+            .btn_sign-in-up {
+                padding: 0.8rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card__header">
+                <h2 class="title">Sign <span>In</span></h2>
+                <p class="subtitle">Sirius-Solar Administration</p>
+            </div>
+
+            {% if error %}
+                <div class="alert">
+                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                </div>
+            {% endif %}
+
+            <form method="POST" action="{{ path('app_login') }}">
+                <div class="card__body">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" value="{{ last_username }}" placeholder="admin@sirius-solar.ch" required autofocus>
+
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="your password" required>
+                </div>
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <div class="card__footer">
+                    <button type="submit" class="btn_sign-in-up">Sign In</button>
+                    <p>Forgot password? <a href="{{ path('app_forgot_password') }}">Click here</a>.</p>
+                    <p><a href="{{ path('app_home') }}">← Back to home</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

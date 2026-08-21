@@ -1,335 +1,1741 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}SyriusPro — Nettoyage de panneaux photovoltaïques{% endblock %}
-
-{% block stylesheets %}
-    {{ parent() }}
-    <style>
-.hero {
-    position: relative;
-    overflow: hidden;
-    color: var(--blanc);
-    min-height: 90vh;
-    background: 
-        linear-gradient(to bottom, rgba(11,31,51,0.4), rgba(11,31,51,0.7)),
-        url("{{ asset('images/panneaux-solaires-sous-la-pluie.png') }}");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-.hero .container {
-    display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: 48px;
-    align-items: center;
-    padding: 80px 24px 96px;
-    position: relative;
-    z-index: 4;
-}
-
-.hero h1 { font-size: clamp(2.2rem, 4.5vw, 3.4rem); line-height: 1.1; margin-bottom: 20px; }
-.hero h1 .accent { color: var(--jaune-solaire); }
-.hero p.lead { font-size: 1.1rem; color: rgba(255,255,255,0.78); max-width: 480px; margin-bottom: 32px; }
-.hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
-
-.panel-grid {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-    gap: 6px;
-    aspect-ratio: 3/2;
-    border-radius: 12px;
-    overflow: hidden;
-    padding: 14px;
-    background: linear-gradient(135deg, #07141F, #102E47);
-    border: 1px solid rgba(255,255,255,0.08);
-}
-.panel-grid .cell {
-    border-radius: 3px;
-    background: #16324A;
-    animation: clean-sweep 4.5s ease-in-out infinite;
-}
-@keyframes clean-sweep {
-    0%, 100% { background: #16324A; }
-    50% { background: #3E8FC2; }
-}
-.panel-grid .cell:nth-child(6n+1) { animation-delay: 0s; }
-.panel-grid .cell:nth-child(6n+2) { animation-delay: 0.15s; }
-.panel-grid .cell:nth-child(6n+3) { animation-delay: 0.3s; }
-.panel-grid .cell:nth-child(6n+4) { animation-delay: 0.45s; }
-.panel-grid .cell:nth-child(6n+5) { animation-delay: 0.6s; }
-.panel-grid .cell:nth-child(6n+6) { animation-delay: 0.75s; }
-@media (prefers-reduced-motion: reduce) {
-    .panel-grid .cell { animation: none; background: #1E5F8C; }
-}
-
-.stats { background: var(--gris-verre); border-top: 1px solid #E1E8EE; border-bottom: 1px solid #E1E8EE; }
-.stats .container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; padding: 36px 24px; text-align: center; }
-.stats .stat-num { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 2rem; color: var(--bleu-panneau); }
-.stats .stat-label { font-size: 0.9rem; color: #5B6B7A; }
-
-section { padding: 80px 0; }
-section.alt { background: var(--gris-verre); }
-.section-eyebrow { text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.78rem; font-weight: 600; color: var(--bleu-panneau); margin-bottom: 10px; }
-.section-title { font-size: clamp(1.6rem, 3vw, 2.2rem); margin-bottom: 16px; }
-.section-intro { max-width: 560px; color: #4F5E6C; margin-bottom: 48px; }
-
-.services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
-.service-card { background: var(--blanc); border: 1px solid #E1E8EE; border-radius: 10px; padding: 28px; display: flex; flex-direction: column; gap: 12px; transition: border-color 0.15s ease, transform 0.15s ease; }
-.service-card:hover { border-color: var(--bleu-panneau); transform: translateY(-3px); }
-.service-card h3 { font-size: 1.15rem; }
-.service-card p { color: #5B6B7A; font-size: 0.95rem; flex-grow: 1; }
-.service-price { font-family: 'Space Grotesk', sans-serif; font-weight: 600; color: var(--bleu-panneau); font-size: 0.95rem; padding-top: 8px; border-top: 1px solid #EEF2F5; }
-
-.avantages-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-.avantage-item { display: flex; gap: 14px; align-items: flex-start; background: var(--blanc); border: 1px solid #E1E8EE; border-radius: 10px; padding: 20px; }
-.avantage-icon { flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px; background: var(--jaune-solaire); display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--bleu-nuit); font-family: 'Space Grotesk', sans-serif; }
-.avantage-text { font-size: 0.95rem; color: #2E3D4B; }
-
-.cta-band { background: var(--bleu-panneau); color: var(--blanc); border-radius: 14px; margin: 0 24px; padding: 48px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px; }
-.cta-band h2 { font-size: 1.6rem; max-width: 480px; }
-
-/* Soleil */
-.hero::before {
-    content: "";
-    position: absolute;
-    width: 180px;
-    height: 180px;
-    border-radius: 50%;
-    background: radial-gradient(circle, #FFF9A5 0%, #FFD54F 40%, #F4B731 70%, rgba(244,183,49,0) 100%);
-    right: var(--sun-right, 78%);
-    bottom: var(--sun-bottom, 300px);
-    opacity: var(--sun-opacity, 0);
-    z-index: 2;
-    box-shadow: 
-        0 0 40px 20px rgba(4, 4, 2, 0.5),
-        0 0 80px 40px rgba(244,183,49,.3),
-        0 0 150px 60px rgba(244,183,49,.15);
-}
-
-@keyframes sunSet {
-    0%   { bottom: 300px; right: 78%; opacity: 0; }
-    8%   { opacity: 1; }
-    92%  { opacity: 1; }
-    100% { bottom: 20px; right: 10%; opacity: 0.5; }
-}
-
-/* Montagnes */
-.mountains { position: absolute; bottom: 0; width: 100%; height: 280px; }
-.mountain-back, .mountain-middle, .mountain-front { position: absolute; bottom: 0; width: 100%; }
-.mountain-back   { height: 260px; background: #4d6d8b; z-index: 3; clip-path: polygon(0% 100%, 8% 60%, 18% 75%, 35% 30%, 50% 80%, 65% 25%, 82% 70%, 100% 100%); }
-.mountain-middle { height: 220px; background: #32506d; z-index: 4; clip-path: polygon(0% 100%, 15% 45%, 28% 80%, 50% 20%, 72% 70%, 85% 35%, 100% 100%); }
-.mountain-front  { height: 180px; background: #0B1F33; z-index: 5; clip-path: polygon(0% 100%, 10% 55%, 25% 75%, 45% 30%, 60% 85%, 80% 45%, 100% 100%); }
-
-@media (max-width: 800px) {
-    .hero .container { grid-template-columns: 1fr; padding-top: 56px; }
-    .stats .container { grid-template-columns: 1fr; }
-    .cta-band { margin: 0 16px; padding: 32px; }
-    .hero::before { width: 100px; height: 100px; }
-}
-    </style>
-{% endblock %}
+{% block title %}Sirius-Solar — Nettoyage & Entretien de Panneaux Photovoltaïques{% endblock %}
 
 {% block body %}
-    <section class="hero">
-                        <canvas id="sun-rays" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;"></canvas>
-        <div class="mountains">
-            <div class="mountain-back"></div>
-            <div class="mountain-middle"></div>
-            <div class="mountain-front"></div>
+<style>
+    /* Show navbar on home page - positioned over hero */
+    .gooey-navbar {
+        display: flex !important;
+        visibility: visible !important;
+        height: auto !important;
+        min-height: 50px !important;
+        margin: 0 !important;
+        padding: 0 20px !important;
+        position: relative !important;
+        z-index: 1001 !important;
+        width: 100% !important;
+        box-sizing: border-box;
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+    .gooey-navbar * { max-height: none !important; height: auto !important; }
+
+    /* Hide circular nav - it duplicates links */
+    .circular-nav-container { display: none !important; visibility: hidden !important; height: 0 !important; width: 0 !important; }
+
+    /* Remove all padding/margin from body and html */
+    html {
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow-x: hidden !important;
+        width: 100% !important;
+    }
+
+    body {
+        padding-top: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow-x: hidden !important;
+        width: 100% !important;
+        box-sizing: border-box;
+    }
+
+    /* ===== HERO SECTION ===== */
+    .hero-container {
+        position: relative;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .hero-gradient-bg {
+        position: absolute;
+        inset: 0;
+        background: none;
+        border-radius: 0;
+        z-index: 0;
+        overflow: hidden;
+        filter: brightness(1.15) contrast(1.1);
+    }
+
+    .hero-gradient-bg img,
+    .hero-gradient-bg video {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 0;
+    }
+
+    .hero-gradient-bg img {
+        z-index: 1;
+        opacity: 1.2;
+        filter: brightness(1.2) contrast(1.15);
+    }
+
+    .hero-gradient-bg video {
+        z-index: 2;
+        opacity: 0.4;
+        mix-blend-mode: lighten;
+    }
+
+    .hero-card {
+        position: relative;
+        z-index: 1;
+        overflow: visible;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        /* Glasmorphism */
+        background: rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(30px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+
+        border-radius: 20px;
+        padding: 100px 60px 80px 60px;
+        max-width: 700px;
+        text-align: center;
+        color: white;
+
+        /* Shadow */
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3),
+                    inset 0 0 30px rgba(255, 255, 255, 0.1);
+
+        /* Animation */
+        animation: fadeInUp 0.8s ease-out, raindropsEffect 4s ease-in-out infinite;
+    }
+
+    .hero-logo {
+        position: absolute;
+        top: -55px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 200px;
+        height: 110px;
+        background: white;
+        border-radius: 16px;
+        padding: 12px;
+        border: 2px solid rgba(192, 192, 192, 0.6);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 0 25px rgba(192, 192, 192, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+        animation: logoFloat 3s ease-in-out infinite;
+    }
+
+    .hero-logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        border-radius: 12px;
+        filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.15));
+    }
+
+    @keyframes logoFloat {
+        0%, 100% {
+            transform: translateX(-50%) translateY(0px);
+        }
+        50% {
+            transform: translateX(-50%) translateY(-8px);
+        }
+    }
+
+.hero-title {
+        position: relative;
+        z-index: 1;
+        font-size: 48px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        background: linear-gradient(90deg, #ffffff 0%, #00d4ff 50%, #0099cc 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: none;
+        font-family: 'Space Grotesk', sans-serif;
+        letter-spacing: -1px;
+        animation: titleGlow 4s ease-in-out infinite;
+    }
+
+    @keyframes titleGlow {
+        0%, 100% { filter: brightness(1); }
+        50% { filter: brightness(1.2); }
+    }
+
+    .hero-subtitle {
+        position: relative;
+        z-index: 1;
+        font-size: 18px;
+        opacity: 0.95;
+        margin-bottom: 30px;
+        line-height: 1.6;
+        font-weight: 500;
+    }
+
+    .hero-features {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+        margin-bottom: 40px;
+    }
+
+    .feature-tag {
+        background: rgba(160, 160, 160, 0.2);
+        border: 1px solid rgba(160, 160, 160, 0.5);
+        color: var(--dore);
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        animation: fadeInUp 0.8s ease-out;
+        animation-fill-mode: both;
+    }
+
+    .feature-tag:nth-child(1) { animation-delay: 0.1s; }
+    .feature-tag:nth-child(2) { animation-delay: 0.2s; }
+    .feature-tag:nth-child(3) { animation-delay: 0.3s; }
+
+    .btn-cta {
+        position: relative;
+        z-index: 1;
+        background: linear-gradient(135deg, var(--dore), var(--dore-clair));
+        color: #121212;
+        border: none;
+        padding: 16px 40px;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+
+        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+        box-shadow: 0 10px 30px rgba(160, 160, 160, 0.3);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .btn-cta:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 20px 50px rgba(160, 160, 160, 0.5);
+    }
+
+    .btn-cta:active {
+        transform: translateY(-1px) scale(0.98);
+    }
+
+    @keyframes raindropsEffect {
+        0%, 100% {
+            box-shadow:
+                inset 0 0 50px rgba(160, 160, 160, 0.05),
+                0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        50% {
+            box-shadow:
+                inset 0 0 50px rgba(160, 160, 160, 0.15),
+                0 20px 60px rgba(160, 160, 160, 0.2);
+        }
+    }
+
+    .raindrops-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 20px;
+        pointer-events: none;
+        object-fit: cover;
+        opacity: 0.95;
+        z-index: 0;
+    }
+
+    .hero-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.2);
+        z-index: 0.5;
+        border-radius: 20px;
+        pointer-events: none;
+    }
+
+    /* ===== SERVICES SECTION ===== */
+    .services-section {
+        padding: 100px 40px;
+        position: relative;
+    }
+
+    .services-section > * {
+        position: relative;
+        z-index: 1;
+    }
+
+    .section-title {
+        font-size: 42px;
+        text-align: center;
+        margin-bottom: 60px;
+        background: linear-gradient(90deg, #ffffff 0%, #00d4ff 50%, #0099cc 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: fadeInDown 0.6s ease-out;
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700;
+        letter-spacing: -1px;
+    }
+
+    @keyframes liquidTitleFlow {
+        0%, 100% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+    }
+
+    .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .service-card {
+        /* Background with rain image */
+        background-image: url('/images/pluie.jpeg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+
+        /* Glasmorphism overlay */
+        position: relative;
+        border-radius: 16px;
+        padding: 40px;
+        text-align: center;
+        border: 2px solid rgba(0, 212, 255, 0.3);
+
+        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        cursor: pointer;
+
+        animation: fadeInUp 0.6s ease-out;
+        animation-fill-mode: both;
+        overflow: hidden;
+    }
+
+    .service-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(20px);
+        z-index: 1;
+        border-radius: 16px;
+        pointer-events: none;
+    }
+
+    .service-card:nth-child(1) { animation-delay: 0.1s; }
+    .service-card:nth-child(2) { animation-delay: 0.2s; }
+    .service-card:nth-child(3) { animation-delay: 0.3s; }
+
+    .service-card > * {
+        position: relative;
+        z-index: 2;
+    }
+
+    .service-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        border-color: #00d4ff;
+        box-shadow: 0 20px 60px rgba(0, 212, 255, 0.3), 0 0 30px rgba(0, 212, 255, 0.2);
+        animation: liquidGlow 1.5s ease-in-out;
+    }
+
+    @keyframes liquidGlow {
+        0%, 100% {
+            box-shadow: 0 20px 60px rgba(0, 212, 255, 0.3), 0 0 30px rgba(0, 212, 255, 0.2);
+        }
+        50% {
+            box-shadow: 0 20px 60px rgba(0, 212, 255, 0.5), 0 0 50px rgba(0, 212, 255, 0.4);
+        }
+    }
+
+    .card-icon {
+        font-size: 48px;
+        margin-bottom: 20px;
+        transition: transform 0.4s ease;
+    }
+
+    .service-card:hover .card-icon {
+        transform: scale(1.2) rotateZ(10deg);
+    }
+
+    .service-card h3 {
+        font-size: 22px;
+        color: var(--vert-fonce);
+        margin-bottom: 15px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 600;
+    }
+
+    .service-card p {
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 25px;
+        font-size: 15px;
+    }
+
+    .btn-learn {
+        background: transparent;
+        border: 2px solid var(--dore);
+        color: var(--dore);
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-learn:hover {
+        background: var(--dore);
+        color: white;
+        transform: scale(1.05);
+    }
+
+    /* ===== ADVANTAGES SECTION ===== */
+    .advantages-section {
+        position: relative;
+        padding: 100px 40px;
+        background-size: cover;
+        background-position: center;
+        overflow: hidden;
+    }
+
+    /* Animation subtile en arrière-plan */
+    .advantages-bg-video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.3;
+        z-index: -1;
+        opacity: 0.08;  /* Très subtil */
+        pointer-events: none;
+        display: none !important;
+    }
+
+    /* En mode sombre, rendre l'animation encore plus subtile */
+    body.dark-mode .advantages-bg-video {
+        opacity: 0.05;
+    }
+
+    /* Désactiver la vidéo sur mobile pour performance */
+    @media (max-width: 768px) {
+        .advantages-bg-video {
+            display: none;
+        }
+    }
+
+    .advantages-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .advantage-card {
+        background: rgba(0, 212, 255, 0.08);
+        backdrop-filter: blur(20px);
+        border: 2px solid rgba(0, 212, 255, 0.3);
+
+        border-radius: 16px;
+        padding: 40px;
+        text-align: center;
+
+        animation: fadeInUp 0.6s ease-out;
+        animation-fill-mode: both;
+
+        transition: all 0.3s ease;
+        position: relative;
+        padding-top: 60px;
+    }
+
+    .advantage-card::before {
+        content: attr(data-number);
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 60px;
+        background:
+            radial-gradient(circle at 30% 30%, rgba(255, 255, 200, 0.9), transparent 50%),
+            radial-gradient(circle at 70% 70%, rgba(100, 80, 0, 0.3), transparent 50%),
+            linear-gradient(135deg, #ffd700 0%, #ffed4e 25%, #d4a842 50%, #b8860b 75%, #cd853f 100%);
+        border: 3px solid #d4a842;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 900;
+        font-size: 28px;
+        color: #3d2817;
+        box-shadow:
+            inset 0 2px 5px rgba(255, 255, 150, 0.7),
+            inset 0 -2px 5px rgba(100, 80, 0, 0.5),
+            0 8px 20px rgba(160, 160, 160, 0.5),
+            0 0 20px rgba(255, 215, 0, 0.4);
+        transition: all 0.3s ease;
+    }
+
+    .advantage-card:nth-child(1) { animation-delay: 0.1s; }
+    .advantage-card:nth-child(1)::before { content: "1"; }
+
+    .advantage-card:nth-child(2) { animation-delay: 0.2s; }
+    .advantage-card:nth-child(2)::before { content: "2"; }
+
+    .advantage-card:nth-child(3) { animation-delay: 0.3s; }
+    .advantage-card:nth-child(3)::before { content: "3"; }
+
+    .advantage-card:nth-child(4) { animation-delay: 0.4s; }
+    .advantage-card:nth-child(4)::before { content: "4"; }
+
+    .advantage-card:hover {
+        transform: translateY(-8px) scale(1.01);
+        box-shadow: 0 15px 45px rgba(0, 212, 255, 0.2), 0 0 30px rgba(0, 212, 255, 0.15);
+        border-color: #00d4ff;
+        animation: liquidCardPulse 2s ease-in-out;
+    }
+
+    @keyframes liquidCardPulse {
+        0%, 100% {
+            box-shadow: 0 15px 45px rgba(0, 212, 255, 0.2), 0 0 30px rgba(0, 212, 255, 0.15);
+        }
+        50% {
+            box-shadow: 0 15px 45px rgba(0, 212, 255, 0.4), 0 0 40px rgba(0, 212, 255, 0.3);
+        }
+    }
+
+    .advantage-card:hover::before {
+        transform: translateX(-50%) scale(1.2);
+        box-shadow: 0 12px 30px rgba(255, 215, 0, 0.6), 0 0 20px rgba(255, 215, 0, 0.4);
+        animation: goldenPulse 1.5s ease-in-out;
+    }
+
+    @keyframes goldenPulse {
+        0%, 100% { filter: brightness(1); }
+        50% { filter: brightness(1.3); }
+    }
+
+    .advantage-icon {
+        font-size: 42px;
+        margin-bottom: 15px;
+    }
+
+    .advantage-card h3 {
+        font-size: 20px;
+        color: var(--vert-fonce);
+        margin-bottom: 10px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 600;
+    }
+
+    .advantage-card p {
+        color: #666;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    /* ===== CTA SECTION ===== */
+    .cta-section {
+        padding: 80px 40px;
+        background: linear-gradient(135deg, var(--vert-fonce) 0%, var(--vert-clair) 100%);
+        text-align: center;
+        color: white;
+    }
+
+    .cta-content {
+        max-width: 600px;
+        margin: 0 auto;
+        animation: fadeInUp 0.8s ease-out;
+    }
+
+    .cta-title {
+        font-size: 38px;
+        margin-bottom: 20px;
+        background: linear-gradient(90deg, #ffffff 0%, #00d4ff 50%, #0099cc 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700;
+        letter-spacing: -1px;
+    }
+
+    .cta-text {
+        font-size: 16px;
+        margin-bottom: 30px;
+        opacity: 0.95;
+        line-height: 1.6;
+    }
+
+    .btn-cta-white {
+        background: white;
+        color: var(--vert-fonce);
+        border: none;
+        padding: 16px 40px;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+
+        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-cta-white:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+        background: var(--noir);
+        color: rgba(255, 255, 255, 0.7);
+        padding: 60px 40px 30px;
+    }
+
+    .footer-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 40px;
+        max-width: 1200px;
+        margin: 0 auto 40px;
+    }
+
+    .footer-column h3 {
+        color: white;
+        margin-bottom: 20px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 600;
+    }
+
+    .footer-column a,
+    .footer-column p {
+        display: block;
+        margin-bottom: 10px;
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        font-size: 14px;
+        transition: color 0.3s ease;
+    }
+
+    .footer-column a:hover {
+        color: var(--dore);
+    }
+
+    .footer-bottom {
+        text-align: center;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 13px;
+    }
+
+    /* ===== RESPONSIVE MOBILE ===== */
+    @media (max-width: 768px) {
+        .hero-container {
+            height: auto;
+            padding: 20px 10px;
+            min-height: 100vh;
+        }
+
+        .hero-gradient-bg {
+            inset: 10px;
+        }
+
+        .hero-card {
+            padding: 50px 30px;
+        }
+
+        .hero-title {
+            font-size: 32px;
+        }
+
+        .hero-subtitle {
+            font-size: 14px;
+        }
+
+        .services-section, .advantages-section, .cta-section, .footer {
+            padding: 60px 20px;
+        }
+
+        .section-title, .cta-title {
+            font-size: 28px;
+        }
+
+        .services-grid, .advantages-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .service-card, .advantage-card {
+            padding: 30px 20px;
+        }
+
+        .footer-content {
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+    }
+
+    /* ===== NEON GRAY LED ANIMATION ===== */
+    @keyframes neonPulse {
+        0%, 100% {
+            opacity: 0.6;
+            filter: blur(0px);
+        }
+        50% {
+            opacity: 1;
+            filter: blur(0.5px);
+        }
+    }
+
+    /* ===== METALLIC SEPARATOR WITH YELLOW LEDS ===== */
+    .processus-section::before,
+    .services-section::before,
+    .advantages-section::before,
+    .cta-section::before {
+        content: '';
+        display: block;
+        height: 12px;
+        margin: 50px 0;
+        background:
+            /* LED Yellow glow spots - ANIMATED */
+            radial-gradient(circle at 10% 50%, #ffd700 0%, rgba(255, 215, 0, 0.6) 8%, transparent 15%),
+            radial-gradient(circle at 25% 50%, #ffd700 0%, rgba(255, 215, 0, 0.6) 8%, transparent 15%),
+            radial-gradient(circle at 40% 50%, #ffd700 0%, rgba(255, 215, 0, 0.6) 8%, transparent 15%),
+            radial-gradient(circle at 55% 50%, #ffd700 0%, rgba(255, 215, 0, 0.6) 8%, transparent 15%),
+            radial-gradient(circle at 70% 50%, #ffd700 0%, rgba(255, 215, 0, 0.6) 8%, transparent 15%),
+            radial-gradient(circle at 85% 50%, #ffd700 0%, rgba(255, 215, 0, 0.6) 8%, transparent 15%),
+            /* Metallic rays conic gradient */
+            conic-gradient(
+                #cdcdcd, #9d9d9d, #808080,
+                #bcbcbc, #c4c4c4, #e6e6e6,
+                #dddddd, #a1a1a1, #7f7f7f,
+                #8b8b8b, #bfbfbf, #e3e3e3,
+                #d2d2d2, #a6a6a6, #858585,
+                #8d8d8d, #c0c0c0, #e5e5e5,
+                #d6d6d6, #9e9e9e, #828282,
+                #8f8f8f, #bdbdbd, #e3e3e3,
+                #cdcdcd
+            );
+        box-shadow:
+            inset 0 1px 3px rgba(255, 255, 255, 0.5),
+            inset 0 -1px 3px rgba(0, 0, 0, 0.6),
+            0 0 20px rgba(255, 215, 0, 0.6),
+            0 4px 12px rgba(0, 0, 0, 0.3);
+        border-radius: 3px;
+        position: relative;
+        z-index: 10;
+        animation: neonPulse 2s ease-in-out infinite;
+    }
+
+    /* ===== PROCESSUS SECTION ===== */
+    .processus-section {
+        padding: 100px 40px;
+        background: linear-gradient(180deg, transparent 0%, rgba(10, 61, 53, 0.03) 100%);
+    }
+
+    .processus-container {
+        max-width: 900px;
+        margin: 0 auto;
+        animation: fadeInUp 0.8s ease-out;
+    }
+
+    .processus-video {
+        position: relative;
+        width: 100%;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        background: rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .processus-video video {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 20px;
+    }
+
+    .processus-title {
+        font-size: 36px;
+        text-align: center;
+        margin-bottom: 50px;
+        background: linear-gradient(90deg, #ffffff 0%, #00d4ff 50%, #0099cc 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: fadeInDown 0.6s ease-out;
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700;
+        letter-spacing: -1px;
+    }
+
+    /* ===== SCROLL BUTTONS ===== */
+    .scroll-button {
+        position: fixed;
+        left: 30px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--dore), var(--dore-clair));
+        border: none;
+        color: #121212;
+        font-size: 24px;
+        cursor: pointer;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 15px rgba(160, 160, 160, 0.4);
+        transition: all 0.3s ease;
+        z-index: 999;
+    }
+
+    .scroll-button:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 20px rgba(160, 160, 160, 0.6);
+    }
+
+    .scroll-button.active {
+        display: flex;
+    }
+
+    #scrollUp {
+        bottom: 100px;
+    }
+
+    #scrollDown {
+        bottom: 30px;
+    }
+
+    /* ===== PROMOTIONS SECTION ===== */
+    .promotions-section {
+        padding: 100px 40px;
+        background: linear-gradient(180deg, rgba(10, 61, 53, 0.08) 0%, rgba(10, 61, 53, 0.03) 100%);
+    }
+
+    .promotions-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .promo-card {
+        position: relative;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+        backdrop-filter: blur(20px);
+        border: 2px solid rgba(168, 168, 168, 0.3);
+        border-radius: 16px;
+        padding: 40px;
+        text-align: center;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        cursor: pointer;
+        animation: fadeInUp 0.6s ease-out;
+        animation-fill-mode: both;
+    }
+
+    .promo-card:nth-child(1) { animation-delay: 0.1s; }
+    .promo-card:nth-child(2) { animation-delay: 0.2s; }
+    .promo-card:nth-child(3) { animation-delay: 0.3s; }
+
+    .promo-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(168, 168, 168, 0.3) 0%, transparent 70%);
+        animation: promoGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes promoGlow {
+        0%, 100% {
+            opacity: 0.5;
+            transform: translate(0, 0);
+        }
+        50% {
+            opacity: 0.8;
+            transform: translate(-10px, -10px);
+        }
+    }
+
+    .promo-card:hover {
+        transform: translateY(-8px);
+        border-color: rgba(168, 168, 168, 0.6);
+        background: linear-gradient(135deg, rgba(168, 168, 168, 0.15), rgba(168, 168, 168, 0.08));
+        box-shadow: 0 20px 50px rgba(168, 168, 168, 0.25), inset 0 0 20px rgba(168, 168, 168, 0.1);
+    }
+
+    .promo-badge {
+        position: relative;
+        z-index: 2;
+        display: inline-block;
+        background: linear-gradient(135deg, #a8a8a8, #e8e8e8);
+        color: #0A3D35;
+        padding: 10px 20px;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 14px;
+        margin-bottom: 15px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow: 0 4px 15px rgba(168, 168, 168, 0.4);
+    }
+
+    .promo-title {
+        position: relative;
+        z-index: 2;
+        font-size: 24px;
+        background: linear-gradient(90deg, #ffffff 0%, #00d4ff 50%, #0099cc 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 10px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700;
+    }
+
+    .promo-desc {
+        position: relative;
+        z-index: 2;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+
+    .promo-value {
+        position: relative;
+        z-index: 2;
+        font-size: 32px;
+        font-weight: 900;
+        background: linear-gradient(135deg, #a8a8a8, #e8e8e8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 15px;
+    }
+
+    .promo-cta {
+        position: relative;
+        z-index: 2;
+        display: inline-block;
+        background: linear-gradient(135deg, #a8a8a8, #e8e8e8);
+        color: #0A3D35;
+        padding: 12px 28px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+    }
+
+    .promo-cta:hover {
+        transform: scale(1.08);
+        box-shadow: 0 8px 25px rgba(168, 168, 168, 0.5);
+    }
+
+    .promo-validity {
+        position: relative;
+        z-index: 2;
+        font-size: 11px;
+        color: rgba(168, 168, 168, 0.8);
+        margin-top: 15px;
+        font-style: italic;
+    }
+
+    /* Light mode adjustments for promotions */
+    body:not(.dark-mode) .promo-card {
+        background: linear-gradient(135deg, rgba(220, 220, 220, 0.7), rgba(200, 200, 200, 0.6));
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(100, 100, 100, 0.5);
+    }
+
+    body:not(.dark-mode) .promo-card:hover {
+        background: linear-gradient(135deg, rgba(200, 200, 200, 0.8), rgba(180, 180, 180, 0.7));
+        border-color: rgba(80, 80, 80, 0.7);
+    }
+
+    body:not(.dark-mode) .promo-badge {
+        background: linear-gradient(135deg, #707070, #909090);
+        color: #ffffff;
+        box-shadow: 0 4px 15px rgba(100, 100, 100, 0.5);
+    }
+
+    body:not(.dark-mode) .promo-value {
+        background: linear-gradient(135deg, #505050, #707070);
+        color: transparent;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    body:not(.dark-mode) .promo-cta {
+        background: linear-gradient(135deg, #707070, #909090);
+        color: #ffffff;
+    }
+
+    body:not(.dark-mode) .promo-cta:hover {
+        background: linear-gradient(135deg, #606060, #808080);
+        box-shadow: 0 8px 25px rgba(100, 100, 100, 0.6);
+    }
+
+    body:not(.dark-mode) .promo-validity {
+        color: rgba(60, 60, 60, 0.9);
+    }
+
+    body:not(.dark-mode) .promo-title {
+        color: #0A3D35;
+    }
+
+    body:not(.dark-mode) .promo-desc {
+        color: rgba(50, 50, 50, 0.9);
+    }
+
+    /* ===== RESPONSIVE MOBILE ===== */
+    @media (max-width: 768px) {
+        .promotions-section {
+            padding: 60px 20px;
+        }
+
+        .promo-card {
+            padding: 30px 20px;
+        }
+
+        .promo-title {
+            font-size: 20px;
+        }
+
+        .promo-value {
+            font-size: 28px;
+        }
+    }
+</style>
+
+<!-- Hero Section -->
+<section class="hero-container">
+    <div class="hero-gradient-bg">
+        <img src="{{ asset('images/panneaux-solaires-sous-la-pluie.png') }}" alt="Panneaux solaires sous la pluie">
+        <video autoplay muted loop playsinline style="z-index: 2; opacity: 0.7; mix-blend-mode: overlay;">
+            <source src="{{ asset('media/raindrops.mp4') }}" type="video/mp4">
+        </video>
+    </div>
+
+    <div class="hero-card">
+        <video autoplay muted loop playsinline style="position: absolute; top: 0; left: 0; width: 100%; height: 130%; z-index: 0; opacity: 0.35; mix-blend-mode: overlay; border-radius: 20px;">
+            <source src="{{ asset('media/raindrops.mp4') }}" type="video/mp4">
+        </video>
+
+        <!-- Logo débordant vers le haut -->
+        <div class="hero-logo">
+            <img src="{{ asset('images/logo1.jpeg') }}" alt="Sirius-Solar Logo">
         </div>
-        <div class="container">
-            <div>
-                <h1>Vos panneaux perdent <span class="accent">jusqu'à 25 %</span> de rendement sans que vous le voyiez.</h1>
-                <p class="lead">
-                    Poussière, pollen, fientes et résidus calcaires forment un film invisible qui réduit la production
-                    de votre installation photovoltaïque. Notre équipe nettoie vos panneaux à l'eau osmosée, sans
-                    produit chimique, pour leur redonner leur pleine capacité.
-                </p>
-                <div class="hero-actions">
-                    <a href="{{ path('app_devis') }}" class="btn btn-primary">Demander un devis gratuit</a>
-                    <a href="#services" class="btn btn-outline">Voir nos prestations</a>
+
+        <h1 class="hero-title">Nettoyage & entretien de vos panneaux photovoltaïques</h1>
+        <p class="hero-subtitle">Eau osmosée • Zéro produit chimique • Jusqu'à 25% regagné</p>
+
+        <div class="hero-features">
+            <span class="feature-tag">💧 Eau pure</span>
+            <span class="feature-tag">⚡ Haute performance</span>
+            <span class="feature-tag">✅ Écologique</span>
+        </div>
+
+        <a href="{{ path('app_devis') }}" class="btn-cta">Demander un devis</a>
+    </div>
+</section>
+
+<!-- Processus Section -->
+<section class="processus-section" id="processus">
+    <div class="processus-container">
+        <h2 class="processus-title">Notre Processus de Nettoyage</h2>
+
+        <div class="processus-video">
+            <video controls autoplay loop muted playsinline>
+                <source src="{{ asset('media/cleaning-process.mp4') }}" type="video/mp4">
+                Votre navigateur ne supporte pas la vidéo HTML5.
+            </video>
+            <video autoplay muted loop playsinline style="position: absolute; top: 0; left: 0; width: 100%; height: 170%; z-index: 0; opacity: 0.35; mix-blend-mode: overlay; border-radius: 20px;">
+                <source src="{{ asset('media/raindrops.mp4') }}" type="video/mp4">
+            </video>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="services-section" id="services" style="background-image: url('/images/lav1.jpeg') !important; background-size: cover !important; background-position: center !important; background-attachment: fixed !important; background-repeat: no-repeat !important;">
+    <h2 class="section-title">Nos Services</h2>
+
+    <div class="services-grid">
+        <div class="service-card">
+            <div class="card-icon">💧</div>
+            <h3>Nettoyage Premium</h3>
+            <p>Eau osmosée haute pression, résultats garantis et performance maximale</p>
+            <button class="btn-learn">En savoir plus</button>
+        </div>
+
+        <div class="service-card">
+            <div class="card-icon">🔍</div>
+            <h3>Inspection Complète</h3>
+            <p>Diagnostic professionnel avec rapport détaillé de vos installations</p>
+            <button class="btn-learn">En savoir plus</button>
+        </div>
+
+        <div class="service-card">
+            <div class="card-icon">⚡</div>
+            <h3>Maintenance Régulière</h3>
+            <p>Contrats d'entretien personnalisés pour une performance durable</p>
+            <button class="btn-learn">En savoir plus</button>
+        </div>
+    </div>
+</section>
+
+<!-- Advantages Section -->
+<section class="advantages-section" id="avantages" style="background-image: url('/images/img4.png') !important; background-size: cover !important; background-position: center !important; background-attachment: fixed !important; background-repeat: no-repeat !important;">
+    <!-- Animation subtile en arrière-plan -->
+    <video class="advantages-bg-video" autoplay muted loop playsinline>
+        <source src="{{ asset('media/raindrops.mp4') }}" type="video/mp4">
+    </video>
+
+    <div style="position: relative; z-index: 1;">
+        <h2 class="section-title">Pourquoi Sirius-Solar ?</h2>
+
+        <div class="advantages-grid">
+        <div class="advantage-card">
+            <div class="advantage-icon">📈</div>
+            <h3>Rendement +25%</h3>
+            <p>Retrouvez jusqu'à 25% de rendement perdu par la saleté et les dépôts</p>
+        </div>
+
+        <div class="advantage-card">
+            <div class="advantage-icon">💧</div>
+            <h3>Eau Osmosée</h3>
+            <p>Nettoyage avec eau pure, sans résidu, sans trace sur vos panneaux</p>
+        </div>
+
+        <div class="advantage-card">
+            <div class="advantage-icon">🌍</div>
+            <h3>Zéro Chimique</h3>
+            <p>Approach écologique respectueuse de l'environnement et vos installations</p>
+        </div>
+
+        <div class="advantage-card">
+            <div class="advantage-icon">⏱️</div>
+            <h3>Devis en 48h</h3>
+            <p>Service rapide et efficace, réponse garantie en moins de 2 jours</p>
+        </div>
+        </div>
+    </div>
+</section>
+
+<!-- Promotions Section -->
+<section class="promotions-section" id="promotions">
+    <h2 class="section-title">✨ Promotions du Mois</h2>
+
+    <div class="promotions-grid">
+        <!-- Promo 1: Nettoyage + Inspection -->
+        <div class="promo-card">
+            <div class="promo-badge">🎁 Offre Spéciale</div>
+            <h3 class="promo-title">Nettoyage + Inspection</h3>
+            <p class="promo-desc">Package complet nettoyage et diagnostic professionnel</p>
+            <div class="promo-value">-20%</div>
+            <a href="{{ path('app_devis') }}" class="promo-cta">Réserver Maintenant</a>
+            <p class="promo-validity">Valide jusqu'au 30 septembre 2026</p>
+        </div>
+
+        <!-- Promo 2: Maintenance Annuelle -->
+        <div class="promo-card">
+            <div class="promo-badge">🔄 Contrat</div>
+            <h3 class="promo-title">Maintenance Annuelle</h3>
+            <p class="promo-desc">4 nettoyages programmés + support prioritaire</p>
+            <div class="promo-value">-30%</div>
+            <a href="{{ path('app_devis') }}" class="promo-cta">Souscrire</a>
+            <p class="promo-validity">Valide jusqu'au 30 septembre 2026</p>
+        </div>
+
+        <!-- Promo 3: Inspection Gratuite -->
+        <div class="promo-card">
+            <div class="promo-badge">🆓 Gratuit</div>
+            <h3 class="promo-title">Inspection Gratuite</h3>
+            <p class="promo-desc">Diagnostic complet + rapport détaillé sans engagement</p>
+            <div class="promo-value">CHF 0.-</div>
+            <a href="{{ path('app_devis') }}" class="promo-cta">Réserver</a>
+            <p class="promo-validity">Offre limitée - Septembre 2026</p>
+        </div>
+    </div>
+</section>
+
+
+<!-- CTA Section -->
+<section class="cta-section" id="cta">
+    <div class="cta-content">
+        <h2 class="cta-title">Prêt à optimiser votre installation ?</h2>
+        <p class="cta-text">Contactez nos experts Sirius-Solar pour un diagnostic gratuit et une solution adaptée à vos panneaux photovoltaïques.</p>
+        <a href="{{ path('app_devis') }}" class="btn-cta-white">Réserver une visite</a>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer" id="contact">
+    <!-- Carte de Visite Banner -->
+    <div style="border-bottom: 2px solid rgba(160, 160, 160, 0.3); padding: 40px; margin-bottom: 40px;">
+        <style>
+            @keyframes carteSlideIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(40px) scale(0.95);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0) scale(1);
+                }
+            }
+
+            @keyframes carteHover {
+                0%, 100% {
+                    transform: translateY(0px);
+                }
+                50% {
+                    transform: translateY(-10px);
+                }
+            }
+
+            .carte-visite-container {
+                position: relative;
+                max-width: 1000px;
+                margin: 0 auto;
+                padding: 40px 30px;
+                perspective: 1000px;
+                height: 700px;
+            }
+
+            .carte-visite-background {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                border-radius: 20px;
+                z-index: 0;
+                opacity: 0.15;
+            }
+
+            .carte-visite-background img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 20px;
+                filter: brightness(0.8);
+            }
+
+            .carte-flip-wrapper {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                max-width: 550px;
+                margin: 0 auto;
+                transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+                transform-style: preserve-3d;
+                cursor: pointer;
+                filter: drop-shadow(0 20px 60px rgba(160, 160, 160, 0.4));
+            }
+
+            .carte-flip-wrapper:hover {
+                transform: rotateY(180deg);
+            }
+
+            .carte-visite-front,
+            .carte-visite-back {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                backface-visibility: hidden;
+                border-radius: 20px;
+                box-shadow: 0 15px 50px rgba(160, 160, 160, 0.3);
+                overflow: hidden;
+            }
+
+            .carte-visite-front {
+                z-index: 2;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .carte-visite-front img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 20px;
+                animation: carteSlideIn 0.8s ease-out;
+                transition: transform 0.3s ease;
+                filter: brightness(1.1) contrast(1.15);
+            }
+
+            .carte-visite-front:hover img {
+                transform: scale(1.02);
+                filter: brightness(1.2) contrast(1.25);
+            }
+
+            .carte-visite-back {
+                transform: rotateY(180deg);
+                background: linear-gradient(135deg, var(--vert-fonce) 0%, var(--vert-clair) 100%);
+                z-index: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 40px;
+            }
+
+            .carte-visite-back img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 20px;
+                filter: brightness(1.15) contrast(1.2) saturate(1.1);
+            }
+
+            .carte-flip-wrapper:hover .carte-visite-back img {
+                filter: brightness(1.25) contrast(1.3) saturate(1.2);
+            }
+
+            .carte-visite {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 20px;
+            }
+        </style>
+
+        <div class="carte-visite-container">
+            <!-- Affichage côte à côte des deux cartes -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; max-width: 900px; margin: 0 auto;">
+                <!-- Face 1: cartet.jpeg -->
+                <div style="position: relative; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 50px rgba(160, 160, 160, 0.3); cursor: pointer; transition: transform 0.3s ease, filter 0.3s ease;">
+                    <img src="{{ asset('images/cartet.jpeg') }}" alt="Sirius-Solar - Carte de Visite (Face 1)" style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px; filter: brightness(1.2) contrast(1.3) saturate(1.15); transition: filter 0.3s ease;" onmouseover="this.style.filter='brightness(1.35) contrast(1.4) saturate(1.25)'" onmouseout="this.style.filter='brightness(1.2) contrast(1.3) saturate(1.15)'">
+                    <div style="position: absolute; top: 15px; right: 15px; background: rgba(160, 160, 160, 0.9); color: #0A3D35; padding: 8px 16px; border-radius: 50px; font-weight: 600; font-size: 14px; backdrop-filter: blur(10px);">Face 1</div>
+                </div>
+
+                <!-- Face 2: cartet2.jpeg -->
+                <div style="position: relative; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 50px rgba(160, 160, 160, 0.3); cursor: pointer; transition: transform 0.3s ease, filter 0.3s ease;">
+                    <img src="{{ asset('images/cartet2.jpeg') }}" alt="Sirius-Solar - Carte de Visite (Face 2)" style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px; filter: brightness(1.2) contrast(1.3) saturate(1.15); transition: filter 0.3s ease;" onmouseover="this.style.filter='brightness(1.35) contrast(1.4) saturate(1.25)'" onmouseout="this.style.filter='brightness(1.2) contrast(1.3) saturate(1.15)'">
+                    <div style="position: absolute; top: 15px; right: 15px; background: rgba(160, 160, 160, 0.9); color: #0A3D35; padding: 8px 16px; border-radius: 50px; font-weight: 600; font-size: 14px; backdrop-filter: blur(10px);">Face 2</div>
                 </div>
             </div>
-            <div class="panel-grid" aria-hidden="true">
-                {% for i in 1..24 %}
-                    <div class="cell"></div>
-                {% endfor %}
-            </div>
-        </div>
-    </section>
 
-    <div class="stats">
-        <div class="container">
-            <div>
-                <div class="stat-num">+15 %</div>
-                <div class="stat-label">de production retrouvée en moyenne après nettoyage</div>
+            <!-- Texte d'indication -->
+            <p style="text-align: center; margin-top: 40px; color: rgba(255, 255, 255, 0.7); font-size: 14px; letter-spacing: 1px;">
+                ✨ Vos cartes de visite professionnelles Sirius-Solar
+            </p>
+
+            {% if app.user %}
+            <!-- Boutons Contact pour Connectés -->
+            <div style="text-align: center; margin-top: 30px; display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <a href="#contact" style="background: #a8a8a8; color: #0A3D35; padding: 12px 25px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 14px; transition: all 0.3s ease; display: inline-block;" onmouseover="this.style.boxShadow='0 10px 30px rgba(160, 160, 160, 0.5)'" onmouseout="this.style.boxShadow='none'">
+                    📞 Nous Contacter
+                </a>
+                <a href="/devis" style="background: rgba(160, 160, 160, 0.2); color: #a8a8a8; padding: 12px 25px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 14px; border: 2px solid #a8a8a8; transition: all 0.3s ease; display: inline-block;" onmouseover="this.style.background='rgba(160, 160, 160, 0.3)'" onmouseout="this.style.background='rgba(160, 160, 160, 0.2)'">
+                    📋 Demander un Devis
+                </a>
             </div>
-            <div>
-                <div class="stat-num">100 %</div>
-                <div class="stat-label">eau osmosée, zéro produit chimique</div>
-            </div>
-            <div>
-                <div class="stat-num">48h</div>
-                <div class="stat-label">délai moyen de réponse à votre devis</div>
-            </div>
+            {% else %}
+            <!-- Message pour non-connectés -->
+            <p style="text-align: center; margin-top: 30px; color: rgba(160, 160, 160, 0.8); font-size: 13px; letter-spacing: 0.5px;">
+                <a href="{{ path('app_login') }}" style="color: #a8a8a8; text-decoration: underline;">Connectez-vous</a> pour voir les options de contact
+            </p>
+            {% endif %}
         </div>
     </div>
 
-    <section id="services">
-        <div class="container">
-            <div class="section-eyebrow">Nos prestations</div>
-            <h2 class="section-title">Un entretien adapté à chaque installation</h2>
-            <p class="section-intro">
-                Que vous soyez particulier, exploitant agricole ou gestionnaire de site industriel,
-                nous proposons une formule adaptée à la taille et à l'accessibilité de votre installation.
+    <div class="footer-content">
+        <div class="footer-column">
+            <h3>Sirius-Solar</h3>
+            <p>Nettoyage & Entretien de panneaux photovoltaïques avec eau osmosée</p>
+            <p style="font-size: 12px; color: #999; margin-top: 10px; font-style: italic;">"Un panneau propre, un rendement optimal !"</p>
+        </div>
+
+        <div class="footer-column">
+            <h3>Liens Utiles</h3>
+            <a href="{{ path('app_home') }}">Accueil</a>
+            <a href="{{ path('app_home') }}#services">Services</a>
+            <a href="{{ path('app_devis') }}">Demander un devis</a>
+            <a href="{{ path('app_login') }}">Connexion Admin</a>
+        </div>
+
+        <div class="footer-column">
+            <h3>Services</h3>
+            <a href="{{ path('app_home') }}#services">Nettoyage Premium</a>
+            <a href="{{ path('app_home') }}#services">Inspection Complète</a>
+            <a href="{{ path('app_home') }}#services">Maintenance Régulière</a>
+            <a href="{{ path('app_home') }}#services">Protection Sealant</a>
+        </div>
+
+        <div class="footer-column">
+            <h3>Avantages</h3>
+            <p style="font-size: 13px; line-height: 1.8;">
+                ✓ Rendement +25%<br>
+                ✓ Eau Osmosée<br>
+                ✓ Zéro Chimique<br>
+                ✓ Devis en 48h
             </p>
-            <div class="services-grid">
-                {% for service in services %}
-                    <div class="service-card">
-                        <h3>{{ service.titre }}</h3>
-                        <p>{{ service.description }}</p>
-                        <div class="service-price">{{ service.prix }}</div>
-                    </div>
-                {% endfor %}
-            </div>
         </div>
-    </section>
+    </div>
 
-    <section id="avantages" class="alt">
-        <div class="container">
-            <div class="section-eyebrow">Pourquoi nous choisir</div>
-            <h2 class="section-title">Un savoir-faire technique, des résultats mesurables</h2>
-            <p class="section-intro">
-                Le nettoyage de panneaux n'est pas un simple lavage de vitres : c'est une intervention technique
-                qui demande du matériel adapté et une bonne connaissance des installations photovoltaïques.
-            </p>
-            <div class="avantages-list">
-                {% for avantage in avantages %}
-                    <div class="avantage-item">
-                        <div class="avantage-icon">✓</div>
-                        <div class="avantage-text">{{ avantage }}</div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    </section>
+    <div class="footer-bottom">
+        <p>&copy; 2026 Sirius-Solar. Tous droits réservés. | Spécialiste du nettoyage de panneaux photovoltaïques en Suisse Romande.</p>
+    </div>
+</footer>
 
-    <section>
-        <div class="cta-band">
-            <h2>Prêt à retrouver le plein rendement de votre installation ?</h2>
-            <a href="{{ path('app_devis') }}" class="btn btn-primary">Demander un devis gratuit</a>
-        </div>
-    </section>
+<!-- Scroll Navigation Bar -->
+<div class="scroll-nav-bar" id="scrollNavBar">
+    <button class="scroll-nav-btn" data-target="hero" title="Accueil">
+        <span class="nav-label">Accueil</span>
+    </button>
+    <button class="scroll-nav-btn" data-target="processus" title="Processus">
+        <span class="nav-label">Processus</span>
+    </button>
+    <button class="scroll-nav-btn" data-target="services" title="Services">
+        <span class="nav-label">Services</span>
+    </button>
+    <button class="scroll-nav-btn" data-target="avantages" title="Avantages">
+        <span class="nav-label">Avantages</span>
+    </button>
+    <button class="scroll-nav-btn" data-target="promotions" title="Promotions">
+        <span class="nav-label">Promo</span>
+    </button>
+    <button class="scroll-nav-btn" data-target="cta" title="Optimiser">
+        <span class="nav-label">Optimiser</span>
+    </button>
+    <button class="scroll-nav-btn" data-target="contact" title="Contact">
+        <span class="nav-label">Contact</span>
+    </button>
+</div>
 
- <script>
-const canvas = document.getElementById('sun-rays');
-const ctx = canvas.getContext('2d');
-const hero = document.querySelector('.hero');
-const sunEl = document.querySelector('.hero::before');
-
-const DURATION = 16000;
-let rays = [];
-
-function resize() {
-    canvas.width = hero.offsetWidth;
-    canvas.height = hero.offsetHeight;
+<style>
+/* Scroll Navigation Bar - 3D Version */
+.scroll-nav-bar {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 998;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: rgba(10, 61, 53, 0.15);
+    padding: 16px 8px;
+    border-radius: 16px;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.2),
+        inset 0 0 20px rgba(0, 212, 255, 0.05),
+        0 0 20px rgba(0, 212, 255, 0.1);
+    perspective: 1000px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
-resize();
-window.addEventListener('resize', resize);
 
-// Le soleil suit le curseur (en plus de l'animation de coucher de soleil)
-let offsetX = 0, offsetY = 0;
-let targetOffsetX = 0, targetOffsetY = 0;
-const MAX_OFFSET = 70;
+.scroll-nav-bar::-webkit-scrollbar {
+    display: none;
+}
 
-hero.addEventListener('mousemove', (e) => {
-    const rect = hero.getBoundingClientRect();
-    const cx = rect.width / 2;
-    const cy = rect.height / 2;
-    targetOffsetX = ((e.clientX - rect.left - cx) / cx) * MAX_OFFSET;
-    targetOffsetY = ((e.clientY - rect.top - cy) / cy) * MAX_OFFSET;
+.scroll-nav-btn {
+    width: 100px;
+    height: 50px;
+    padding: 0;
+    border-radius: 12px;
+    border: 2px solid rgba(0, 212, 255, 0.3);
+    background: linear-gradient(135deg, rgba(0,212,255,0.1) 0%, rgba(0,153,204,0.1) 100%);
+    color: #00d4ff;
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: 700;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+    position: relative;
+    transform-style: preserve-3d;
+    box-shadow:
+        0 4px 15px rgba(0, 212, 255, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.nav-label {
+    display: block;
+    white-space: nowrap;
+    position: relative;
+    z-index: 2;
+}
+
+.scroll-nav-btn:hover {
+    background: linear-gradient(135deg, rgba(0,212,255,0.25) 0%, rgba(0,153,204,0.25) 100%);
+    border-color: rgba(0,212,255,0.6);
+    transform:
+        translateX(-5px)
+        rotateY(-15deg)
+        rotateX(5deg)
+        scale(1.05);
+    box-shadow:
+        0 10px 30px rgba(0, 212, 255, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        0 0 20px rgba(0, 212, 255, 0.4);
+    text-shadow: 0 0 15px rgba(0, 212, 255, 0.8);
+}
+
+/* Active button with enhanced 3D effect */
+.scroll-nav-btn.active {
+    background: linear-gradient(135deg, rgba(0,212,255,0.4) 0%, rgba(0,153,204,0.4) 100%);
+    border-color: rgba(0,212,255,0.8);
+    transform:
+        translateX(-10px)
+        rotateY(-20deg)
+        scale(1.1);
+    box-shadow:
+        0 15px 40px rgba(0, 212, 255, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        0 0 30px rgba(0, 212, 255, 0.6);
+    text-shadow: 0 0 20px rgba(0, 212, 255, 1);
+    color: #00d4ff;
+}
+
+/* Scroll animation - button moves when scrolling to that section */
+.scroll-nav-btn.scrolling {
+    animation: slideInActive 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes slideInActive {
+    0% {
+        transform: translateX(20px) rotateY(30deg) scale(0.8);
+        opacity: 0;
+    }
+    50% {
+        transform: translateX(-8px) rotateY(-15deg) scale(1.08);
+    }
+    100% {
+        transform: translateX(-10px) rotateY(-20deg) scale(1.1);
+    }
+}
+
+@media (max-width: 1024px) {
+    .scroll-nav-bar {
+        right: 12px !important;
+        gap: 10px !important;
+        padding: 12px 6px !important;
+    }
+
+    .scroll-nav-btn {
+        width: 85px !important;
+        height: 45px !important;
+        font-size: 9px !important;
+        border-radius: 10px !important;
+    }
+
+    .scroll-nav-btn:hover {
+        transform:
+            translateX(-4px)
+            rotateY(-12deg)
+            rotateX(3deg)
+            scale(1.03) !important;
+    }
+
+    .scroll-nav-btn.active {
+        transform:
+            translateX(-8px)
+            rotateY(-15deg)
+            scale(1.08) !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .scroll-nav-bar {
+        right: 0 !important;
+        left: 0 !important;
+        top: auto !important;
+        bottom: 0 !important;
+        transform: none !important;
+        gap: 4px !important;
+        padding: 6px !important;
+        flex-direction: row !important;
+        background: rgba(10, 61, 53, 0.2) !important;
+        border-radius: 0 !important;
+        border: 1px solid rgba(0, 212, 255, 0.2) !important;
+        border-bottom: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        box-sizing: border-box;
+    }
+
+    .scroll-nav-btn {
+        width: 65px !important;
+        height: 38px !important;
+        min-width: 65px !important;
+        font-size: 8px !important;
+        border-radius: 8px !important;
+        flex-shrink: 0 !important;
+        padding: 0 !important;
+    }
+
+    .scroll-nav-btn:hover {
+        transform: scale(1.02) !important;
+    }
+
+    .scroll-nav-btn.active {
+        transform: scale(1.03) !important;
+    }
+
+    /* Mobile fixes for business card container */
+    .carte-visite-container {
+        height: auto !important;
+        padding: 20px 15px !important;
+    }
+
+    .carte-visite-container > div[style*="display"] {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 20px !important;
+        max-width: 100% !important;
+        margin: 0 auto !important;
+    }
+
+    .carte-visite-container > div[style*="display"] > div {
+        height: 200px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .carte-visite-container > p {
+        margin-top: 20px !important;
+        font-size: 12px !important;
+    }
+}
+</style>
+
+<script>
+// Scroll Navigation Bar Functionality
+const scrollNavButtons = document.querySelectorAll('.scroll-nav-btn');
+const scrollNavBar = document.getElementById('scrollNavBar');
+
+// Handle button clicks
+scrollNavButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const targetId = btn.dataset.target;
+        const targetElement = targetId === 'hero'
+            ? document.querySelector('.hero-container')
+            : document.getElementById(targetId);
+
+        if (targetElement) {
+            targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
 });
 
-hero.addEventListener('mouseleave', () => {
-    targetOffsetX = 0;
-    targetOffsetY = 0;
+// Update active button based on scroll position
+window.addEventListener('scroll', () => {
+    let currentSection = 'hero';
+
+    const sections = [
+        { id: 'hero', element: document.querySelector('.hero-container'), offset: 0 },
+        { id: 'processus', element: document.getElementById('processus'), offset: 200 },
+        { id: 'services', element: document.getElementById('services'), offset: 200 },
+        { id: 'avantages', element: document.getElementById('avantages'), offset: 200 },
+        { id: 'promotions', element: document.getElementById('promotions'), offset: 200 },
+        { id: 'realisations', element: document.getElementById('realisations'), offset: 200 },
+        { id: 'cta', element: document.getElementById('cta'), offset: 200 },
+        { id: 'contact', element: document.getElementById('contact'), offset: 200 }
+    ];
+
+    sections.forEach(section => {
+        if (section.element) {
+            const rect = section.element.getBoundingClientRect();
+            if (rect.top <= section.offset && rect.bottom > section.offset) {
+                currentSection = section.id;
+            }
+        }
+    });
+
+    scrollNavButtons.forEach(btn => {
+        btn.classList.remove('active');
+        btn.classList.remove('scrolling');
+        if (btn.dataset.target === currentSection) {
+            btn.classList.add('active');
+            btn.classList.add('scrolling');
+            // Remove animation class after animation completes for next trigger
+            setTimeout(() => {
+                btn.classList.remove('scrolling');
+            }, 600);
+        }
+    });
+
+    // Show/hide scroll bar based on scroll position with smooth transition
+    if (window.scrollY > 300) {
+        scrollNavBar.style.opacity = '1';
+        scrollNavBar.style.pointerEvents = 'auto';
+        scrollNavBar.style.transition = 'opacity 0.3s ease';
+    } else {
+        scrollNavBar.style.opacity = '0.3';
+        scrollNavBar.style.pointerEvents = 'none';
+        scrollNavBar.style.transition = 'opacity 0.3s ease';
+    }
 });
 
-for (let i = 0; i < 25; i++) {
-    rays.push({
-        angle: Math.random() * Math.PI * 2,
-        speed: (Math.random() * 0.002 + 0.0005) * (Math.random() > 0.5 ? 1 : -1),
-        width: Math.random() * 0.03 + 0.008,
-        opacity: Math.random() * 0.12 + 0.04,
+// Scroll down by 500px (one step) - instantaneous
+const scrollDownBtn = document.querySelector('[data-scroll-down]');
+if (scrollDownBtn) {
+    scrollDownBtn.addEventListener('click', () => {
+        const currentScroll = window.scrollY;
+        const targetScroll = currentScroll + 500;
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        window.scrollTo(0, Math.min(targetScroll, maxScroll));
     });
 }
-
-// On applique l'easing CSS ease-in-out manuellement
-function easeInOut(t) {
-    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-}
-
-function draw(now) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    const W = canvas.width;
-    const H = canvas.height;
-    const raw = (now % DURATION) / DURATION;
-    const progress = easeInOut(raw);
-
-    // Position du soleil (trajectoire du coucher de soleil)
-   const sunW = 180;
-const baseRightPct = 0.78 - progress * 0.68;
-const baseBottomPx = 300 - progress * 280;
-
-    // Le curseur ajoute un décalage par-dessus la trajectoire
-    offsetX += (targetOffsetX - offsetX) * 0.06;
-    offsetY += (targetOffsetY - offsetY) * 0.06;
-
-    const rightPct = baseRightPct - (offsetX / W);
-    const bottomPx = baseBottomPx - offsetY;
-
-// Centre exact du soleil
-const sunX = W - (W * rightPct) - sunW / 2;
-const sunY = H - bottomPx - sunW / 2;
-    // Opacité
-    let opacity = 1;
-    if (raw < 0.08) opacity = raw / 0.08;
-    else if (raw > 0.92) opacity = 1 - (raw - 0.92) / 0.08;
-
-    // Déplacer le soleil CSS
-    hero.style.setProperty('--sun-right', `${rightPct * 100}%`);
-    hero.style.setProperty('--sun-bottom', `${bottomPx}px`);
-    hero.style.setProperty('--sun-opacity', opacity);
-
-    // Dessiner les rayons
-    const len = Math.max(W, H) * 2;
-    rays.forEach(ray => {
-        ray.angle += ray.speed;
-        const a1 = ray.angle - ray.width;
-        const a2 = ray.angle + ray.width;
-
-        ctx.beginPath();
-        ctx.moveTo(sunX, sunY);
-        ctx.lineTo(sunX + Math.cos(a1) * len, sunY + Math.sin(a1) * len);
-        ctx.lineTo(sunX + Math.cos(a2) * len, sunY + Math.sin(a2) * len);
-        ctx.closePath();
-
-        const grad = ctx.createRadialGradient(sunX, sunY, 0, sunX, sunY, len * 0.5);
-        grad.addColorStop(0, `rgba(244,183,49,${ray.opacity * opacity})`);
-        grad.addColorStop(1, 'rgba(244,183,49,0)');
-        ctx.fillStyle = grad;
-        ctx.fill();
-    });
-
-    requestAnimationFrame(draw);
-}
-requestAnimationFrame(draw);
 </script>
-{% endblock %}
 
-{% block page_nav_next %}
-    <a href="{{ path('app_devis') }}" class="page-nav-link">{{ 'pagenav.quote'|trans }} →</a>
 {% endblock %}

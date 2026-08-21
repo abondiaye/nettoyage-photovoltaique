@@ -1,0 +1,335 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SyriusPro — Nettoyage de panneaux photovoltaïques{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+.hero {
+    position: relative;
+    overflow: hidden;
+    color: var(--blanc);
+    min-height: 90vh;
+    background: 
+        linear-gradient(to bottom, rgba(11,31,51,0.4), rgba(11,31,51,0.7)),
+        url("{{ asset('images/panneaux-solaires-sous-la-pluie.png') }}");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.hero .container {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 48px;
+    align-items: center;
+    padding: 80px 24px 96px;
+    position: relative;
+    z-index: 4;
+}
+
+.hero h1 { font-size: clamp(2.2rem, 4.5vw, 3.4rem); line-height: 1.1; margin-bottom: 20px; }
+.hero h1 .accent { color: var(--jaune-solaire); }
+.hero p.lead { font-size: 1.1rem; color: rgba(255,255,255,0.78); max-width: 480px; margin-bottom: 32px; }
+.hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+
+.panel-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 6px;
+    aspect-ratio: 3/2;
+    border-radius: 12px;
+    overflow: hidden;
+    padding: 14px;
+    background: linear-gradient(135deg, #07141F, #102E47);
+    border: 1px solid rgba(255,255,255,0.08);
+}
+.panel-grid .cell {
+    border-radius: 3px;
+    background: #16324A;
+    animation: clean-sweep 4.5s ease-in-out infinite;
+}
+@keyframes clean-sweep {
+    0%, 100% { background: #16324A; }
+    50% { background: #3E8FC2; }
+}
+.panel-grid .cell:nth-child(6n+1) { animation-delay: 0s; }
+.panel-grid .cell:nth-child(6n+2) { animation-delay: 0.15s; }
+.panel-grid .cell:nth-child(6n+3) { animation-delay: 0.3s; }
+.panel-grid .cell:nth-child(6n+4) { animation-delay: 0.45s; }
+.panel-grid .cell:nth-child(6n+5) { animation-delay: 0.6s; }
+.panel-grid .cell:nth-child(6n+6) { animation-delay: 0.75s; }
+@media (prefers-reduced-motion: reduce) {
+    .panel-grid .cell { animation: none; background: #1E5F8C; }
+}
+
+.stats { background: var(--gris-verre); border-top: 1px solid #E1E8EE; border-bottom: 1px solid #E1E8EE; }
+.stats .container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; padding: 36px 24px; text-align: center; }
+.stats .stat-num { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 2rem; color: var(--bleu-panneau); }
+.stats .stat-label { font-size: 0.9rem; color: #5B6B7A; }
+
+section { padding: 80px 0; }
+section.alt { background: var(--gris-verre); }
+.section-eyebrow { text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.78rem; font-weight: 600; color: var(--bleu-panneau); margin-bottom: 10px; }
+.section-title { font-size: clamp(1.6rem, 3vw, 2.2rem); margin-bottom: 16px; }
+.section-intro { max-width: 560px; color: #4F5E6C; margin-bottom: 48px; }
+
+.services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+.service-card { background: var(--blanc); border: 1px solid #E1E8EE; border-radius: 10px; padding: 28px; display: flex; flex-direction: column; gap: 12px; transition: border-color 0.15s ease, transform 0.15s ease; }
+.service-card:hover { border-color: var(--bleu-panneau); transform: translateY(-3px); }
+.service-card h3 { font-size: 1.15rem; }
+.service-card p { color: #5B6B7A; font-size: 0.95rem; flex-grow: 1; }
+.service-price { font-family: 'Space Grotesk', sans-serif; font-weight: 600; color: var(--bleu-panneau); font-size: 0.95rem; padding-top: 8px; border-top: 1px solid #EEF2F5; }
+
+.avantages-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+.avantage-item { display: flex; gap: 14px; align-items: flex-start; background: var(--blanc); border: 1px solid #E1E8EE; border-radius: 10px; padding: 20px; }
+.avantage-icon { flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px; background: var(--jaune-solaire); display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--bleu-nuit); font-family: 'Space Grotesk', sans-serif; }
+.avantage-text { font-size: 0.95rem; color: #2E3D4B; }
+
+.cta-band { background: var(--bleu-panneau); color: var(--blanc); border-radius: 14px; margin: 0 24px; padding: 48px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px; }
+.cta-band h2 { font-size: 1.6rem; max-width: 480px; }
+
+/* Soleil */
+.hero::before {
+    content: "";
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #FFF9A5 0%, #FFD54F 40%, #F4B731 70%, rgba(244,183,49,0) 100%);
+    right: var(--sun-right, 78%);
+    bottom: var(--sun-bottom, 300px);
+    opacity: var(--sun-opacity, 0);
+    z-index: 2;
+    box-shadow: 
+        0 0 40px 20px rgba(4, 4, 2, 0.5),
+        0 0 80px 40px rgba(244,183,49,.3),
+        0 0 150px 60px rgba(244,183,49,.15);
+}
+
+@keyframes sunSet {
+    0%   { bottom: 300px; right: 78%; opacity: 0; }
+    8%   { opacity: 1; }
+    92%  { opacity: 1; }
+    100% { bottom: 20px; right: 10%; opacity: 0.5; }
+}
+
+/* Montagnes */
+.mountains { position: absolute; bottom: 0; width: 100%; height: 280px; }
+.mountain-back, .mountain-middle, .mountain-front { position: absolute; bottom: 0; width: 100%; }
+.mountain-back   { height: 260px; background: #4d6d8b; z-index: 3; clip-path: polygon(0% 100%, 8% 60%, 18% 75%, 35% 30%, 50% 80%, 65% 25%, 82% 70%, 100% 100%); }
+.mountain-middle { height: 220px; background: #32506d; z-index: 4; clip-path: polygon(0% 100%, 15% 45%, 28% 80%, 50% 20%, 72% 70%, 85% 35%, 100% 100%); }
+.mountain-front  { height: 180px; background: #0B1F33; z-index: 5; clip-path: polygon(0% 100%, 10% 55%, 25% 75%, 45% 30%, 60% 85%, 80% 45%, 100% 100%); }
+
+@media (max-width: 800px) {
+    .hero .container { grid-template-columns: 1fr; padding-top: 56px; }
+    .stats .container { grid-template-columns: 1fr; }
+    .cta-band { margin: 0 16px; padding: 32px; }
+    .hero::before { width: 100px; height: 100px; }
+}
+    </style>
+{% endblock %}
+
+{% block body %}
+    <section class="hero">
+                        <canvas id="sun-rays" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;"></canvas>
+        <div class="mountains">
+            <div class="mountain-back"></div>
+            <div class="mountain-middle"></div>
+            <div class="mountain-front"></div>
+        </div>
+        <div class="container">
+            <div>
+                <h1>Vos panneaux perdent <span class="accent">jusqu'à 25 %</span> de rendement sans que vous le voyiez.</h1>
+                <p class="lead">
+                    Poussière, pollen, fientes et résidus calcaires forment un film invisible qui réduit la production
+                    de votre installation photovoltaïque. Notre équipe nettoie vos panneaux à l'eau osmosée, sans
+                    produit chimique, pour leur redonner leur pleine capacité.
+                </p>
+                <div class="hero-actions">
+                    <a href="{{ path('app_devis') }}" class="btn btn-primary">Demander un devis gratuit</a>
+                    <a href="#services" class="btn btn-outline">Voir nos prestations</a>
+                </div>
+            </div>
+            <div class="panel-grid" aria-hidden="true">
+                {% for i in 1..24 %}
+                    <div class="cell"></div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <div class="stats">
+        <div class="container">
+            <div>
+                <div class="stat-num">+15 %</div>
+                <div class="stat-label">de production retrouvée en moyenne après nettoyage</div>
+            </div>
+            <div>
+                <div class="stat-num">100 %</div>
+                <div class="stat-label">eau osmosée, zéro produit chimique</div>
+            </div>
+            <div>
+                <div class="stat-num">48h</div>
+                <div class="stat-label">délai moyen de réponse à votre devis</div>
+            </div>
+        </div>
+    </div>
+
+    <section id="services">
+        <div class="container">
+            <div class="section-eyebrow">Nos prestations</div>
+            <h2 class="section-title">Un entretien adapté à chaque installation</h2>
+            <p class="section-intro">
+                Que vous soyez particulier, exploitant agricole ou gestionnaire de site industriel,
+                nous proposons une formule adaptée à la taille et à l'accessibilité de votre installation.
+            </p>
+            <div class="services-grid">
+                {% for service in services %}
+                    <div class="service-card">
+                        <h3>{{ service.titre }}</h3>
+                        <p>{{ service.description }}</p>
+                        <div class="service-price">{{ service.prix }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section id="avantages" class="alt">
+        <div class="container">
+            <div class="section-eyebrow">Pourquoi nous choisir</div>
+            <h2 class="section-title">Un savoir-faire technique, des résultats mesurables</h2>
+            <p class="section-intro">
+                Le nettoyage de panneaux n'est pas un simple lavage de vitres : c'est une intervention technique
+                qui demande du matériel adapté et une bonne connaissance des installations photovoltaïques.
+            </p>
+            <div class="avantages-list">
+                {% for avantage in avantages %}
+                    <div class="avantage-item">
+                        <div class="avantage-icon">✓</div>
+                        <div class="avantage-text">{{ avantage }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="cta-band">
+            <h2>Prêt à retrouver le plein rendement de votre installation ?</h2>
+            <a href="{{ path('app_devis') }}" class="btn btn-primary">Demander un devis gratuit</a>
+        </div>
+    </section>
+
+ <script>
+const canvas = document.getElementById('sun-rays');
+const ctx = canvas.getContext('2d');
+const hero = document.querySelector('.hero');
+const sunEl = document.querySelector('.hero::before');
+
+const DURATION = 16000;
+let rays = [];
+
+function resize() {
+    canvas.width = hero.offsetWidth;
+    canvas.height = hero.offsetHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+// Le soleil suit le curseur (en plus de l'animation de coucher de soleil)
+let offsetX = 0, offsetY = 0;
+let targetOffsetX = 0, targetOffsetY = 0;
+const MAX_OFFSET = 70;
+
+hero.addEventListener('mousemove', (e) => {
+    const rect = hero.getBoundingClientRect();
+    const cx = rect.width / 2;
+    const cy = rect.height / 2;
+    targetOffsetX = ((e.clientX - rect.left - cx) / cx) * MAX_OFFSET;
+    targetOffsetY = ((e.clientY - rect.top - cy) / cy) * MAX_OFFSET;
+});
+
+hero.addEventListener('mouseleave', () => {
+    targetOffsetX = 0;
+    targetOffsetY = 0;
+});
+
+for (let i = 0; i < 25; i++) {
+    rays.push({
+        angle: Math.random() * Math.PI * 2,
+        speed: (Math.random() * 0.002 + 0.0005) * (Math.random() > 0.5 ? 1 : -1),
+        width: Math.random() * 0.03 + 0.008,
+        opacity: Math.random() * 0.12 + 0.04,
+    });
+}
+
+// On applique l'easing CSS ease-in-out manuellement
+function easeInOut(t) {
+    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+}
+
+function draw(now) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const W = canvas.width;
+    const H = canvas.height;
+    const raw = (now % DURATION) / DURATION;
+    const progress = easeInOut(raw);
+
+    // Position du soleil (trajectoire du coucher de soleil)
+   const sunW = 180;
+const baseRightPct = 0.78 - progress * 0.68;
+const baseBottomPx = 300 - progress * 280;
+
+    // Le curseur ajoute un décalage par-dessus la trajectoire
+    offsetX += (targetOffsetX - offsetX) * 0.06;
+    offsetY += (targetOffsetY - offsetY) * 0.06;
+
+    const rightPct = baseRightPct - (offsetX / W);
+    const bottomPx = baseBottomPx - offsetY;
+
+// Centre exact du soleil
+const sunX = W - (W * rightPct) - sunW / 2;
+const sunY = H - bottomPx - sunW / 2;
+    // Opacité
+    let opacity = 1;
+    if (raw < 0.08) opacity = raw / 0.08;
+    else if (raw > 0.92) opacity = 1 - (raw - 0.92) / 0.08;
+
+    // Déplacer le soleil CSS
+    hero.style.setProperty('--sun-right', `${rightPct * 100}%`);
+    hero.style.setProperty('--sun-bottom', `${bottomPx}px`);
+    hero.style.setProperty('--sun-opacity', opacity);
+
+    // Dessiner les rayons
+    const len = Math.max(W, H) * 2;
+    rays.forEach(ray => {
+        ray.angle += ray.speed;
+        const a1 = ray.angle - ray.width;
+        const a2 = ray.angle + ray.width;
+
+        ctx.beginPath();
+        ctx.moveTo(sunX, sunY);
+        ctx.lineTo(sunX + Math.cos(a1) * len, sunY + Math.sin(a1) * len);
+        ctx.lineTo(sunX + Math.cos(a2) * len, sunY + Math.sin(a2) * len);
+        ctx.closePath();
+
+        const grad = ctx.createRadialGradient(sunX, sunY, 0, sunX, sunY, len * 0.5);
+        grad.addColorStop(0, `rgba(244,183,49,${ray.opacity * opacity})`);
+        grad.addColorStop(1, 'rgba(244,183,49,0)');
+        ctx.fillStyle = grad;
+        ctx.fill();
+    });
+
+    requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+</script>
+{% endblock %}
+
+{% block page_nav_next %}
+    <a href="{{ path('app_devis') }}" class="page-nav-link">{{ 'pagenav.quote'|trans }} →</a>
+{% endblock %}

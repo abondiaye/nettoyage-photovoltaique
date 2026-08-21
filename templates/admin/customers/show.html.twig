@@ -1,0 +1,80 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Client{% endblock %}
+{% block page_title %}👥 {{ customer.prenom }} {{ customer.nom }}{% endblock %}
+
+{% block content %}
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
+    <div>
+        <div class="card">
+            <h2 style="margin-bottom: 20px;">Informations personnelles</h2>
+            <div class="form-row">
+                <div>
+                    <p><strong>Nom:</strong> {{ customer.nom }}</p>
+                    <p><strong>Prénom:</strong> {{ customer.prenom }}</p>
+                    <p><strong>Email:</strong> {{ customer.email }}</p>
+                </div>
+                <div>
+                    <p><strong>Téléphone:</strong> {{ customer.telephone }}</p>
+                    <p><strong>Adresse:</strong> {{ customer.adresse }}</p>
+                    <p><strong>Code postal:</strong> {{ customer.codePostal }}</p>
+                </div>
+            </div>
+            <p><strong>Ville:</strong> {{ customer.ville }}</p>
+        </div>
+
+        {% if reservations %}
+            <div class="card">
+                <h2 style="margin-bottom: 20px;">Réservations ({{ reservations|length }})</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>N° Réservation</th>
+                            <th>Date</th>
+                            <th>Panneaux</th>
+                            <th>Statut</th>
+                            <th>Prix</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reservation in reservations %}
+                            <tr>
+                                <td><strong>{{ reservation.numero }}</strong></td>
+                                <td>{{ reservation.dateSouhaitee.format('d/m/Y') }}</td>
+                                <td>{{ reservation.nombrePanneaux }}</td>
+                                <td>
+                                    <span class="status-badge status-{{ reservation.statut|lower }}">
+                                        {{ reservation.statut|replace({'_': ' '}) }}
+                                    </span>
+                                </td>
+                                <td>CHF {{ reservation.prixEstime|number_format(2, '.', '') }}</td>
+                                <td>
+                                    <a href="{{ path('admin_reservations_show', {id: reservation.id}) }}" class="btn btn-sm" style="padding: 5px 10px; background: #007bff; color: white; text-decoration: none; border-radius: 4px;">Voir</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="card">
+                <p style="text-align: center; color: #999; padding: 20px;">Aucune réservation</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <div>
+        <div class="card">
+            <h2 style="margin-bottom: 20px;">Actions</h2>
+            <a href="{{ path('admin_customers_edit', {id: customer.id}) }}" class="btn btn-primary" style="width: 100%; text-align: center; display: block; margin-bottom: 10px;">✏️ Éditer</a>
+
+            <form method="POST" action="{{ path('admin_customers_delete', {id: customer.id}) }}" style="margin-bottom: 10px;">
+                <button type="submit" class="btn btn-danger" style="width: 100%;" onclick="return confirm('Êtes-vous sûr? Cette action ne peut pas être annulée.')">🗑️ Supprimer</button>
+            </form>
+
+            <a href="{{ path('admin_customers_list') }}" class="btn btn-secondary" style="width: 100%; text-align: center; display: block;">← Retour à la liste</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Éditer client{% endblock %}
+{% block page_title %}✏️ Éditer {{ customer.prenom }} {{ customer.nom }}{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 600px;">
+    <form method="POST">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="nom">Nom *</label>
+                <input type="text" id="nom" name="nom" value="{{ customer.nom }}" required>
+            </div>
+            <div class="form-group">
+                <label for="prenom">Prénom *</label>
+                <input type="text" id="prenom" name="prenom" value="{{ customer.prenom }}" required>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="email">Email *</label>
+                <input type="email" id="email" name="email" value="{{ customer.email }}" required>
+            </div>
+            <div class="form-group">
+                <label for="telephone">Téléphone *</label>
+                <input type="text" id="telephone" name="telephone" value="{{ customer.telephone }}" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="adresse">Adresse *</label>
+            <input type="text" id="adresse" name="adresse" value="{{ customer.adresse }}" required>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="codePostal">Code Postal *</label>
+                <input type="text" id="codePostal" name="codePostal" value="{{ customer.codePostal }}" required>
+            </div>
+            <div class="form-group">
+                <label for="ville">Ville *</label>
+                <input type="text" id="ville" name="ville" value="{{ customer.ville }}" required>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+            <button type="submit" class="btn btn-primary" style="flex: 1;">💾 Enregistrer</button>
+            <a href="{{ path('admin_customers_show', {id: customer.id}) }}" class="btn btn-secondary" style="flex: 1; text-align: center;">← Annuler</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Clients{% endblock %}
+{% block page_title %}👥 Clients{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="margin-bottom: 20px;">
+        <form method="GET" style="display: flex; gap: 10px;">
+            <input type="text" name="search" placeholder="Rechercher par nom, prénom ou email..." value="{{ search }}" style="flex: 1;">
+            <input type="text" name="ville" placeholder="Filtrer par ville..." value="{{ ville }}" style="flex: 1;">
+            <button type="submit" class="btn btn-primary">Rechercher</button>
+        </form>
+    </div>
+
+    {% if customers %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Email</th>
+                    <th>Téléphone</th>
+                    <th>Adresse</th>
+                    <th>Ville</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customers %}
+                    <tr>
+                        <td>{{ customer.nom }}</td>
+                        <td>{{ customer.prenom }}</td>
+                        <td>{{ customer.email }}</td>
+                        <td>{{ customer.telephone }}</td>
+                        <td>{{ customer.adresse }}</td>
+                        <td>{{ customer.codePostal }} {{ customer.ville }}</td>
+                        <td>
+                            <a href="{{ path('admin_customers_show', {id: customer.id}) }}" class="btn btn-sm" style="padding: 5px 10px; background: #007bff; color: white; text-decoration: none; border-radius: 4px;">Voir</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div style="text-align: center; padding: 40px; color: #999;">
+            <p style="font-size: 18px;">Aucun client trouvé</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

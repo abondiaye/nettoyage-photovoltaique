@@ -2,23 +2,32 @@
 
 namespace App\Controller;
 
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-class LocaleController
+class LocaleController extends AbstractController
 {
-    private const SUPPORTED_LOCALES = ['fr', 'en'];
-
-    #[Route('/locale/{locale}', name: 'app_locale_switch')]
-    public function switch(string $locale, Request $request): RedirectResponse
+    #[Route('/set-locale/{locale}', name: 'set_locale')]
+    public function setLocale(string $locale, Request $request): Response
     {
-        if (\in_array($locale, self::SUPPORTED_LOCALES, true)) {
-            $request->getSession()->set('_locale', $locale);
+        $supported = ['fr', 'de', 'it'];
+
+        if (!in_array($locale, $supported)) {
+            $locale = 'fr';
         }
 
-        $referer = $request->headers->get('referer');
+        $referer = $request->headers->get('referer', $this->generateUrl('app_home'));
 
-        return new RedirectResponse($referer ?: '/');
+        $response = $this->redirect($referer);
+        $response->headers->setCookie(
+            \Symfony\Component\HttpFoundation\Cookie::create('_locale')
+                ->withValue($locale)
+                ->withExpires(new \DateTime('+1 year'))
+                ->withPath('/')
+        );
+
+        return $response;
     }
 }

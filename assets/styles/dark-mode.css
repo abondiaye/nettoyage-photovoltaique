@@ -1,0 +1,308 @@
+/* === DARK MODE THEME === */
+
+:root[data-theme="dark"] {
+  /* Dark mode colors */
+  --bleu-nuit: #050f0c;
+  --bleu-panneau: #0f3a2f;
+  --jaune-solaire: #FFD700;
+  --gris-verre: #0f1f1c;
+  --blanc: #e0e0e0;
+  --texte: #e0e0e0;
+  --gris-clair: #1a2a28;
+  --gris-bordure: #2a3a38;
+  --gris-texte-leger: #a0a0a0;
+  --gris-texte: #b0b0b0;
+  --rouge-erreur: #ff6b6b;
+  --rouge-leger: #ff8888;
+  --rouge-bg: #3a1a1a;
+  --vert-succes: #4ade80;
+  --vert-bg: #1a3a2a;
+  --vert-bordure: #2d6b5533;
+}
+
+/* Full page dark theme */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+:root[data-theme="dark"] body {
+  background: #0a0f0d;
+  color: #e0e0e0;
+}
+
+/* Light mode override */
+:root[data-theme="light"] {
+  --bleu-nuit: #0A3D35;
+  --bleu-panneau: #1B5548;
+  --jaune-solaire: #D4A842;
+  --gris-verre: #faf9f7;
+  --blanc: #FFFFFF;
+  --texte: #1B4D3E;
+}
+
+html[data-theme="light"] body {
+  background-color: #faf9f7 !important;
+  color: #1B4D3E !important;
+  background-image: none !important;
+}
+
+html[data-theme="dark"] body {
+  background-color: #0a0f0d !important;
+  color: #e0e0e0 !important;
+  background-image: none !important;
+}
+
+/* Header dark */
+:root[data-theme="dark"] header.site {
+  background: linear-gradient(135deg, #050f0c 0%, #0a3a2e 100%);
+  border-bottom-color: #FFD700;
+}
+
+/* Hero dark */
+:root[data-theme="dark"] .hero-modern {
+  background: linear-gradient(135deg, rgba(5, 15, 12, 0.9) 0%, rgba(10, 58, 46, 0.9) 100%),
+              url("images/panneaux-solaires-sous-la-pluie.png") center/cover no-repeat;
+  border-color: rgba(255, 215, 0, 0.4);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 215, 0, 0.15);
+}
+
+/* Cards dark */
+:root[data-theme="dark"] .pillar-card {
+  background: linear-gradient(135deg, #1a2a28 0%, #0f2420 100%);
+  border-color: #2a3a38;
+}
+
+:root[data-theme="dark"] .pillar-card:hover {
+  background: linear-gradient(135deg, #1f3a38 0%, #143a30 100%);
+  border-color: #FFD700;
+}
+
+:root[data-theme="dark"] .service-card-modern {
+  background: #1a2a28;
+  border-color: #2a3a38;
+}
+
+:root[data-theme="dark"] .service-card-modern:hover {
+  border-color: #FFD700;
+}
+
+/* Stats dark */
+:root[data-theme="dark"] .stats-modern {
+  background: #1a2a28;
+  border-color: #FFD700;
+}
+
+/* CTA dark */
+:root[data-theme="dark"] .cta-modern {
+  background: linear-gradient(135deg, #050f0c 0%, #0a3a2e 100%);
+}
+
+/* Forms dark */
+:root[data-theme="dark"] input[type="text"],
+:root[data-theme="dark"] input[type="email"],
+:root[data-theme="dark"] input[type="password"],
+:root[data-theme="dark"] input[type="number"],
+:root[data-theme="dark"] select,
+:root[data-theme="dark"] textarea {
+  background: #1a2a28;
+  color: #e0e0e0;
+  border-color: #2a3a38;
+}
+
+:root[data-theme="dark"] input:focus,
+:root[data-theme="dark"] select:focus,
+:root[data-theme="dark"] textarea:focus {
+  background: #0f1f1c;
+  border-color: #FFD700;
+  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+}
+
+/* Links dark */
+:root[data-theme="dark"] a {
+  color: #FFD700;
+}
+
+:root[data-theme="dark"] a:hover {
+  color: #fff;
+}
+
+/* Buttons dark */
+:root[data-theme="dark"] .btn-secondary {
+  background: #0f3a2f;
+  color: #e0e0e0;
+}
+
+:root[data-theme="dark"] .btn-outline {
+  border-color: rgba(224, 224, 224, 0.3);
+  color: #e0e0e0;
+}
+
+:root[data-theme="dark"] .btn-outline:hover {
+  border-color: #FFD700;
+  color: #FFD700;
+}
+
+/* Alerts dark */
+:root[data-theme="dark"] .alert-success {
+  background: #1a3a2a;
+  border-color: #4ade80;
+  color: #4ade80;
+}
+
+:root[data-theme="dark"] .alert-error {
+  background: #3a1a1a;
+  border-color: #ff6b6b;
+  color: #ff8888;
+}
+
+:root[data-theme="dark"] .alert-info {
+  background: #0a2a4a;
+  border-color: #3b82f6;
+  color: #60a5fa;
+}
+
+/* Mobile menu dark */
+:root[data-theme="dark"] .mobile-menu {
+  background: linear-gradient(135deg, #050f0c 0%, #0a3a2e 100%);
+}
+
+/* Nav links dark */
+:root[data-theme="dark"] .nav-links a {
+  color: rgba(224, 224, 224, 0.85);
+}
+
+/* Language switch dark */
+:root[data-theme="dark"] .lang-switch {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+:root[data-theme="dark"] .lang-switch a {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Footer dark (already handled in footer.css) */
+:root[data-theme="dark"] footer.site {
+  background: linear-gradient(135deg, #050f0c 0%, #0a3a2e 100%);
+  color: rgba(224, 224, 224, 0.8);
+}
+
+/* Transition smooth between themes */
+:root {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Input placeholder dark */
+:root[data-theme="dark"] input::placeholder {
+  color: rgba(224, 224, 224, 0.4);
+}
+
+/* Scrollbar dark */
+:root[data-theme="dark"] {
+  scrollbar-color: #FFD700 #1a2a28;
+}
+
+:root[data-theme="dark"] ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+:root[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: #1a2a28;
+}
+
+:root[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: #FFD700;
+  border-radius: 5px;
+}
+
+:root[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: #FFE033;
+}
+
+/* Focus outline dark */
+:root[data-theme="dark"] *:focus-visible {
+  outline-color: #FFD700;
+}
+
+/* Badge dark */
+:root[data-theme="dark"] .badge-primary {
+  background: rgba(255, 215, 0, 0.1);
+  color: #FFD700;
+}
+
+/* Divider dark */
+:root[data-theme="dark"] .divider {
+  background: #2a3a38;
+}
+
+/* Print media - force light mode for printing */
+@media print {
+  :root[data-theme="dark"] {
+    --bleu-nuit: #1B4D3E;
+    --bleu-panneau: #2D6B55;
+    --jaune-solaire: #D4A842;
+    --gris-verre: #F5F3EF;
+    --blanc: #FFFFFF;
+    --texte: #1B4D3E;
+  }
+
+  :root[data-theme="dark"] body {
+    background: white;
+    color: black;
+  }
+}
+
+/* Respect user's system preference */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bleu-nuit: #050f0c;
+    --bleu-panneau: #0f3a2f;
+    --jaune-solaire: #FFD700;
+    --gris-verre: #0f1f1c;
+    --blanc: #e0e0e0;
+    --texte: #e0e0e0;
+  }
+}
+
+/* Light mode override */
+:root[data-theme="light"] {
+  --bleu-nuit: #1B4D3E;
+  --bleu-panneau: #2D6B55;
+  --jaune-solaire: #D4A842;
+  --gris-verre: #F5F3EF;
+  --blanc: #FFFFFF;
+  --texte: #1B4D3E;
+}
+
+:root[data-theme="light"] body {
+  background: #FFFFFF;
+  color: #1B4D3E;
+}
+
+/* Animation for theme transition */
+@keyframes themeChange {
+  0% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+:root.theme-changing {
+  animation: themeChange 0.3s ease;
+}
+
+/* Checkbox styling for dark mode toggle info */
+:root[data-theme="dark"] input[type="checkbox"] {
+  accent-color: #FFD700;
+}
+
+:root[data-theme="dark"] input[type="checkbox"]:hover {
+  accent-color: #FFE033;
+}

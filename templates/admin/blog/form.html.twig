@@ -1,0 +1,322 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter une Réalisation - Admin Sirius-Solar{% endblock %}
+
+{% block body %}
+
+<style>
+    .back-button-wrapper {
+        margin-bottom: 30px;
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        background: linear-gradient(135deg, rgba(10, 61, 53, 0.1), rgba(192, 192, 192, 0.1));
+        border: 2px solid #a8a8a8;
+        color: #0A3D35;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 13px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .back-btn:hover {
+        background: linear-gradient(135deg, rgba(10, 61, 53, 0.15), rgba(192, 192, 192, 0.15));
+        border-color: #0A3D35;
+        transform: translateX(-3px);
+    }
+
+    .back-arrow {
+        font-size: 16px;
+        transition: transform 0.3s ease;
+    }
+
+    .back-btn:hover .back-arrow {
+        transform: translateX(-2px);
+    }
+
+    .admin-container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 40px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .admin-header {
+        margin-bottom: 40px;
+        padding-bottom: 20px;
+        border-bottom: 2px solid #a8a8a8;
+    }
+
+    .admin-header h1 {
+        color: #0A3D35;
+        font-size: 32px;
+        font-weight: 700;
+        font-family: 'Space Grotesk', sans-serif;
+        margin-bottom: 10px;
+    }
+
+    .form-group {
+        margin-bottom: 30px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 10px;
+        color: #0A3D35;
+        font-weight: 600;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="date"],
+    .form-group textarea,
+    .form-group input[type="file"] {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #eee;
+        border-radius: 8px;
+        font-size: 14px;
+        font-family: inherit;
+        transition: border-color 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group input[type="file"]:focus {
+        outline: none;
+        border-color: #a8a8a8;
+        box-shadow: 0 0 0 3px rgba(160, 160, 160, 0.1);
+    }
+
+    .form-group textarea {
+        resize: vertical;
+        min-height: 120px;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 15px;
+        margin-top: 40px;
+    }
+
+    .btn {
+        padding: 12px 30px;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #0A3D35 0%, #2D6B55 100%);
+        color: #a8a8a8;
+        border: 2px solid #a8a8a8;
+    }
+
+    .btn-primary:hover {
+        box-shadow: 0 10px 30px rgba(160, 160, 160, 0.3);
+        transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+        background: #f0f0f0;
+        color: #0A3D35;
+    }
+
+    .btn-secondary:hover {
+        background: #e0e0e0;
+    }
+
+    .image-preview {
+        margin-top: 15px;
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .preview-item {
+        position: relative;
+        width: 150px;
+        height: 150px;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 2px solid #a8a8a8;
+    }
+
+    .preview-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .preview-label {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 3px 8px;
+        border-radius: 3px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    /* Dark mode */
+    body.dark-mode .admin-container {
+        background: #1a1a1a;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    body.dark-mode .admin-header h1 {
+        color: #a8a8a8;
+    }
+
+    body.dark-mode .form-group label {
+        color: #a8a8a8;
+    }
+
+    body.dark-mode .form-group input,
+    body.dark-mode .form-group textarea {
+        background: #2a2a2a;
+        color: #fff;
+        border-color: #333;
+    }
+
+    body.dark-mode .btn-secondary {
+        background: #333;
+        color: #a8a8a8;
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+        .admin-container {
+            padding: 20px;
+        }
+
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+            text-align: center;
+        }
+    }
+</style>
+
+<!-- Back Button -->
+<div class="back-button-wrapper">
+    <a href="{{ path('app_blog') }}" class="back-btn">
+        <span class="back-arrow">←</span>
+        Retour au Blog
+    </a>
+</div>
+
+<div class="admin-container">
+    <div class="admin-header">
+        <h1>✨ Ajouter une Réalisation</h1>
+        <p>Partagez vos projets de nettoyage réussis avec avant/après</p>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="title">Titre du Projet *</label>
+            <input type="text" id="title" name="title" placeholder="Ex: Nettoyage installation résidentielle" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description *</label>
+            <textarea id="description" name="description" placeholder="Décrivez le projet, les résultats, les conditions..." required></textarea>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="location">Localisation *</label>
+                <input type="text" id="location" name="location" placeholder="Ex: Genève, Suisse" required>
+            </div>
+
+            <div class="form-group">
+                <label for="date">Date du Projet *</label>
+                <input type="date" id="date" name="date" required>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="image_before">Photo AVANT *</label>
+                <input type="file" id="image_before" name="image_before" accept="image/*" required>
+                <div class="image-preview" id="preview-before"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="image_after">Photo APRÈS *</label>
+                <input type="file" id="image_after" name="image_after" accept="image/*" required>
+                <div class="image-preview" id="preview-after"></div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">💾 Publier la Réalisation</button>
+            <a href="{{ path('app_blog') }}" class="btn btn-secondary">❌ Annuler</a>
+        </div>
+    </form>
+</div>
+
+<script>
+// Image preview
+document.getElementById('image_before').addEventListener('change', (e) => {
+    showPreview(e.target.files[0], 'preview-before', 'AVANT');
+});
+
+document.getElementById('image_after').addEventListener('change', (e) => {
+    showPreview(e.target.files[0], 'preview-after', 'APRÈS');
+});
+
+function showPreview(file, containerId, label) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = '';
+
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const div = document.createElement('div');
+            div.className = 'preview-item';
+            div.innerHTML = `
+                <img src="${e.target.result}" alt="Preview">
+                <div class="preview-label">${label}</div>
+            `;
+            container.appendChild(div);
+        };
+        reader.readAsDataURL(file);
+    }
+}
+</script>
+
+{% endblock %}

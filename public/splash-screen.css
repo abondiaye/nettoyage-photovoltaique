@@ -1,0 +1,225 @@
+/* === SPLASH SCREEN - WEBGL PARTICLE ANIMATION === */
+
+.splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, var(--bleu-nuit) 0%, var(--bleu-panneau) 100%);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 40px;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.8s ease-out, visibility 0.8s ease-out;
+  color: var(--blanc);
+  overflow: hidden;
+}
+
+.splash-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Particle canvas */
+#particle-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Content */
+.splash-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Logo */
+.splash-logo {
+  font-size: 4rem;
+  margin-bottom: 24px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Title */
+.splash-title {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, var(--blanc), var(--jaune-solaire));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: fadeInUp 0.8s ease-out 0.3s both;
+}
+
+/* Subtitle */
+.splash-subtitle {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-style: italic;
+  animation: fadeInUp 0.8s ease-out 0.4s both;
+  letter-spacing: 0.05em;
+}
+
+/* Loading bar */
+.splash-loader {
+  position: relative;
+  width: 200px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+  animation: fadeInUp 0.8s ease-out 0.5s both;
+}
+
+.splash-loader::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--jaune-solaire), var(--blanc), var(--jaune-solaire));
+  background-size: 200% 100%;
+  animation: loading 2s linear infinite;
+}
+
+@keyframes loading {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* Text under loader */
+.splash-text {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 16px;
+  animation: fadeInUp 0.8s ease-out 0.6s both;
+  letter-spacing: 0.05em;
+}
+
+/* Particles effect (CSS fallback) */
+.splash-particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  opacity: 0.3;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--jaune-solaire);
+  border-radius: 50%;
+  animation: particle-float linear infinite;
+}
+
+@keyframes particle-float {
+  0% {
+    opacity: 1;
+    transform: translateY(0) translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100vh) translateX(var(--tx, 0));
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .splash-screen {
+    gap: 30px;
+  }
+
+  .splash-logo {
+    font-size: 3rem;
+  }
+
+  .splash-title {
+    font-size: 1.8rem;
+  }
+
+  .splash-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .splash-loader {
+    width: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .splash-screen {
+    gap: 20px;
+  }
+
+  .splash-logo {
+    font-size: 2.5rem;
+  }
+
+  .splash-title {
+    font-size: 1.4rem;
+  }
+
+  .splash-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .splash-loader {
+    width: 120px;
+  }
+
+  .splash-text {
+    font-size: 0.8rem;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .splash-screen,
+  .splash-content,
+  .splash-logo,
+  .splash-title,
+  .splash-subtitle,
+  .splash-loader,
+  .splash-text {
+    animation: none;
+  }
+
+  .splash-loader::after {
+    animation: none;
+    background: var(--jaune-solaire);
+  }
+}

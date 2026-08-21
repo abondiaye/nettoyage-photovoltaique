@@ -1,0 +1,144 @@
+/* Reset & Base Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--texte);
+  background: var(--blanc);
+  line-height: 1.6;
+  font-size: 16px;
+  overflow-x: hidden;
+}
+
+/* Typographie */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  font-size: clamp(1.8rem, 4.5vw, 3.4rem);
+  line-height: 1.1;
+}
+
+h2 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  line-height: 1.2;
+}
+
+h3 {
+  font-size: 1.25rem;
+  line-height: 1.3;
+}
+
+p {
+  line-height: 1.7;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--bleu-panneau);
+}
+
+/* Images */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Container */
+.container {
+  max-width: var(--max-container);
+  margin: 0 auto;
+  padding: 0 var(--padding-container);
+}
+
+/* Sections */
+section {
+  padding: var(--space-3xl) 0;
+}
+
+section.alt {
+  background: var(--gris-verre);
+}
+
+/* Listes */
+ul, ol {
+  margin-left: var(--space-md);
+}
+
+li {
+  margin-bottom: var(--space-sm);
+}
+
+/* Code */
+code {
+  background: var(--gris-verre);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--space-base) 0;
+}
+
+th, td {
+  padding: var(--space-base);
+  text-align: left;
+  border-bottom: 1px solid var(--gris-bordure);
+}
+
+th {
+  background: var(--gris-verre);
+  font-weight: 600;
+}
+
+/* Utilitaires d'accessibilité */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Focus visible pour la navigation au clavier */
+*:focus-visible {
+  outline: 2px solid var(--jaune-solaire);
+  outline-offset: 2px;
+}
+
+/* Animations réduites */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

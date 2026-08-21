@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\AppointmentRepository;
 use App\Repository\CommentRepository;
+use App\Repository\MessageRepository;
 use App\Repository\PointRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,28 +19,25 @@ class AdminController extends AbstractController
     #[Route('/dashboard', name: 'app_admin_dashboard')]
     public function dashboard(
         AppointmentRepository $appointmentRepo,
-        UserRepository $userRepo,
-        CommentRepository $commentRepo,
-        PointRepository $pointRepo,
+        MessageRepository $messageRepo
     ): Response {
         $totalAppointments = $appointmentRepo->count([]);
-        $completedAppointments = $appointmentRepo->count(['status' => 'COMPLETED']);
-        $totalMembers = $userRepo->countByRole('ROLE_MEMBER');
-        $pendingComments = $commentRepo->count(['status' => 'PENDING']);
+        $pendingAppointments = $appointmentRepo->count(['status' => 'pending']);
+        $confirmedAppointments = $appointmentRepo->count(['status' => 'confirmed']);
+        $proposedAppointments = $appointmentRepo->count(['status' => 'proposed']);
+        $refusedAppointments = $appointmentRepo->count(['status' => 'refused']);
 
-        $members = $userRepo->findByRole('ROLE_MEMBER');
-        $allAppointments = $appointmentRepo->findAll();
-        $allComments = $commentRepo->findBy([], ['createdAt' => 'DESC']);
+        $totalMessages = $messageRepo->count([]);
+        $recentMessages = $messageRepo->findBy([], ['createdAt' => 'DESC'], 5);
 
         return $this->render('admin/dashboard.html.twig', [
-            'totalAppointments' => $totalAppointments,
-            'completedAppointments' => $completedAppointments,
-            'completionRate' => $totalAppointments > 0 ? round(($completedAppointments / $totalAppointments) * 100) : 0,
-            'totalMembers' => $totalMembers,
-            'pendingComments' => $pendingComments,
-            'members' => $members,
-            'appointments' => $allAppointments,
-            'comments' => $allComments,
+            'total_appointments' => $totalAppointments,
+            'pending_appointments' => $pendingAppointments,
+            'confirmed_appointments' => $confirmedAppointments,
+            'proposed_appointments' => $proposedAppointments,
+            'refused_appointments' => $refusedAppointments,
+            'total_messages' => $totalMessages,
+            'recent_messages' => $recentMessages,
         ]);
     }
 

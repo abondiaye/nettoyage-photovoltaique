@@ -1,0 +1,353 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block page_title %}Dashboard{% endblock %}
+{% block page_subtitle %}Vue d'ensemble de votre activité en temps réel{% endblock %}
+
+{% block content %}
+
+<style>
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .stat-card {
+        background: linear-gradient(135deg, rgba(45, 107, 85, 0.25) 0%, rgba(45, 107, 85, 0.08) 100%);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(45, 107, 85, 0.35);
+        border-radius: 12px;
+        padding: 24px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-6px);
+        border-color: rgba(255, 215, 0, 0.5);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .stat-content {
+        flex: 1;
+    }
+
+    .stat-label {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.65);
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        margin-bottom: 8px;
+        font-weight: 600;
+    }
+
+    .stat-value {
+        font-size: 28px;
+        font-weight: 700;
+        color: #ffd700;
+        margin-bottom: 6px;
+    }
+
+    .stat-subtitle {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .stat-icon-box {
+        width: 50px;
+        height: 50px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        margin-left: 15px;
+        flex-shrink: 0;
+    }
+
+    .stat-icon-blue { background: rgba(33, 150, 243, 0.15); }
+    .stat-icon-green { background: rgba(76, 175, 80, 0.15); }
+    .stat-icon-purple { background: rgba(156, 39, 176, 0.15); }
+    .stat-icon-orange { background: rgba(255, 152, 0, 0.15); }
+
+    .main-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 25px;
+        margin-bottom: 25px;
+    }
+
+    .chart-card {
+        background: linear-gradient(135deg, rgba(45, 107, 85, 0.2) 0%, rgba(45, 107, 85, 0.05) 100%);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(45, 107, 85, 0.3);
+        border-radius: 12px;
+        padding: 28px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .chart-card h3 {
+        font-size: 18px;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .chart-placeholder {
+        height: 250px;
+        background: linear-gradient(180deg, rgba(45, 107, 85, 0.1) 0%, transparent 100%);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 14px;
+    }
+
+    .side-card {
+        background: linear-gradient(135deg, rgba(45, 107, 85, 0.2) 0%, rgba(45, 107, 85, 0.05) 100%);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(45, 107, 85, 0.3);
+        border-radius: 12px;
+        padding: 28px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .side-card h3 {
+        font-size: 18px;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 25px;
+    }
+
+    .earning-item {
+        padding: 18px 0;
+        border-bottom: 1px solid rgba(45, 107, 85, 0.3);
+        display: flex;
+        gap: 15px;
+    }
+
+    .earning-item:last-child {
+        border-bottom: none;
+    }
+
+    .earning-icon {
+        width: 45px;
+        height: 45px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        flex-shrink: 0;
+    }
+
+    .earning-details h4 {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.85);
+        margin-bottom: 4px;
+        font-weight: 600;
+    }
+
+    .earning-details p {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .earning-amount {
+        font-size: 16px;
+        font-weight: 700;
+        color: #ffd700;
+        margin-left: auto;
+    }
+
+    .bottom-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 25px;
+    }
+
+    .info-card {
+        background: linear-gradient(135deg, rgba(45, 107, 85, 0.2) 0%, rgba(45, 107, 85, 0.05) 100%);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(45, 107, 85, 0.3);
+        border-radius: 12px;
+        padding: 28px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .info-card h3 {
+        font-size: 18px;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 20px;
+    }
+
+    .info-item {
+        padding: 14px 0;
+        border-bottom: 1px solid rgba(45, 107, 85, 0.2);
+    }
+
+    .info-item:last-child {
+        border-bottom: none;
+    }
+
+    .info-label {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.6);
+        margin-bottom: 4px;
+    }
+
+    .info-value {
+        font-size: 16px;
+        font-weight: 700;
+        color: white;
+    }
+
+    @media (max-width: 1024px) {
+        .main-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<!-- Stats Row -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-content">
+            <div class="stat-label">Rendez-vous aujourd'hui</div>
+            <div class="stat-value">{{ today_appointments }}</div>
+            <div class="stat-subtitle">{{ total_appointments }} total</div>
+        </div>
+        <div class="stat-icon-box stat-icon-blue">📅</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-content">
+            <div class="stat-label">En attente</div>
+            <div class="stat-value">{{ pending_appointments }}</div>
+            <div class="stat-subtitle">À valider</div>
+        </div>
+        <div class="stat-icon-box stat-icon-orange">⏳</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-content">
+            <div class="stat-label">Confirmées</div>
+            <div class="stat-value">{{ confirmed_appointments }}</div>
+            <div class="stat-subtitle">Ce mois: {{ monthly_appointments }}</div>
+        </div>
+        <div class="stat-icon-box stat-icon-green">✅</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-content">
+            <div class="stat-label">Clients actifs</div>
+            <div class="stat-value">{{ active_clients }}</div>
+            <div class="stat-subtitle">Utilisateurs inscrits</div>
+        </div>
+        <div class="stat-icon-box stat-icon-purple">👥</div>
+    </div>
+</div>
+
+<!-- Main Content Grid -->
+<div class="main-grid">
+    <div class="chart-card">
+        <h3>
+            Aperçu hebdomadaire
+            <span style="font-size: 14px; color: rgba(255, 255, 255, 0.6); font-weight: 400;">Cette semaine</span>
+        </h3>
+        <div class="chart-placeholder">
+            📊 Graphique des rendez-vous cette semaine (Lun-Dim)
+        </div>
+    </div>
+
+    <div class="side-card">
+        <h3>💰 Gains totaux</h3>
+        <div class="earning-item">
+            <div class="earning-icon" style="background: rgba(33, 150, 243, 0.15);">💧</div>
+            <div class="earning-details">
+                <h4>Zipcar</h4>
+                <p>Nettoyage complet</p>
+            </div>
+            <div class="earning-amount">2,450€</div>
+        </div>
+        <div class="earning-item">
+            <div class="earning-icon" style="background: rgba(76, 175, 80, 0.15);">⚡</div>
+            <div class="earning-details">
+                <h4>BitBank</h4>
+                <p>Inspection</p>
+            </div>
+            <div class="earning-amount">1,200€</div>
+        </div>
+        <div class="earning-item">
+            <div class="earning-icon" style="background: rgba(156, 39, 176, 0.15);">🔧</div>
+            <div class="earning-details">
+                <h4>Aviato</h4>
+                <p>Entretien</p>
+            </div>
+            <div class="earning-amount">800€</div>
+        </div>
+    </div>
+</div>
+
+<!-- Bottom Grid -->
+<div class="bottom-grid">
+    <div class="info-card">
+        <h3>👥 Statistiques clients</h3>
+        <div class="info-item">
+            <div class="info-label">Clients actifs</div>
+            <div class="info-value">{{ active_clients }}</div>
+        </div>
+        <div class="info-item">
+            <div class="info-label">Messages reçus</div>
+            <div class="info-value">{{ total_messages }}</div>
+        </div>
+        <div class="info-item">
+            <div class="info-label">Total rendez-vous</div>
+            <div class="info-value">{{ total_appointments }}</div>
+        </div>
+    </div>
+
+    <div class="info-card">
+        <h3>👷 Équipe</h3>
+        <div class="info-item">
+            <div class="info-label">Techniciens actifs</div>
+            <div class="info-value">8</div>
+        </div>
+        <div class="info-item">
+            <div class="info-label">Interventions ce mois</div>
+            <div class="info-value">156</div>
+        </div>
+        <div class="info-item">
+            <div class="info-label">Taux de satisfaction</div>
+            <div class="info-value">98%</div>
+        </div>
+    </div>
+
+    <div class="info-card">
+        <h3>📈 Performance</h3>
+        <div class="info-item">
+            <div class="info-label">Croissance mois dernier</div>
+            <div class="info-value">+25%</div>
+        </div>
+        <div class="info-item">
+            <div class="info-label">Taux de réservation</div>
+            <div class="info-value">68%</div>
+        </div>
+        <div class="info-item">
+            <div class="info-label">Revenu moyen/client</div>
+            <div class="info-value">980€</div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

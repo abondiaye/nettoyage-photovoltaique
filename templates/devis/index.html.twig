@@ -1,504 +1,939 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Demander un devis — SolarClean{% endblock %}
-
-{% block stylesheets %}
-    {{ parent() }}
-    <style>
-        .devis-hero {
-            background: var(--bleu-nuit);
-            color: var(--blanc);
-            padding: 56px 0 64px;
-        }
-        .devis-hero h1 { font-size: clamp(1.8rem, 3.5vw, 2.6rem); margin-bottom: 12px; }
-        .devis-hero p { color: rgba(255,255,255,0.75); max-width: 540px; }
-
-        .devis-wrapper {
-            max-width: 720px;
-            margin: -32px auto 80px;
-            background: var(--blanc);
-            border-radius: 14px;
-            border: 1px solid #E1E8EE;
-            box-shadow: 0 12px 32px rgba(11,31,51,0.08);
-            padding: 40px;
-        }
-
-        .form-section-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 600;
-            font-size: 1rem;
-            color: var(--bleu-panneau);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            margin: 32px 0 16px;
-        }
-        .form-section-title:first-of-type { margin-top: 0; }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
-        .form-row.full { grid-template-columns: 1fr; }
-
-        .field { margin-bottom: 16px; }
-        .field label {
-            display: block;
-            font-size: 0.88rem;
-            font-weight: 500;
-            margin-bottom: 6px;
-            color: #2E3D4B;
-        }
-        .field input,
-        .field select,
-        .field textarea {
-            width: 100%;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.95rem;
-            padding: 11px 14px;
-            border: 1px solid #D5DEE6;
-            border-radius: 8px;
-            background: var(--gris-verre);
-            color: var(--texte);
-            transition: border-color 0.15s ease, background 0.15s ease;
-        }
-        .field input:focus,
-        .field select:focus,
-        .field textarea:focus {
-            outline: none;
-            border-color: var(--bleu-panneau);
-            background: var(--blanc);
-        }
-        .field .form-error {
-            color: #C0392B;
-            font-size: 0.82rem;
-            margin-top: 6px;
-        }
-
-        .submit-row {
-            margin-top: 24px;
-            display: flex;
-            justify-content: flex-end;
-        }
-        .submit-row button {
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 600;
-            font-size: 1rem;
-            background: var(--jaune-solaire);
-            color: var(--bleu-nuit);
-            border: none;
-            border-radius: 8px;
-            padding: 14px 32px;
-            cursor: pointer;
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
-        }
-        .submit-row button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(244,183,49,0.35);
-        }
-
-        @media (max-width: 640px) {
-            .form-row { grid-template-columns: 1fr; }
-            .devis-wrapper { margin: -24px 16px 64px; padding: 28px; }
-        }
-
-        /* --- Calculateur d'estimation --- */
-        .calc-wrapper {
-            max-width: 720px;
-            margin: -32px auto 32px;
-            background: var(--bleu-nuit);
-            color: var(--blanc);
-            border-radius: 14px;
-            box-shadow: 0 12px 32px rgba(11,31,51,0.25);
-            padding: 32px 40px;
-        }
-        .calc-wrapper h2 {
-            font-size: 1.3rem;
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .calc-wrapper > p.calc-sub {
-            color: rgba(255,255,255,0.65);
-            font-size: 0.9rem;
-            margin-bottom: 24px;
-        }
-        .calc-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-bottom: 16px;
-        }
-        .calc-field label {
-            display: block;
-            font-size: 0.78rem;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: rgba(255,255,255,0.6);
-            margin-bottom: 6px;
-        }
-        .calc-field select,
-        .calc-field input[type="number"] {
-            width: 100%;
-            padding: 10px 12px;
-            border-radius: 8px;
-            border: 1px solid rgba(255,255,255,0.18);
-            background: rgba(255,255,255,0.06);
-            color: var(--blanc);
-            font-size: 0.95rem;
-            outline: none;
-            transition: border-color 0.15s ease, background 0.15s ease;
-        }
-        .calc-field select:focus,
-        .calc-field input[type="number"]:focus {
-            border-color: var(--jaune-solaire);
-            background: rgba(255,255,255,0.1);
-        }
-        .calc-chips {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .calc-chip {
-            border-radius: 999px;
-            padding: 6px 14px;
-            font-size: 0.82rem;
-            border: 1px solid rgba(255,255,255,0.25);
-            color: rgba(255,255,255,0.75);
-            cursor: pointer;
-            user-select: none;
-            transition: all 0.15s ease;
-        }
-        .calc-chip:hover { border-color: var(--jaune-solaire); color: var(--jaune-solaire); }
-        .calc-chip.active {
-            border-color: var(--jaune-solaire);
-            background: rgba(244,183,49,0.15);
-            color: var(--jaune-solaire);
-        }
-        .calc-option-line {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.9rem;
-            margin: 18px 0;
-            color: rgba(255,255,255,0.85);
-        }
-        .calc-option-line input[type="checkbox"] {
-            width: 17px;
-            height: 17px;
-            accent-color: var(--jaune-solaire);
-        }
-        .calc-divider {
-            height: 1px;
-            background: rgba(255,255,255,0.12);
-            margin: 20px 0;
-        }
-        .calc-result-main {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--jaune-solaire);
-        }
-        .calc-result-main small {
-            font-size: 1rem;
-            font-weight: 500;
-            color: rgba(255,255,255,0.6);
-        }
-        .calc-detail {
-            font-size: 0.85rem;
-            color: rgba(255,255,255,0.7);
-            margin-top: 8px;
-            line-height: 1.6;
-        }
-        .calc-pill-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 14px;
-        }
-        .calc-pill {
-            font-size: 0.78rem;
-            padding: 4px 10px;
-            border-radius: 999px;
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.18);
-            color: rgba(255,255,255,0.8);
-        }
-        .calc-pill strong { color: var(--blanc); }
-        .calc-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-            margin-top: 24px;
-        }
-        .calc-btn-fill {
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 600;
-            font-size: 0.95rem;
-            background: var(--jaune-solaire);
-            color: var(--bleu-nuit);
-            border: none;
-            border-radius: 8px;
-            padding: 12px 24px;
-            cursor: pointer;
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
-        }
-        .calc-btn-fill:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(244,183,49,0.35);
-        }
-        .calc-note {
-            font-size: 0.78rem;
-            color: rgba(255,255,255,0.45);
-            margin-top: 16px;
-        }
-
-        @media (max-width: 640px) {
-            .calc-wrapper { margin: -24px 16px 24px; padding: 24px; }
-            .calc-row { grid-template-columns: 1fr; }
-        }
-    </style>
-{% endblock %}
+{% block title %}Demande de Devis Gratuit — Sirius-Solar{% endblock %}
 
 {% block body %}
-    <section class="devis-hero">
-        <div class="container">
-            <h1>Demandez votre devis gratuit</h1>
-            <p>
-                Indiquez-nous quelques informations sur votre installation et vos coordonnées.
-                Nous vous recontactons sous 48h avec une proposition adaptée.
-            </p>
-        </div>
-    </section>
+<style>
+    .gooey-navbar { display: flex !important; visibility: visible !important; height: 80px !important; margin: 0 !important; padding: 0 40px !important; }
+    .circular-nav-container { display: block !important; visibility: visible !important; height: 280px !important; width: 280px !important; margin: unset !important; padding: unset !important; }
 
-    <div class="container">
-        <div class="calc-wrapper">
-            <h2>🧮 Estimation rapide</h2>
-            <p class="calc-sub">Obtenez une estimation immédiate, puis pré-remplissez votre demande de devis ci-dessous.</p>
+    /* ===== DEVIS PAGE HEADER ===== */
+    .devis-header {
+        padding: 80px 40px;
+        background: linear-gradient(135deg, var(--vert-fonce) 0%, var(--vert-clair) 100%);
+        text-align: center;
+        color: white;
 
-            <div class="calc-row">
-                <div class="calc-field">
-                    <label>Type d'installation</label>
-                    <select id="calcType">
-                        <option value="residentiel">Résidentiel</option>
-                        <option value="agricole">Agricole</option>
-                        <option value="industriel">Industriel / Tertiaire</option>
-                    </select>
-                </div>
-                <div class="calc-field">
-                    <label>Nombre de panneaux</label>
-                    <input type="number" id="calcNbPanneaux" value="20" min="1" step="1">
-                </div>
-            </div>
+        animation: fadeInDown 0.8s ease-out;
+    }
 
-            <div class="calc-row">
-                <div class="calc-field">
-                    <label>Difficulté d'accès</label>
-                    <div class="calc-chips" id="calcAcces">
-                        <div class="calc-chip active" data-val="1">Standard</div>
-                        <div class="calc-chip" data-val="1.2">Toiture en pente</div>
-                        <div class="calc-chip" data-val="1.4">Hauteur / difficile</div>
-                    </div>
-                </div>
-                <div class="calc-field">
-                    <label>Fréquence</label>
-                    <div class="calc-chips" id="calcFrequence">
-                        <div class="calc-chip active" data-val="1">Ponctuel</div>
-                        <div class="calc-chip" data-val="0.85">Abonnement annuel (-15%)</div>
-                    </div>
-                </div>
-            </div>
+    .devis-header h1 {
+        font-size: 42px;
+        margin-bottom: 15px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700;
+        letter-spacing: -1px;
+    }
 
-            <div class="calc-option-line">
-                <input type="checkbox" id="calcDeplacement" checked>
-                <span>Forfait déplacement (30 € TTC)</span>
-            </div>
+    .devis-header p {
+        font-size: 16px;
+        opacity: 0.95;
+        max-width: 600px;
+        margin: 0 auto;
+    }
 
-            <div class="calc-divider"></div>
+    /* ===== FORM CONTAINER ===== */
+    .devis-container {
+        position: relative;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-            <div id="calcResult">
-                <div class="calc-result-main">0,00 € <small>TTC estimé</small></div>
-                <div class="calc-detail"></div>
-                <div class="calc-pill-row"></div>
-            </div>
+        /* Outer gradient */
+        background: linear-gradient(135deg, #a8e6cf 0%, #88d8c0 100%);
+        padding: 60px 20px;
+        overflow: hidden;
+    }
 
-            <div class="calc-actions">
-                <button type="button" class="calc-btn-fill" id="calcBtnFill">Utiliser cette estimation ↓</button>
-            </div>
+    .devis-gradient-bg {
+        position: absolute;
+        inset: 20px;
+        background: linear-gradient(135deg, var(--vert-fonce) 0%, var(--vert-clair) 100%);
+        border-radius: 20px;
+        z-index: 0;
+    }
 
-            <p class="calc-note">Cette estimation est indicative et non contractuelle. Le devis final est confirmé après étude de votre installation.</p>
-        </div>
+    .devis-form-card {
+        position: relative;
+        z-index: 1;
 
-        <div class="devis-wrapper">
-            {{ form_start(form) }}
+        /* Glasmorphism */
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(30px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
 
-                <div class="form-section-title">Vos coordonnées</div>
-                <div class="form-row">
-                    <div class="field">
-                        {{ form_label(form.clientPrenom) }}
-                        {{ form_widget(form.clientPrenom) }}
-                        <div class="form-error">{{ form_errors(form.clientPrenom) }}</div>
-                    </div>
-                    <div class="field">
-                        {{ form_label(form.clientNom) }}
-                        {{ form_widget(form.clientNom) }}
-                        <div class="form-error">{{ form_errors(form.clientNom) }}</div>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="field">
-                        {{ form_label(form.clientEmail) }}
-                        {{ form_widget(form.clientEmail) }}
-                        <div class="form-error">{{ form_errors(form.clientEmail) }}</div>
-                    </div>
-                    <div class="field">
-                        {{ form_label(form.clientTelephone) }}
-                        {{ form_widget(form.clientTelephone) }}
-                        <div class="form-error">{{ form_errors(form.clientTelephone) }}</div>
-                    </div>
-                </div>
-                <div class="form-row full">
-                    <div class="field">
-                        {{ form_label(form.clientAdresse) }}
-                        {{ form_widget(form.clientAdresse) }}
-                        <div class="form-error">{{ form_errors(form.clientAdresse) }}</div>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="field">
-                        {{ form_label(form.clientCodePostal) }}
-                        {{ form_widget(form.clientCodePostal) }}
-                        <div class="form-error">{{ form_errors(form.clientCodePostal) }}</div>
-                    </div>
-                    <div class="field">
-                        {{ form_label(form.clientVille) }}
-                        {{ form_widget(form.clientVille) }}
-                        <div class="form-error">{{ form_errors(form.clientVille) }}</div>
-                    </div>
-                </div>
+        border-radius: 20px;
+        padding: 60px;
+        max-width: 600px;
+        width: 100%;
 
-                <div class="form-section-title">Votre installation</div>
-                <div class="form-row">
-                    <div class="field">
-                        {{ form_label(form.typeInstallation) }}
-                        {{ form_widget(form.typeInstallation) }}
-                        <div class="form-error">{{ form_errors(form.typeInstallation) }}</div>
-                    </div>
-                    <div class="field">
-                        {{ form_label(form.nombrePanneaux) }}
-                        {{ form_widget(form.nombrePanneaux) }}
-                        <div class="form-error">{{ form_errors(form.nombrePanneaux) }}</div>
-                    </div>
-                </div>
-                <div class="form-row full">
-                    <div class="field">
-                        {{ form_label(form.message) }}
-                        {{ form_widget(form.message) }}
-                        <div class="form-error">{{ form_errors(form.message) }}</div>
-                    </div>
-                </div>
+        /* Shadow */
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3),
+                    inset 0 0 30px rgba(255, 255, 255, 0.1);
 
-                <div class="submit-row">
-                    <button type="submit">Envoyer ma demande</button>
-                </div>
+        /* Animation */
+        animation: fadeInUp 0.8s ease-out;
+    }
 
-            {{ form_end(form) }}
+    .form-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 10px;
+        text-align: center;
+        font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .form-subtitle {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.7);
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    /* ===== FORM GROUPS ===== */
+    .form-group {
+        margin-bottom: 25px;
+        animation: fadeInUp 0.6s ease-out;
+        animation-fill-mode: both;
+    }
+
+    .form-group:nth-child(1) { animation-delay: 0.1s; }
+    .form-group:nth-child(2) { animation-delay: 0.15s; }
+    .form-group:nth-child(3) { animation-delay: 0.2s; }
+    .form-group:nth-child(4) { animation-delay: 0.25s; }
+    .form-group:nth-child(5) { animation-delay: 0.3s; }
+    .form-group:nth-child(6) { animation-delay: 0.35s; }
+    .form-group:nth-child(7) { animation-delay: 0.4s; }
+    .form-group:nth-child(8) { animation-delay: 0.45s; }
+    .form-group:nth-child(9) { animation-delay: 0.5s; }
+
+    /* ===== LABELS ===== */
+    .form-group label {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.9);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .form-group.required label::after {
+        content: ' *';
+        color: var(--dore);
+    }
+
+    /* ===== INPUTS ===== */
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 14px 16px;
+        font-size: 15px;
+        font-family: 'Inter', sans-serif;
+
+        /* Glasmorphism input */
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        color: white;
+        border-radius: 8px;
+
+        transition: all 0.3s ease;
+
+        resize: vertical;
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        outline: none;
+        background: rgba(255, 255, 255, 0.1);
+        border-color: var(--dore);
+        box-shadow: 0 0 15px rgba(160, 160, 160, 0.3);
+    }
+
+    .form-group textarea {
+        min-height: 120px;
+    }
+
+    /* ===== TWO-COLUMN LAYOUT ===== */
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .form-row .form-group {
+        margin-bottom: 0;
+    }
+
+    @media (max-width: 600px) {
+        .form-row {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+
+        .form-row .form-group {
+            margin-bottom: 25px;
+        }
+    }
+
+    /* ===== SUBMIT BUTTON ===== */
+    .form-submit-group {
+        margin-top: 40px;
+        display: flex;
+        gap: 15px;
+    }
+
+    .btn-submit {
+        flex: 1;
+        background: linear-gradient(135deg, var(--dore), var(--dore-clair));
+        color: #121212;
+        border: none;
+        padding: 16px 32px;
+        border-radius: 12px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+
+        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        box-shadow: 0 10px 30px rgba(160, 160, 160, 0.3);
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 20px 50px rgba(160, 160, 160, 0.5);
+    }
+
+    .btn-submit:active {
+        transform: translateY(-1px) scale(0.98);
+    }
+
+    .btn-reset {
+        flex: 1;
+        background: transparent;
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        color: white;
+        padding: 14px 32px;
+        border-radius: 12px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+
+        transition: all 0.3s ease;
+    }
+
+    .btn-reset:hover {
+        border-color: white;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* ===== SUCCESS MESSAGE ===== */
+    .alert-success {
+        background: rgba(76, 175, 80, 0.2);
+        border: 1px solid rgba(76, 175, 80, 0.5);
+        color: #90EE90;
+        padding: 16px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+        font-size: 14px;
+        animation: fadeInDown 0.6s ease-out;
+    }
+
+    /* ===== INFO BOX ===== */
+    .devis-info-box {
+        background: rgba(160, 160, 160, 0.1);
+        border-left: 4px solid var(--dore);
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 40px;
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.8);
+        line-height: 1.6;
+    }
+
+    /* ===== LAVAGE TYPE SELECTION ===== */
+    .lavage-section {
+        background: rgba(160, 160, 160, 0.08);
+        border: 1px solid rgba(160, 160, 160, 0.3);
+        border-radius: 12px;
+        padding: 30px;
+        margin: 30px 0;
+        animation: fadeInUp 0.6s ease-out;
+        animation-fill-mode: both;
+    }
+
+    .lavage-section:nth-child(2) {
+        animation-delay: 0.6s;
+    }
+
+    .lavage-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--vert-fonce);
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .lavage-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+    }
+
+    .lavage-card {
+        position: relative;
+        cursor: pointer;
+    }
+
+    .lavage-card input[type="checkbox"] {
+        display: none;
+    }
+
+    .lavage-card-label {
+        display: block;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(160, 160, 160, 0.3);
+        border-radius: 12px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 600;
+        font-size: 14px;
+        color: var(--vert-fonce);
+    }
+
+    .lavage-icon {
+        font-size: 28px;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .lavage-name {
+        display: block;
+        font-size: 13px;
+        margin-bottom: 5px;
+    }
+
+    .lavage-price {
+        font-size: 12px;
+        color: var(--dore);
+        font-weight: bold;
+    }
+
+    .lavage-card input[type="checkbox"]:checked + .lavage-card-label {
+        background: rgba(160, 160, 160, 0.2);
+        border-color: var(--dore);
+        box-shadow: 0 0 15px rgba(160, 160, 160, 0.3);
+        transform: scale(1.05);
+    }
+
+    .price-summary {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(160, 160, 160, 0.3);
+        border-radius: 12px;
+        padding: 20px;
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: white;
+    }
+
+    .price-label {
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .price-value {
+        font-size: 24px;
+        font-weight: bold;
+        color: var(--dore);
+    }
+
+    /* ===== PRICING CALCULATOR SECTION ===== */
+    .pricing-wrap {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 80px 20px;
+    }
+
+    .pricing-head {
+        text-align: center;
+        margin-bottom: 60px;
+    }
+
+    .pricing-head h2 {
+        font-size: clamp(1.8rem, 3vw, 2.4rem);
+        font-weight: 900;
+        margin-bottom: 15px;
+        background: linear-gradient(135deg, var(--vert-fonce) 0%, var(--vert-clair) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .pricing-head p {
+        color: #666;
+        font-size: 1.05rem;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .pricing-mode {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 30px;
+    }
+
+    .pricing-mode__label {
+        color: #666;
+        font-size: 0.95rem;
+        font-weight: 600;
+    }
+
+    /* Toggle Switch */
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+    }
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+        border-radius: 34px;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+        border-radius: 50%;
+    }
+
+    input:checked + .slider {
+        background-color: var(--dore);
+    }
+
+    input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
+
+    .pricing-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 60px;
+    }
+
+    .pricing-card {
+        background: white;
+        border-radius: 20px;
+        padding: 40px 30px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .pricing-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 60px rgba(160, 160, 160, 0.2);
+        border-color: var(--dore);
+    }
+
+    .pricing-card.featured {
+        border-color: var(--dore);
+        background: linear-gradient(135deg, rgba(160, 160, 160, 0.05) 0%, rgba(244, 208, 63, 0.05) 100%);
+        transform: scale(1.05);
+    }
+
+    .pricing-card.featured:hover {
+        transform: scale(1.08) translateY(-8px);
+    }
+
+    .pricing-card__head {
+        margin-bottom: 25px;
+        border-bottom: 2px solid #f0f0f0;
+        padding-bottom: 20px;
+    }
+
+    .pricing-card__title {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--vert-fonce);
+        margin-bottom: 8px;
+    }
+
+    .pricing-card__sub {
+        font-size: 14px;
+        color: #999;
+        margin: 0;
+    }
+
+    .pricing-card__price {
+        font-size: 42px;
+        font-weight: 900;
+        color: var(--dore);
+        margin-bottom: 5px;
+    }
+
+    .pricing-card__period {
+        font-size: 14px;
+        color: #999;
+        margin-bottom: 25px;
+    }
+
+    .pricing-features {
+        flex-grow: 1;
+        margin-bottom: 30px;
+    }
+
+    .pricing-features li {
+        list-style: none;
+        padding: 12px 0;
+        border-bottom: 1px solid #f0f0f0;
+        font-size: 14px;
+        color: #333;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .pricing-features li:before {
+        content: "✓";
+        color: var(--dore);
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    .pricing-features li:last-child {
+        border-bottom: none;
+    }
+
+    .pricing-card__btn {
+        background: linear-gradient(135deg, var(--dore), var(--dore-clair));
+        color: #121212;
+        border: none;
+        padding: 14px 28px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .pricing-card__btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 30px rgba(160, 160, 160, 0.3);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+        .devis-header {
+            padding: 60px 20px;
+        }
+
+        .devis-header h1 {
+            font-size: 28px;
+        }
+
+        .devis-container {
+            padding: 40px 10px;
+        }
+
+        .devis-gradient-bg {
+            inset: 10px;
+        }
+
+        .devis-form-card {
+            padding: 40px 24px;
+        }
+
+        .form-title {
+            font-size: 22px;
+        }
+
+        .form-submit-group {
+            flex-direction: column;
+        }
+
+        .btn-submit, .btn-reset {
+            width: 100%;
+        }
+
+        .lavage-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .price-summary {
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
+        }
+
+        .pricing-card.featured {
+            transform: scale(1);
+        }
+
+        .pricing-card.featured:hover {
+            transform: translateY(-8px) scale(1);
+        }
+
+        .pricing-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .pricing-head h2 {
+            font-size: 28px;
+        }
+    }
+</style>
+
+<!-- Header -->
+<div class="devis-header" style="position: relative;">
+    <a href="{{ path('app_home') }}" style="position: absolute; top: 20px; right: 40px; color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: all 0.3s ease;">
+        ← Retour à l'accueil
+    </a>
+    <h1>Nos Tarifs & Devis Gratuit</h1>
+    <p>Découvrez nos offres de nettoyage de panneaux solaires et demandez votre devis personnalisé</p>
+</div>
+
+<!-- Pricing Calculator Section -->
+<div class="pricing-wrap">
+    <div class="pricing-head">
+        <h2>Nos Offres de Nettoyage</h2>
+        <p>Sirius-Solar propose des solutions adaptées à tous les types d'installations solaires</p>
+
+        <div class="pricing-mode">
+            <label class="switch">
+                <input type="checkbox" id="ttcToggle">
+                <span class="slider"></span>
+            </label>
+            <span class="pricing-mode__label">Afficher en TTC (TVA 20%)</span>
         </div>
     </div>
 
-    <script>
-        (function () {
-            const PRIX_PAR_PANNEAU = { residentiel: 8, agricole: 6, industriel: 5 };
-            const LABELS_TYPE = { residentiel: 'Résidentiel', agricole: 'Agricole', industriel: 'Industriel / Tertiaire' };
-            const FORFAIT_DEPLACEMENT = 30;
+    <div class="pricing-grid">
+        <!-- PACK BASIQUE -->
+        <div class="pricing-card" data-pack="basique">
+            <header class="pricing-card__head">
+                <h3 class="pricing-card__title">Nettoyage Basique</h3>
+                <p class="pricing-card__sub">Pour petites installations</p>
+            </header>
 
-            const calcType = document.getElementById('calcType');
-            const calcNbPanneaux = document.getElementById('calcNbPanneaux');
-            const calcAcces = document.getElementById('calcAcces');
-            const calcFrequence = document.getElementById('calcFrequence');
-            const calcDeplacement = document.getElementById('calcDeplacement');
-            const calcResult = document.getElementById('calcResult');
-            const calcBtnFill = document.getElementById('calcBtnFill');
+            <div class="pricing-card__price" data-price-ht="150">150 €</div>
+            <p class="pricing-card__period">par intervention • HT</p>
 
-            let accesCoef = 1;
-            let frequenceCoef = 1;
+            <ul class="pricing-features">
+                <li>Jusqu'à 10 panneaux</li>
+                <li>Nettoyage à l'eau osmosée</li>
+                <li>Séchage sans traces</li>
+                <li>Devis valide 30 jours</li>
+            </ul>
 
-            function formatEuro(val) {
-                return val.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            <button class="pricing-card__btn">Sélectionner</button>
+        </div>
+
+        <!-- PACK STANDARD (Featured) -->
+        <div class="pricing-card featured" data-pack="standard">
+            <header class="pricing-card__head">
+                <h3 class="pricing-card__title">⭐ Pack Standard</h3>
+                <p class="pricing-card__sub">Notre offre la plus populaire</p>
+            </header>
+
+            <div class="pricing-card__price" data-price-ht="280">280 €</div>
+            <p class="pricing-card__period">par intervention • HT</p>
+
+            <ul class="pricing-features">
+                <li>Jusqu'à 25 panneaux</li>
+                <li>Nettoyage complet premium</li>
+                <li>Inspection technique gratuite</li>
+                <li>Rapport d'intervention</li>
+                <li>Devis valide 60 jours</li>
+            </ul>
+
+            <button class="pricing-card__btn">Sélectionner</button>
+        </div>
+
+        <!-- PACK PREMIUM -->
+        <div class="pricing-card" data-pack="premium">
+            <header class="pricing-card__head">
+                <h3 class="pricing-card__title">Nettoyage Premium</h3>
+                <p class="pricing-card__sub">Pour grandes installations</p>
+            </header>
+
+            <div class="pricing-card__price" data-price-ht="450">450 €</div>
+            <p class="pricing-card__period">par intervention • HT</p>
+
+            <ul class="pricing-features">
+                <li>Plus de 25 panneaux</li>
+                <li>Nettoyage haute pression</li>
+                <li>Sealant de protection</li>
+                <li>Diagnostic performance</li>
+                <li>Suivi trimestriel inclus</li>
+                <li>Devis valide 90 jours</li>
+            </ul>
+
+            <button class="pricing-card__btn">Sélectionner</button>
+        </div>
+    </div>
+</div>
+
+<!-- Form Section -->
+<section class="devis-container">
+    <div class="devis-gradient-bg"></div>
+
+    <div class="devis-form-card">
+        {% for message in app.flashes('success') %}
+            <div class="alert-success">
+                ✅ {{ message }}
+            </div>
+        {% endfor %}
+
+        <div class="form-title">Formulaire de Devis</div>
+        <p class="form-subtitle">Informations de contact et installation</p>
+
+        <div class="devis-info-box">
+            ℹ️ Tous les champs marqués avec un <span style="color: var(--dore);">*</span> sont obligatoires. Nous vous garantissons une réponse rapide.
+        </div>
+
+        <form method="POST" action="{{ path('app_devis') }}" novalidate>
+            <!-- Nom & Prénom -->
+            <div class="form-row">
+                <div class="form-group required">
+                    <label for="clientPrenom">Prénom</label>
+                    <input type="text" id="clientPrenom" name="devis[clientPrenom]" placeholder="Votre prénom" required>
+                </div>
+
+                <div class="form-group required">
+                    <label for="clientNom">Nom</label>
+                    <input type="text" id="clientNom" name="devis[clientNom]" placeholder="Votre nom" required>
+                </div>
+            </div>
+
+            <!-- Email & Phone -->
+            <div class="form-row">
+                <div class="form-group required">
+                    <label for="clientEmail">Email</label>
+                    <input type="email" id="clientEmail" name="devis[clientEmail]" placeholder="votre@email.ch" required>
+                </div>
+
+                <div class="form-group required">
+                    <label for="clientTelephone">Téléphone</label>
+                    <input type="tel" id="clientTelephone" name="devis[clientTelephone]" placeholder="+41 XX XXX XX XX" required>
+                </div>
+            </div>
+
+            <!-- Address -->
+            <div class="form-group required">
+                <label for="clientAdresse">Adresse</label>
+                <input type="text" id="clientAdresse" name="devis[clientAdresse]" placeholder="Rue et numéro" required>
+            </div>
+
+            <!-- Postal Code & City -->
+            <div class="form-row">
+                <div class="form-group required">
+                    <label for="clientCodePostal">Code Postal</label>
+                    <input type="text" id="clientCodePostal" name="devis[clientCodePostal]" placeholder="1200" required>
+                </div>
+
+                <div class="form-group required">
+                    <label for="clientVille">Ville</label>
+                    <input type="text" id="clientVille" name="devis[clientVille]" placeholder="Genève" required>
+                </div>
+            </div>
+
+            <!-- Types de Lavage -->
+            <div class="lavage-section">
+                <div class="lavage-title">
+                    🧹 Types de Lavage (Sélectionnez un ou plusieurs)
+                </div>
+
+                <div class="lavage-grid">
+                    <!-- Nettoyage Standard -->
+                    <div class="lavage-card">
+                        <input type="checkbox" id="lavage_standard" name="lavage_types[]" value="standard" data-price="120">
+                        <label for="lavage_standard" class="lavage-card-label">
+                            <span class="lavage-icon">💧</span>
+                            <span class="lavage-name">Standard</span>
+                            <span class="lavage-price">CHF 120</span>
+                        </label>
+                    </div>
+
+                    <!-- Nettoyage Premium -->
+                    <div class="lavage-card">
+                        <input type="checkbox" id="lavage_premium" name="lavage_types[]" value="premium" data-price="180">
+                        <label for="lavage_premium" class="lavage-card-label">
+                            <span class="lavage-icon">⭐</span>
+                            <span class="lavage-name">Premium</span>
+                            <span class="lavage-price">CHF 180</span>
+                        </label>
+                    </div>
+
+                    <!-- Haute Pression -->
+                    <div class="lavage-card">
+                        <input type="checkbox" id="lavage_haute_pression" name="lavage_types[]" value="haute_pression" data-price="150">
+                        <label for="lavage_haute_pression" class="lavage-card-label">
+                            <span class="lavage-icon">⚡</span>
+                            <span class="lavage-name">Haute Pression</span>
+                            <span class="lavage-price">CHF 150</span>
+                        </label>
+                    </div>
+
+                    <!-- Inspection -->
+                    <div class="lavage-card">
+                        <input type="checkbox" id="lavage_inspection" name="lavage_types[]" value="inspection" data-price="80">
+                        <label for="lavage_inspection" class="lavage-card-label">
+                            <span class="lavage-icon">🔍</span>
+                            <span class="lavage-name">Inspection</span>
+                            <span class="lavage-price">CHF 80</span>
+                        </label>
+                    </div>
+
+                    <!-- Protection Sealant -->
+                    <div class="lavage-card">
+                        <input type="checkbox" id="lavage_protection" name="lavage_types[]" value="protection" data-price="200">
+                        <label for="lavage_protection" class="lavage-card-label">
+                            <span class="lavage-icon">🛡️</span>
+                            <span class="lavage-name">Protection</span>
+                            <span class="lavage-price">CHF 200</span>
+                        </label>
+                    </div>
+
+                    <!-- Analyse Performance -->
+                    <div class="lavage-card">
+                        <input type="checkbox" id="lavage_analyse" name="lavage_types[]" value="analyse" data-price="120">
+                        <label for="lavage_analyse" class="lavage-card-label">
+                            <span class="lavage-icon">📊</span>
+                            <span class="lavage-name">Analyse</span>
+                            <span class="lavage-price">CHF 120</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="price-summary">
+                    <span class="price-label">💰 Prix Total Estimé</span>
+                    <span class="price-value" id="totalPrice">CHF 0</span>
+                </div>
+            </div>
+
+            <!-- Message -->
+            <div class="form-group">
+                <label for="message">Message additionnel</label>
+                <textarea id="message" name="message" placeholder="Décrivez votre installation solaire, nombre de panneaux, etc..."></textarea>
+            </div>
+
+            <!-- Submit -->
+            <div class="form-submit-group">
+                <button type="submit" class="btn-submit">Envoyer la demande</button>
+                <button type="reset" class="btn-reset">Réinitialiser</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<script>
+    // ===== PRICING CALCULATOR =====
+    const TVARATE = 0.20; // 20%
+    const euro = n => new Intl.NumberFormat('fr-FR', {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(n) + ' €';
+
+    const isTTC = () => document.getElementById('ttcToggle').checked;
+
+    function updatePricingDisplay() {
+        const pricingCards = document.querySelectorAll('.pricing-card');
+
+        pricingCards.forEach(card => {
+            const priceHT = parseFloat(card.querySelector('[data-price-ht]').getAttribute('data-price-ht'));
+            const priceElement = card.querySelector('.pricing-card__price');
+            const periodElement = card.querySelector('.pricing-card__period');
+
+            if (isTTC()) {
+                const priceTTC = priceHT * (1 + TVARATE);
+                priceElement.textContent = euro(priceTTC);
+                periodElement.textContent = 'par intervention • TTC';
+            } else {
+                priceElement.textContent = euro(priceHT);
+                periodElement.textContent = 'par intervention • HT';
             }
+        });
+    }
 
-            function setActiveChip(group, chip) {
-                group.querySelectorAll('.calc-chip').forEach(c => c.classList.remove('active'));
-                chip.classList.add('active');
+    // Add toggle listener
+    document.getElementById('ttcToggle').addEventListener('change', updatePricingDisplay);
+
+    // ===== CALCULATE TOTAL PRICE FOR LAVAGE TYPES =====
+    function updateTotalPrice() {
+        let total = 0;
+        const checkboxes = document.querySelectorAll('input[name="lavage_types[]"]');
+
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                const price = parseInt(checkbox.getAttribute('data-price'));
+                total += price;
             }
+        });
 
-            function calc() {
-                const type = calcType.value;
-                const nb = Math.max(0, parseInt(calcNbPanneaux.value, 10) || 0);
-                const prixUnitaire = PRIX_PAR_PANNEAU[type] ?? 8;
-                const deplacement = calcDeplacement.checked ? FORFAIT_DEPLACEMENT : 0;
+        const totalPriceElement = document.getElementById('totalPrice');
+        if (total === 0) {
+            totalPriceElement.textContent = 'CHF 0';
+        } else {
+            totalPriceElement.textContent = 'CHF ' + total;
+        }
+    }
 
-                const basePrix = nb * prixUnitaire;
-                const prixAjuste = basePrix * accesCoef * frequenceCoef;
-                const total = prixAjuste + deplacement;
+    // Add event listeners to all checkboxes
+    document.querySelectorAll('input[name="lavage_types[]"]').forEach(checkbox => {
+        checkbox.addEventListener('change', updateTotalPrice);
+    });
 
-                calcResult.querySelector('.calc-result-main').innerHTML =
-                    formatEuro(total) + ' € <small>TTC estimé</small>';
+    // Initialize on page load
+    updateTotalPrice();
+    updatePricingDisplay();
+</script>
 
-                calcResult.querySelector('.calc-detail').innerHTML =
-                    nb + ' panneaux × ' + formatEuro(prixUnitaire) + ' €/panneau (' + LABELS_TYPE[type] + ')'
-                    + (accesCoef !== 1 ? ' × coefficient accès ' + accesCoef : '')
-                    + (frequenceCoef !== 1 ? ' × coefficient fréquence ' + frequenceCoef : '')
-                    + (deplacement > 0 ? ' + ' + formatEuro(deplacement) + ' € de déplacement' : '');
-
-                calcResult.querySelector('.calc-pill-row').innerHTML =
-                    '<div class="calc-pill"><strong>' + nb + '</strong> panneaux</div>'
-                    + '<div class="calc-pill"><strong>' + formatEuro(prixUnitaire) + ' €</strong> / panneau</div>'
-                    + (deplacement > 0 ? '<div class="calc-pill"><strong>Déplacement</strong> inclus</div>' : '');
-            }
-
-            calcType.addEventListener('change', calc);
-            calcNbPanneaux.addEventListener('input', calc);
-            calcDeplacement.addEventListener('change', calc);
-
-            calcAcces.addEventListener('click', (e) => {
-                const chip = e.target.closest('.calc-chip');
-                if (!chip) return;
-                accesCoef = parseFloat(chip.dataset.val);
-                setActiveChip(calcAcces, chip);
-                calc();
-            });
-
-            calcFrequence.addEventListener('click', (e) => {
-                const chip = e.target.closest('.calc-chip');
-                if (!chip) return;
-                frequenceCoef = parseFloat(chip.dataset.val);
-                setActiveChip(calcFrequence, chip);
-                calc();
-            });
-
-            calcBtnFill.addEventListener('click', () => {
-                const typeField = document.getElementById('{{ form.typeInstallation.vars.id }}');
-                const nbField = document.getElementById('{{ form.nombrePanneaux.vars.id }}');
-                if (typeField) typeField.value = calcType.value;
-                if (nbField) nbField.value = calcNbPanneaux.value;
-                document.querySelector('.devis-wrapper').scrollIntoView({ behavior: 'smooth', block: 'start' });
-            });
-
-            calc();
-        })();
-    </script>
-{% endblock %}
-
-{% block page_nav_prev %}
-    <a href="{{ path('app_home') }}" class="page-nav-link">← {{ 'pagenav.home'|trans }}</a>
-{% endblock %}
-
-{% block page_nav_next %}
-    {% if is_granted('ROLE_MEMBER') %}
-        <a href="{{ path('app_appointment_book') }}" class="page-nav-link">{{ 'pagenav.book_appointment'|trans }} →</a>
-    {% elseif not is_granted('IS_AUTHENTICATED_FULLY') %}
-        <a href="{{ path('app_login') }}" class="page-nav-link">{{ 'pagenav.login'|trans }} →</a>
-    {% endif %}
 {% endblock %}

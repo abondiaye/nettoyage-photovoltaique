@@ -1,0 +1,446 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Demande de nettoyage - Sirius Solar{% endblock %}
+
+{% block body %}
+<style>
+    .reservation-page { padding: 2rem; }
+    .reservation-page .hero { text-align: center; margin-bottom: 3rem; }
+    .reservation-page .hero h1 { font-size: 28px; font-weight: 600; margin-bottom: 1rem; }
+    .reservation-page .hero p { font-size: 16px; color: #666; max-width: 600px; margin: 0 auto; }
+
+    .steps-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
+    .step-card { text-align: center; }
+    .step-number { width: 50px; height: 50px; border-radius: 50%; background: var(--vert-clair); color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 20px; margin: 0 auto 1rem; }
+    .step-card h3 { font-weight: 600; margin-bottom: 0.5rem; }
+    .step-card p { color: #999; font-size: 14px; }
+
+    .form-container { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; max-width: 1200px; margin: 0 auto; }
+    .form-wrapper { background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .form-section { margin-bottom: 2rem; }
+    .form-section:last-child { margin-bottom: 0; }
+    .form-section h2 { font-size: 16px; font-weight: 600; margin-bottom: 1.5rem; color: var(--vert-fonce); }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    .form-row.full { grid-template-columns: 1fr; }
+
+    .form-group { display: flex; flex-direction: column; }
+    .form-group label { font-weight: 500; margin-bottom: 0.5rem; font-size: 14px; }
+    .form-group input, .form-group select, .form-group textarea { padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--vert-clair); }
+
+    .radio-group { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+    .radio-option { position: relative; }
+    .radio-option input { display: none; }
+    .radio-option label { display: block; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; text-align: center; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+    .radio-option input:checked + label { background: var(--vert-clair); color: white; border-color: var(--vert-clair); }
+
+    .sidebar-card { background: white; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .sidebar-card h3 { font-weight: 600; margin-bottom: 1rem; font-size: 14px; }
+    .sidebar-card ul { list-style: none; }
+    .sidebar-card li { padding: 0.5rem 0; font-size: 13px; color: #555; display: flex; gap: 0.5rem; }
+    .sidebar-card li:before { content: "✓"; color: var(--vert-clair); font-weight: bold; }
+
+    .estimator { background: linear-gradient(135deg, rgba(45, 107, 85, 0.1), rgba(45, 107, 85, 0.05)); border: 1px solid var(--vert-clair); border-radius: 12px; padding: 1.5rem; }
+    .estimate-row { display: flex; justify-content: space-between; margin-bottom: 0.75rem; font-size: 13px; }
+    .estimate-gain { background: var(--vert-clair); color: white; padding: 1rem; border-radius: 8px; text-align: center; font-weight: 600; margin-top: 1rem; }
+
+    .reviews { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .review { margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #eee; }
+    .review:last-child { border: none; margin: 0; }
+    .stars { color: #fbbf24; font-size: 12px; margin-bottom: 0.5rem; }
+    .review-text { font-size: 12px; color: #555; line-height: 1.5; margin-bottom: 0.5rem; }
+    .review-author { font-size: 11px; font-weight: 500; color: #999; }
+
+    .form-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+    .btn { padding: 1rem; border-radius: 8px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; }
+    .btn-secondary { background: #f0f0f0; color: #333; }
+    .btn-secondary:hover { background: #e0e0e0; }
+    .btn-primary { background: var(--vert-clair); color: white; }
+    .btn-primary:hover { background: var(--vert-fonce); }
+
+    .success-box { display: none; background: #d4edda; color: #155724; padding: 1.5rem; border-radius: 8px; border: 1px solid #c3e6cb; margin-top: 1.5rem; }
+    .error-box { display: none; background: #f8d7da; color: #721c24; padding: 1.5rem; border-radius: 8px; border: 1px solid #f5c6cb; margin-top: 1.5rem; }
+
+    @media (max-width: 768px) {
+        .form-container { grid-template-columns: 1fr; }
+        .form-row { grid-template-columns: 1fr; }
+        .radio-group { grid-template-columns: 1fr; }
+        .form-actions { grid-template-columns: 1fr; }
+    }
+</style>
+
+<div class="reservation-page">
+    <div class="hero">
+        <h1>🌞 Optimisez vos panneaux solaires</h1>
+        <p>En 3 étapes simples, obtenez un devis personnalisé pour le nettoyage professionnel</p>
+    </div>
+
+    <div class="steps-section">
+        <div class="step-card">
+            <div class="step-number">1</div>
+            <h3>Votre installation</h3>
+            <p>Décrivez vos panneaux</p>
+        </div>
+        <div class="step-card">
+            <div class="step-number">2</div>
+            <h3>État & localisation</h3>
+            <p>Détails de votre site</p>
+        </div>
+        <div class="step-card">
+            <div class="step-number">3</div>
+            <h3>Devis gratuit</h3>
+            <p>Recevez votre proposition</p>
+        </div>
+    </div>
+
+    <div class="form-container">
+        <div class="form-wrapper">
+            <form id="reservationForm">
+                <!-- Section 1: Installation -->
+                <div class="form-section">
+                    <h2>📱 Votre installation</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Puissance estimée (kWc)</label>
+                            <input type="number" id="puissance" name="puissance" placeholder="ex: 5" min="0" step="0.5">
+                        </div>
+                        <div class="form-group">
+                            <label>Nombre de panneaux *</label>
+                            <input type="number" id="nombrePanneaux" name="nombrePanneaux" placeholder="ex: 12" min="0" required>
+                        </div>
+                    </div>
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label>Type de panneaux</label>
+                            <select id="typePanneaux" name="typePanneaux">
+                                <option value="">Sélectionner...</option>
+                                <option value="mono">Silicium monocristallin</option>
+                                <option value="poly">Silicium polycristallin</option>
+                                <option value="hybrid">Panneaux hybrides</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Location -->
+                <div class="form-section">
+                    <h2>📍 Localisation</h2>
+                    <div class="form-row full" style="margin-bottom: 1.5rem;">
+                        <div class="form-group">
+                            <label>Où sont vos panneaux?</label>
+                            <div class="radio-group">
+                                <div class="radio-option">
+                                    <input type="radio" id="roof" name="localisation" value="plat" checked>
+                                    <label for="roof">Toit</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="ground" name="localisation" value="incline_leger">
+                                    <label for="ground">Sol</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="facade" name="localisation" value="incline_moyen">
+                                    <label for="facade">Façade</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Inclinaison *</label>
+                            <select id="inclinaison" name="typeToiture" required>
+                                <option value="">Sélectionner...</option>
+                                <option value="plat">Plat (0-10°)</option>
+                                <option value="incline_leger">Faible (10-25°)</option>
+                                <option value="incline_moyen">Moyen (25-35°)</option>
+                                <option value="incline_fort">Escarpé (35°+)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Niveau de saleté</label>
+                            <select id="saleté" name="saleté">
+                                <option value="">Sélectionner...</option>
+                                <option value="light">Léger (poussière)</option>
+                                <option value="medium">Moyen (résidu)</option>
+                                <option value="severe">Sévère (mousse/algues)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 3: Contact -->
+                <div class="form-section">
+                    <h2>👤 Vos coordonnées</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Prénom *</label>
+                            <input type="text" id="prenom" name="prenom" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Nom *</label>
+                            <input type="text" id="nom" name="nom" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Email *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Téléphone *</label>
+                            <input type="tel" id="telephone" name="telephone" required>
+                        </div>
+                    </div>
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label>Adresse</label>
+                            <input type="text" id="adresse" name="adresse">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Code Postal</label>
+                            <input type="text" id="codePostal" name="codePostal">
+                        </div>
+                        <div class="form-group">
+                            <label>Ville</label>
+                            <input type="text" id="ville" name="ville">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 4: Availability -->
+                <div class="form-section">
+                    <h2>📅 Disponibilités</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Date préférée *</label>
+                            <input type="date" id="dateSouhaitee" name="dateSouhaitee" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Créneau *</label>
+                            <select id="creneau" name="heureSouhaitee" required>
+                                <option value="">Sélectionner...</option>
+                                <option value="08:00">Matin (8h-12h)</option>
+                                <option value="14:00">Après-midi (14h-18h)</option>
+                                <option value="flexible">Flexible</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label>Notes supplémentaires</label>
+                            <textarea id="notes" name="notes" placeholder="Informations utiles..." style="min-height: 80px; resize: vertical;"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label style="display: flex; gap: 0.5rem; cursor: pointer;">
+                        <input type="checkbox" id="agree" name="agree" required>
+                        <span style="font-size: 13px;">J'accepte que mes données soient traitées *</span>
+                    </label>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary">← Continuer plus tard</button>
+                    <button type="submit" class="btn btn-primary" id="submitBtn">Obtenir mon devis →</button>
+                </div>
+
+                <div class="success-box" id="successMessage">
+                    <h3>✅ Demande enregistrée!</h3>
+                    <p>Numéro: <strong id="reservationNumber"></strong></p>
+                    <p style="font-size: 13px; margin-top: 0.5rem;">Notre équipe vous contactera sous 24h.</p>
+                </div>
+
+                <div class="error-box" id="errorMessage">
+                    <h3>❌ Erreur</h3>
+                    <p id="errorText"></p>
+                </div>
+            </form>
+        </div>
+
+        <div>
+            <div class="sidebar-card">
+                <h3>✨ Pourquoi maintenant?</h3>
+                <ul>
+                    <li>Gain de rendement: 15-25%</li>
+                    <li>Détection précoce des défauts</li>
+                    <li>Durée de vie augmentée</li>
+                    <li>Protection future garantie</li>
+                </ul>
+            </div>
+
+            <div class="estimator">
+                <h3>📊 Votre potentiel</h3>
+                <div class="estimate-row">
+                    <span>Production annuelle:</span>
+                    <span id="productionEstimate">~6,000 kWh</span>
+                </div>
+                <div class="estimate-row">
+                    <span>Perte estimée:</span>
+                    <span style="color: #dc2626;" id="lossEstimate">-1,200 kWh</span>
+                </div>
+                <div class="estimate-gain" id="gainEstimate">
+                    ↑ Gain: +1,200€/an
+                </div>
+            </div>
+
+            <div class="reviews">
+                <h3>⭐ Avis clients</h3>
+                <div class="review">
+                    <div class="stars">★★★★★</div>
+                    <div class="review-text">Excellent! +22% de rendement en 1 mois.</div>
+                    <div class="review-author">Sophie M.</div>
+                </div>
+                <div class="review">
+                    <div class="stars">★★★★★</div>
+                    <div class="review-text">Service rapide et professionnel. Recommande!</div>
+                    <div class="review-author">Pierre B.</div>
+                </div>
+                <div class="review">
+                    <div class="stars">★★★★★</div>
+                    <div class="review-text">Gain visible immédiatement. Parfait!</div>
+                    <div class="review-author">Marie D.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const form = document.getElementById('reservationForm');
+const submitBtn = document.getElementById('submitBtn');
+const successMessage = document.getElementById('successMessage');
+const errorMessage = document.getElementById('errorMessage');
+const nombrePanneaux = document.getElementById('nombrePanneaux');
+const gainEstimate = document.getElementById('gainEstimate');
+const productionEstimate = document.getElementById('productionEstimate');
+const lossEstimate = document.getElementById('lossEstimate');
+
+// Calcul dynamique du gain estimé
+function calculateGain() {
+    const panneaux = parseInt(nombrePanneaux.value) || 0;
+    if (panneaux === 0) return;
+
+    const productionParPanneau = 300; // kWh par an
+    const production = panneaux * productionParPanneau;
+    const loss = production * 0.2; // 20% de perte estimée
+    const gain = loss * 1.0; // 1€ par kWh
+
+    productionEstimate.textContent = `~${production.toLocaleString()} kWh`;
+    lossEstimate.textContent = `-${Math.round(loss).toLocaleString()} kWh`;
+    gainEstimate.textContent = `↑ Gain après nettoyage: +${Math.round(gain).toLocaleString()}€/an`;
+}
+
+nombrePanneaux.addEventListener('change', calculateGain);
+nombrePanneaux.addEventListener('input', calculateGain);
+
+// Validation du formulaire
+function validateForm() {
+    let isValid = true;
+    const fields = form.querySelectorAll('[required]');
+
+    fields.forEach(field => {
+        if (!field.value) {
+            field.style.borderColor = '#dc2626';
+            isValid = false;
+        } else {
+            field.style.borderColor = '';
+        }
+    });
+
+    const email = document.getElementById('email');
+    if (email.value && !email.value.includes('@')) {
+        email.style.borderColor = '#dc2626';
+        isValid = false;
+    }
+
+    const telephone = document.getElementById('telephone');
+    if (telephone.value) {
+        const cleanPhone = telephone.value.replace(/[\s\-\+]/g, '');
+        if (cleanPhone.length < 10) {
+            telephone.style.borderColor = '#dc2626';
+            isValid = false;
+        }
+    }
+
+    const dateSouhaitee = document.getElementById('dateSouhaitee');
+    if (dateSouhaitee.value) {
+        const selectedDate = new Date(dateSouhaitee.value);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        if (selectedDate < today) {
+            dateSouhaitee.style.borderColor = '#dc2626';
+            isValid = false;
+        }
+    }
+
+    const agree = document.getElementById('agree');
+    if (!agree.checked) {
+        isValid = false;
+    }
+
+    return isValid;
+}
+
+// Soumission du formulaire
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    successMessage.style.display = 'none';
+    errorMessage.style.display = 'none';
+
+    if (!validateForm()) {
+        return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = '⏳ Envoi en cours...';
+
+    try {
+        const formData = new FormData(form);
+        const response = await fetch('{{ path("reservation_submit") }}', {
+            method: 'POST',
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            document.getElementById('reservationNumber').textContent = data.reservationNumber;
+            successMessage.style.display = 'block';
+            form.style.display = 'none';
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        } else {
+            document.getElementById('errorText').textContent = data.message;
+            errorMessage.style.display = 'block';
+        }
+    } catch (error) {
+        document.getElementById('errorText').textContent = 'Une erreur réseau s\'est produite. Veuillez réessayer.';
+        errorMessage.style.display = 'block';
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Obtenir mon devis gratuit →';
+    }
+});
+
+// Fixer la date minimale
+const dateSouhaitee = document.getElementById('dateSouhaitee');
+const tomorrow = new Date();
+tomorrow.setDate(tomorrow.getDate() + 1);
+dateSouhaitee.min = tomorrow.toISOString().split('T')[0];
+
+// Initialiser l'estimateur
+calculateGain();
+</script>
+
+<script>
+// Ajouter des icones Tabler si pas présentes
+if (!window.TaTablerIcons) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://cdn.jsdelivr.net/npm/@tabler/icons@latest/tabler-icons.min.css';
+    document.head.appendChild(link);
+}
+</script>
+{% endblock %} {# end block body #}

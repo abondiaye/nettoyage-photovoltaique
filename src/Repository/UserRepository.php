@@ -9,9 +9,6 @@ use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 
-/**
- * @extends ServiceEntityRepository<User>
- */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
     public function __construct(ManagerRegistry $registry)
@@ -19,13 +16,10 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         parent::__construct($registry, User::class);
     }
 
-    /**
-     * Used to upgrade (rehash) the user's password automatically over time.
-     */
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
         if (!$user instanceof User) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $user::class));
+            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
         }
 
         $user->setPassword($newHashedPassword);
@@ -33,31 +27,30 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->flush();
     }
 
-    //    /**
-    //     * @return User[] Returns an array of User objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('u')
-    //            ->andWhere('u.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('u.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    public function findByRole(string $role): array
+    public function findByEmail(string $email)
     {
-        return array_values(array_filter(
-            $this->findAll(),
-            static fn (User $user): bool => in_array($role, $user->getRoles(), true)
-        ));
+        return $this->createQueryBuilder('u')
+            ->where('u.email = :email')
+            ->setParameter('email', $email)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
-    public function countByRole(string $role): int
+    public function findAllAdmins()
     {
-        return count($this->findByRole($role));
+        return $this->createQueryBuilder('u')
+            ->where('JSON_CONTAINS(u.roles, :role) = 1')
+            ->setParameter('role', '"ROLE_ADMIN"')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findActive()
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.isActive = true')
+            ->orderBy('u.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
     }
 }

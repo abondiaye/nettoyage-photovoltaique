@@ -1,77 +1,577 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Tableau de bord Admin - Solar Cleaning{% endblock %}
+{% block title %}Admin Dashboard - Sirius-Solar{% endblock %}
 
 {% block body %}
-<div class="container mx-auto px-4 py-8">
-    <h1 class="text-4xl font-bold text-bleu-nuit mb-8">Tableau de bord Admin</h1>
 
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-        <div class="bg-white rounded-lg shadow p-6">
-            <h2 class="text-3xl font-bold text-bleu-panneau">{{ totalAppointments }}</h2>
-            <p class="text-gray-600">Total des rendez-vous</p>
-        </div>
-        <div class="bg-white rounded-lg shadow p-6">
-            <h2 class="text-3xl font-bold text-green-600">{{ completionRate }}%</h2>
-            <p class="text-gray-600">Taux de complétion</p>
-        </div>
-        <div class="bg-white rounded-lg shadow p-6">
-            <h2 class="text-3xl font-bold text-jaune-solaire">{{ totalMembers }}</h2>
-            <p class="text-gray-600">Membres actifs</p>
-        </div>
-        <div class="bg-white rounded-lg shadow p-6">
-            <h2 class="text-3xl font-bold text-red-600">{{ pendingComments }}</h2>
-            <p class="text-gray-600">Commentaires en attente</p>
-        </div>
-    </div>
+<script>
+// Hide navbar and circular nav in admin - execute immediately and aggressively
+(function() {
+    function hideElements() {
+        const navbar = document.querySelector('.gooey-navbar');
+        const circularNav = document.querySelector('.circular-nav-container');
 
-    <div class="grid grid-cols-1 gap-8">
-        <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-2xl font-bold text-bleu-nuit mb-4">Actions rapides</h3>
-            <div style="display:flex; gap:16px; flex-wrap:wrap;">
-                <a href="{{ path('app_admin_appointments') }}" class="btn btn-secondary">Voir tous les rendez-vous</a>
-                <a href="{{ path('app_admin_members') }}" class="btn btn-primary">Gérer les membres</a>
-                <a href="{{ path('app_admin_comments') }}" class="btn btn-success">Examiner les commentaires</a>
+        if (navbar) {
+            navbar.style.cssText = 'display: none !important; visibility: hidden !important; height: 0 !important; margin: 0 !important; padding: 0 !important; overflow: hidden !important; position: absolute !important; top: -9999px !important; left: -9999px !important;';
+        }
+
+        if (circularNav) {
+            circularNav.style.cssText = 'display: none !important; visibility: hidden !important; height: 0 !important; width: 0 !important; margin: 0 !important; padding: 0 !important; overflow: hidden !important; position: absolute !important; top: -9999px !important; left: -9999px !important;';
+        }
+    }
+
+    // Try immediately
+    hideElements();
+
+    // Try on DOM ready
+    document.addEventListener('DOMContentLoaded', hideElements);
+
+    // Try after load
+    window.addEventListener('load', hideElements);
+
+    // Keep trying until hidden
+    let attempts = 0;
+    const interval = setInterval(() => {
+        hideElements();
+        attempts++;
+        if (attempts > 30) clearInterval(interval);
+    }, 100);
+})();
+</script>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background: linear-gradient(135deg, #001a1a 0%, #003d3d 50%, #00d4ff 100%);
+        font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        overflow-y: auto;
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+    }
+
+    /* Hide navbar with extreme specificity */
+    html body .gooey-navbar {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        overflow: hidden !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        width: 0 !important;
+        position: absolute !important;
+        top: -9999px !important;
+        left: -9999px !important;
+    }
+
+    /* Also target by direct selector */
+    .gooey-navbar {
+        display: none !important;
+    }
+
+    .admin-container {
+        display: block;
+        position: relative;
+        min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .admin-sidebar {
+        background: rgba(20, 20, 30, 0.9);
+        backdrop-filter: blur(10px);
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 30px 20px;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 280px;
+        height: 100vh;
+        overflow-y: auto;
+    }
+
+    .sidebar-logo {
+        font-size: 24px;
+        font-weight: 700;
+        color: #00d4ff;
+        margin-bottom: 40px;
+        font-family: 'Space Grotesk', sans-serif;
+        letter-spacing: 1px;
+    }
+
+    .sidebar-menu {
+        list-style: none;
+    }
+
+    .sidebar-menu li {
+        margin-bottom: 15px;
+    }
+
+    .sidebar-menu a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .sidebar-menu a:hover,
+    .sidebar-menu a.active {
+        background: rgba(255, 215, 0, 0.15);
+        color: #00d4ff;
+        border-left: 3px solid #00d4ff;
+        padding-left: 13px;
+    }
+
+    /* Main Content */
+    .admin-main {
+        margin-left: 280px;
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .admin-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+    }
+
+    .admin-title {
+        color: white;
+    }
+
+    .admin-title h1 {
+        font-size: 32px;
+        margin-bottom: 10px;
+    }
+
+    .admin-title p {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 14px;
+    }
+
+    .admin-user {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .admin-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #00d4ff, #0099cc);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        font-weight: 700;
+        color: #0A3D35;
+    }
+
+    .admin-user-info {
+        color: white;
+    }
+
+    .admin-user-info p {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* Dashboard Content */
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+    }
+
+    .dashboard-card {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 16px;
+        padding: 30px;
+        transition: all 0.3s ease;
+        color: white;
+    }
+
+    .dashboard-card:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 215, 0, 0.5);
+        transform: translateY(-5px);
+    }
+
+    .card-icon {
+        font-size: 32px;
+        margin-bottom: 15px;
+    }
+
+    .card-title {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.7);
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .card-value {
+        font-size: 32px;
+        font-weight: 700;
+        color: #00d4ff;
+    }
+
+    .card-description {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.6);
+        margin-top: 10px;
+    }
+
+    /* Recent Activity */
+    .activity-section {
+        background: linear-gradient(135deg, rgba(45, 107, 85, 0.3), rgba(15, 12, 41, 0.5));
+        backdrop-filter: blur(15px);
+        border: 2px solid rgba(192, 192, 192, 0.3);
+        border-radius: 16px;
+        padding: 30px;
+        color: white;
+    }
+
+    .activity-section h2 {
+        font-size: 20px;
+        margin-bottom: 20px;
+        color: white;
+    }
+
+    .activity-list {
+        list-style: none;
+    }
+
+    .activity-item {
+        padding: 15px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        gap: 15px;
+        align-items: center;
+    }
+
+    .activity-item:last-child {
+        border-bottom: none;
+    }
+
+    .activity-icon {
+        font-size: 20px;
+    }
+
+    .activity-text p {
+        font-size: 14px;
+        color: white;
+        margin-bottom: 5px;
+    }
+
+    .activity-time {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    /* Buttons */
+    .btn-logout {
+        background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 13px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-logout:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+    }
+
+    /* Hide public navigation elements in admin */
+    html body .circular-nav-container {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        overflow: hidden !important;
+        position: absolute !important;
+        top: -9999px !important;
+        left: -9999px !important;
+    }
+
+    html body .gooey-navbar {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        overflow: hidden !important;
+        position: absolute !important;
+        top: -9999px !important;
+        left: -9999px !important;
+    }
+
+    /* Hide footer in admin */
+    html body footer {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    .nav-buttons {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        margin-top: 60px;
+        padding: 40px;
+        background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+        border-top: 1px solid rgba(192, 192, 192, 0.2);
+        border-bottom: 1px solid rgba(192, 192, 192, 0.2);
+        margin-left: -40px;
+        margin-right: -40px;
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+
+    .nav-btn {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 24px;
+        background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(192, 192, 192, 0.2));
+        border: 2px solid rgba(192, 192, 192, 0.5);
+        color: rgba(192, 192, 192, 0.9);
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .nav-btn:hover {
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.3), rgba(192, 192, 192, 0.3));
+        border-color: rgba(192, 192, 192, 0.8);
+        color: #00d4ff;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(192, 192, 192, 0.2);
+    }
+
+    .arrow {
+        font-size: 18px;
+        transition: transform 0.3s ease;
+    }
+
+    .nav-btn:hover .arrow-left {
+        transform: translateX(-3px);
+    }
+
+    .nav-btn:hover .arrow-right {
+        transform: translateX(3px);
+    }
+
+    .admin-footer {
+        background: rgba(10, 61, 53, 0.4);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid rgba(192, 192, 192, 0.2);
+        padding: 30px 40px;
+        margin-top: 60px;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .admin-footer p {
+        margin: 0;
+        line-height: 1.6;
+    }
+
+    .admin-footer a {
+        color: #00d4ff;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .admin-footer a:hover {
+        color: #ffed4e;
+        text-decoration: underline;
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+        .admin-sidebar {
+            position: static;
+            width: 100%;
+            border-right: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .admin-main {
+            margin-left: 0;
+            padding: 20px;
+            min-height: auto;
+        }
+
+        .admin-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .admin-title h1 {
+            font-size: 24px;
+        }
+
+        .dashboard-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="admin-container">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+        <div class="sidebar-logo">SIRIUS</div>
+        <ul class="sidebar-menu">
+            <li><a href="{{ path('app_admin_dashboard') }}" class="active">📊 Tableau de bord</a></li>
+            <li><a href="{{ path('app_admin_calendar') }}">📅 Rendez-vous</a></li>
+            <li><a href="{{ path('app_admin_messages') }}">📬 Messages</a></li>
+            <li><a href="{{ path('app_devis') }}" style="background: rgba(0, 212, 255, 0.2); border-left: 3px solid #00d4ff; color: #00d4ff;">➕ Demandes de Devis</a></li>
+            <li><a href="{{ path('app_admin_blog_create') }}">📝 Ajouter Réalisation</a></li>
+            <li><a href="{{ path('app_blog') }}">🖼️ Voir Blog</a></li>
+            <li><a href="{{ path('app_home') }}">🏠 Accueil</a></li>
+            <li style="margin-top: 30px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px;">
+                <a href="{{ path('app_logout') }}" style="color: #ff6b6b;">🚪 Déconnexion</a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <div class="admin-header">
+            <div class="admin-title">
+                <h1>👋 Bienvenue Admin!</h1>
+                <p>Gérez votre site Sirius-Solar</p>
+            </div>
+            <div class="admin-user">
+                <div class="admin-avatar">AH</div>
+                <div class="admin-user-info">
+                    <p>Admin Haroun</p>
+                    <p>admin@sirius-solar.ch</p>
+                </div>
             </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-2xl font-bold text-bleu-nuit mb-4">Rendez-vous récents ({{ appointments | length }})</h3>
-            <div class="overflow-x-auto">
-                <table class="w-full text-sm">
-                    <thead class="bg-gray-100">
-                        <tr>
-                            <th class="px-4 py-2 text-left">Membre</th>
-                            <th class="px-4 py-2 text-left">Date</th>
-                            <th class="px-4 py-2 text-left">Heure</th>
-                            <th class="px-4 py-2 text-left">Statut</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for appointment in appointments | slice(0, 10) %}
-                            <tr class="border-b">
-                                <td class="px-4 py-2">{{ appointment.user.firstName }} {{ appointment.user.lastName }}</td>
-                                <td class="px-4 py-2">{{ appointment.date ? appointment.date.format('d/m/Y') : 'N/A' }}</td>
-                                <td class="px-4 py-2">{{ appointment.timeSlot }}</td>
-                                <td class="px-4 py-2">
-                                    <span class="px-2 py-1 rounded text-white
-                                        {% if appointment.status == 'SCHEDULED' %}bg-blue-500
-                                        {% elseif appointment.status == 'COMPLETED' %}bg-green-500
-                                        {% else %}bg-red-500
-                                        {% endif %}">
-                                        {{ {'SCHEDULED': 'Prévu', 'COMPLETED': 'Terminé', 'CANCELLED': 'Annulé'}[appointment.status] ?? appointment.status }}
-                                    </span>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+        <!-- Stats Grid -->
+        <div class="dashboard-grid">
+            <a href="{{ path('app_admin_calendar') }}" class="dashboard-card" style="text-decoration: none; cursor: pointer;">
+                <div class="card-icon">📅</div>
+                <div class="card-title">Rendez-vous Total</div>
+                <div class="card-value" style="color: #2196f3;">{{ total_appointments ?? 0 }}</div>
+                <div class="card-description">Toutes les demandes</div>
+            </a>
+
+            <a href="{{ path('app_admin_calendar') }}" class="dashboard-card" style="text-decoration: none; cursor: pointer;">
+                <div class="card-icon">⏳</div>
+                <div class="card-title">En Attente</div>
+                <div class="card-value" style="color: #ff9800;">{{ pending_appointments ?? 0 }}</div>
+                <div class="card-description">À valider</div>
+            </a>
+
+            <a href="{{ path('app_admin_calendar') }}" class="dashboard-card" style="text-decoration: none; cursor: pointer;">
+                <div class="card-icon">✅</div>
+                <div class="card-title">Confirmés</div>
+                <div class="card-value" style="color: #4caf50;">{{ confirmed_appointments ?? 0 }}</div>
+                <div class="card-description">Approuvés</div>
+            </a>
+
+            <a href="{{ path('app_admin_calendar') }}" class="dashboard-card" style="text-decoration: none; cursor: pointer;">
+                <div class="card-icon">ℹ️</div>
+                <div class="card-title">Proposés</div>
+                <div class="card-value" style="color: #2196f3;">{{ proposed_appointments ?? 0 }}</div>
+                <div class="card-description">Dates alternatives</div>
+            </a>
+
+            <a href="{{ path('app_admin_calendar') }}" class="dashboard-card" style="text-decoration: none; cursor: pointer;">
+                <div class="card-icon">❌</div>
+                <div class="card-title">Refusés</div>
+                <div class="card-value" style="color: #f44336;">{{ refused_appointments ?? 0 }}</div>
+                <div class="card-description">Rejettés</div>
+            </a>
+
+            <a href="{{ path('app_admin_messages') }}" class="dashboard-card" style="text-decoration: none; cursor: pointer;">
+                <div class="card-icon">📬</div>
+                <div class="card-title">Messages</div>
+                <div class="card-value" style="color: #00d4ff;">{{ total_messages ?? 0 }}</div>
+                <div class="card-description">Demandes clients</div>
+            </a>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="activity-section">
+            <h2>📨 Messages Récents</h2>
+            <ul class="activity-list">
+                {% if recent_messages|length > 0 %}
+                    {% for message in recent_messages %}
+                        <li class="activity-item">
+                            <div class="activity-icon">📧</div>
+                            <div class="activity-text">
+                                <p><strong>{{ message.nom }}</strong> - {{ message.email }}</p>
+                                <div class="activity-time">{{ message.createdAt|date('d/m/Y H:i') }}</div>
+                                <div style="font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 5px;">{{ message.message|slice(0, 60) }}{% if message.message|length > 60 %}...{% endif %}</div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <li class="activity-item">
+                        <div class="activity-icon">📭</div>
+                        <div class="activity-text">
+                            <p>Aucun message pour le moment</p>
+                            <div class="activity-time">En attente de contact client</div>
+                        </div>
+                    </li>
+                {% endif %}
+            </ul>
+            <div style="margin-top: 15px; text-align: center;">
+                <a href="{{ path('app_admin_messages') }}" style="color: #00d4ff; text-decoration: none; font-size: 13px;">→ Voir tous les messages</a>
             </div>
         </div>
-    </div>
+
+        <!-- Navigation Buttons -->
+        <div class="nav-buttons">
+            <a href="{{ path('app_admin_calendar') }}" class="nav-btn">
+                <span class="arrow arrow-left">←</span>
+                Rendez-vous
+            </a>
+            <a href="{{ path('app_admin_messages') }}" class="nav-btn">
+                Messages
+                <span class="arrow arrow-right">→</span>
+            </a>
+        </div>
+
+        <!-- Footer -->
+        <footer class="admin-footer">
+            <p>© 2026 <strong>Sirius-Solar</strong> — Nettoyage & Entretien de Panneaux Photovoltaïques</p>
+            <p>Eau osmosée • Zéro produit chimique • Jusqu'à 25% de rendement regagné</p>
+            <p><a href="{{ path('app_home') }}">Retour à l'accueil</a> | <a href="{{ path('app_devis') }}">Demander un devis</a></p>
+        </footer>
+    </main>
 </div>
-{% endblock %}
 
-{% block page_nav_next %}
-    <a href="{{ path('app_admin_appointments') }}" class="page-nav-link">{{ 'pagenav.admin_appointments'|trans }} →</a>
 {% endblock %}

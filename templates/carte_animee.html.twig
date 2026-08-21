@@ -1,0 +1,429 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Carte Animée - Sirius-Solar{% endblock %}
+
+{% block body %}
+<style>
+    .gooey-navbar { display: flex !important; visibility: visible !important; height: 80px !important; margin: 0 !important; padding: 0 40px !important; }
+    .circular-nav-container { display: block !important; visibility: visible !important; height: 280px !important; width: 280px !important; margin: unset !important; padding: unset !important; }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    main {
+        background: linear-gradient(135deg, #0A3D35 0%, #2D6B55 100%);
+        min-height: calc(100vh - 140px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+        font-family: 'Space Grotesk', Arial, sans-serif;
+    }
+
+    .container-carte {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 40px;
+        max-width: 1200px;
+        width: 100%;
+    }
+
+    /* ===== CARTE ANIMÉE ===== */
+    .card {
+        position: relative;
+        width: 100%;
+        height: 450px;
+        background: linear-gradient(135deg, var(--vert-fonce) 0%, var(--vert-clair) 100%);
+        border-radius: 20px;
+        overflow: hidden;
+        cursor: pointer;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
+    }
+
+    .card:hover {
+        transform: perspective(1000px) rotateX(5deg) rotateY(10deg) translateZ(20px);
+        box-shadow: 0 40px 80px rgba(160, 160, 160, 0.4);
+    }
+
+    .card-inner {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 40px;
+        color: white;
+    }
+
+    /* Animated background */
+    .card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+            45deg,
+            transparent 30%,
+            rgba(160, 160, 160, 0.1) 50%,
+            transparent 70%
+        );
+        animation: shine 3s infinite;
+        pointer-events: none;
+    }
+
+    @keyframes shine {
+        0% {
+            transform: translateX(-100%) translateY(-100%) rotate(45deg);
+        }
+        100% {
+            transform: translateX(100%) translateY(100%) rotate(45deg);
+        }
+    }
+
+    .card:hover::before {
+        animation: shine 1s infinite;
+    }
+
+    /* Header */
+    .card-header {
+        position: relative;
+        z-index: 1;
+        margin-bottom: 30px;
+        animation: slideInDown 0.8s ease-out;
+    }
+
+    .card-logo {
+        font-size: 48px;
+        margin-bottom: 15px;
+        animation: bounce 2s infinite;
+    }
+
+    .card-title {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 5px;
+        letter-spacing: 1px;
+    }
+
+    .card-subtitle {
+        font-size: 14px;
+        opacity: 0.8;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    @keyframes slideInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes bounce {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    /* Content */
+    .card-content {
+        position: relative;
+        z-index: 1;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .card-info {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+        opacity: 0;
+        animation: slideInLeft 0.6s ease-out forwards;
+    }
+
+    .info-item:nth-child(1) { animation-delay: 0.2s; }
+    .info-item:nth-child(2) { animation-delay: 0.4s; }
+    .info-item:nth-child(3) { animation-delay: 0.6s; }
+    .info-item:nth-child(4) { animation-delay: 0.8s; }
+
+    .info-icon {
+        font-size: 24px;
+        flex-shrink: 0;
+        animation: rotateIcon 2s linear infinite;
+    }
+
+    .card:hover .info-icon {
+        animation: rotateIcon 0.8s linear infinite;
+    }
+
+    @keyframes rotateIcon {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes slideInLeft {
+        from {
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .info-text {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .info-label {
+        font-size: 12px;
+        opacity: 0.7;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 3px;
+    }
+
+    .info-value {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--dore-clair);
+    }
+
+    /* Footer */
+    .card-footer {
+        position: relative;
+        z-index: 1;
+        margin-top: 25px;
+        padding-top: 20px;
+        border-top: 2px solid rgba(255, 255, 255, 0.2);
+        text-align: center;
+        animation: fadeIn 1s ease-out 0.8s both;
+    }
+
+    .card-tagline {
+        font-size: 13px;
+        font-style: italic;
+        opacity: 0.9;
+        margin-bottom: 10px;
+    }
+
+    .card-cta {
+        display: inline-block;
+        background: linear-gradient(135deg, var(--dore), var(--dore-clair));
+        color: #121212;
+        padding: 10px 25px;
+        border-radius: 20px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        border: none;
+    }
+
+    .card-cta:hover {
+        transform: scale(1.08);
+        box-shadow: 0 10px 30px rgba(160, 160, 160, 0.4);
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .card {
+            height: 400px;
+        }
+
+        .card-inner {
+            padding: 30px;
+        }
+
+        .card-title {
+            font-size: 24px;
+        }
+
+        .container-carte {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* CSS Variables */
+    :root {
+        --vert-fonce: #0A3D35;
+        --vert-clair: #2D6B55;
+        --dore: #a8a8a8;
+        --dore-clair: #e8e8e8;
+    }
+
+    .back-link {
+        position: absolute;
+        top: 30px;
+        left: 40px;
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.3s ease;
+        z-index: 100;
+    }
+
+    .back-link:hover {
+        color: var(--dore-clair);
+        gap: 15px;
+    }
+
+    .wrapper {
+        position: relative;
+    }
+</style>
+
+<div class="wrapper">
+    <a href="{{ path('app_home') }}" class="back-link">← Retour</a>
+
+    <div class="container-carte">
+        <!-- CARTE 1: Informations Contact -->
+        <div class="card">
+            <div class="card-inner">
+                <div class="card-header">
+                    <div class="card-logo">☀️</div>
+                    <div class="card-title">SIRIUS</div>
+                    <div class="card-subtitle">-SOLAR</div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-info">
+                        <div class="info-item">
+                            <div class="info-icon">📍</div>
+                            <div class="info-text">
+                                <div class="info-label">Adresse</div>
+                                <div class="info-value">Route des dragons 7<br>1033 Cheseaux-sur-Lausanne</div>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-icon">📞</div>
+                            <div class="info-text">
+                                <div class="info-label">Téléphone</div>
+                                <div class="info-value">+41 77 909 64 13</div>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-icon">✉️</div>
+                            <div class="info-text">
+                                <div class="info-label">Email</div>
+                                <div class="info-value">ndiayeharouna1991@gmail.com</div>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-icon">⏰</div>
+                            <div class="info-text">
+                                <div class="info-label">Réponse Garantie</div>
+                                <div class="info-value">Dans 48 heures</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="card-tagline">Un panneau propre, un rendement optimal!</div>
+                        <a href="{{ path('app_devis') }}" class="card-cta">Demander un Devis</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARTE 2: Services & Avantages -->
+        <div class="card">
+            <div class="card-inner">
+                <div class="card-header">
+                    <div class="card-logo">💧</div>
+                    <div class="card-title">NOS</div>
+                    <div class="card-subtitle">SERVICES</div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-info">
+                        <div class="info-item">
+                            <div class="info-icon">💧</div>
+                            <div class="info-text">
+                                <div class="info-label">Nettoyage</div>
+                                <div class="info-value">Eau osmosée 100% pure</div>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-icon">🔒</div>
+                            <div class="info-text">
+                                <div class="info-label">Sécurité</div>
+                                <div class="info-value">Zéro produit chimique</div>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-icon">🌿</div>
+                            <div class="info-text">
+                                <div class="info-label">Environnement</div>
+                                <div class="info-value">100% écologique</div>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-icon">📈</div>
+                            <div class="info-text">
+                                <div class="info-label">Performance</div>
+                                <div class="info-value">+25% de rendement garanti</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="card-tagline">Spécialiste du nettoyage professionnel!</div>
+                        <a href="{{ path('app_home') }}#services" class="card-cta">En Savoir Plus</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

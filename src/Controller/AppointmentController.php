@@ -3,10 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Appointment;
-use App\Entity\User;
 use App\Repository\AppointmentRepository;
-use App\Service\CalendarService;
-use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,67 +11,107 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/appointment')]
-#[IsGranted('ROLE_MEMBER')]
 class AppointmentController extends AbstractController
 {
-    public function __construct(
-        private CalendarService $calendarService,
-        private EntityManagerInterface $em,
-        private AppointmentRepository $appointmentRepo,
-    ) {
-    }
-
-    #[Route('/book', name: 'app_appointment_book', methods: ['GET', 'POST'])]
-    public function book(Request $request): Response
+    #[Route('/appointments', name: 'app_appointments')]
+    public function clientCalendar(AppointmentRepository $appointmentRepo): Response
     {
-        $user = $this->getUser();
-        $nextDays = $this->calendarService->getNextBusinessDays(30);
+        $appointments = $appointmentRepo->findAll();
+        $appointmentsByDate = [];
 
-        if ($request->isMethod('POST')) {
-            $date = new DateTimeImmutable($request->request->get('date'));
-            $timeSlot = $request->request->get('timeSlot');
-
-            if ($this->calendarService->isSlotAvailable($date, $timeSlot)) {
-                $appointment = new Appointment();
-                $appointment->setUser($user);
-                $appointment->setDate($date);
-                $appointment->setTimeSlot($timeSlot);
-                $appointment->setStatus(Appointment::STATUS_SCHEDULED);
-
-                $this->em->persist($appointment);
-                $this->em->flush();
-
-                $this->addFlash('success', 'Appointment booked successfully!');
-                return $this->redirectToRoute('app_member_appointments');
+        foreach ($appointments as $apt) {
+            $date = $apt->getConfirmedDate() ?? $apt->getRequestedDate();
+            $dateStr = $date->format('Y-m-d');
+            if (!isset($appointmentsByDate[$dateStr])) {
+                $appointmentsByDate[$dateStr] = [];
             }
-
-            $this->addFlash('error', 'This time slot is no longer available.');
+            $appointmentsByDate[$dateStr][] = $apt;
         }
 
-        $availableSlotsByDate = [];
-        foreach ($nextDays as $day) {
-            $availableSlotsByDate[$day->format('Y-m-d')] = $this->calendarService->getAvailableSlots($day);
-        }
-
-        return $this->render('appointment/book.html.twig', [
-            'availableSlots' => $availableSlotsByDate,
-            'nextDays' => $nextDays,
+        return $this->render('appointment/client_calendar.html.twig', [
+            'appointments' => $appointments,
+            'appointmentsByDate' => $appointmentsByDate,
         ]);
     }
 
-    #[Route('/{id}/cancel', name: 'app_appointment_cancel', methods: ['POST'])]
-    public function cancel(Appointment $appointment): Response
+    #[Route('/admin/calendar', name: 'app_admin_calendar')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function adminCalendar(AppointmentRepository $appointmentRepo): Response
     {
-        if ($appointment->getUser() !== $this->getUser()) {
-            throw $this->createAccessDeniedException();
+        $appointments = $appointmentRepo->findBy([], ['requestedDate' => 'ASC']);
+
+        $appointmentsByStatus = [
+            'pending' => [],
+            'confirmed' => [],
+            'refused' => [],
+            'proposed' => [],
+        ];
+
+        foreach ($appointments as $apt) {
+            $appointmentsByStatus[$apt->getStatus()][] = $apt;
         }
 
-        $appointment->setStatus(Appointment::STATUS_CANCELLED);
-        $this->em->persist($appointment);
-        $this->em->flush();
+        return $this->render('appointment/admin_calendar.html.twig', [
+            'appointments' => $appointments,
+            'appointmentsByStatus' => $appointmentsByStatus,
+        ]);
+    }
 
-        $this->addFlash('success', 'Appointment cancelled.');
-        return $this->redirectToRoute('app_member_appointments');
+    #[Route('/admin/appointment/{id}/accept', name: 'app_appointment_accept', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function acceptAppointment(Appointment $appointment, Request $request, EntityManagerInterface $em): Response
+    {
+        $appointment->setStatus('confirmed');
+
+        $dateStr = $request->request->get('confirmedDate');
+        if ($dateStr) {
+            $appointment->setConfirmedDate(new \DateTime($dateStr));
+        }
+
+        $adminNotes = $request->request->get('adminNotes');
+        if ($adminNotes) {
+            $appointment->setAdminNotes($adminNotes);
+        }
+
+        $em->flush();
+
+        return $this->redirectToRoute('app_admin_calendar');
+    }
+
+    #[Route('/admin/appointment/{id}/refuse', name: 'app_appointment_refuse', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function refuseAppointment(Appointment $appointment, Request $request, EntityManagerInterface $em): Response
+    {
+        $appointment->setStatus('refused');
+
+        $adminNotes = $request->request->get('adminNotes');
+        if ($adminNotes) {
+            $appointment->setAdminNotes($adminNotes);
+        }
+
+        $em->flush();
+
+        return $this->redirectToRoute('app_admin_calendar');
+    }
+
+    #[Route('/admin/appointment/{id}/propose', name: 'app_appointment_propose', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function proposeAppointment(Appointment $appointment, Request $request, EntityManagerInterface $em): Response
+    {
+        $appointment->setStatus('proposed');
+
+        $proposedDate = $request->request->get('proposedDate');
+        if ($proposedDate) {
+            $appointment->setConfirmedDate(new \DateTime($proposedDate));
+        }
+
+        $adminNotes = $request->request->get('adminNotes');
+        if ($adminNotes) {
+            $appointment->setAdminNotes($adminNotes);
+        }
+
+        $em->flush();
+
+        return $this->redirectToRoute('app_admin_calendar');
     }
 }
