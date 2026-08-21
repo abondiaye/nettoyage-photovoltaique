@@ -23,11 +23,13 @@ body {
     z-index: 1000;
     display: flex;
     justify-content: center;
-    column-gap: 20px;
-    padding: 0 40px;
+    align-items: center;
+    flex-wrap: wrap;
+    column-gap: 10px;
+    row-gap: 8px;
+    padding: 10px 30px;
     width: auto;
-    min-width: 650px;
-    height: 70px;
+    max-width: 90vw;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
     border: 3px solid #d4a842;
@@ -74,7 +76,7 @@ body {
 
 /* Navigation items */
 .nav-item {
-    width: 80px;
+    width: 75px;
     height: 70px;
     display: flex;
     justify-content: center;
@@ -86,14 +88,15 @@ body {
     top: 0;
     transition: all 0.3s ease;
     font-weight: 700;
-    font-size: 13px;
+    font-size: 12px;
     color: #3d2817;
     text-decoration: none;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
     padding: 5px;
     text-align: center;
     line-height: 1.2;
+    white-space: nowrap;
 }
 
 .nav-item svg {
@@ -220,6 +223,36 @@ body.dark-mode .decorator::after {
         </svg>
         Contact
     </a>
+
+    {% if app.user %}
+        <a href="{{ path('app_admin_dashboard') }}" class="nav-item" data-name="Admin">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                <path d="M12 7v10M7 12h10"/>
+            </svg>
+            Admin
+        </a>
+        <a href="{{ path('app_logout') }}" class="nav-item" data-name="Logout">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/>
+            </svg>
+            Logout
+        </a>
+    {% else %}
+        <a href="{{ path('app_login') }}" class="nav-item" data-name="Login">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="8" r="4"/>
+                <path d="M4 20c0-4 3.5-7 8-7s8 3 8 7"/>
+            </svg>
+            Login
+        </a>
+        <a href="{{ path('app_register') }}" class="nav-item" data-name="Register">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 8a3 3 0 100-6 3 3 0 000 6zM4 20c0-4 3.5-7 8-7s8 3 8 7M18 10h-4v4h-2v-4h-4v-2h4V4h2v4h4v2z"/>
+            </svg>
+            Sign up
+        </a>
+    {% endif %}
 </nav>
 
 <script>
