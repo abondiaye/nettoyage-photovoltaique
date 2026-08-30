@@ -245,7 +245,8 @@
       "Bash(ls -la ~/Downloads/ | grep -i display 2>/dev/null; file ~/Downloads/*isplay* 2>/dev/null)",
       "Bash(system_profiler SPDisplaysDataType)",
       "Bash(systemextensionsctl list *)",
-      "Bash(osascript -e 'tell application \"System Events\" to restart')"
+      "Bash(osascript -e 'tell application \"System Events\" to restart')",
+      "Bash(php bin/console help)"
     ]
   }
 }
