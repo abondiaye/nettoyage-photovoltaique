@@ -1000,36 +1000,53 @@
     });
 
     // ===== PACK SELECTION =====
-    document.querySelectorAll('.pricing-card__btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
+    function initPackSelection() {
+        try {
+            document.querySelectorAll('.pricing-card__btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
 
-            const card = btn.closest('.pricing-card');
-            const packName = card.getAttribute('data-pack');
+                    const card = btn.closest('.pricing-card');
+                    const packName = card.getAttribute('data-pack');
 
-            // Remove selected class from all cards
-            document.querySelectorAll('.pricing-card').forEach(c => {
-                c.classList.remove('selected');
-                c.querySelector('.pricing-card__btn').textContent = 'Sélectionner';
+                    // Remove selected class from all cards
+                    document.querySelectorAll('.pricing-card').forEach(c => {
+                        c.classList.remove('selected');
+                        c.querySelector('.pricing-card__btn').textContent = 'Sélectionner';
+                    });
+
+                    // Add selected class to clicked card
+                    card.classList.add('selected');
+                    btn.textContent = '✓ Sélectionné';
+
+                    // Smooth scroll to form
+                    setTimeout(() => {
+                        const formSection = document.querySelector('.devis-form-card');
+                        if (formSection) {
+                            formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    }, 300);
+                });
             });
-
-            // Add selected class to clicked card
-            card.classList.add('selected');
-            btn.textContent = '✓ Sélectionné';
-
-            // Smooth scroll to form
-            setTimeout(() => {
-                const formSection = document.querySelector('.devis-form-card');
-                if (formSection) {
-                    formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            }, 300);
-        });
-    });
+        } catch (err) {
+            console.error('Error initializing pack selection:', err);
+        }
+    }
 
     // Initialize on page load
-    updateTotalPrice();
-    updatePricingDisplay();
+    try {
+        updateTotalPrice();
+        updatePricingDisplay();
+    } catch (err) {
+        console.error('Error in pricing display:', err);
+    }
+
+    // Wait for DOM to be ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initPackSelection);
+    } else {
+        initPackSelection();
+    }
 </script>
 
 {% endblock %}
