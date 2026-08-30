@@ -163,6 +163,21 @@
         min-height: 120px;
     }
 
+    .form-group select {
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        background-size: 18px;
+        padding-right: 40px;
+        cursor: pointer;
+    }
+
+    .form-group select option {
+        background: #0a3d35;
+        color: white;
+    }
+
     /* ===== TWO-COLUMN LAYOUT ===== */
     .form-row {
         display: grid;
@@ -786,6 +801,23 @@
                     <label for="clientVille">Ville</label>
                     <input type="text" id="clientVille" name="devis[clientVille]" placeholder="Genève" required>
                 </div>
+            </div>
+
+            <!-- Type d'Installation -->
+            <div class="form-group required">
+                <label for="typeInstallation">Type d'Installation</label>
+                <select id="typeInstallation" name="devis[typeInstallation]" required>
+                    <option value="">Sélectionnez un type</option>
+                    <option value="residentiel">Résidentiel</option>
+                    <option value="agricole">Agricole</option>
+                    <option value="industriel">Industriel / Tertiaire</option>
+                </select>
+            </div>
+
+            <!-- Nombre de Panneaux -->
+            <div class="form-group required">
+                <label for="nombrePanneaux">Nombre de Panneaux (approximatif)</label>
+                <input type="number" id="nombrePanneaux" name="devis[nombrePanneaux]" placeholder="8" min="1" required>
             </div>
 
             <!-- Types de Lavage -->
