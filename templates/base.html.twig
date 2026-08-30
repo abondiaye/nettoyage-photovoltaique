@@ -737,7 +737,141 @@
                 }
             });
         </script>
+    <style>
+        /* Hamburger Menu Styles */
+        .hamburger-btn {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: transparent;
+            border: 3px solid #a8a8a8;
+            border-radius: 8px;
+            cursor: pointer;
+            z-index: 9999;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .hamburger-btn span {
+            display: block;
+            width: 24px;
+            height: 3px;
+            background: #fff;
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        .hamburger-btn.active span:nth-child(1) {
+            transform: rotate(45deg) translateY(12px);
+        }
+
+        .hamburger-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger-btn.active span:nth-child(3) {
+            transform: rotate(-45deg) translateY(-12px);
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(10, 61, 53, 0.95);
+            z-index: 9998;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-overlay.show {
+            display: flex !important;
+        }
+
+        .menu-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+        }
+
+        .menu-list li {
+            margin: 20px 0;
+        }
+
+        .menu-list a {
+            color: white;
+            text-decoration: none;
+            font-size: 24px;
+            font-weight: 600;
+            padding: 10px 30px;
+            display: inline-block;
+            border-radius: 50px;
+            transition: 0.3s;
+        }
+
+        .menu-list a:hover {
+            color: #e8e8e8;
+            background: rgba(168, 168, 168, 0.1);
+        }
+
+        .menu-list li:last-child a {
+            color: #e8e8e8;
+        }
+
+        @media (max-width: 768px) {
+            .hamburger-btn {
+                width: 45px;
+                height: 45px;
+                top: 20px;
+                right: 20px;
+            }
+
+            .menu-list a {
+                font-size: 20px;
+            }
+        }
+    </style>
+
     {% endblock %}
+
+    <script>
+        // Hamburger Menu Handler
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.getElementById('hamburger-menu');
+            const menuOverlay = document.getElementById('menu-overlay');
+            const menuLinks = document.querySelectorAll('.menu-list a');
+
+            if (hamburger && menuOverlay) {
+                hamburger.addEventListener('click', function() {
+                    hamburger.classList.toggle('active');
+                    menuOverlay.classList.toggle('show');
+                });
+
+                menuLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        hamburger.classList.remove('active');
+                        menuOverlay.classList.remove('show');
+                    });
+                });
+
+                menuOverlay.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        hamburger.classList.remove('active');
+                        menuOverlay.classList.remove('show');
+                    }
+                });
+            }
+        });
+    </script>
 
     <script>
     // Hide navbar, circular-nav, and footer on ALL admin pages
