@@ -775,8 +775,19 @@
 
     <div class="devis-form-card">
         {% for message in app.flashes('success') %}
-            <div class="alert-success">
-                ✅ {{ message }}
+            <div class="alert-success" style="
+                background: linear-gradient(135deg, rgba(82, 199, 122, 0.15) 0%, rgba(76, 175, 80, 0.1) 100%);
+                border: 2px solid #52C77A;
+                border-radius: 12px;
+                padding: 20px;
+                margin-bottom: 30px;
+                color: #2D5016;
+                font-weight: 600;
+                font-size: 15px;
+                line-height: 1.6;
+                box-shadow: 0 4px 12px rgba(82, 199, 122, 0.2);
+            ">
+                {{ message }}
             </div>
         {% endfor %}
 
@@ -1008,24 +1019,31 @@
 
                     const card = btn.closest('.pricing-card');
                     const packName = card.getAttribute('data-pack');
+                    const isSelected = card.classList.contains('selected');
 
-                    // Remove selected class from all cards
-                    document.querySelectorAll('.pricing-card').forEach(c => {
-                        c.classList.remove('selected');
-                        c.querySelector('.pricing-card__btn').textContent = 'Sélectionner';
-                    });
+                    if (isSelected) {
+                        // Deselect this card
+                        card.classList.remove('selected');
+                        btn.textContent = 'Sélectionner';
+                    } else {
+                        // Remove selected class from all cards
+                        document.querySelectorAll('.pricing-card').forEach(c => {
+                            c.classList.remove('selected');
+                            c.querySelector('.pricing-card__btn').textContent = 'Sélectionner';
+                        });
 
-                    // Add selected class to clicked card
-                    card.classList.add('selected');
-                    btn.textContent = '✓ Sélectionné';
+                        // Add selected class to clicked card
+                        card.classList.add('selected');
+                        btn.textContent = '✓ Sélectionné';
 
-                    // Smooth scroll to form
-                    setTimeout(() => {
-                        const formSection = document.querySelector('.devis-form-card');
-                        if (formSection) {
-                            formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }
-                    }, 300);
+                        // Smooth scroll to form
+                        setTimeout(() => {
+                            const formSection = document.querySelector('.devis-form-card');
+                            if (formSection) {
+                                formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }
+                        }, 300);
+                    }
                 });
             });
         } catch (err) {

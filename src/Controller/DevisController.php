@@ -63,7 +63,7 @@ class DevisController extends AbstractController
             $em->persist($appointment);
             $em->flush();
 
-            $this->addFlash('success', 'Votre demande de devis a bien été envoyée. Nous vous recontacterons rapidement.');
+            $this->addFlash('success', '✅ Demande reçue! Nous analyserons votre demande sous 48h et vous recontacterons par email à ' . $clientEmail . ' pour confirmer votre rendez-vous.');
 
             return $this->redirectToRoute('app_devis');
         }
