@@ -80,7 +80,14 @@ class DevisType extends AbstractType
             ->add('message', TextareaType::class, [
                 'label' => 'Informations complémentaires',
                 'required' => false,
-                'attr' => ['rows' => 4, 'placeholder' => 'Accès au toit, date souhaitée, contraintes particulières...'],
+                'attr' => ['rows' => 4, 'placeholder' => 'Accès au toit, contraintes particulières...'],
+            ])
+            ->add('requestedDate', \Symfony\Component\Form\Extension\Core\Type\DateType::class, [
+                'label' => 'Date souhaitée pour le rendez-vous',
+                'required' => false,
+                'widget' => 'single_text',
+                'attr' => ['min' => (new \DateTime())->format('Y-m-d')],
+                'mapped' => false,
             ])
         ;
     }

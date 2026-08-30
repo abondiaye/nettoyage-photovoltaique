@@ -38,6 +38,7 @@ class DevisController extends AbstractController
             $clientCodePostal = $form->get('clientCodePostal')->getData();
             $clientVille = $form->get('clientVille')->getData();
             $message = $form->get('message')->getData();
+            $requestedDate = $form->get('requestedDate')->getData();
 
             $client = new Client();
             $client->setNom($clientNom);
@@ -55,7 +56,7 @@ class DevisController extends AbstractController
             $appointment->setClientEmail($clientEmail);
             $appointment->setClientPhone($clientTelephone);
             $appointment->setNotes($message);
-            $appointment->setRequestedDate(new \DateTime());
+            $appointment->setRequestedDate($requestedDate ?? new \DateTime());
             $appointment->setStatus('pending');
 
             $em->persist($client);
