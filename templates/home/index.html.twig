@@ -600,40 +600,16 @@
     /* ===== CTA SECTION ===== */
     .cta-section {
         padding: 80px 40px;
-        background: linear-gradient(135deg, var(--vert-fonce) 0%, var(--vert-clair) 100%);
+        background-image:
+            linear-gradient(135deg, rgba(10, 61, 53, 0.7) 0%, rgba(10, 61, 53, 0.7) 100%),
+            url('/images/SOLAR.jpeg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
         text-align: center;
         color: white;
         position: relative;
         overflow: hidden;
-    }
-
-    .cta-section::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-image: url('/images/SOLAR.jpeg');
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-        opacity: 0.3;
-        z-index: 0;
-        pointer-events: none;
-        filter: brightness(0.9) contrast(1.1);
-    }
-
-    .cta-section::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(135deg, rgba(10, 61, 53, 0.75) 0%, rgba(10, 61, 53, 0.75) 100%);
-        z-index: 1;
-        pointer-events: none;
     }
 
     .cta-content {
