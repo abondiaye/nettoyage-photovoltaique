@@ -774,21 +774,59 @@
     <div class="devis-gradient-bg"></div>
 
     <div class="devis-form-card">
+        <!-- Welcome Section for Logged In Users -->
+        {% if app.user %}
+            <div style="
+                background: linear-gradient(135deg, rgba(168, 168, 168, 0.1) 0%, rgba(168, 168, 168, 0.05) 100%);
+                border: 1px solid rgba(160, 160, 160, 0.3);
+                border-radius: 12px;
+                padding: 20px;
+                margin-bottom: 30px;
+                text-align: center;
+            ">
+                <p style="color: rgba(255, 255, 255, 0.9); font-size: 16px; margin-bottom: 5px;">
+                    👋 Bienvenue, <strong>{{ app.user.prenom }} {{ app.user.nom }}</strong>!
+                </p>
+                <p style="color: rgba(255, 255, 255, 0.7); font-size: 14px;">
+                    Remplissez le formulaire ci-dessous pour demander votre devis. Nous vous répondrons sous 48h.
+                </p>
+            </div>
+        {% endif %}
+
         {% for message in app.flashes('success') %}
             <div class="alert-success" style="
+                position: fixed;
+                top: 100px;
+                left: 50%;
+                transform: translateX(-50%);
+                max-width: 600px;
+                width: 90%;
+                z-index: 1000;
                 background: linear-gradient(135deg, rgba(82, 199, 122, 0.15) 0%, rgba(76, 175, 80, 0.1) 100%);
                 border: 2px solid #52C77A;
                 border-radius: 12px;
                 padding: 20px;
-                margin-bottom: 30px;
                 color: #2D5016;
                 font-weight: 600;
                 font-size: 15px;
                 line-height: 1.6;
                 box-shadow: 0 4px 12px rgba(82, 199, 122, 0.2);
+                animation: slideDown 0.5s ease-out;
             ">
                 {{ message }}
             </div>
+            <style>
+                @keyframes slideDown {
+                    from {
+                        opacity: 0;
+                        transform: translateX(-50%) translateY(-20px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateX(-50%) translateY(0);
+                    }
+                }
+            </style>
         {% endfor %}
 
         <div class="form-title">Formulaire de Devis</div>
