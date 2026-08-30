@@ -22,7 +22,7 @@ class AppointmentController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        $appointments = $appointmentRepo->findBy(['user' => $user], ['requestedDate' => 'DESC']);
+        $appointments = $appointmentRepo->findBy(['clientEmail' => $user->getEmail()], ['requestedDate' => 'DESC']);
         $appointmentsByDate = [];
 
         foreach ($appointments as $apt) {
