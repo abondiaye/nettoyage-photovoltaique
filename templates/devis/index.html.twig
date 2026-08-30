@@ -757,7 +757,7 @@
             ℹ️ Tous les champs marqués avec un <span style="color: var(--dore);">*</span> sont obligatoires. Nous vous garantissons une réponse rapide.
         </div>
 
-        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+        <form method="POST" action="{{ path('app_devis') }}" novalidate>
             <!-- Nom & Prénom -->
             <div class="form-row">
                 <div class="form-group required">
@@ -905,7 +905,10 @@
                 <button type="submit" class="btn-submit">Envoyer la demande</button>
                 <button type="reset" class="btn-reset">Réinitialiser</button>
             </div>
-        {{ form_end(form) }}
+
+            <!-- CSRF Token -->
+            {{ form_widget(form._token) }}
+        </form>
     </div>
 </section>
 
