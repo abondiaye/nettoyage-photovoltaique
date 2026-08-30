@@ -899,6 +899,12 @@
                 <input type="number" id="nombrePanneaux" name="devis[nombrePanneaux]" placeholder="8" min="1" required>
             </div>
 
+            <!-- Date souhaitée -->
+            <div class="form-group">
+                <label for="requestedDate">📅 Date souhaitée pour le rendez-vous</label>
+                <input type="date" id="requestedDate" name="devis[requestedDate]" min="{{ 'now'|date('Y-m-d') }}">
+            </div>
+
             <!-- Types de Lavage -->
             <div class="lavage-section">
                 <div class="lavage-title">
