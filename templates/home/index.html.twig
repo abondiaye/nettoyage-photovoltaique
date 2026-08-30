@@ -625,9 +625,50 @@
 
     .cta-text {
         font-size: 16px;
-        margin-bottom: 30px;
+        margin-bottom: 40px;
         opacity: 0.95;
         line-height: 1.6;
+    }
+
+    .optimization-details {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 25px;
+        margin-bottom: 50px;
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: left;
+    }
+
+    .detail-item {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 25px;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+
+    .detail-item:hover {
+        background: rgba(255, 255, 255, 0.12);
+        border-color: rgba(255, 255, 255, 0.4);
+        transform: translateY(-5px);
+    }
+
+    .detail-item h4 {
+        font-size: 16px;
+        margin-bottom: 12px;
+        font-weight: 600;
+        color: white;
+        font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .detail-item p {
+        font-size: 14px;
+        opacity: 0.9;
+        line-height: 1.5;
+        margin: 0;
     }
 
     .btn-cta-white {
@@ -733,6 +774,23 @@
 
         .service-card, .advantage-card {
             padding: 30px 20px;
+        }
+
+        .optimization-details {
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .detail-item {
+            padding: 20px;
+        }
+
+        .detail-item h4 {
+            font-size: 14px;
+        }
+
+        .detail-item p {
+            font-size: 13px;
         }
 
         .footer-content {
@@ -1244,6 +1302,35 @@
     <div class="cta-content">
         <h2 class="cta-title">Prêt à optimiser votre installation ?</h2>
         <p class="cta-text">Contactez nos experts Sirius-Solar pour un diagnostic gratuit et une solution adaptée à vos panneaux photovoltaïques.</p>
+
+        <!-- Optimization Details -->
+        <div class="optimization-details">
+            <div class="detail-item">
+                <h4>🔍 Diagnostic Complet</h4>
+                <p>Notre équipe effectue un diagnostic approfondi de votre installation pour identifier les points d'amélioration et les pertes d'efficacité.</p>
+            </div>
+            <div class="detail-item">
+                <h4>📈 Augmentation du Rendement</h4>
+                <p>Un nettoyage régulier et un entretien professionnel peuvent augmenter le rendement de vos panneaux jusqu'à 25% selon les conditions.</p>
+            </div>
+            <div class="detail-item">
+                <h4>💰 Économies d'Énergie</h4>
+                <p>Maximisez la production d'électricité de votre installation et réduisez vos factures énergétiques de manière significative.</p>
+            </div>
+            <div class="detail-item">
+                <h4>🛡️ Protection Garantie</h4>
+                <p>Nous utilisons des produits respectueux de l'environnement et des techniques sécurisées pour préserver la durée de vie de vos panneaux.</p>
+            </div>
+            <div class="detail-item">
+                <h4>⏱️ Intervention Rapide</h4>
+                <p>Nos techniciens interviennent rapidement avec des horaires flexibles, minimisant les perturbations pour vous.</p>
+            </div>
+            <div class="detail-item">
+                <h4>📋 Suivi & Maintenance</h4>
+                <p>Nous proposons des plans d'entretien personnalisés et un suivi régulier pour assurer la performance optimale de votre système.</p>
+            </div>
+        </div>
+
         <a href="{{ path('app_devis') }}" class="btn-cta-white">Réserver une visite</a>
     </div>
 </section>
