@@ -21,6 +21,12 @@ class DevisController extends AbstractController
         $form = $this->createForm(DevisType::class, $devis);
         $form->handleRequest($request);
 
+        if ($form->isSubmitted()) {
+            if (!$form->isValid()) {
+                error_log('Form validation errors: ' . json_encode($this->getFormErrors($form)));
+            }
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
@@ -65,5 +71,16 @@ class DevisController extends AbstractController
         return $this->render('devis/index.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    private function getFormErrors($form): array
+    {
+        $errors = [];
+        if ($form->isSubmitted() && !$form->isValid()) {
+            foreach ($form->getErrors(true) as $error) {
+                $errors[] = $error->getMessage();
+            }
+        }
+        return $errors;
     }
 }

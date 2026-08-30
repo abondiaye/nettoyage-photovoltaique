@@ -1,324 +1,356 @@
 <style>
-/* ===== NAVBAR WITH ANIMATED CIRCULAR DECORATOR ===== */
-.gooey-navbar {
-    display: none !important;
-    visibility: hidden !important;
-    height: 0 !important;
-}
+.gooey-navbar { display: none !important; }
+* { margin: 0; box-sizing: border-box; }
 
-* {
-    margin: 0;
-    box-sizing: border-box;
-}
+@keyframes glow { 0%, 100% { box-shadow: 0 0 20px rgba(0,212,255,0.4); } 50% { box-shadow: 0 0 40px rgba(0,212,255,0.8); } }
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+@keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-body {
-    padding-top: 250px !important;
-}
-
+/* ===== NAVBAR ===== */
 .navbar {
     position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    z-index: 1000;
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    align-content: flex-start;
-    column-gap: 8px;
-    row-gap: 6px;
-    padding: 8px 20px;
-    min-height: auto;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border: 3px solid #d4a842;
-    border-radius: 20px;
-    box-shadow: 0 8px 32px rgba(212, 168, 66, 0.4), inset 0 1px 0 rgba(255, 255, 200, 0.3);
-}
-
-/* Animated circular decorator */
-.decorator {
-    position: absolute;
-    left: 30px;
-    top: -30px;
-    width: 70px;
-    height: 70px;
-    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 25%, #d4a842 50%, #b8860b 75%, #cd853f 100%);
-    border-radius: 50%;
-    transition: left 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    box-shadow: 0 8px 32px rgba(212, 168, 66, 0.5), inset 0 1px 0 rgba(255, 255, 200, 0.4);
-    border: 3px solid #d4a842;
-}
-
-.decorator::before {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    right: calc(100% - 8px);
-    width: 40px;
-    height: 40px;
-    border-top-right-radius: 20px;
-    box-shadow: 0 -10px rgba(255, 255, 255, 0.95);
-}
-
-.decorator::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: calc(100% - 8px);
-    width: 40px;
-    height: 40px;
-    border-top-left-radius: 20px;
-    box-shadow: 0 -10px rgba(255, 255, 255, 0.95);
-}
-
-/* Navigation items */
-.navbar .nav-item {
-    width: 65px;
-    height: 60px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 12px;
-    position: relative !important;
-    cursor: pointer;
-    z-index: 1;
     top: 0;
-    transition: all 0.3s ease;
-    font-weight: 700;
-    font-size: 11px;
-    color: #3d2817;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: linear-gradient(180deg, rgba(10, 61, 53, 0.99) 0%, rgba(5, 30, 50, 0.95) 100%);
+    backdrop-filter: blur(40px);
+    border-bottom: 3px solid rgba(0, 212, 255, 0.4);
+    padding: 0 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 90px;
+    box-shadow: 0 0 50px rgba(0, 212, 255, 0.25), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+.navbar-brand {
+    font-size: 26px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #00d4ff, #0099cc, #00ff88);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     text-decoration: none;
+    font-family: 'Space Grotesk', sans-serif;
+    animation: glow 3s ease-in-out infinite;
+    letter-spacing: -1px;
+    min-width: 180px;
+}
+
+.navbar-menu {
+    display: flex;
+    list-style: none;
+    gap: 8px;
+    align-items: center;
+    flex: 1;
+    margin: 0 40px;
+}
+
+.nav-item { position: relative; }
+
+.nav-link {
+    display: flex;
     flex-direction: column;
-    gap: 3px;
-    padding: 3px;
-    text-align: center;
-    line-height: 1.1;
-    white-space: normal;
-}
-
-.navbar .nav-item svg {
-    width: 26px;
-    height: 26px;
-    stroke: #3d2817;
-    stroke-width: 2;
-    fill: none;
-    flex-shrink: 0;
-}
-
-.navbar .nav-item.active {
-    top: -25px;
-    background: rgba(255, 255, 255, 0.9);
-    color: #d4a842;
-    box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.95);
-    font-size: 14px;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 20px 16px;
+    font-size: 12px;
     font-weight: 700;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    border-radius: 12px;
+    position: relative;
+    transition: all 0.3s ease;
+    min-width: 70px;
 }
 
-.navbar .nav-item.active svg {
-    stroke: #d4a842;
+.nav-icon {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    transition: all 0.3s ease;
 }
 
-.navbar .nav-item:hover {
-    color: #d4a842;
-    transform: scale(1.08);
+.nav-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 20px;
+    height: 20px;
+    background: linear-gradient(135deg, #ff6b6b, #ffa500);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 900;
+    color: white;
+    box-shadow: 0 0 15px rgba(255, 107, 107, 0.6);
+    animation: pulse 2s ease-in-out infinite;
+    opacity: 0;
 }
 
-.navbar .nav-item:hover svg {
-    stroke: #d4a842;
+.nav-link:hover .nav-badge,
+.nav-link.hot .nav-badge {
+    opacity: 1;
 }
 
-/* Responsive */
+.nav-link:hover {
+    background: rgba(0, 212, 255, 0.2);
+    color: #00ff88;
+    transform: translateY(-8px);
+    box-shadow: 0 8px 30px rgba(0, 212, 255, 0.3);
+}
+
+.nav-link:hover .nav-icon {
+    animation: bounce 0.6s ease-in-out infinite;
+    filter: drop-shadow(0 0 12px #00d4ff);
+    transform: scale(1.2);
+}
+
+.nav-link.active {
+    background: linear-gradient(135deg, rgba(0,212,255,0.3), rgba(0,255,136,0.2));
+    color: #00ff88;
+    border: 2px solid rgba(0, 255, 136, 0.5);
+    box-shadow: 0 0 30px rgba(0, 255, 136, 0.4), inset 0 0 20px rgba(0, 212, 255, 0.15);
+}
+
+.nav-cta {
+    display: flex;
+    gap: 12px;
+    margin-left: auto;
+}
+
+.cta-btn {
+    padding: 14px 28px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: left 0.3s ease;
+    z-index: -1;
+}
+
+.cta-btn:hover::before { left: 100%; }
+
+.cta-btn-primary {
+    background: linear-gradient(135deg, #00d4ff, #0099cc);
+    color: white;
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.4);
+}
+
+.cta-btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 50px rgba(0, 212, 255, 0.8), 0 10px 30px rgba(0, 212, 255, 0.3);
+}
+
+.cta-btn-secondary {
+    border: 2px solid rgba(0, 212, 255, 0.6);
+    color: #00d4ff;
+    background: rgba(0, 212, 255, 0.05);
+}
+
+.cta-btn-secondary:hover {
+    border-color: #00ff88;
+    color: #00ff88;
+    box-shadow: 0 0 40px rgba(0, 255, 136, 0.5);
+}
+
+/* ===== HAMBURGER ===== */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    margin-left: auto;
+}
+
+.hamburger span {
+    width: 24px;
+    height: 3px;
+    background: #00d4ff;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+}
+
+.hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(10px, 10px); }
+.hamburger.active span:nth-child(2) { opacity: 0; }
+.hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(10px, -10px); }
+
+/* ===== MOBILE MENU ===== */
+.mobile-menu {
+    display: none;
+    position: fixed;
+    top: 90px;
+    left: 0;
+    right: 0;
+    background: linear-gradient(180deg, rgba(10, 61, 53, 0.98) 0%, rgba(5, 30, 50, 0.95) 100%);
+    backdrop-filter: blur(30px);
+    flex-direction: column;
+    padding: 20px;
+    gap: 10px;
+    border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+    animation: slideDown 0.3s ease;
+    z-index: 999;
+}
+
+.mobile-menu.active { display: flex; }
+
+.mobile-menu-item {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    padding: 16px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+    display: block;
+    position: relative;
+}
+
+.mobile-menu-item:hover,
+.mobile-menu-item.active {
+    background: rgba(0, 212, 255, 0.2);
+    color: #00ff88;
+    border-left-color: #00ff88;
+    box-shadow: inset 0 0 20px rgba(0, 212, 255, 0.2);
+    transform: translateX(8px);
+}
+
 @media (max-width: 768px) {
-    .navbar {
-        width: 98%;
-        column-gap: 3px;
-        row-gap: 3px;
-        padding: 3px 6px;
-    }
-
-    .navbar .nav-item {
-        width: 38px;
-        height: 48px;
-        font-size: 7px;
-        gap: 1px;
-        padding: 1px;
-    }
-
-    .navbar .nav-item svg {
-        width: 18px;
-        height: 18px;
-    }
-
-    .decorator {
-        width: 40px;
-        height: 40px;
-        top: -20px;
-    }
-}
-
-/* Light and dark mode */
-body:not(.dark-mode) .navbar {
-    background: rgba(255, 255, 255, 0.95);
-    border-color: #d4a842;
-}
-
-body.dark-mode .navbar {
-    background: rgba(20, 20, 30, 0.95);
-    border-color: #d4a842;
-}
-
-body.dark-mode .navbar .nav-item {
-    color: #e8e8e8;
-}
-
-body.dark-mode .navbar .nav-item.active {
-    color: #d4a842;
-    background: rgba(40, 40, 50, 0.8);
-}
-
-body.dark-mode .decorator::before,
-body.dark-mode .decorator::after {
-    box-shadow: 0 -10px rgba(20, 20, 30, 0.95);
+    body { padding-top: 0 !important; }
+    .navbar { padding: 0 16px; height: 80px; }
+    .navbar-brand { font-size: 20px; min-width: 120px; }
+    .navbar-menu { display: none !important; }
+    .nav-cta { display: none !important; }
+    .hamburger { display: flex; }
 }
 </style>
 
-<!-- Navbar with animated circular decorator -->
 <nav class="navbar" id="navbar">
-    <div class="decorator" id="decorator"></div>
+    <a href="{{ path('app_home') }}" class="navbar-brand">⚡ SIRIUS</a>
 
-    <a href="{{ path('app_home') }}" class="nav-item active" data-name="Accueil">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3 12l9-9 9 9M5 11v7a2 2 0 002 2h10a2 2 0 002-2v-7"/>
-            <path d="M9 21v-6h6v6"/>
-        </svg>
-        Accueil
-    </a>
+    <ul class="navbar-menu" id="navbarMenu">
+        <li class="nav-item">
+            <a href="{{ path('app_home') }}" class="nav-link active">
+                <span class="nav-icon">🏠</span>
+                <span>Accueil</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ path('app_home') }}#processus" class="nav-link">
+                <span class="nav-icon">⚙️</span>
+                <span>Processus</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ path('app_home') }}#services" class="nav-link">
+                <span class="nav-icon">🔧</span>
+                <span>Services</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ path('app_home') }}#avantages" class="nav-link">
+                <span class="nav-icon">✨</span>
+                <span>Avantages</span>
+                <span class="nav-badge">+25%</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ path('app_home') }}#promo" class="nav-link hot">
+                <span class="nav-icon">🎁</span>
+                <span>Promo</span>
+                <span class="nav-badge">HOT</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ path('app_blog') }}" class="nav-link">
+                <span class="nav-icon">📰</span>
+                <span>Blog</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ path('app_home') }}#contact" class="nav-link">
+                <span class="nav-icon">📞</span>
+                <span>Contact</span>
+            </a>
+        </li>
+    </ul>
 
-    <a href="{{ path('app_home') }}#processus" class="nav-item" data-name="Processus">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="6" cy="12" r="2"/>
-            <circle cx="12" cy="12" r="2"/>
-            <circle cx="18" cy="12" r="2"/>
-            <line x1="8" y1="12" x2="10" y2="12"/>
-            <line x1="14" y1="12" x2="16" y2="12"/>
-        </svg>
-        Processus
-    </a>
+    <div class="nav-cta">
+        {% if not app.user %}
+            <a href="{{ path('app_login') }}" class="cta-btn cta-btn-secondary">🔓 Connexion</a>
+            <a href="{{ path('app_register') }}" class="cta-btn cta-btn-primary">✍️ Inscription</a>
+        {% else %}
+            <a href="{{ path('app_admin_dashboard') }}" class="cta-btn cta-btn-secondary">⚙️ Admin</a>
+            <a href="{{ path('app_logout') }}" class="cta-btn cta-btn-primary">🚪 Logout</a>
+        {% endif %}
+    </div>
 
-    <a href="{{ path('app_home') }}#services" class="nav-item" data-name="Services">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <rect x="3" y="3" width="8" height="8"/>
-            <rect x="13" y="3" width="8" height="8"/>
-            <rect x="3" y="13" width="8" height="8"/>
-            <rect x="13" y="13" width="8" height="8"/>
-        </svg>
-        Services
-    </a>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="{{ path('app_home') }}" class="mobile-menu-item active">🏠 Accueil</a>
+        <a href="{{ path('app_home') }}#processus" class="mobile-menu-item">⚙️ Processus</a>
+        <a href="{{ path('app_home') }}#services" class="mobile-menu-item">🔧 Services</a>
+        <a href="{{ path('app_home') }}#avantages" class="mobile-menu-item">✨ Avantages (+25%)</a>
+        <a href="{{ path('app_home') }}#promo" class="mobile-menu-item">🎁 Promo HOT</a>
+        <a href="{{ path('app_blog') }}" class="mobile-menu-item">📰 Blog</a>
+        <a href="{{ path('app_home') }}#contact" class="mobile-menu-item">📞 Contact</a>
+        {% if app.user %}
+            <a href="{{ path('app_admin_dashboard') }}" class="mobile-menu-item">⚙️ Admin</a>
+            <a href="{{ path('app_logout') }}" class="mobile-menu-item">🚪 Logout</a>
+        {% else %}
+            <a href="{{ path('app_login') }}" class="mobile-menu-item">🔓 Connexion</a>
+            <a href="{{ path('app_register') }}" class="mobile-menu-item">✍️ Inscription</a>
+        {% endif %}
+    </div>
 
-    <a href="{{ path('app_home') }}#avantages" class="nav-item" data-name="Avantages">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-        </svg>
-        Avantages
-    </a>
-
-    <a href="{{ path('app_home') }}#promo" class="nav-item" data-name="Promo">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <rect x="3" y="3" width="18" height="18" rx="2"/>
-            <path d="M7 10h10M7 14h10"/>
-        </svg>
-        Promo
-    </a>
-
-    <a href="{{ path('app_blog') }}" class="nav-item" data-name="Réalisations">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <rect x="3" y="3" width="18" height="18" rx="2"/>
-            <circle cx="8.5" cy="8.5" r="1.5"/>
-            <path d="M3 15l5-5 5 5 9-9"/>
-        </svg>
-        Réalisa.
-    </a>
-
-    <a href="{{ path('app_home') }}#contact" class="nav-item" data-name="Contact">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3 8l8.5-6 8.5 6v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
-            <path d="M9 13h6v6H9z"/>
-        </svg>
-        Contact
-    </a>
-
-    {% if app.user %}
-        <a href="{{ path('app_admin_dashboard') }}" class="nav-item" data-name="Admin">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <rect x="3" y="3" width="18" height="18" rx="2"/>
-                <path d="M12 7v10M7 12h10"/>
-            </svg>
-            Admin
-        </a>
-        <a href="{{ path('app_logout') }}" class="nav-item" data-name="Logout">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/>
-            </svg>
-            Logout
-        </a>
-    {% else %}
-        <a href="{{ path('app_login') }}" class="nav-item" data-name="Connexion">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="8" r="4"/>
-                <path d="M4 20c0-4 3.5-7 8-7s8 3 8 7"/>
-            </svg>
-            Connexion
-        </a>
-        <a href="{{ path('app_register') }}" class="nav-item" data-name="Inscription">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 8a3 3 0 100-6 3 3 0 000 6zM4 20c0-4 3.5-7 8-7s8 3 8 7M18 10h-4v4h-2v-4h-4v-2h4V4h2v4h4v2z"/>
-            </svg>
-            Inscription
-        </a>
-    {% endif %}
+    <button class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
 </nav>
 
 <script>
-const navbar = document.querySelector('.navbar');
-const items = document.querySelectorAll('.nav-item');
-const decorator = document.querySelector('.decorator');
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+const mobileItems = document.querySelectorAll('.mobile-menu-item');
 
-// Initialize decorator position
-function updateDecoratorPosition() {
-    const activeItem = document.querySelector('.nav-item.active');
-    if (activeItem) {
-        const itemRect = activeItem.getBoundingClientRect();
-        const navbarRect = navbar.getBoundingClientRect();
-        const x = itemRect.x - navbarRect.x - 5;
-        decorator.style.left = `${x}px`;
-    }
-}
+hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    mobileMenu.classList.toggle('active');
+});
 
-// Update on load
-updateDecoratorPosition();
-window.addEventListener('resize', updateDecoratorPosition);
-
-items.forEach(item => {
-    item.addEventListener('click', event => {
-        event.preventDefault();
-
-        const target = event.currentTarget;
-
-        if(target.classList.contains('active')) {
-            window.location.href = target.href;
-            return;
-        }
-
-        items.forEach(el => el.classList.remove('active'));
-        target.classList.add('active');
-        updateDecoratorPosition();
-
-        setTimeout(() => {
-            window.location.href = target.href;
-        }, 300);
+mobileItems.forEach(item => {
+    item.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        mobileMenu.classList.remove('active');
     });
 });
 </script>
