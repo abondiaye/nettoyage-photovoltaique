@@ -17,14 +17,43 @@
         margin: 0 auto 40px;
     }
 
+    .calendar-header-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+    }
+
     .calendar-header h1 {
         color: white;
-        font-size: 32px;
-        margin-bottom: 10px;
+        font-size: 36px;
+        margin: 0 0 10px 0;
+        font-weight: 700;
     }
 
     .calendar-header p {
         color: rgba(255, 255, 255, 0.7);
+        margin: 0;
+    }
+
+    .btn-new-appointment {
+        background: linear-gradient(135deg, #a8a8a8, #d8d8d8);
+        color: #0A3D35;
+        border: none;
+        padding: 12px 28px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-new-appointment:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(168, 168, 168, 0.3);
     }
 
     .calendar-content {
@@ -34,149 +63,178 @@
 
     .calendar-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 20px;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 24px;
         margin-bottom: 40px;
     }
 
     .appointment-card {
         background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
+        backdrop-filter: blur(15px);
         border: 1px solid rgba(255, 255, 255, 0.2);
         border-radius: 16px;
-        padding: 20px;
+        padding: 24px;
         color: white;
         transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
     }
 
     .appointment-card:hover {
         background: rgba(255, 255, 255, 0.15);
-        border-color: rgba(255, 215, 0, 0.5);
-        transform: translateY(-3px);
+        border-color: rgba(168, 168, 168, 0.4);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
     }
 
     .appointment-card.confirmed {
-        border-left: 4px solid #4caf50;
+        border-left: 5px solid #4caf50;
     }
 
     .appointment-card.pending {
-        border-left: 4px solid #ff9800;
+        border-left: 5px solid #ff9800;
     }
 
     .appointment-card.refused {
-        border-left: 4px solid #f44336;
-        opacity: 0.7;
+        border-left: 5px solid #f44336;
+        opacity: 0.8;
     }
 
     .appointment-card.proposed {
-        border-left: 4px solid #2196f3;
+        border-left: 5px solid #2196f3;
     }
 
     .appointment-status {
         display: inline-block;
-        padding: 4px 12px;
+        padding: 6px 14px;
         border-radius: 20px;
         font-size: 12px;
         font-weight: 600;
-        margin-bottom: 12px;
+        margin-bottom: 16px;
+        width: fit-content;
     }
 
     .status-confirmed {
-        background: rgba(76, 175, 80, 0.2);
-        color: #4caf50;
+        background: rgba(76, 175, 80, 0.25);
+        color: #a8d5ba;
     }
 
     .status-pending {
-        background: rgba(255, 152, 0, 0.2);
-        color: #ff9800;
+        background: rgba(255, 152, 0, 0.25);
+        color: #ffc973;
     }
 
     .status-refused {
-        background: rgba(244, 67, 54, 0.2);
-        color: #f44336;
+        background: rgba(244, 67, 54, 0.25);
+        color: #ff8a7e;
     }
 
     .status-proposed {
-        background: rgba(33, 150, 243, 0.2);
-        color: #2196f3;
+        background: rgba(33, 150, 243, 0.25);
+        color: #64b5f6;
     }
 
-    .appointment-date {
-        font-size: 18px;
-        font-weight: 600;
-        color: #ffd700;
-        margin-bottom: 10px;
+    .appointment-main-date {
+        font-size: 20px;
+        font-weight: 700;
+        color: #a8a8a8;
+        margin-bottom: 16px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .appointment-detail {
         font-size: 13px;
-        color: rgba(255, 255, 255, 0.8);
-        margin-bottom: 8px;
+        color: rgba(255, 255, 255, 0.85);
+        margin-bottom: 10px;
         display: flex;
-        gap: 8px;
+        gap: 10px;
+        align-items: flex-start;
     }
 
     .appointment-detail strong {
-        color: rgba(255, 255, 255, 0.9);
-        min-width: 80px;
+        color: rgba(255, 255, 255, 1);
+        min-width: 90px;
+        flex-shrink: 0;
+    }
+
+    .appointment-detail span {
+        flex: 1;
+        word-break: break-word;
     }
 
     .appointment-notes {
         font-size: 13px;
-        color: rgba(255, 255, 255, 0.7);
-        margin-top: 12px;
-        padding-top: 12px;
+        color: rgba(255, 255, 255, 0.75);
+        margin-top: 14px;
+        padding-top: 14px;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
+        font-style: italic;
+    }
+
+    .appointment-footer {
+        margin-top: auto;
+        padding-top: 16px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.6);
     }
 
     .empty-state {
         text-align: center;
-        padding: 60px 20px;
+        padding: 80px 20px;
         color: rgba(255, 255, 255, 0.7);
     }
 
     .empty-state h2 {
         color: white;
-        margin-bottom: 10px;
+        font-size: 28px;
+        margin-bottom: 12px;
+        font-weight: 700;
     }
 
-    .calendar-mini {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 16px;
-        padding: 20px;
-        color: white;
-        max-width: 400px;
-        margin: 0 auto 40px;
-    }
-
-    .calendar-mini h3 {
-        text-align: center;
-        margin-top: 0;
-        color: #ffd700;
+    .empty-state p {
+        font-size: 16px;
+        margin-bottom: 30px;
     }
 
     /* Mobile */
     @media (max-width: 768px) {
         .calendar-container {
             padding: 20px 10px;
+            margin-top: 60px;
+        }
+
+        .calendar-header-top {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .calendar-header h1 {
+            font-size: 28px;
         }
 
         .calendar-grid {
             grid-template-columns: 1fr;
+            gap: 16px;
         }
 
-        .calendar-header h1 {
-            font-size: 24px;
+        .btn-new-appointment {
+            width: 100%;
+            text-align: center;
         }
     }
 </style>
 
 <div class="calendar-container">
     <div class="calendar-header">
-        <h1>📅 Mes Rendez-vous</h1>
-        <p>Suivi de vos demandes d'intervention</p>
+        <div class="calendar-header-top">
+            <div>
+                <h1>📅 Mes Rendez-vous</h1>
+                <p>Suivi de vos demandes d'intervention</p>
+            </div>
+            <a href="/devis" class="btn-new-appointment">+ Demander un rendez-vous</a>
+        </div>
     </div>
 
     <div class="calendar-content">
@@ -196,7 +254,7 @@
                             {% endif %}
                         </span>
 
-                        <div class="appointment-date">
+                        <div class="appointment-main-date">
                             📅 {{ (appointment.confirmedDate ?? appointment.requestedDate)|date('d/m/Y') }}
                         </div>
 
@@ -212,24 +270,36 @@
 
                         {% if appointment.clientPhone %}
                             <div class="appointment-detail">
-                                <strong>📱 Téléphone:</strong>
+                                <strong>📱 Tél:</strong>
                                 <span>{{ appointment.clientPhone }}</span>
                             </div>
                         {% endif %}
 
                         {% if appointment.status == 'pending' %}
                             <div class="appointment-detail">
-                                <strong>📅 Demandé:</strong>
+                                <strong>🗓️ Demandé:</strong>
                                 <span>{{ appointment.requestedDate|date('d/m/Y') }}</span>
+                            </div>
+                        {% endif %}
+
+                        {% if appointment.status == 'confirmed' and appointment.confirmedDate %}
+                            <div class="appointment-detail">
+                                <strong>✓ Confirmé:</strong>
+                                <span>{{ appointment.confirmedDate|date('d/m/Y') }}</span>
                             </div>
                         {% endif %}
 
                         {% if appointment.adminNotes %}
                             <div class="appointment-notes">
-                                <strong>💬 Notes:</strong><br>
+                                <strong>💬 Notes de l'admin:</strong><br>
                                 {{ appointment.adminNotes }}
                             </div>
                         {% endif %}
+
+                        <div class="appointment-footer">
+                            {% set created_date = appointment.createdAt|date('d/m/Y H:i') %}
+                            Créé le {{ created_date }}
+                        </div>
                     </div>
                 {% endfor %}
             </div>
@@ -237,6 +307,7 @@
             <div class="empty-state">
                 <h2>📭 Aucun rendez-vous</h2>
                 <p>Vous n'avez pas encore de rendez-vous programmé.</p>
+                <a href="/devis" class="btn-new-appointment">+ Demander un rendez-vous</a>
             </div>
         {% endif %}
     </div>
