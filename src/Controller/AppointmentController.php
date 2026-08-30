@@ -16,7 +16,13 @@ class AppointmentController extends AbstractController
     #[Route('/appointments', name: 'app_appointments')]
     public function clientCalendar(AppointmentRepository $appointmentRepo): Response
     {
-        $appointments = $appointmentRepo->findAll();
+        $user = $this->getUser();
+
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $appointments = $appointmentRepo->findBy(['user' => $user], ['requestedDate' => 'DESC']);
         $appointmentsByDate = [];
 
         foreach ($appointments as $apt) {
