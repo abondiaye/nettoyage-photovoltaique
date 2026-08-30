@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Appointment;
 use App\Entity\Client;
 use App\Entity\Devis;
 use App\Form\DevisType;
@@ -23,19 +24,37 @@ class DevisController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
+            $clientNom = $form->get('clientNom')->getData();
+            $clientPrenom = $form->get('clientPrenom')->getData();
+            $clientEmail = $form->get('clientEmail')->getData();
+            $clientTelephone = $form->get('clientTelephone')->getData();
+            $clientAdresse = $form->get('clientAdresse')->getData();
+            $clientCodePostal = $form->get('clientCodePostal')->getData();
+            $clientVille = $form->get('clientVille')->getData();
+            $message = $form->get('message')->getData();
+
             $client = new Client();
-            $client->setNom($form->get('clientNom')->getData());
-            $client->setPrenom($form->get('clientPrenom')->getData());
-            $client->setEmail($form->get('clientEmail')->getData());
-            $client->setTelephone($form->get('clientTelephone')->getData());
-            $client->setAdresse($form->get('clientAdresse')->getData());
-            $client->setCodePostal($form->get('clientCodePostal')->getData());
-            $client->setVille($form->get('clientVille')->getData());
+            $client->setNom($clientNom);
+            $client->setPrenom($clientPrenom);
+            $client->setEmail($clientEmail);
+            $client->setTelephone($clientTelephone);
+            $client->setAdresse($clientAdresse);
+            $client->setCodePostal($clientCodePostal);
+            $client->setVille($clientVille);
 
             $devis->setClient($client);
 
+            $appointment = new Appointment();
+            $appointment->setClientName("$clientPrenom $clientNom");
+            $appointment->setClientEmail($clientEmail);
+            $appointment->setClientPhone($clientTelephone);
+            $appointment->setNotes($message);
+            $appointment->setRequestedDate(new \DateTime());
+            $appointment->setStatus('pending');
+
             $em->persist($client);
             $em->persist($devis);
+            $em->persist($appointment);
             $em->flush();
 
             $this->addFlash('success', 'Votre demande de devis a bien été envoyée. Nous vous recontacterons rapidement.');
