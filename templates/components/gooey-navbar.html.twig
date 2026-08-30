@@ -305,11 +305,23 @@
 
     <div class="nav-cta">
         {% if not app.user %}
-            <a href="{{ path('app_login') }}" class="cta-btn cta-btn-secondary">🔓 Connexion</a>
-            <a href="{{ path('app_register') }}" class="cta-btn cta-btn-primary">✍️ Inscription</a>
+            <a href="{{ path('app_login') }}" class="nav-link">
+                <span class="nav-icon">🔓</span>
+                <span>Connexion</span>
+            </a>
+            <a href="{{ path('app_register') }}" class="nav-link">
+                <span class="nav-icon">✍️</span>
+                <span>Inscription</span>
+            </a>
         {% else %}
-            <a href="{{ path('app_admin_dashboard') }}" class="cta-btn cta-btn-secondary">⚙️ Admin</a>
-            <a href="{{ path('app_logout') }}" class="cta-btn cta-btn-primary">🚪 Logout</a>
+            <a href="{{ path('app_admin_dashboard') }}" class="nav-link">
+                <span class="nav-icon">⚙️</span>
+                <span>Admin</span>
+            </a>
+            <a href="{{ path('app_logout') }}" class="nav-link">
+                <span class="nav-icon">🚪</span>
+                <span>Logout</span>
+            </a>
         {% endif %}
     </div>
 
