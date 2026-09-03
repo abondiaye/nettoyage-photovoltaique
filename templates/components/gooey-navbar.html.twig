@@ -153,22 +153,25 @@
     font-weight: 600;
     font-size: 11px;
     border: 2px solid rgba(160, 160, 160, 0.6);
-    box-shadow: none;
-    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     overflow: hidden;
     cursor: pointer;
     z-index: 2;
+    transform-style: preserve-3d;
+    perspective: 1000px;
 }
 
 .nav-cta .nav-link:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), 0 0 25px rgba(160, 160, 160, 0.4);
+    transform: translateY(-12px) rotateX(8deg) rotateY(-8deg);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 30px rgba(160, 160, 160, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2);
     background: linear-gradient(135deg, #3D8B75 0%, #1A5D4D 100%);
     border-color: rgba(160, 160, 160, 0.9);
 }
 
 .nav-cta .nav-link:hover .nav-icon {
-    transform: scale(1.1) translateY(-2px);
+    transform: scale(1.2) translateY(-3px);
+    filter: drop-shadow(0 0 8px rgba(160, 160, 160, 0.6));
 }
 
 .cta-btn {
@@ -317,13 +320,6 @@
             <a href="{{ path('app_home') }}#services" class="nav-link">
                 <span class="nav-icon">🔧</span>
                 <span>Services</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="{{ path('app_home') }}#avantages" class="nav-link">
-                <span class="nav-icon">✨</span>
-                <span>Avantages</span>
-                <span class="nav-badge">+25%</span>
             </a>
         </li>
     </ul>
