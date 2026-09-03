@@ -139,34 +139,36 @@
 
 .nav-cta .nav-link {
     position: relative;
-    display: inline-flex;
+    width: 70px;
+    height: 70px;
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 4px;
-    background: linear-gradient(135deg, #a8a8a8, #e8e8e8);
-    color: #0A3D35;
-    padding: 12px 20px;
-    border-radius: 8px;
+    gap: 5px;
+    background: linear-gradient(135deg, #2D6B55 0%, #0A3D35 100%);
+    border-radius: 50%;
     text-decoration: none;
+    color: #a8a8a8;
     font-weight: 600;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    font-size: 11px;
+    border: 2px solid rgba(160, 160, 160, 0.6);
+    box-shadow: none;
     transition: all 0.3s ease;
-    border: none;
+    overflow: hidden;
     cursor: pointer;
     z-index: 2;
 }
 
 .nav-cta .nav-link:hover {
-    transform: scale(1.08);
-    box-shadow: 0 8px 25px rgba(168, 168, 168, 0.5);
-    background: linear-gradient(135deg, #b8b8b8, #f8f8f8);
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), 0 0 25px rgba(160, 160, 160, 0.4);
+    background: linear-gradient(135deg, #3D8B75 0%, #1A5D4D 100%);
+    border-color: rgba(160, 160, 160, 0.9);
 }
 
 .nav-cta .nav-link:hover .nav-icon {
-    transform: scale(1.1);
+    transform: scale(1.1) translateY(-2px);
 }
 
 .cta-btn {
