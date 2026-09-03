@@ -335,15 +335,13 @@
                 <span>Blog</span>
             </a>
         </li>
-        <li class="nav-item">
-            <a href="{{ path('app_home') }}#contact" class="nav-link">
-                <span class="nav-icon">📞</span>
-                <span>Contact</span>
-            </a>
-        </li>
     </ul>
 
     <div class="nav-cta">
+        <a href="{{ path('app_home') }}#contact" class="nav-link">
+            <span class="nav-icon">📞</span>
+            <span>Contact</span>
+        </a>
         {% if not app.user %}
             <a href="{{ path('app_login') }}" class="nav-link">
                 <span class="nav-icon">🔓</span>
