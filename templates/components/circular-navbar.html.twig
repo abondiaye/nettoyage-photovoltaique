@@ -1,8 +1,8 @@
 <div class="circular-nav-container">
-    <div class="circular-nav-center">
+    <a href="{{ path('app_home') }}" class="circular-nav-center">
         <img src="{{ asset('images/panneaux-solaires-sous-la-pluie.png') }}" alt="Sirius-Solar" class="center-icon">
         <div class="center-text">Sirius<br>Solar</div>
-    </div>
+    </a>
 
     <div class="circular-nav-wheel">
         <!-- Services -->
@@ -88,6 +88,7 @@
     transition: all 0.3s ease;
     flex-direction: column;
     gap: 5px;
+    text-decoration: none;
 }
 
 .circular-nav-center:hover {
