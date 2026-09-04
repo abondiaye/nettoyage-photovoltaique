@@ -59,10 +59,10 @@
 .circular-nav-container {
     position: fixed;
     bottom: 40px;
-    right: 40px;
+    left: 40px;
     z-index: 999;
-    width: 280px;
-    height: 280px;
+    width: 200px;
+    height: 200px;
     background-color: transparent !important;
     background: transparent !important;
     border: none !important;
@@ -71,8 +71,8 @@
 
 .circular-nav-center {
     position: absolute;
-    width: 100px;
-    height: 100px;
+    width: 70px;
+    height: 70px;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
@@ -126,15 +126,15 @@
 
 .nav-item {
     position: absolute;
-    width: 70px;
-    height: 70px;
+    width: 50px;
+    height: 50px;
     left: 50%;
     top: 50%;
     transform-origin: 0 0;
     transform:
         translate(-50%, -50%)
         rotate(var(--angle))
-        translateY(-105px)
+        translateY(-75px)
         rotate(calc(var(--angle) * -1));
     transition: all 0.3s ease;
 }
@@ -143,7 +143,7 @@
     transform:
         translate(-50%, -50%)
         rotate(var(--angle))
-        translateY(-120px)
+        translateY(-85px)
         rotate(calc(var(--angle) * -1))
         scale(1.15);
 }
@@ -246,14 +246,14 @@
 @media (max-width: 768px) {
     .circular-nav-container {
         bottom: 20px;
-        right: 20px;
-        width: 200px;
-        height: 200px;
+        left: 20px;
+        width: 150px;
+        height: 150px;
     }
 
     .circular-nav-center {
-        width: 70px;
-        height: 70px;
+        width: 50px;
+        height: 50px;
     }
 
     .center-text {
@@ -261,15 +261,15 @@
     }
 
     .nav-item {
-        width: 50px;
-        height: 50px;
+        width: 40px;
+        height: 40px;
     }
 
     .nav-item:hover {
         transform:
             translate(-50%, -50%)
             rotate(var(--angle))
-            translateY(-85px)
+            translateY(-60px)
             rotate(calc(var(--angle) * -1))
             scale(1.1);
     }
