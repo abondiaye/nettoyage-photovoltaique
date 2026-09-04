@@ -299,12 +299,67 @@
     transform: translateX(8px);
 }
 
+/* ===== AUTH BUTTONS (LEFT SIDE) ===== */
+.auth-buttons {
+    position: fixed;
+    left: 20px;
+    top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 999;
+    perspective: 1000px;
+}
+
+.auth-buttons .auth-link {
+    position: relative;
+    width: 70px;
+    height: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    background: linear-gradient(135deg, #3d7ba0 0%, #2D6B55 100%);
+    border-radius: 50%;
+    text-decoration: none;
+    color: #a8a8a8;
+    font-weight: 600;
+    font-size: 11px;
+    border: 2px solid rgba(160, 160, 160, 0.6);
+    box-shadow: 0 10px 40px rgba(160, 160, 160, 0.5), 0 8px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    overflow: hidden;
+    cursor: pointer;
+    transform-style: preserve-3d;
+}
+
+.auth-buttons .auth-link:hover {
+    transform: translateY(-12px) rotateX(8deg) rotateY(-8deg);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15), inset 0 -8px 15px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, #4d8bb0 0%, #3D7B65 100%);
+    border-color: rgba(160, 160, 160, 0.9);
+}
+
+.auth-buttons .auth-link:active {
+    transform: translateY(2px) rotateX(8deg) rotateY(-8deg) scale(0.98);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), inset 0 5px 10px rgba(0, 0, 0, 0.4), inset 0 -2px 5px rgba(255, 255, 255, 0.1);
+}
+
+.auth-buttons .auth-link span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+}
+
 @media (max-width: 768px) {
     body { padding-top: 0 !important; }
     .navbar { padding: 0 16px; height: 80px; }
     .navbar-brand { font-size: 20px; min-width: 120px; }
     .navbar-menu { display: none !important; }
     .nav-cta { display: none !important; }
+    .auth-buttons { display: none !important; }
     .hamburger { display: flex; }
 }
 </style>
@@ -342,6 +397,7 @@
             <span class="nav-badge">CALL</span>
         </a>
     </div>
+
 
     <div class="mobile-menu" id="mobileMenu">
         <a href="{{ path('app_home') }}" class="mobile-menu-item active">🏠 Accueil</a>

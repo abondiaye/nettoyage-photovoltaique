@@ -827,8 +827,28 @@
             color: #e8e8e8;
         }
 
+        /* Main content alignment */
+        main {
+            padding: 0;
+            margin: 0;
+            width: 100%;
+        }
+
+        /* Desktop: Hide hamburger, show vertical navbar */
+        @media (min-width: 769px) {
+            .hamburger-btn {
+                display: none !important;
+            }
+
+            .menu-overlay {
+                display: none !important;
+            }
+        }
+
+        /* Mobile: Show hamburger, hide vertical navbar if it exists */
         @media (max-width: 768px) {
             .hamburger-btn {
+                display: flex !important;
                 width: 45px;
                 height: 45px;
                 top: 20px;
@@ -837,6 +857,12 @@
 
             .menu-list a {
                 font-size: 20px;
+            }
+
+            /* Hide vertical navbar on mobile */
+            .gooey-navbar,
+            .navbar {
+                display: none !important;
             }
         }
     </style>
