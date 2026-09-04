@@ -105,16 +105,46 @@
         transform: translateX(-50%);
         width: 200px;
         height: 110px;
-        background: white;
+        background: linear-gradient(180deg, #c3dfe1 0%, #a8d5e0 100%);
         border-radius: 16px;
         padding: 12px;
-        border: 2px solid rgba(192, 192, 192, 0.6);
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 0 25px rgba(192, 192, 192, 0.2);
+        border: 2px solid rgba(60, 60, 60, 0.7);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+                    0 0 30px rgba(195, 223, 225, 0.4),
+                    inset -5px -5px 15px rgba(0, 0, 0, 0.1);
         display: flex;
         align-items: center;
         justify-content: center;
         z-index: 10;
         animation: logoFloat 3s ease-in-out infinite;
+        overflow: hidden;
+    }
+
+    .hero-logo::before {
+        content: '';
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        width: 60px;
+        height: 35px;
+        background: rgba(255, 255, 255, 0.6);
+        border-radius: 50%;
+        z-index: 1;
+        filter: blur(8px);
+    }
+
+    .hero-logo::after {
+        content: '';
+        position: absolute;
+        top: 20px;
+        right: 15px;
+        width: 70px;
+        height: 40px;
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 50%;
+        z-index: 1;
+        filter: blur(10px);
     }
 
     .hero-logo img {
@@ -123,6 +153,8 @@
         object-fit: contain;
         border-radius: 12px;
         filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.15));
+        position: relative;
+        z-index: 2;
     }
 
     @keyframes logoFloat {
