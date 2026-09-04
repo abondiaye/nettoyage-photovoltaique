@@ -202,9 +202,20 @@
 }
 
 .nav-label {
-    font-size: 10px;
+    font-size: 8px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.circular-nav-container.scrolling-down .nav-label {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.circular-nav-container.scrolling-up .nav-label {
+    opacity: 1;
 }
 
 /* Tooltip */
@@ -312,3 +323,33 @@ body.dark-mode .nav-link:hover {
     background: linear-gradient(135deg, #2D6B55 0%, #1a4d42 100%);
 }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const navContainer = document.querySelector('.circular-nav-container');
+    let lastScrollTop = 0;
+    let scrollDirection = 'up';
+
+    window.addEventListener('scroll', function() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (scrollTop > lastScrollTop) {
+            // Scrolling DOWN
+            if (scrollDirection !== 'down') {
+                scrollDirection = 'down';
+                navContainer.classList.remove('scrolling-up');
+                navContainer.classList.add('scrolling-down');
+            }
+        } else {
+            // Scrolling UP
+            if (scrollDirection !== 'up') {
+                scrollDirection = 'up';
+                navContainer.classList.remove('scrolling-down');
+                navContainer.classList.add('scrolling-up');
+            }
+        }
+
+        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+    }, false);
+});
+</script>
