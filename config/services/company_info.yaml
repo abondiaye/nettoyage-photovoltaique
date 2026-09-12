@@ -1,0 +1,38 @@
+# Company Information Configuration
+parameters:
+  company:
+    name: "Sirius-Solar"
+    tagline: "Nettoyage & Entretien de Panneaux Photovoltaïques"
+
+    # Contact Information
+    email: "Info@Sirius-solar-services.ch"
+    phone: "+41 XX XXX XX XX"  # À mettre à jour
+
+    # Physical Address
+    address:
+      street: "Route des dragons 7"
+      city: "Cheseaux-sur-Lausanne"
+      postal_code: "1027"
+      country: "Switzerland"
+
+    # Business Hours
+    business_hours:
+      weekday:
+        open: "08:00"
+        close: "18:00"
+      saturday:
+        open: "09:00"
+        close: "16:00"
+      sunday: "Fermé"
+
+    # Social Media (à ajouter si nécessaire)
+    social:
+      facebook: ""
+      instagram: ""
+      linkedin: ""
+
+    # Default Admin Credentials (À CHANGER IMMÉDIATEMENT)
+    admin:
+      email: "admin@sirius-solar.ch"
+      default_password: "Sirius2024!Temp"  # À CHANGER IMMÉDIATEMENT
+      note: "⚠️ L'admin DOIT changer ce mot de passe à la première connexion!"
