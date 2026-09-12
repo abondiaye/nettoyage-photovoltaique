@@ -132,6 +132,7 @@
         border-radius: 50%;
         z-index: 1;
         filter: blur(8px);
+        animation: cloudDriftLeft 8s ease-in-out infinite;
     }
 
     .hero-logo::after {
@@ -145,6 +146,7 @@
         border-radius: 50%;
         z-index: 1;
         filter: blur(10px);
+        animation: cloudDriftRight 10s ease-in-out infinite;
     }
 
     .hero-logo img {
@@ -163,6 +165,46 @@
         }
         50% {
             transform: translateX(-50%) translateY(-8px);
+        }
+    }
+
+    @keyframes cloudDriftLeft {
+        0%, 100% {
+            left: 5px;
+            opacity: 0.4;
+        }
+        25% {
+            left: -15px;
+            opacity: 0.6;
+        }
+        50% {
+            left: 20px;
+            opacity: 0.8;
+            filter: blur(8px) brightness(1.1);
+        }
+        75% {
+            left: 10px;
+            opacity: 0.5;
+        }
+    }
+
+    @keyframes cloudDriftRight {
+        0%, 100% {
+            right: 15px;
+            opacity: 0.5;
+        }
+        25% {
+            right: 35px;
+            opacity: 0.7;
+            filter: blur(10px) brightness(1.15);
+        }
+        50% {
+            right: 5px;
+            opacity: 0.4;
+        }
+        75% {
+            right: 25px;
+            opacity: 0.65;
         }
     }
 
@@ -743,6 +785,11 @@
         padding: 60px 40px 30px;
     }
 
+    /* Footer with Knob */
+    .footer {
+        position: relative;
+    }
+
     .footer-content {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -750,6 +797,26 @@
         max-width: 1200px;
         margin: 0 auto 40px;
         text-align: center;
+    }
+
+    /* Responsive footer knob */
+    @media (max-width: 1024px) {
+        .footer > div:first-child {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .footer > div:first-child {
+            flex-direction: column;
+            gap: 40px;
+            padding: 20px;
+        }
+
+        .footer > div:first-child > div:last-child {
+            grid-template-columns: 1fr;
+        }
     }
 
     .footer-column h3 {
@@ -1510,16 +1577,14 @@
         <div class="carte-visite-container">
             <!-- Affichage côte à côte des deux cartes -->
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; max-width: 900px; margin: 0 auto;">
-                <!-- Face 1: cartet.jpeg -->
-                <div style="position: relative; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 50px rgba(160, 160, 160, 0.3); cursor: pointer; transition: transform 0.3s ease, filter 0.3s ease;">
-                    <img src="{{ asset('images/cartet.jpeg') }}" alt="Sirius-Solar - Carte de Visite (Face 1)" style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px; filter: brightness(1.2) contrast(1.3) saturate(1.15); transition: filter 0.3s ease;" onmouseover="this.style.filter='brightness(1.35) contrast(1.4) saturate(1.25)'" onmouseout="this.style.filter='brightness(1.2) contrast(1.3) saturate(1.15)'">
-                    <div style="position: absolute; top: 15px; right: 15px; background: rgba(160, 160, 160, 0.9); color: #0A3D35; padding: 8px 16px; border-radius: 50px; font-weight: 600; font-size: 14px; backdrop-filter: blur(10px);">Face 1</div>
+                <!-- Face 1: Professional Business Card Design -->
+                <div style="position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(160, 160, 160, 0.3); cursor: pointer; transition: transform 0.3s ease, filter 0.3s ease; height: 100%;">
+                    <img src="{{ asset('images/cartet.jpeg') }}" alt="Sirius-Solar - Carte de Visite (Face 1)" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px; filter: brightness(1.2) contrast(1.3) saturate(1.15); transition: filter 0.3s ease;" onmouseover="this.style.filter='brightness(1.35) contrast(1.4) saturate(1.25)'" onmouseout="this.style.filter='brightness(1.2) contrast(1.3) saturate(1.15)'">
                 </div>
 
                 <!-- Face 2: cartet2.jpeg -->
-                <div style="position: relative; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 50px rgba(160, 160, 160, 0.3); cursor: pointer; transition: transform 0.3s ease, filter 0.3s ease;">
-                    <img src="{{ asset('images/cartet2.jpeg') }}" alt="Sirius-Solar - Carte de Visite (Face 2)" style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px; filter: brightness(1.2) contrast(1.3) saturate(1.15); transition: filter 0.3s ease;" onmouseover="this.style.filter='brightness(1.35) contrast(1.4) saturate(1.25)'" onmouseout="this.style.filter='brightness(1.2) contrast(1.3) saturate(1.15)'">
-                    <div style="position: absolute; top: 15px; right: 15px; background: rgba(160, 160, 160, 0.9); color: #0A3D35; padding: 8px 16px; border-radius: 50px; font-weight: 600; font-size: 14px; backdrop-filter: blur(10px);">Face 2</div>
+                <div style="position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(160, 160, 160, 0.3); cursor: pointer; transition: transform 0.3s ease, filter 0.3s ease;">
+                    <img src="{{ asset('images/cartet2.jpeg') }}" alt="Sirius-Solar - Carte de Visite (Face 2)" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px; filter: brightness(1.2) contrast(1.3) saturate(1.15); transition: filter 0.3s ease;" onmouseover="this.style.filter='brightness(1.35) contrast(1.4) saturate(1.25)'" onmouseout="this.style.filter='brightness(1.2) contrast(1.3) saturate(1.15)'"
                 </div>
             </div>
 
@@ -1547,7 +1612,28 @@
         </div>
     </div>
 
-    <div class="footer-content">
+    <!-- Footer Main Container with Knob -->
+    <div style="display: flex; align-items: flex-start; gap: 60px; padding: 40px; max-width: 1400px; margin: 0 auto;">
+
+        <!-- Rotary Knob Section (Left) -->
+        <div style="flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 20px; min-width: 250px;">
+            <div style="position: relative; width: 250px; height: 200px;">
+                <!-- Cadre FIXE (ne tourne pas) -->
+                <img src="/images/change.png" alt="Cadre" style="position: absolute; width: 100%; height: 100%; object-fit: contain; z-index: 1; top: 0; left: 0; border: 3px solid #404040; border-radius: 12px; box-sizing: border-box;">
+                <!-- Knob ROTATIF -->
+                <div class="rotary-metal-container">
+                    <input type="range" max="360" min="0" value="0" class="rotary-knob-input" />
+                </div>
+            </div>
+            <div class="rotary-indicator">0</div>
+            <div class="rotary-knob-label">Rendement (%)</div>
+        </div>
+
+        <!-- Footer Content (Right) -->
+        <div style="flex: 1; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px;">
+
+    <!-- Footer Content Grid Start -->
+    <div class="footer-content" style="display: contents;">
         <div class="footer-column">
             <h3>Sirius-Solar</h3>
             <p>Nettoyage & Entretien de panneaux photovoltaïques avec eau osmosée</p>
@@ -1580,6 +1666,10 @@
             </p>
         </div>
     </div>
+        </div>
+        <!-- End Footer Content Grid -->
+    </div>
+    <!-- End Footer Flex Container -->
 
     <div class="footer-bottom">
         <p>&copy; 2026 Sirius-Solar. Tous droits réservés. | Spécialiste du nettoyage de panneaux photovoltaïques en Suisse Romande.</p>
