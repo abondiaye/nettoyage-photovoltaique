@@ -61,8 +61,8 @@
     bottom: 40px;
     left: 40px;
     z-index: 999;
-    width: 200px;
-    height: 200px;
+    width: 300px;
+    height: 300px;
     background-color: transparent !important;
     background: transparent !important;
     border: none !important;
@@ -71,8 +71,8 @@
 
 .circular-nav-center {
     position: absolute;
-    width: 70px;
-    height: 70px;
+    width: 100px;
+    height: 100px;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
@@ -98,15 +98,15 @@
 }
 
 .center-icon {
-    width: 30px;
-    height: 30px;
+    width: 45px;
+    height: 45px;
     object-fit: cover;
     border-radius: 50%;
     opacity: 0.8;
 }
 
 .center-text {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 700;
     color: #ffffff;
     text-align: center;
@@ -126,15 +126,15 @@
 
 .nav-item {
     position: absolute;
-    width: 50px;
-    height: 50px;
+    width: 70px;
+    height: 70px;
     left: 50%;
     top: 50%;
     transform-origin: 0 0;
     transform:
         translate(-50%, -50%)
         rotate(var(--angle))
-        translateY(-75px)
+        translateY(-110px)
         rotate(calc(var(--angle) * -1));
     transition: all 0.3s ease;
 }
@@ -143,7 +143,7 @@
     transform:
         translate(-50%, -50%)
         rotate(var(--angle))
-        translateY(-85px)
+        translateY(-125px)
         rotate(calc(var(--angle) * -1))
         scale(1.15);
 }
@@ -193,12 +193,26 @@
 
 .nav-icon {
     font-size: 20px;
-    display: block;
-    transition: transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    width: 28px;
+    height: 28px;
+    background: rgba(160, 160, 160, 0.08);
+    border-radius: 8px;
+    border: 1px solid rgba(160, 160, 160, 0.3);
+    padding: 4px;
+    box-shadow: inset 0 0 10px rgba(160, 160, 160, 0.1);
+    animation: iconGlowCircular 3s ease-in-out infinite;
 }
 
 .nav-link:hover .nav-icon {
-    transform: scale(1.2) rotate(10deg);
+    transform: scale(1.3) rotate(10deg) rotateY(-15deg);
+    animation: iconBounceGlowCircular 0.6s ease-in-out infinite;
+    background: rgba(160, 160, 160, 0.15);
+    border-color: rgba(160, 160, 160, 0.6);
+    filter: drop-shadow(0 0 8px rgba(160, 160, 160, 0.4));
 }
 
 .nav-label {
@@ -248,6 +262,16 @@
     to { transform: rotate(360deg); }
 }
 
+/* Icon animations */
+@keyframes iconGlowCircular {
+    0%, 100% { box-shadow: inset 0 0 10px rgba(160, 160, 160, 0.1), 0 0 6px rgba(160, 160, 160, 0.1); border-color: rgba(160, 160, 160, 0.3); }
+    50% { box-shadow: inset 0 0 15px rgba(160, 160, 160, 0.2), 0 0 12px rgba(160, 160, 160, 0.25); border-color: rgba(160, 160, 160, 0.5); }
+}
+@keyframes iconBounceGlowCircular {
+    0%, 100% { box-shadow: inset 0 0 15px rgba(160, 160, 160, 0.2), 0 0 15px rgba(160, 160, 160, 0.35); }
+    50% { box-shadow: inset 0 0 22px rgba(160, 160, 160, 0.3), 0 0 25px rgba(160, 160, 160, 0.5); }
+}
+
 .circular-nav-wheel:hover {
     animation: wheelSpin 20s linear infinite;
     animation-play-state: paused;
@@ -258,39 +282,39 @@
     .circular-nav-container {
         bottom: 20px;
         left: 20px;
-        width: 150px;
-        height: 150px;
+        width: 220px;
+        height: 220px;
     }
 
     .circular-nav-center {
-        width: 50px;
-        height: 50px;
+        width: 70px;
+        height: 70px;
     }
 
     .center-text {
-        font-size: 10px;
+        font-size: 12px;
     }
 
     .nav-item {
-        width: 40px;
-        height: 40px;
+        width: 50px;
+        height: 50px;
     }
 
     .nav-item:hover {
         transform:
             translate(-50%, -50%)
             rotate(var(--angle))
-            translateY(-60px)
+            translateY(-75px)
             rotate(calc(var(--angle) * -1))
             scale(1.1);
     }
 
     .nav-link {
-        font-size: 9px;
+        font-size: 10px;
     }
 
     .nav-icon {
-        font-size: 16px;
+        font-size: 18px;
     }
 }
 

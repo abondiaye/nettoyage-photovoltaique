@@ -1,241 +1,382 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login - Sirius Solar</title>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+{% extends "base.html.twig" %}
 
-        body {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            font-family: 'Quicksand', sans-serif;
-        }
+{% block title %}Connexion - Sirius-Solar{% endblock %}
 
-        a {
-            text-decoration: none;
-            color: #C06C84;
-            transition: all 300ms;
-        }
+{% block body %}
+<style>
+  body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    margin: 0;
+    padding: 0 !important;
+    padding-top: 0 !important;
+    min-height: 100vh;
+  }
 
-        a:hover {
-            opacity: .7;
-        }
+  .login-container {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 60px 40px 40px;
+  }
 
-        .container {
-            font-size: 1rem;
-            width: 100%;
-            height: 100vh;
-            background: linear-gradient(10deg, #0A3D35, #2D6B55, #355C7D);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+  .login-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
 
-        /* Card */
-        .card {
-            width: 100%;
-            max-width: 400px;
-            height: auto;
-            margin: 0 auto 0 auto;
-            padding: 0 1.5rem 2rem;
-            color: #fafafa;
-            border: 2px solid rgba(255, 255, 255, .3);
-            border-radius: 20px;
-            box-shadow: inset 0 -1rem 1rem rgba(255, 255, 255, 0.1),
-                        0 0 0 1px rgba(255, 255, 255, 0.1),
-                        0.3rem 0.2rem 3rem rgba(160, 160, 160, 0.3);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            background: rgba(255, 255, 255, 0.1);
-        }
+  .login-logo {
+    font-size: 48px;
+    margin-bottom: 20px;
+  }
 
-        /* Header */
-        .card__header {
-            padding: 2rem 0 1rem;
-            text-align: center;
-        }
+  .login-title {
+    color: #0A3D35;
+    font-size: 42px;
+    font-weight: 800;
+    margin: 0 0 10px;
+    font-family: 'Space Grotesk', sans-serif;
+  }
 
-        .card__header h2.title {
-            text-transform: uppercase;
-            text-align: center;
-            letter-spacing: .2rem;
-            font-size: 1.8rem;
-            margin: 0;
-        }
+  .login-subtitle {
+    color: #666;
+    font-size: 16px;
+    margin: 0;
+  }
 
-        .card__header h2.title span {
-            color: #d4a842;
-        }
+  .login-content {
+    display: flex;
+    gap: 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    align-items: flex-start;
+  }
 
-        .card__header .subtitle {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
-            letter-spacing: 0.1rem;
-        }
+  .login-form-section {
+    flex: 1;
+    min-width: 380px;
+  }
 
-        /* Body */
-        .card__body {
-            width: 100%;
-            padding-bottom: 1rem;
-        }
+  .login-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 16px;
+    padding: 50px 40px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+  }
 
-        /* Label */
-        label {
-            display: block;
-            margin-bottom: .5rem;
-            font-size: .75em;
-            letter-spacing: .2rem;
-            text-transform: uppercase;
-        }
+  .login-card h2 {
+    color: #0A3D35;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 0 10px;
+  }
 
-        /* Input */
-        input[type="email"],
-        input[type="password"] {
-            display: block;
-            margin-bottom: 1.25rem;
-            padding-left: .8rem;
-            width: 100%;
-            height: 2.75rem;
-            font-size: 1rem;
-            color: rgba(250, 250, 250, .9);
-            background-color: rgba(255, 255, 255, 0);
-            border: 1px solid rgba(255, 255, 255, 1);
-            border-radius: 8px;
-            outline: none;
-            transition: all .5s;
-            font-family: 'Quicksand', sans-serif;
-        }
+  .login-card p {
+    color: #999;
+    font-size: 14px;
+    margin: 0 0 30px;
+  }
 
-        input[type="email"]::placeholder,
-        input[type="password"]::placeholder,
-        input::-webkit-input-placeholder  {
-            color: rgba(255, 255, 255, .5);
-        }
+  .form-group {
+    margin-bottom: 24px;
+  }
 
-        input[type="email"]:hover,
-        input[type="email"]:focus,
-        input[type="password"]:hover,
-        input[type="password"]:focus {
-            background-color: rgba(255, 255, 255, .15);
-            border-color: #d4a842;
-        }
+  .form-group label {
+    display: block;
+    color: #0A3D35;
+    font-weight: 600;
+    font-size: 13px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
 
-        /* Footer */
-        .card__footer {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 1rem;
-        }
+  .form-group input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.8);
+    color: #0A3D35;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    font-family: inherit;
+  }
 
-        /* Button */
-        .btn_sign-in-up {
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            color: rgba(0, 0, 0, .8);
-            padding: 1rem 2rem;
-            border: 1px transparent;
-            border-radius: 8px;
-            outline: none;
-            background: linear-gradient(135deg, #d4a842, #e8e8e8);
-            transition: all .5s;
-            width: 100%;
-            font-family: 'Quicksand', sans-serif;
-            letter-spacing: 0.1rem;
-        }
+  .form-group input:focus {
+    outline: none;
+    border-color: #0A3D35;
+    background: #ffffff;
+    box-shadow: 0 0 12px rgba(10, 61, 53, 0.15);
+  }
 
-        .btn_sign-in-up:hover {
-            background: linear-gradient(135deg, #e8e8e8, #d4a842);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(160, 160, 160, 0.4);
-        }
+  .form-group input::placeholder {
+    color: #bbb;
+  }
 
-        .card__footer p {
-            margin: 0;
-            font-size: .8rem;
-            text-align: center;
-        }
+  .form-forgot {
+    text-align: right;
+    margin-top: 8px;
+  }
 
-        .card__footer a {
-            color: #d4a842;
-        }
+  .form-forgot a {
+    color: #0A3D35;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 13px;
+    transition: color 0.3s;
+  }
 
-        .card__footer a:hover {
-            opacity: 1;
-            text-decoration: underline;
-        }
+  .form-forgot a:hover {
+    color: #2D6B55;
+  }
 
-        .alert {
-            padding: 1rem;
-            margin-bottom: 1rem;
-            border-radius: 8px;
-            background: rgba(220, 53, 69, 0.2);
-            color: #ffc9d4;
-            border: 1px solid rgba(220, 53, 69, 0.4);
-            font-size: 0.9rem;
-        }
+  .btn-submit {
+    width: 100%;
+    background: linear-gradient(135deg, #0A3D35 0%, #2D6B55 100%);
+    color: #ffffff;
+    border: none;
+    padding: 16px 20px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+    box-shadow: 0 10px 30px rgba(10, 61, 53, 0.2);
+  }
 
-        /* Responsive */
-        @media (max-width: 530px) {
-            .card {
-                margin-left: 2rem;
-                margin-right: 2rem;
-                max-width: calc(100% - 4rem);
-            }
+  .btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px rgba(10, 61, 53, 0.3);
+  }
 
-            .card__header h2.title {
-                font-size: 1.5rem;
-            }
+  .btn-submit:active {
+    transform: translateY(0);
+  }
 
-            .btn_sign-in-up {
-                padding: 0.8rem 1.5rem;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="card">
-            <div class="card__header">
-                <h2 class="title">Sign <span>In</span></h2>
-                <p class="subtitle">Sirius-Solar Administration</p>
+  .form-footer {
+    text-align: center;
+    margin-top: 24px;
+    color: #0A3D35;
+    font-size: 14px;
+  }
+
+  .form-footer a {
+    color: #0A3D35;
+    text-decoration: underline;
+    font-weight: 600;
+    transition: color 0.3s;
+  }
+
+  .form-footer a:hover {
+    color: #2D6B55;
+  }
+
+  .error-message {
+    background: rgba(255, 0, 0, 0.1);
+    color: #d32f2f;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 14px;
+  }
+
+  .advantages-section {
+    flex: 1;
+    min-width: 300px;
+  }
+
+  .advantages-title {
+    color: #0A3D35;
+    font-size: 24px;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 30px;
+  }
+
+  .advantage-item {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 24px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+  }
+
+  .advantage-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+  }
+
+  .advantage-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+  }
+
+  .advantage-title {
+    color: #0A3D35;
+    font-weight: 700;
+    font-size: 16px;
+    margin: 0 0 8px;
+  }
+
+  .advantage-text {
+    color: #666;
+    font-size: 13px;
+    margin: 0;
+  }
+
+  .back-link {
+    position: absolute;
+    top: 20px;
+    left: 40px;
+    color: #0A3D35;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: color 0.3s;
+  }
+
+  .back-link:hover {
+    color: #2D6B55;
+  }
+
+  @media (max-width: 1024px) {
+    .login-content {
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .advantages-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .advantage-item {
+      margin-bottom: 0;
+    }
+
+    .advantages-title {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .login-container {
+      padding: 40px 20px 20px;
+    }
+
+    .login-header {
+      margin-bottom: 40px;
+    }
+
+    .login-title {
+      font-size: 32px;
+    }
+
+    .login-logo {
+      font-size: 40px;
+    }
+
+    .login-form-section {
+      min-width: auto;
+    }
+
+    .login-card {
+      padding: 30px 20px;
+    }
+
+    .advantages-section {
+      grid-template-columns: 1fr;
+    }
+
+    .back-link {
+      left: 20px;
+    }
+  }
+</style>
+
+<div class="login-container">
+  <a href="{{ path('app_home') }}" class="back-link">← Retour</a>
+
+  <div class="login-header">
+    <div class="login-logo">⚡</div>
+    <h1 class="login-title">SIRIUS-Solar</h1>
+    <p class="login-subtitle">Nettoyage & Entretien de Panneaux Photovoltaïques</p>
+  </div>
+
+  <div class="login-content">
+    <div class="login-form-section">
+      <div class="login-card">
+        <h2>Se connecter</h2>
+        <p>Accédez à votre compte Sirius-Solar</p>
+
+        {% if error %}
+          <div class="error-message">
+            {{ error.messageKey|trans(error.messageData, 'security') }}
+          </div>
+        {% endif %}
+
+        <form method="post" action="{{ path('app_login') }}">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" value="{{ last_username }}" placeholder="votre@email.com" required autofocus>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <input type="password" id="password" name="password" placeholder="Votre mot de passe" required>
+            <div class="form-forgot">
+              <a href="#">Mot de passe oublié?</a>
             </div>
+          </div>
 
-            {% if error %}
-                <div class="alert">
-                    {{ error.messageKey|trans(error.messageData, 'security') }}
-                </div>
-            {% endif %}
+          <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-            <form method="POST" action="{{ path('app_login') }}">
-                <div class="card__body">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" value="{{ last_username }}" placeholder="admin@sirius-solar.ch" required autofocus>
+          <button type="submit" class="btn-submit">Se connecter</button>
+        </form>
 
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" placeholder="your password" required>
-                </div>
-
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-                <div class="card__footer">
-                    <button type="submit" class="btn_sign-in-up">Sign In</button>
-                    <p>Forgot password? <a href="{{ path('app_forgot_password') }}">Click here</a>.</p>
-                    <p><a href="{{ path('app_home') }}">← Back to home</a></p>
-                </div>
-            </form>
+        <div class="form-footer">
+          Pas encore de compte? <a href="{{ path('app_register') }}">S'inscrire</a>
         </div>
+      </div>
     </div>
-</body>
-</html>
+
+    <div class="advantages-section">
+      <h3 class="advantages-title">Pourquoi nous choisir?</h3>
+
+      <div class="advantage-item">
+        <div class="advantage-icon">✨</div>
+        <h4 class="advantage-title">+25% de rendement</h4>
+        <p class="advantage-text">Retrouvez jusqu'à 25% d'efficacité perdue en nettoyant vos panneaux régulièrement.</p>
+      </div>
+
+      <div class="advantage-item">
+        <div class="advantage-icon">💧</div>
+        <h4 class="advantage-title">Eau osmosée</h4>
+        <p class="advantage-text">Zéro résidu minéral, zéro produit chimique pour une protection optimale.</p>
+      </div>
+
+      <div class="advantage-item">
+        <div class="advantage-icon">⚡</div>
+        <h4 class="advantage-title">Devis gratuit</h4>
+        <p class="advantage-text">Obtenez un devis sans engagement en moins de 48 heures.</p>
+      </div>
+
+      <div class="advantage-item">
+        <div class="advantage-icon">🛡️</div>
+        <h4 class="advantage-title">Professionnels certifiés</h4>
+        <p class="advantage-text">Équipe expérimentée et équipée pour un service de qualité.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
