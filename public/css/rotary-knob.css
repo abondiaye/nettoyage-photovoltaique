@@ -1,0 +1,157 @@
+/* Rotary Knob Styles */
+.rotary-knob-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Cadre FIXE - Style exact change.png avec effet 3D */
+.rotary-metal-container {
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  top: 0;
+  left: 0;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Image ROTATIVE - hidden, knob tourne seulement via ::before */
+.rotary-metal-container img {
+  display: none;
+}
+
+/* Knob qui TOURNE - cercles concentriques SVG */
+.rotary-metal-container::before {
+  content: '';
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: url(/images/rotary-knob-metal.svg) center/contain no-repeat;
+  z-index: 10;
+  top: 10px;
+  left: 35px;
+  transform: rotate(var(--rotation, 0deg));
+  transition: transform 0.05s ease-out;
+}
+
+
+.rotary-metal-container:active {
+  cursor: grabbing;
+}
+
+.rotary-knob-input {
+  width: 100%;
+  height: 100%;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: grab;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  z-index: 10;
+}
+
+.rotary-knob-input:active {
+  cursor: grabbing;
+}
+
+.rotary-indicator {
+  text-align: center;
+  color: #fff;
+  text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.8);
+  vertical-align: middle;
+  display: block;
+  border: solid 2px #0A3D35;
+  border-radius: 4px;
+  width: 50px;
+  height: 28px;
+  line-height: 28px;
+  background: linear-gradient(135deg, #0A3D35 0%, #2D6B55 100%);
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5), 0 4px 10px rgba(10, 61, 53, 0.4);
+  font-family: "Audiowide", monospace;
+  font-weight: 600;
+  font-size: 14px;
+  z-index: 30;
+  position: relative;
+  transition: all 0.05s ease-out;
+}
+
+.rotary-knob-label {
+  font-size: 12px;
+  color: #666;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+body.dark-mode .rotary-metal-container {
+  background-color: hsl(0, 0%, 20%);
+  box-shadow:
+    inset hsla(0, 0%, 50%, 1) 0 0px 0px 4px,
+    inset hsla(0, 0%, 40%, 0.8) 0 -1px 5px 4px,
+    inset hsla(0, 0%, 80%, 0.25) 0 -1px 0px 7px,
+    inset hsla(0, 0%, 0%, 0.5) 0 2px 1px 7px,
+    hsla(0, 0%, 5%, 0.9) 0 0px 6px 4px,
+    hsla(0, 0%, 30%, 0.9) 0 0px 6px 4px;
+}
+
+body.dark-mode .rotary-indicator {
+  color: #fff;
+  text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.8);
+  border-color: #2D6B55;
+  background: linear-gradient(135deg, #1a4d3e 0%, #0A3D35 100%);
+  box-shadow: inset 0 0 5px rgba(45, 107, 85, 0.6), 0 4px 10px rgba(10, 61, 53, 0.6);
+}
+
+body.dark-mode .rotary-knob-label {
+  color: #aaa;
+}
+
+/* Footer integration */
+.footer-knob-section {
+  position: absolute;
+  left: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+@media (max-width: 768px) {
+  .footer-knob-section {
+    position: static;
+    transform: none;
+    flex-direction: column;
+    padding: 20px 0;
+  }
+
+  .rotary-metal-container {
+    width: 150px;
+    height: 150px;
+  }
+
+  .rotary-indicator {
+    width: 40px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+  }
+
+  .rotary-knob-label {
+    font-size: 11px;
+  }
+}
+
+/* Import Audiowide font */
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');

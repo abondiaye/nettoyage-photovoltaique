@@ -29,11 +29,12 @@
 
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
+        <link rel="stylesheet" href="{{ asset('css/rotary-knob.css') }}">
+        <script src="{{ asset('js/navbar-scroll.js') }}" defer></script>
         {% set currentRoute = app.request.attributes.get('_route')|default('') %}
         {% if currentRoute|slice(0, 6) == 'admin_' or app.request.pathInfo|default('')|slice(0, 6) == '/admin' %}
         <style>
-            /* Hide navbar and circular nav by DEFAULT (on ALL pages) */
-            .gooey-navbar { display: none !important; visibility: hidden !important; height: 0 !important; margin: 0 !important; padding: 0 !important; }
+            /* Hide circular nav on admin pages */
             .circular-nav-container { display: none !important; visibility: hidden !important; height: 0 !important; width: 0 !important; margin: 0 !important; padding: 0 !important; }
 
             html footer {
@@ -667,8 +668,79 @@
 </head>
 <body>
 
+    <!-- Auth Buttons Top Right -->
+    <style>
+        .auth-buttons-top {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .auth-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 8px 8px 16px rgba(142, 161, 176, 0.5),
+                       -6px -6px 16px rgba(255, 255, 255, 0.7),
+                       -8px -8px 16px -2px rgba(142, 161, 176, 0.6) inset,
+                       6px 6px 16px rgba(255, 255, 255, 0.6) inset;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            color: #0A3D35;
+            text-decoration: none;
+            display: inline-block;
+            transition: box-shadow 0.3s cubic-bezier(0, 1, 1, 1),
+                       transform 0.3s cubic-bezier(0, 1, 1, 1);
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 10px 10px 20px rgba(142, 161, 176, 0.6),
+                       -8px -8px 20px rgba(255, 255, 255, 0.8),
+                       -10px -10px 20px -3px rgba(142, 161, 176, 0.7) inset,
+                       8px 8px 20px rgba(255, 255, 255, 0.7) inset;
+        }
+
+        .auth-btn:active {
+            transform: translateY(1px);
+            box-shadow: 4px 4px 12px rgba(142, 161, 176, 0.5),
+                       -4px -4px 12px rgba(255, 255, 255, 0.6),
+                       -6px -6px 12px -2px rgba(255, 255, 255, 0.6) inset,
+                       6px 6px 12px -2px rgba(142, 161, 176, 0.6) inset;
+        }
+    </style>
+    <div class="auth-buttons-top">
+        <a href="{{ path('app_login') }}" class="auth-btn">🔐 Connexion</a>
+        <a href="{{ path('app_register') }}" class="auth-btn">✍️ Inscription</a>
+    </div>
+
+    <!-- Hamburger Menu Button -->
+    <button id="hamburger-menu" class="hamburger-btn" style="display: flex;">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <!-- Menu Overlay -->
+    <div id="menu-overlay" class="menu-overlay">
+        <ul class="menu-list">
+            <li><a href="{{ path('app_home') }}">Accueil</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#avantages">Avantages</a></li>
+            <li><a href="/devis">Devis</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="/about">À propos</a></li>
+            <li><a href="/blog">Blog</a></li>
+        </ul>
+    </div>
+
     <!-- Frosted Glass Gooey Gravity Navigation -->
-    {% include 'components/gooey-navbar.html.twig' %}
+    {# {% include 'components/gooey-navbar.html.twig' %} #}
 
     <!-- Main Content -->
     <main>
@@ -682,34 +754,38 @@
 
     {% block javascripts %}
         {{ encore_entry_script_tags('app') }}
+        <script src="{{ asset('js/rotary-knob.js') }}"></script>
         <script>
 
             // Theme Toggle
             const themeToggle = document.getElementById('theme-toggle');
             const html = document.documentElement;
-            const themeIcon = themeToggle.querySelector('.theme-icon');
 
-            // Check for saved theme preference or default to light mode
-            const currentTheme = localStorage.getItem('theme') || 'light';
-            if (currentTheme === 'dark') {
-                document.body.classList.add('dark-mode');
-                html.setAttribute('data-theme', 'dark');
-                themeIcon.textContent = '☀️';
-            }
+            if (themeToggle) {
+                const themeIcon = themeToggle.querySelector('.theme-icon');
 
-            themeToggle.addEventListener('click', () => {
-                document.body.classList.toggle('dark-mode');
-
-                if (document.body.classList.contains('dark-mode')) {
+                // Check for saved theme preference or default to light mode
+                const currentTheme = localStorage.getItem('theme') || 'light';
+                if (currentTheme === 'dark') {
+                    document.body.classList.add('dark-mode');
                     html.setAttribute('data-theme', 'dark');
-                    localStorage.setItem('theme', 'dark');
-                    themeIcon.textContent = '☀️';
-                } else {
-                    html.setAttribute('data-theme', 'light');
-                    localStorage.setItem('theme', 'light');
-                    themeIcon.textContent = '🌙';
+                    if (themeIcon) themeIcon.textContent = '☀️';
                 }
-            });
+
+                themeToggle.addEventListener('click', () => {
+                    document.body.classList.toggle('dark-mode');
+
+                    if (document.body.classList.contains('dark-mode')) {
+                        html.setAttribute('data-theme', 'dark');
+                        localStorage.setItem('theme', 'dark');
+                        if (themeIcon) themeIcon.textContent = '☀️';
+                    } else {
+                        html.setAttribute('data-theme', 'light');
+                        localStorage.setItem('theme', 'light');
+                        if (themeIcon) themeIcon.textContent = '🌙';
+                    }
+                });
+            }
 
             // Handle anchor links properly
             document.addEventListener('click', (e) => {
@@ -762,7 +838,7 @@
             display: block;
             width: 24px;
             height: 3px;
-            background: #fff;
+            background: #0A3D35;
             border-radius: 2px;
             transition: 0.3s;
         }
@@ -840,7 +916,7 @@
                 display: none !important;
             }
 
-            .menu-overlay {
+            .menu-overlay:not(.show) {
                 display: none !important;
             }
         }
@@ -871,24 +947,37 @@
 
     <script>
         // Hamburger Menu Handler
-        document.addEventListener('DOMContentLoaded', function() {
+        function initHamburgerMenu() {
             const hamburger = document.getElementById('hamburger-menu');
             const menuOverlay = document.getElementById('menu-overlay');
             const menuLinks = document.querySelectorAll('.menu-list a');
 
             if (hamburger && menuOverlay) {
-                hamburger.addEventListener('click', function() {
+                // Toggle menu on hamburger click
+                hamburger.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
                     hamburger.classList.toggle('active');
                     menuOverlay.classList.toggle('show');
                 });
 
+                // Close menu on link click
                 menuLinks.forEach(link => {
-                    link.addEventListener('click', function() {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
                         hamburger.classList.remove('active');
                         menuOverlay.classList.remove('show');
+                        // Navigate after closing menu
+                        const href = this.getAttribute('href');
+                        if (href) {
+                            setTimeout(() => {
+                                window.location.href = href;
+                            }, 100);
+                        }
                     });
                 });
 
+                // Close menu on overlay click (outside menu)
                 menuOverlay.addEventListener('click', function(e) {
                     if (e.target === this) {
                         hamburger.classList.remove('active');
@@ -896,7 +985,13 @@
                     }
                 });
             }
-        });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initHamburgerMenu);
+        } else {
+            initHamburgerMenu();
+        }
     </script>
 
     <script>

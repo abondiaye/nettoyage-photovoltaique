@@ -1,0 +1,136 @@
+name: Tests & Code Quality
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  tests:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        php-version: ['8.2']
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: sirius_test
+          POSTGRES_USER: app
+          POSTGRES_PASSWORD: password
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP ${{ matrix.php-version }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: pdo_pgsql, intl, mbstring, xml
+          tools: composer:latest
+
+      - name: Validate composer.json
+        run: composer validate --strict
+
+      - name: Cache Composer packages
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-php${{ matrix.php-version }}-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-ansi
+
+      - name: Copy .env
+        run: |
+          cp .env.example .env
+          echo "DATABASE_URL=postgresql://app:password@localhost:5432/sirius_test?serverVersion=16&charset=utf8" >> .env
+          echo "APP_SECRET=$(openssl rand -base64 32)" >> .env
+
+      - name: Create test database
+        run: php bin/console doctrine:database:create --env=test
+
+      - name: Run migrations
+        run: php bin/console doctrine:migrations:migrate --no-interaction --env=test
+
+      - name: Lint Symfony config
+        run: php bin/console lint:container --env=test
+
+      - name: Lint Twig templates
+        run: php bin/console lint:twig templates/ --env=test
+
+      - name: Lint YAML
+        run: php bin/console lint:yaml config/ translations/ --env=test
+
+      - name: Run tests
+        run: php bin/phpunit --coverage-clover coverage.xml
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage.xml
+          fail_ci_if_error: false
+
+  code-quality:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:latest
+
+      - name: Cache Composer packages
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+
+      - name: Install dependencies
+        run: composer install --prefer-dist
+
+      - name: Run Psalm (Static Analysis)
+        run: composer require --dev vimeo/psalm --no-interaction || true && php vendor/bin/psalm || true
+
+      - name: Run PHP-CS-Fixer
+        run: composer require --dev friendsofphp/php-cs-fixer --no-interaction || true && php vendor/bin/php-cs-fixer fix --dry-run --diff || true
+
+      - name: Security check
+        run: symfony security:check || true
+
+  performance:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:latest
+
+      - name: Install dependencies
+        run: composer install --no-dev --optimize-autoloader
+
+      - name: Validate autoloader
+        run: composer dump-autoload --no-dev --optimize
+
+      - name: Check for unused dependencies
+        run: composer require --dev composer/composer-runtime-api && composer unused || true
+
+      - name: Check PHP version compatibility
+        run: composer require --dev phpcompatibility/php-compatibility --no-interaction && php vendor/bin/phpcs --standard=PHPCompatibility . || true
