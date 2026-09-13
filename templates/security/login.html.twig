@@ -4,6 +4,18 @@
 
 {% block body %}
 <style>
+  /* Remove auth buttons completely on login page */
+  .auth-buttons-top {
+    position: static !important;
+    display: none !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+  }
+</style>
+
+<style>
   body {
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     margin: 0;
@@ -247,6 +259,13 @@
     color: #2D6B55;
   }
 
+  /* Hide top auth buttons on mobile */
+  @media (max-width: 768px) {
+    .auth-buttons-top {
+      display: none !important;
+    }
+  }
+
   @media (max-width: 1024px) {
     .login-content {
       flex-direction: column;
@@ -270,7 +289,7 @@
 
   @media (max-width: 768px) {
     .login-container {
-      padding: 40px 20px 20px;
+      padding: 60px 20px 20px;
     }
 
     .login-header {
@@ -287,6 +306,7 @@
 
     .login-form-section {
       min-width: auto;
+      width: 100%;
     }
 
     .login-card {
@@ -294,11 +314,26 @@
     }
 
     .advantages-section {
-      grid-template-columns: 1fr;
+      width: 100%;
+    }
+
+    .advantages-section {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .advantage-item {
+      margin-bottom: 0;
+    }
+
+    .advantages-title {
+      margin-bottom: 20px;
     }
 
     .back-link {
       left: 20px;
+      font-size: 13px;
     }
   }
 </style>

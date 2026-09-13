@@ -191,6 +191,34 @@
         margin-bottom: 10px;
     }
 
+    .project-images svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+
+    .project-images > div:first-child {
+        background: linear-gradient(135deg, #4a4a4a 0%, #666 50%, #505050 100%);
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #999;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    .project-images > div:last-child {
+        background: linear-gradient(135deg, #0066cc 0%, #1e90ff 50%, #0099ff 100%);
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #87ceeb;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
     /* Dark mode */
     body.dark-mode .project-card {
         background: #1a1a1a;
@@ -257,30 +285,59 @@
     </div>
     {% endif %}
 
-    {% if projects|length > 0 %}
-        <div class="projects-grid">
+    {% set example_projects = [
+        {
+            title: 'Rénovation Complète - Cheseaux-sur-Lausanne',
+            description: 'Installation de 8kW entièrement nettoyée et optimisée. Résultats impressionnants avec augmentation du rendement de 28%.',
+            location: 'Cheseaux-sur-Lausanne',
+            date: '2024-09-10',
+            image_before: 'https://images.unsplash.com/photo-1509644851169-569e0def3610?w=600&h=400&fit=crop',
+            image_after: 'https://images.unsplash.com/photo-1634236500000-cfd2b8a77d7d?w=600&h=400&fit=crop'
+        },
+        {
+            title: 'Maintenance Préventive - Lausanne',
+            description: 'Nettoyage régulier de panneaux résidentiels. Prévention de la dégradation et maintien de l\'efficacité maximale.',
+            location: 'Lausanne',
+            date: '2024-09-05',
+            image_before: 'https://images.unsplash.com/photo-1617127365659-c0fb4e0b6610?w=600&h=400&fit=crop',
+            image_after: 'https://images.unsplash.com/photo-1497440991519-91fde9c0e159?w=600&h=400&fit=crop'
+        },
+        {
+            title: 'Grand Projet Commercial - Région Lausanne',
+            description: 'Nettoyage de panneaux solaires commerciaux de 50kW. Utilisation d\'eau osmosée pour résultat impeccable.',
+            location: 'Région Lausannoise',
+            date: '2024-08-28',
+            image_before: 'https://images.unsplash.com/photo-1497440912892-ffc7e6f4c383?w=600&h=400&fit=crop',
+            image_after: 'https://images.unsplash.com/photo-1509391366360-2e938286db4c?w=600&h=400&fit=crop'
+        }
+    ] %}
+
+    <div class="projects-grid">
+        {% if projects is not empty %}
             {% for project in projects %}
             <div class="project-card">
                 <div class="project-images">
                     <div style="position: relative;">
-                        <img src="{{ project.image_before }}" alt="Avant" class="project-image">
+                        <img src="{% if project.image_before is defined %}{{ project.image_before }}{% else %}{{ project['image_before'] }}{% endif %}" alt="Avant" class="project-image">
                         <span class="image-label before-label">AVANT</span>
                     </div>
                     <div style="position: relative;">
-                        <img src="{{ project.image_after }}" alt="Après" class="project-image">
+                        <img src="{% if project.image_after is defined %}{{ project.image_after }}{% else %}{{ project['image_after'] }}{% endif %}" alt="Après" class="project-image">
                         <span class="image-label after-label">APRÈS</span>
                     </div>
                 </div>
                 <div class="project-content">
-                    <h3 class="project-title">{{ project.title }}</h3>
-                    <p class="project-description">{{ project.description }}</p>
+                    <h3 class="project-title">{% if project.title is defined %}{{ project.title }}{% else %}{{ project['title'] }}{% endif %}</h3>
+                    <p class="project-description">{% if project.description is defined %}{{ project.description }}{% else %}{{ project['description'] }}{% endif %}</p>
 
                     <div class="project-meta">
                         <div class="meta-item">
-                            📍 {{ project.location }}
+                            📍 {% if project.location is defined %}{{ project.location }}{% else %}{{ project['location'] }}{% endif %}
                         </div>
                         <div class="meta-item">
-                            📅 {{ project.date|date('d/m/Y') }}
+                            📅 {% if project.date is defined %}
+                                {% if project.date is iterable %}{{ project.date|date('d/m/Y') }}{% else %}{{ project.date }}{% endif %}
+                            {% else %}{{ project['date'] }}{% endif %}
                         </div>
                     </div>
 
@@ -288,14 +345,134 @@
                 </div>
             </div>
             {% endfor %}
-        </div>
-    {% else %}
-        <div class="empty-state">
-            <div class="empty-state-icon">📸</div>
-            <h3>Aucune réalisation</h3>
-            <p>Les réalisations seront bientôt disponibles...</p>
-        </div>
-    {% endif %}
+        {% else %}
+            {% for project in example_projects %}
+            <div class="project-card">
+                <div class="project-images">
+                    <div style="position: relative; width: 100%; height: 100%;">
+                        <svg preserveAspectRatio="xMidYMid slice" viewBox="0 0 500 350" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%; display: block; background: #e8e8e8;">
+                            <!-- Ciel -->
+                            <rect fill="#b0c4de" width="500" height="180"/>
+                            <!-- Terrain -->
+                            <rect fill="#8b7355" y="180" width="500" height="170"/>
+                            <!-- Toit -->
+                            <polygon points="50,180 450,180 480,120 20,120" fill="#a52a2a"/>
+
+                            <!-- Panneau 1 (très sale) -->
+                            <rect x="60" y="130" width="90" height="70" fill="#3a3a3a" stroke="#1a1a1a" stroke-width="2"/>
+                            <line x1="60" y1="155" x2="150" y2="155" stroke="#555" stroke-width="1.5" opacity="0.6"/>
+                            <line x1="60" y1="175" x2="150" y2="175" stroke="#555" stroke-width="1.5" opacity="0.6"/>
+                            <!-- Poussière panneau 1 -->
+                            <circle cx="85" cy="145" r="6" fill="#999" opacity="0.7"/>
+                            <circle cx="125" cy="160" r="5" fill="#aaa" opacity="0.6"/>
+                            <circle cx="100" cy="175" r="7" fill="#999" opacity="0.7"/>
+                            <ellipse cx="80" cy="170" rx="8" ry="4" fill="#888" opacity="0.5"/>
+
+                            <!-- Panneau 2 (sale) -->
+                            <rect x="175" y="140" width="90" height="70" fill="#424242" stroke="#1a1a1a" stroke-width="2"/>
+                            <line x1="175" y1="165" x2="265" y2="165" stroke="#666" stroke-width="1.5" opacity="0.6"/>
+                            <line x1="175" y1="185" x2="265" y2="185" stroke="#666" stroke-width="1.5" opacity="0.6"/>
+                            <!-- Poussière panneau 2 -->
+                            <circle cx="195" cy="150" r="7" fill="#aaa" opacity="0.7"/>
+                            <circle cx="240" cy="170" r="6" fill="#999" opacity="0.6"/>
+                            <rect x="200" y="175" width="12" height="8" fill="#888" opacity="0.5"/>
+
+                            <!-- Panneau 3 (très sale) -->
+                            <rect x="290" y="135" width="90" height="70" fill="#383838" stroke="#1a1a1a" stroke-width="2"/>
+                            <line x1="290" y1="160" x2="380" y2="160" stroke="#555" stroke-width="1.5" opacity="0.6"/>
+                            <line x1="290" y1="180" x2="380" y2="180" stroke="#555" stroke-width="1.5" opacity="0.6"/>
+                            <!-- Poussière panneau 3 -->
+                            <circle cx="310" cy="148" r="8" fill="#aaa" opacity="0.7"/>
+                            <circle cx="355" cy="155" r="6" fill="#999" opacity="0.6"/>
+                            <circle cx="330" cy="175" r="7" fill="#999" opacity="0.7"/>
+                            <ellipse cx="365" cy="180" rx="10" ry="5" fill="#888" opacity="0.5"/>
+
+                            <!-- Traces de pluie/saleté -->
+                            <path d="M 70 135 Q 72 145 70 155" stroke="#666" stroke-width="1" opacity="0.4" fill="none"/>
+                            <path d="M 200 140 Q 202 155 200 170" stroke="#777" stroke-width="1" opacity="0.4" fill="none"/>
+                            <path d="M 320 140 Q 318 160 320 180" stroke="#666" stroke-width="1" opacity="0.4" fill="none"/>
+
+                            <!-- Texte -->
+                            <text x="250" y="320" font-size="24" font-weight="bold" text-anchor="middle" fill="#666">PANNEAUX ENCRASSÉS ❌</text>
+                            <text x="250" y="345" font-size="14" text-anchor="middle" fill="#888">Rendement réduit de 25-30%</text>
+                        </svg>
+                        <span class="image-label before-label">AVANT</span>
+                    </div>
+                    <div style="position: relative; width: 100%; height: 100%;">
+                        <svg preserveAspectRatio="xMidYMid slice" viewBox="0 0 500 350" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%; display: block; background: #e8f4ff;">
+                            <!-- Ciel avec soleil -->
+                            <rect fill="#87ceeb" width="500" height="180"/>
+                            <circle cx="450" cy="60" r="35" fill="#ffd700" opacity="0.8"/>
+                            <!-- Terrain -->
+                            <rect fill="#8b7355" y="180" width="500" height="170"/>
+                            <!-- Toit -->
+                            <polygon points="50,180 450,180 480,120 20,120" fill="#a52a2a"/>
+
+                            <!-- Panneau 1 (propre et brillant) -->
+                            <defs>
+                                <linearGradient id="panelGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#1e90ff;stop-opacity:1" />
+                                    <stop offset="50%" style="stop-color:#0066cc;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#0052a3;stop-opacity:1" />
+                                </linearGradient>
+                                <linearGradient id="shine" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.8" />
+                                    <stop offset="50%" style="stop-color:#ffffff;stop-opacity:0" />
+                                </linearGradient>
+                            </defs>
+
+                            <rect x="60" y="130" width="90" height="70" fill="url(#panelGradient)" stroke="#0052a3" stroke-width="2"/>
+                            <rect x="62" y="132" width="86" height="66" fill="url(#shine)" opacity="0.6"/>
+                            <line x1="60" y1="155" x2="150" y2="155" stroke="#87ceeb" stroke-width="2" opacity="0.5"/>
+                            <line x1="60" y1="175" x2="150" y2="175" stroke="#87ceeb" stroke-width="2" opacity="0.5"/>
+                            <!-- Reflets -->
+                            <circle cx="80" cy="145" r="4" fill="#ffffff" opacity="0.7"/>
+                            <circle cx="130" cy="160" r="3" fill="#ffffff" opacity="0.6"/>
+
+                            <!-- Panneau 2 (propre) -->
+                            <rect x="175" y="140" width="90" height="70" fill="url(#panelGradient)" stroke="#0052a3" stroke-width="2"/>
+                            <rect x="177" y="142" width="86" height="66" fill="url(#shine)" opacity="0.6"/>
+                            <line x1="175" y1="165" x2="265" y2="165" stroke="#87ceeb" stroke-width="2" opacity="0.5"/>
+                            <line x1="175" y1="185" x2="265" y2="185" stroke="#87ceeb" stroke-width="2" opacity="0.5"/>
+                            <!-- Reflets -->
+                            <circle cx="200" cy="150" r="4" fill="#ffffff" opacity="0.7"/>
+                            <circle cx="245" cy="175" r="3" fill="#ffffff" opacity="0.6"/>
+
+                            <!-- Panneau 3 (propre et brillant) -->
+                            <rect x="290" y="135" width="90" height="70" fill="url(#panelGradient)" stroke="#0052a3" stroke-width="2"/>
+                            <rect x="292" y="137" width="86" height="66" fill="url(#shine)" opacity="0.6"/>
+                            <line x1="290" y1="160" x2="380" y2="160" stroke="#87ceeb" stroke-width="2" opacity="0.5"/>
+                            <line x1="290" y1="180" x2="380" y2="180" stroke="#87ceeb" stroke-width="2" opacity="0.5"/>
+                            <!-- Reflets -->
+                            <circle cx="315" cy="148" r="4" fill="#ffffff" opacity="0.7"/>
+                            <circle cx="360" cy="165" r="3" fill="#ffffff" opacity="0.6"/>
+
+                            <!-- Texte -->
+                            <text x="250" y="320" font-size="24" font-weight="bold" text-anchor="middle" fill="#0066cc">PANNEAUX PROPRES ✅</text>
+                            <text x="250" y="345" font-size="14" text-anchor="middle" fill="#0088cc">Rendement optimal +25-30%</text>
+                        </svg>
+                        <span class="image-label after-label">APRÈS</span>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">{{ project['title'] }}</h3>
+                    <p class="project-description">{{ project['description'] }}</p>
+
+                    <div class="project-meta">
+                        <div class="meta-item">
+                            📍 {{ project['location'] }}
+                        </div>
+                        <div class="meta-item">
+                            📅 {{ project['date'] }}
+                        </div>
+                    </div>
+
+                    <span class="project-badge">✨ +25% Rendement</span>
+                </div>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
 </section>
 
 {% endblock %}
