@@ -47,14 +47,11 @@ button:active{
   transition: all .3s;
   transform: translate(-50%,-50%) scale(.95);
 }
-button i{
+button{
   font-size: 40px;
-  background: linear-gradient(-45deg, gray 0%, lightgray 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   transition: all .3s;
 }
-button:active i{
+button:active{
   transform: scale(.9);
   transition: all .3s;
 }
@@ -73,67 +70,42 @@ footer p {
     margin: 10px 0;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida  Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
-footer .fa-heart{
-    color: red;
-}
-footer .fa-dev{
-    color: #fff;
-}
-footer .fa-twitter-square{
-  color:#1da0f1;
-}
-footer .fa-instagram{
-  color: #f0007c;
-}
-fotter .fa-linkedin{
-  color:#0073b1;
-}
-footer .fa-codepen{
-  color:#fff
-}
 footer a {
     color: #3c97bf;
     text-decoration: none;
-  margin-right:5px;
+    margin-right:5px;
 }
 .youtubeBtn{
     position: fixed;
     left: 50%;
-  transform:translatex(-50%);
+    transform: translateX(-50%);
     bottom: 45px;
     cursor: pointer;
     transition: all .3s;
-    vertical-align: middle;
-    text-align: center;
-    display: inline-block;
-}
-.youtubeBtn i{
-   font-size:20px;
-  float:left;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 .youtubeBtn a{
-    color:#ff0000;
+    color: #ff0000;
+    text-decoration: none;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
     animation: youtubeAnim 1000ms linear infinite;
-  float:right;
+    transition: color 0.3s ease-in-out;
 }
 .youtubeBtn a:hover{
-  color:#c9110f;
-  transition:all .3s ease-in-out;
-  text-shadow: none;
-}
-.youtubeBtn i:active{
-  transform:scale(.9);
-  transition:all .3s ease-in-out;
+    color: #c9110f;
 }
 .youtubeBtn span{
-    font-family: 'Lato';
+    font-family: 'Lato', sans-serif;
     font-weight: normal;
     color: #000;
-    display: block;
     font-size: 12px;
-    float: right;
     line-height: 20px;
-    padding-left: 5px;
+    white-space: nowrap;
 }
 @keyframes youtubeAnim{
   0%,100%{
@@ -146,28 +118,26 @@ footer a {
 </style>
 
 <div class="wrapper">
-  <button>
-    <i class="fas fa-fingerprint"></i>
-  </button>
+  <button>👆</button>
 </div>
 
 <footer>
   <p>
-    Created with <i class="fa fa-heart"></i> by
+    Created with ❤️ by
     <a target="_blank" href="https://codepen.io/ahmadbassamemran/">Ahmad Emran</a>
     Follow me :
-    <a target="_blank" href="https://www.instagram.com/ahmadbassamemran/"><i class="fab fa-instagram"></i></a>
-    <a target="_blank" href="https://www.linkedin.com/in/ahmademarn/"><i class="fab fa-linkedin"></i></a>
-    <a target="_blank" href="https://codepen.io/ahmadbassamemran/"><i class="fab fa-codepen"></i></a>
-    <a target="_blank" href="https://dev.to/ahmadbassamemran"><i class="fab fa-dev"></i></a>
-    <a target="_blank" href="https://twitter.com/ahmadbassamemra"><i class="fab fa-twitter-square"></i></a>
+    <a target="_blank" href="https://www.instagram.com/ahmadbassamemran/">📸</a>
+    <a target="_blank" href="https://www.linkedin.com/in/ahmademarn/">💼</a>
+    <a target="_blank" href="https://codepen.io/ahmadbassamemran/">🔨</a>
+    <a target="_blank" href="https://dev.to/ahmadbassamemran">📝</a>
+    <a target="_blank" href="https://twitter.com/ahmadbassamemra">𝕏</a>
   </p>
 </footer>
 
 <div class="youtubeBtn">
-  <a target="_blank" href="https://www.youtube.com/AhmadEmran?sub_confirmation=1">
+  <a target="_blank" href="https://www.youtube.com/AhmadEmran?sub_confirmation=1" title="Regarder sur YouTube">
     <span>Watch on YouTube</span>
-    <i class="fab fa-youtube"></i>
+    <span style="font-size: 24px;">🎥</span>
   </a>
 </div>
 

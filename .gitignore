@@ -18,3 +18,18 @@
 /public/assets/
 /assets/vendor/
 ###< symfony/asset-mapper ###
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+Thumbs.db
