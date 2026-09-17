@@ -1337,10 +1337,10 @@
     }
 
     .glitch-line + .glitch-line {
-        color: rgba(0, 255, 157, 0.35);
+        color: #00ff9d;
         font-size: clamp(1rem, 3vw, 1.6rem);
         margin-top: 0.15em;
-        text-shadow: none;
+        text-shadow: 0 0 10px rgba(0, 255, 157, 0.6), 0 0 26px rgba(0, 255, 157, 0.3);
     }
 
     .glitch-char {
@@ -1470,7 +1470,7 @@
             <div class="glitch-sub">Propreté · claireté · clarté</div>
             <div class="glitch-sub glitch-sub--small">Nettoyage &amp; entretien de vos panneaux photovoltaïques</div>
 
-            <a href="{{ path('app_devis') }}" class="glitch-cta">[ devis ]</a>
+            <a href="{{ path('app_devis') }}" class="glitch-cta" id="glitchCta" data-text="[ devis ]">[ devis ]</a>
             <div class="glitch-statusbar" id="glitchStatus">Un panneau propre, c’est jusqu’à 25 % d’énergie en plus.</div>
         </div>
 
@@ -1530,15 +1530,24 @@
                 var line1 = document.getElementById('glitchLine1');
                 var line2 = document.getElementById('glitchLine2');
                 var status = document.getElementById('glitchStatus');
+                var cta = document.getElementById('glitchCta');
                 if (!line1 || !line2) return;
 
                 if (status) status.textContent = 'SYS://DÉCODAGE...';
                 await glitchScramble(line1, line1.dataset.text, 300);
                 await glitchScramble(line2, line2.dataset.text, 60);
+                if (cta) await glitchScramble(cta, cta.dataset.text, 100);
                 if (status) status.textContent = 'Un panneau propre, c’est jusqu’à 25 % d’énergie en plus.';
             }
 
             glitchRunSequence();
+
+            var glitchCta = document.getElementById('glitchCta');
+            if (glitchCta) {
+                glitchCta.addEventListener('mouseenter', function () {
+                    glitchScramble(glitchCta, glitchCta.dataset.text, 0);
+                });
+            }
 
         })();
         </script>
