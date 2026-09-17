@@ -35,7 +35,7 @@
             margin-bottom: 10px;
             font-family: 'Space Grotesk', sans-serif;
         ">
-            Créer un compte
+            <span class="scramble-register" id="registerScramble" data-text="Créer un compte"></span>
         </h1>
 
         <p style="
@@ -140,5 +140,84 @@
         background: #f0f8f6 !important;
         box-shadow: 0 0 8px rgba(10, 61, 53, 0.2) !important;
     }
+
+    .scramble-register {
+        display: inline-block;
+        min-height: 1.1em;
+    }
+
+    .scramble-register .char {
+        display: inline-block;
+    }
+
+    .scramble-register .char.glitch {
+        color: #00b377;
+        animation: registerFlicker 0.08s steps(1) infinite;
+    }
+
+    @keyframes registerFlicker {
+        0%, 100% { opacity: 1; }
+        50%      { opacity: 0.4; }
+    }
 </style>
+
+<script>
+(function () {
+    var CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*!?/\\|<>';
+
+    function registerRand(arr) {
+        return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function registerScramble(el, finalText) {
+        return new Promise(function (resolve) {
+            var chars = finalText.split('').map(function (ch, i) {
+                return {
+                    char: ch,
+                    done: ch === ' ',
+                    iterations: Math.floor(Math.random() * 8) + i * 2
+                };
+            });
+
+            el.innerHTML = chars.map(function (c, i) {
+                return c.char === ' '
+                    ? '<span class="char">&nbsp;</span>'
+                    : '<span class="char glitch" data-i="' + i + '">' + registerRand(CHARS) + '</span>';
+            }).join('');
+
+            var spans = el.querySelectorAll('.char');
+            var frame = 0;
+
+            var tick = setInterval(function () {
+                var allDone = true;
+                chars.forEach(function (c, i) {
+                    if (c.done) return;
+                    if (frame >= c.iterations) {
+                        spans[i].textContent = c.char;
+                        spans[i].classList.remove('glitch');
+                        c.done = true;
+                    } else {
+                        spans[i].textContent = registerRand(CHARS);
+                        allDone = false;
+                    }
+                });
+                frame++;
+                if (allDone) {
+                    clearInterval(tick);
+                    resolve();
+                }
+            }, 45);
+        });
+    }
+
+    window.runRegisterScramble = function () {
+        var target = document.getElementById('registerScramble');
+        if (target) {
+            registerScramble(target, target.dataset.text);
+        }
+    };
+
+    window.runRegisterScramble();
+})();
+</script>
 {% endblock %}

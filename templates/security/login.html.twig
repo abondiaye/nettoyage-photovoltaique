@@ -92,6 +92,25 @@
     margin: 0 0 10px;
   }
 
+  .scramble-login {
+    display: inline-block;
+    min-height: 1.1em;
+  }
+
+  .scramble-login .char {
+    display: inline-block;
+  }
+
+  .scramble-login .char.glitch {
+    color: #00b377;
+    animation: loginFlicker 0.08s steps(1) infinite;
+  }
+
+  @keyframes loginFlicker {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.4; }
+  }
+
   .login-card p {
     color: #999;
     font-size: 14px;
@@ -357,7 +376,7 @@
   <div class="login-content">
     <div class="login-form-section">
       <div class="login-card">
-        <h2>Se connecter</h2>
+        <h2><span class="scramble-login" id="loginScramble" data-text="Se connecter"></span></h2>
         <p>Accédez à votre compte Sirius-Solar</p>
 
         {% if error %}
@@ -420,5 +439,65 @@
     </div>
   </div>
 </div>
+
+<script>
+(function () {
+    var CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*!?/\\|<>';
+
+    function loginRand(arr) {
+        return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function loginScramble(el, finalText) {
+        return new Promise(function (resolve) {
+            var chars = finalText.split('').map(function (ch, i) {
+                return {
+                    char: ch,
+                    done: ch === ' ',
+                    iterations: Math.floor(Math.random() * 8) + i * 2
+                };
+            });
+
+            el.innerHTML = chars.map(function (c, i) {
+                return c.char === ' '
+                    ? '<span class="char">&nbsp;</span>'
+                    : '<span class="char glitch" data-i="' + i + '">' + loginRand(CHARS) + '</span>';
+            }).join('');
+
+            var spans = el.querySelectorAll('.char');
+            var frame = 0;
+
+            var tick = setInterval(function () {
+                var allDone = true;
+                chars.forEach(function (c, i) {
+                    if (c.done) return;
+                    if (frame >= c.iterations) {
+                        spans[i].textContent = c.char;
+                        spans[i].classList.remove('glitch');
+                        c.done = true;
+                    } else {
+                        spans[i].textContent = loginRand(CHARS);
+                        allDone = false;
+                    }
+                });
+                frame++;
+                if (allDone) {
+                    clearInterval(tick);
+                    resolve();
+                }
+            }, 45);
+        });
+    }
+
+    window.runLoginScramble = function () {
+        var target = document.getElementById('loginScramble');
+        if (target) {
+            loginScramble(target, target.dataset.text);
+        }
+    };
+
+    window.runLoginScramble();
+})();
+</script>
 
 {% endblock %}
