@@ -1719,172 +1719,109 @@
 
 <!-- Footer -->
 <footer class="footer" id="contact">
-    <!-- Carte de Visite Banner -->
-    <div style="border-bottom: 2px solid rgba(160, 160, 160, 0.3); padding: 40px; margin-bottom: 40px;">
+    <!-- Info Card Banner -->
+    <div style="border-bottom: 2px solid rgba(0, 255, 157, 0.25); padding: 30px; margin-bottom: 24px;">
         <style>
-            @keyframes carteSlideIn {
-                from {
-                    opacity: 0;
-                    transform: translateY(40px) scale(0.95);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0) scale(1);
-                }
-            }
-
-            @keyframes carteHover {
-                0%, 100% {
-                    transform: translateY(0px);
-                }
-                50% {
-                    transform: translateY(-10px);
-                }
-            }
-
-            .carte-visite-container {
+            .info-card {
                 position: relative;
-                max-width: 1000px;
+                max-width: 900px;
                 margin: 0 auto;
-                padding: 40px 30px;
-                perspective: 1000px;
-                height: 700px;
-            }
-
-            .carte-visite-background {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
+                display: grid;
+                grid-template-columns: 1.4fr 1fr;
                 border-radius: 20px;
-                z-index: 0;
-                opacity: 0.15;
-            }
-
-            .carte-visite-background img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                border-radius: 20px;
-                filter: brightness(0.8);
-            }
-
-            .carte-flip-wrapper {
-                position: relative;
-                width: 100%;
-                height: 100%;
-                max-width: 550px;
-                margin: 0 auto;
-                transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-                transform-style: preserve-3d;
-                cursor: pointer;
-                filter: drop-shadow(0 20px 60px rgba(160, 160, 160, 0.4));
-            }
-
-            .carte-flip-wrapper:hover {
-                transform: rotateY(180deg);
-            }
-
-            .carte-visite-front,
-            .carte-visite-back {
-                position: absolute;
-                width: 100%;
-                height: 100%;
-                backface-visibility: hidden;
-                border-radius: 20px;
-                box-shadow: 0 15px 50px rgba(160, 160, 160, 0.3);
                 overflow: hidden;
+                border: 1px solid rgba(0, 255, 157, 0.3);
+                background: rgba(2, 20, 16, 0.55);
+                box-shadow: 0 0 40px rgba(0, 255, 157, 0.12);
             }
 
-            .carte-visite-front {
-                z-index: 2;
+            .info-card__text {
+                padding: 36px 40px;
                 display: flex;
-                align-items: center;
+                flex-direction: column;
                 justify-content: center;
+                gap: 12px;
             }
 
-            .carte-visite-front img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                border-radius: 20px;
-                animation: carteSlideIn 0.8s ease-out;
-                transition: transform 0.3s ease;
-                filter: brightness(1.1) contrast(1.15);
+            .info-card__text h3 {
+                font-size: 22px;
+                color: #00ff9d;
+                text-shadow: 0 0 10px rgba(0, 255, 157, 0.4);
+                font-family: 'Space Grotesk', sans-serif;
             }
 
-            .carte-visite-front:hover img {
-                transform: scale(1.02);
-                filter: brightness(1.2) contrast(1.25);
+            .info-card__text p {
+                font-size: 14px;
+                line-height: 1.7;
+                color: rgba(255, 255, 255, 0.85);
             }
 
-            .carte-visite-back {
-                transform: rotateY(180deg);
-                background: linear-gradient(135deg, var(--vert-fonce) 0%, var(--vert-clair) 100%);
-                z-index: 1;
+            .info-card__banner {
+                position: relative;
+                background: linear-gradient(135deg, #0A3D35 0%, #00ff9d 160%);
+                clip-path: polygon(18% 0, 100% 0, 100% 100%, 0 100%);
+                padding: 36px 30px;
                 display: flex;
-                align-items: center;
+                flex-direction: column;
                 justify-content: center;
-                padding: 40px;
+                align-items: flex-end;
+                text-align: right;
             }
 
-            .carte-visite-back img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                border-radius: 20px;
-                filter: brightness(1.15) contrast(1.2) saturate(1.1);
+            .info-card__banner h4 {
+                font-size: 24px;
+                color: #ffffff;
+                line-height: 1.25;
+                margin-bottom: 8px;
+                font-family: 'Space Grotesk', sans-serif;
             }
 
-            .carte-flip-wrapper:hover .carte-visite-back img {
-                filter: brightness(1.25) contrast(1.3) saturate(1.2);
+            .info-card__banner p {
+                font-size: 13px;
+                color: rgba(255, 255, 255, 0.9);
+                letter-spacing: 0.3px;
             }
 
-            .carte-visite {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                border-radius: 20px;
+            @media (max-width: 700px) {
+                .info-card {
+                    grid-template-columns: 1fr;
+                }
+                .info-card__banner {
+                    clip-path: none;
+                    align-items: flex-start;
+                    text-align: left;
+                }
             }
         </style>
 
-        <div class="carte-visite-container">
-            <!-- Affichage côte à côte des deux cartes -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; max-width: 900px; margin: 0 auto;">
-                <!-- Face 1: Professional Business Card Design -->
-                <div style="position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(160, 160, 160, 0.3); cursor: pointer; transition: transform 0.3s ease, filter 0.3s ease; height: 100%;">
-                    <img src="{{ asset('images/cartet.jpeg') }}" alt="Sirius-Solar - Carte de Visite (Face 1)" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px; filter: brightness(1.2) contrast(1.3) saturate(1.15); transition: filter 0.3s ease;" onmouseover="this.style.filter='brightness(1.35) contrast(1.4) saturate(1.25)'" onmouseout="this.style.filter='brightness(1.2) contrast(1.3) saturate(1.15)'">
-                </div>
-
-                <!-- Face 2: cartet2.jpeg -->
-                <div style="position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(160, 160, 160, 0.3); cursor: pointer; transition: transform 0.3s ease, filter 0.3s ease;">
-                    <img src="{{ asset('images/cartet2.jpeg') }}" alt="Sirius-Solar - Carte de Visite (Face 2)" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px; filter: brightness(1.2) contrast(1.3) saturate(1.15); transition: filter 0.3s ease;" onmouseover="this.style.filter='brightness(1.35) contrast(1.4) saturate(1.25)'" onmouseout="this.style.filter='brightness(1.2) contrast(1.3) saturate(1.15)'"
-                </div>
+        <div class="info-card">
+            <div class="info-card__text">
+                <h3>Sirius-Solar</h3>
+                <p>Nettoyage professionnel de vos panneaux photovoltaïques à l'eau osmosée, sans aucun produit chimique.</p>
+                <p>Diagnostic complet, entretien régulier et jusqu'à 25 % de rendement retrouvé pour votre installation solaire.</p>
             </div>
-
-            <!-- Texte d'indication -->
-            <p style="text-align: center; margin-top: 40px; color: rgba(255, 255, 255, 0.7); font-size: 14px; letter-spacing: 1px;">
-                ✨ Vos cartes de visite professionnelles Sirius-Solar
-            </p>
-
-            {% if app.user %}
-            <!-- Boutons Contact pour Connectés -->
-            <div style="text-align: center; margin-top: 30px; display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
-                <a href="#contact" style="background: #a8a8a8; color: #0A3D35; padding: 12px 25px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 14px; transition: all 0.3s ease; display: inline-block;" onmouseover="this.style.boxShadow='0 10px 30px rgba(160, 160, 160, 0.5)'" onmouseout="this.style.boxShadow='none'">
-                    📞 Nous Contacter
-                </a>
-                <a href="/devis" style="background: rgba(160, 160, 160, 0.2); color: #a8a8a8; padding: 12px 25px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 14px; border: 2px solid #a8a8a8; transition: all 0.3s ease; display: inline-block;" onmouseover="this.style.background='rgba(160, 160, 160, 0.3)'" onmouseout="this.style.background='rgba(160, 160, 160, 0.2)'">
-                    📋 Demander un Devis
-                </a>
+            <div class="info-card__banner">
+                <h4>Propreté.<br>Performance.<br>Confiance.</h4>
+                <p>Sirius-Solar, à vos côtés.</p>
             </div>
-            {% else %}
-            <!-- Message pour non-connectés -->
-            <p style="text-align: center; margin-top: 30px; color: rgba(160, 160, 160, 0.8); font-size: 13px; letter-spacing: 0.5px;">
-                <a href="{{ path('app_login') }}" style="color: #a8a8a8; text-decoration: underline;">Connectez-vous</a> pour voir les options de contact
-            </p>
-            {% endif %}
         </div>
+
+        {% if app.user %}
+        <!-- Boutons Contact pour Connectés -->
+        <div style="text-align: center; margin-top: 30px; display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+            <a href="#contact" style="background: #a8a8a8; color: #0A3D35; padding: 12px 25px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 14px; transition: all 0.3s ease; display: inline-block;" onmouseover="this.style.boxShadow='0 10px 30px rgba(160, 160, 160, 0.5)'" onmouseout="this.style.boxShadow='none'">
+                📞 Nous Contacter
+            </a>
+            <a href="/devis" style="background: rgba(160, 160, 160, 0.2); color: #a8a8a8; padding: 12px 25px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 14px; border: 2px solid #a8a8a8; transition: all 0.3s ease; display: inline-block;" onmouseover="this.style.background='rgba(160, 160, 160, 0.3)'" onmouseout="this.style.background='rgba(160, 160, 160, 0.2)'">
+                📋 Demander un Devis
+            </a>
+        </div>
+        {% else %}
+        <!-- Message pour non-connectés -->
+        <p style="text-align: center; margin-top: 30px; color: rgba(160, 160, 160, 0.8); font-size: 13px; letter-spacing: 0.5px;">
+            <a href="{{ path('app_login') }}" style="color: #a8a8a8; text-decoration: underline;">Connectez-vous</a> pour voir les options de contact
+        </p>
+        {% endif %}
     </div>
 
     <!-- Footer Main Container with Knob -->
