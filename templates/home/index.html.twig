@@ -1616,7 +1616,7 @@
 <!-- Processus Section -->
 <section class="processus-section" id="processus">
     <div class="processus-container">
-        <h2 class="processus-title">Notre Processus de Nettoyage</h2>
+        <h2 class="processus-title"><span class="scramble-green" id="processusScramble" data-text="Notre Processus de Nettoyage"></span></h2>
 
         <div class="processus-video">
             <video controls autoplay loop muted playsinline>
@@ -1632,7 +1632,7 @@
 
 <!-- Services Section -->
 <section class="services-section" id="services" style="background-image: url('/images/lav1.jpeg') !important; background-size: cover !important; background-position: center !important; background-attachment: fixed !important; background-repeat: no-repeat !important;">
-    <h2 class="section-title">Nos Services</h2>
+    <h2 class="section-title"><span class="scramble-green" id="servicesScramble" data-text="Nos Services"></span></h2>
 
     <div class="services-grid">
         <div class="service-card">
@@ -1666,7 +1666,7 @@
     </video>
 
     <div style="position: relative; z-index: 1;">
-        <h2 class="section-title">Pourquoi Sirius-Solar ?</h2>
+        <h2 class="section-title"><span class="scramble-green" id="avantagesScramble" data-text="Pourquoi Sirius-Solar ?"></span></h2>
 
         <div class="advantages-grid">
         <div class="advantage-card">
@@ -2105,14 +2105,22 @@
         });
     }
 
-    window.runContactScramble = function () {
-        var target = document.getElementById('contactScramble');
+    function runScrambleById(id) {
+        var target = document.getElementById(id);
         if (target) {
             contactScramble(target, target.dataset.text);
         }
-    };
+    }
+
+    window.runContactScramble = function () { runScrambleById('contactScramble'); };
+    window.runProcessusScramble = function () { runScrambleById('processusScramble'); };
+    window.runServicesScramble = function () { runScrambleById('servicesScramble'); };
+    window.runAvantagesScramble = function () { runScrambleById('avantagesScramble'); };
 
     window.runContactScramble();
+    window.runProcessusScramble();
+    window.runServicesScramble();
+    window.runAvantagesScramble();
 })();
 </script>
 
