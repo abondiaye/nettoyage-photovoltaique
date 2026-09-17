@@ -238,10 +238,40 @@
             padding: 40px 20px;
         }
     }
+    .about-h1 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        flex-wrap: wrap;
+    }
+
+    .scramble-blue {
+        display: inline-block;
+        min-height: 1.1em;
+        color: #00eaff;
+        font-family: 'Bebas Neue', 'Space Grotesk', sans-serif;
+        letter-spacing: 0.03em;
+        text-shadow: 0 0 16px rgba(0, 234, 255, 0.6), 0 0 40px rgba(0, 234, 255, 0.25);
+    }
+
+    .scramble-blue .char {
+        display: inline-block;
+    }
+
+    .scramble-blue .char.glitch {
+        color: rgba(0, 234, 255, 0.5);
+        animation: aboutFlicker 0.08s steps(1) infinite;
+    }
+
+    @keyframes aboutFlicker {
+        0%, 100% { opacity: 1; }
+        50%      { opacity: 0.4; }
+    }
 </style>
 
 <section class="about-hero">
-    <h1>🌟 À Propos de Sirius-Solar</h1>
+    <h1 class="about-h1"><span class="about-emoji">🌟</span> <span class="scramble-blue" id="aboutScramble" data-text="À Propos de Sirius-Solar"></span></h1>
     <p>Spécialistes du nettoyage professionnel de panneaux photovoltaïques avec eau osmosée. Depuis notre création, nous nous engageons à maximiser la performance de vos installations solaires.</p>
 </section>
 
@@ -317,5 +347,61 @@
         <a href="{{ path('app_devis') }}" class="btn-cta">Demander un Devis Gratuit →</a>
     </section>
 </div>
+
+<script>
+(function () {
+    var CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*!?/\\|<>';
+
+    function realRand(arr) {
+        return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function realScramble(el, finalText) {
+        return new Promise(function (resolve) {
+            var chars = finalText.split('').map(function (ch, i) {
+                return {
+                    char: ch,
+                    done: ch === ' ',
+                    iterations: Math.floor(Math.random() * 8) + i * 2
+                };
+            });
+
+            el.innerHTML = chars.map(function (c, i) {
+                return c.char === ' '
+                    ? '<span class="char">&nbsp;</span>'
+                    : '<span class="char glitch" data-i="' + i + '">' + realRand(CHARS) + '</span>';
+            }).join('');
+
+            var spans = el.querySelectorAll('.char');
+            var frame = 0;
+
+            var tick = setInterval(function () {
+                var allDone = true;
+                chars.forEach(function (c, i) {
+                    if (c.done) return;
+                    if (frame >= c.iterations) {
+                        spans[i].textContent = c.char;
+                        spans[i].classList.remove('glitch');
+                        c.done = true;
+                    } else {
+                        spans[i].textContent = realRand(CHARS);
+                        allDone = false;
+                    }
+                });
+                frame++;
+                if (allDone) {
+                    clearInterval(tick);
+                    resolve();
+                }
+            }, 45);
+        });
+    }
+
+    var target = document.getElementById('aboutScramble');
+    if (target) {
+        realScramble(target, target.dataset.text);
+    }
+})();
+</script>
 
 {% endblock %}
