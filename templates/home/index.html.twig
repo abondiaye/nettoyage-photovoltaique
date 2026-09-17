@@ -300,9 +300,10 @@
     }
 
     .feature-tag {
-        background: rgba(160, 160, 160, 0.2);
-        border: 1px solid rgba(160, 160, 160, 0.5);
-        color: var(--dore);
+        background: rgba(0, 255, 157, 0.1);
+        border: 1px solid rgba(0, 255, 157, 0.5);
+        color: #00ff9d;
+        text-shadow: 0 0 8px rgba(0, 255, 157, 0.4);
         padding: 8px 16px;
         border-radius: 20px;
         font-size: 13px;
@@ -1060,9 +1061,9 @@
 
     .promo-card {
         position: relative;
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+        background: linear-gradient(135deg, rgba(0, 255, 157, 0.08), rgba(0, 255, 157, 0.03));
         backdrop-filter: blur(20px);
-        border: 2px solid rgba(168, 168, 168, 0.3);
+        border: 2px solid rgba(0, 255, 157, 0.3);
         border-radius: 16px;
         padding: 40px;
         text-align: center;
@@ -1084,7 +1085,7 @@
         right: -50%;
         width: 200%;
         height: 200%;
-        background: radial-gradient(circle, rgba(168, 168, 168, 0.3) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(0, 255, 157, 0.25) 0%, transparent 70%);
         animation: promoGlow 3s ease-in-out infinite;
     }
 
@@ -1101,17 +1102,17 @@
 
     .promo-card:hover {
         transform: translateY(-8px);
-        border-color: rgba(168, 168, 168, 0.6);
-        background: linear-gradient(135deg, rgba(168, 168, 168, 0.15), rgba(168, 168, 168, 0.08));
-        box-shadow: 0 20px 50px rgba(168, 168, 168, 0.25), inset 0 0 20px rgba(168, 168, 168, 0.1);
+        border-color: rgba(0, 255, 157, 0.7);
+        background: linear-gradient(135deg, rgba(0, 255, 157, 0.14), rgba(0, 255, 157, 0.06));
+        box-shadow: 0 20px 50px rgba(0, 255, 157, 0.2), inset 0 0 20px rgba(0, 255, 157, 0.08);
     }
 
     .promo-badge {
         position: relative;
         z-index: 2;
         display: inline-block;
-        background: linear-gradient(135deg, #a8a8a8, #e8e8e8);
-        color: #0A3D35;
+        background: linear-gradient(135deg, #00ff9d, #00b377);
+        color: #021410;
         padding: 10px 20px;
         border-radius: 50px;
         font-weight: 700;
@@ -1119,7 +1120,7 @@
         margin-bottom: 15px;
         text-transform: uppercase;
         letter-spacing: 1px;
-        box-shadow: 0 4px 15px rgba(168, 168, 168, 0.4);
+        box-shadow: 0 4px 20px rgba(0, 255, 157, 0.45);
     }
 
     .promo-title {
@@ -1150,10 +1151,11 @@
         z-index: 2;
         font-size: 32px;
         font-weight: 900;
-        background: linear-gradient(135deg, #a8a8a8, #e8e8e8);
+        background: linear-gradient(135deg, #00ff9d, #00b377);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
+        filter: drop-shadow(0 0 10px rgba(0, 255, 157, 0.4));
         margin-bottom: 15px;
     }
 
@@ -1161,8 +1163,8 @@
         position: relative;
         z-index: 2;
         display: inline-block;
-        background: linear-gradient(135deg, #a8a8a8, #e8e8e8);
-        color: #0A3D35;
+        background: linear-gradient(135deg, #00ff9d, #00b377);
+        color: #021410;
         padding: 12px 28px;
         border-radius: 8px;
         text-decoration: none;
@@ -1177,14 +1179,14 @@
 
     .promo-cta:hover {
         transform: scale(1.08);
-        box-shadow: 0 8px 25px rgba(168, 168, 168, 0.5);
+        box-shadow: 0 8px 28px rgba(0, 255, 157, 0.55);
     }
 
     .promo-validity {
         position: relative;
         z-index: 2;
         font-size: 11px;
-        color: rgba(168, 168, 168, 0.8);
+        color: rgba(0, 255, 157, 0.75);
         margin-top: 15px;
         font-style: italic;
     }
