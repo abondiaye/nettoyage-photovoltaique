@@ -4,9 +4,6 @@
 
 {% block body %}
 <style>
-    /* Show circular nav */
-    .circular-nav-container { display: block !important; visibility: visible !important; }
-
     /* Remove all padding/margin from body and html */
     html {
         margin: 0 !important;
@@ -1249,6 +1246,199 @@
             font-size: 28px;
         }
     }
+    /* ===== Glitch / scramble intro (inside hero-card) ===== */
+    .glitch-intro {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        padding: 1.5rem 0.5rem 1.75rem;
+        margin-bottom: 10px;
+        border-radius: 14px;
+        overflow: hidden;
+        background: #020c06;
+        font-family: 'Share Tech Mono', monospace;
+        isolation: isolate;
+    }
+
+    .glitch-intro::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 0, 0, 0.08) 2px,
+            rgba(0, 0, 0, 0.08) 4px
+        );
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .glitch-intro::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.65) 100%);
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .glitch-grid {
+        position: absolute;
+        inset: 0;
+        background-image:
+            linear-gradient(rgba(0, 255, 157, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 255, 157, 0.05) 1px, transparent 1px);
+        background-size: 28px 28px;
+        pointer-events: none;
+    }
+
+    .glitch-corner {
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        border-color: rgba(0, 255, 157, 0.3);
+        border-style: solid;
+        z-index: 2;
+        opacity: 0;
+        animation: glitchFadeIn 1s ease 1.1s forwards;
+    }
+    .glitch-corner.tl { top: 10px; left: 10px; border-width: 1px 0 0 1px; }
+    .glitch-corner.tr { top: 10px; right: 10px; border-width: 1px 1px 0 0; }
+    .glitch-corner.bl { bottom: 10px; left: 10px; border-width: 0 0 1px 1px; }
+    .glitch-corner.br { bottom: 10px; right: 10px; border-width: 0 1px 1px 0; }
+
+    .glitch-prefix {
+        position: relative;
+        z-index: 2;
+        display: block;
+        font-size: 0.6rem;
+        letter-spacing: 0.3em;
+        color: rgba(0, 255, 157, 0.4);
+        text-transform: uppercase;
+        margin-bottom: 0.6rem;
+        opacity: 0;
+        animation: glitchFadeUp 0.6s ease 0.2s forwards;
+    }
+
+    .glitch-line {
+        position: relative;
+        z-index: 2;
+        font-family: 'Bebas Neue', 'Space Grotesk', sans-serif;
+        font-size: clamp(1.7rem, 5vw, 3rem);
+        color: #00ff9d;
+        line-height: 1;
+        letter-spacing: 0.03em;
+        text-shadow: 0 0 14px rgba(0, 255, 157, 0.5), 0 0 36px rgba(0, 255, 157, 0.2);
+        display: block;
+        min-height: 1.1em;
+        opacity: 0;
+        animation: glitchFadeUp 0.4s ease 0.05s forwards;
+    }
+
+    .glitch-line + .glitch-line {
+        color: rgba(0, 255, 157, 0.35);
+        font-size: clamp(1rem, 3vw, 1.6rem);
+        margin-top: 0.15em;
+        text-shadow: none;
+    }
+
+    .glitch-char {
+        display: inline-block;
+        transition: color 0.05s;
+    }
+    .glitch-char.is-glitching {
+        color: rgba(0, 255, 157, 0.5);
+        animation: glitchFlicker 0.08s steps(1) infinite;
+    }
+
+    .glitch-divider {
+        position: relative;
+        z-index: 2;
+        width: 70px;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #00ff9d, transparent);
+        margin: 0.9rem auto;
+        opacity: 0;
+        animation: glitchFadeUp 0.6s ease 0.5s forwards;
+    }
+
+    .glitch-sub {
+        position: relative;
+        z-index: 2;
+        font-size: 0.68rem;
+        letter-spacing: 0.16em;
+        color: rgba(0, 255, 157, 0.45);
+        text-transform: uppercase;
+        opacity: 0;
+        animation: glitchFadeUp 0.6s ease 0.65s forwards;
+    }
+
+    .glitch-sub--small {
+        margin-top: 0.4rem;
+        font-size: 0.62rem;
+        letter-spacing: 0.08em;
+        color: rgba(0, 255, 157, 0.55);
+        text-transform: none;
+        animation-delay: 0.8s;
+    }
+
+    .glitch-replay {
+        position: relative;
+        z-index: 2;
+        margin-top: 1.3rem;
+        display: inline-block;
+        font-family: 'Share Tech Mono', monospace;
+        font-size: 0.62rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: rgba(0, 255, 157, 0.55);
+        border: 1px solid rgba(0, 255, 157, 0.25);
+        padding: 0.45rem 1.1rem;
+        background: transparent;
+        cursor: pointer;
+        transition: color 0.2s, border-color 0.2s, box-shadow 0.2s, background 0.2s;
+        opacity: 0;
+        animation: glitchFadeUp 0.6s ease 0.95s forwards;
+    }
+    .glitch-replay:hover {
+        color: #00ff9d;
+        border-color: rgba(0, 255, 157, 0.6);
+        box-shadow: 0 0 14px rgba(0, 255, 157, 0.12), inset 0 0 14px rgba(0, 255, 157, 0.12);
+        background: rgba(0, 255, 157, 0.05);
+    }
+
+    .glitch-statusbar {
+        position: relative;
+        z-index: 2;
+        margin-top: 0.9rem;
+        font-size: 0.55rem;
+        letter-spacing: 0.14em;
+        color: rgba(0, 255, 157, 0.28);
+        opacity: 0;
+        animation: glitchFadeIn 1s ease 1.3s forwards;
+        white-space: nowrap;
+        overflow-x: auto;
+    }
+
+    @keyframes glitchFadeUp {
+        from { opacity: 0; transform: translateY(10px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes glitchFadeIn {
+        to { opacity: 1; }
+    }
+    @keyframes glitchFlicker {
+        0%, 100% { opacity: 1; }
+        50%      { opacity: 0.4; }
+    }
+
+    @media (max-width: 480px) {
+        .glitch-intro { padding: 1.1rem 0.4rem 1.3rem; }
+        .glitch-statusbar { font-size: 0.5rem; }
+    }
+
 </style>
 
 <!-- Hero Section -->
@@ -1266,7 +1456,100 @@
             <img src="{{ asset('images/logo1.jpeg') }}" alt="Sirius-Solar Logo">
         </div>
 
-        <h1 class="hero-title">Nettoyage & entretien de vos panneaux photovoltaïques</h1>
+        <div class="glitch-intro">
+            <div class="glitch-grid"></div>
+            <div class="glitch-corner tl"></div>
+            <div class="glitch-corner tr"></div>
+            <div class="glitch-corner bl"></div>
+            <div class="glitch-corner br"></div>
+
+            <span class="glitch-prefix">// Sirius-Solar</span>
+            <span class="glitch-line" id="glitchLine1" data-text="WELCOME"></span>
+            <span class="glitch-line" id="glitchLine2" data-text=" the Sirius-solar website."></span>
+
+            <div class="glitch-divider"></div>
+            <div class="glitch-sub">Propreté · claireté · clarté</div>
+            <div class="glitch-sub glitch-sub--small">Nettoyage &amp; entretien de vos panneaux photovoltaïques</div>
+
+            <button class="glitch-replay" id="glitchReplayBtn" type="button">[ rejouer ]</button>
+            <div class="glitch-statusbar" id="glitchStatus">SYS://PRÊT &nbsp;|&nbsp; SURVOLEZ POUR REJOUER &nbsp;|&nbsp; V1.0.0</div>
+        </div>
+
+        <script>
+        (function () {
+            var CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*!?/\\|<>';
+
+            function glitchRand(arr) {
+                return arr[Math.floor(Math.random() * arr.length)];
+            }
+
+            function glitchScramble(el, finalText, delay) {
+                delay = delay || 0;
+                return new Promise(function (resolve) {
+                    setTimeout(function () {
+                        var chars = finalText.split('').map(function (ch, i) {
+                            return {
+                                char: ch,
+                                done: ch === ' ',
+                                iterations: Math.floor(Math.random() * 8) + i * 2
+                            };
+                        });
+
+                        el.innerHTML = chars.map(function (c, i) {
+                            return c.char === ' '
+                                ? '<span class="glitch-char">&nbsp;</span>'
+                                : '<span class="glitch-char is-glitching" data-i="' + i + '">' + glitchRand(CHARS) + '</span>';
+                        }).join('');
+
+                        var spans = el.querySelectorAll('.glitch-char');
+                        var frame = 0;
+
+                        var tick = setInterval(function () {
+                            var allDone = true;
+                            chars.forEach(function (c, i) {
+                                if (c.done) return;
+                                if (frame >= c.iterations) {
+                                    spans[i].textContent = c.char;
+                                    spans[i].classList.remove('is-glitching');
+                                    c.done = true;
+                                } else {
+                                    spans[i].textContent = glitchRand(CHARS);
+                                    allDone = false;
+                                }
+                            });
+                            frame++;
+                            if (allDone) {
+                                clearInterval(tick);
+                                resolve();
+                            }
+                        }, 45);
+                    }, delay);
+                });
+            }
+
+            async function glitchRunSequence() {
+                var line1 = document.getElementById('glitchLine1');
+                var line2 = document.getElementById('glitchLine2');
+                var status = document.getElementById('glitchStatus');
+                if (!line1 || !line2) return;
+
+                if (status) status.textContent = 'SYS://DÉCODAGE...';
+                await glitchScramble(line1, line1.dataset.text, 300);
+                await glitchScramble(line2, line2.dataset.text, 60);
+                if (status) status.textContent = 'SYS://PRÊT  |  SURVOLEZ POUR REJOUER  |  V1.0.0';
+            }
+
+            glitchRunSequence();
+
+            var glitchReplayBtn = document.getElementById('glitchReplayBtn');
+            if (glitchReplayBtn) {
+                glitchReplayBtn.addEventListener('click', glitchRunSequence);
+                glitchReplayBtn.addEventListener('mouseenter', function () {
+                    glitchScramble(glitchReplayBtn, '[ rejouer ]', 0);
+                });
+            }
+        })();
+        </script>
         <p class="hero-subtitle">Eau osmosée • Zéro produit chimique • Jusqu'à 25% regagné</p>
 
         <div class="hero-features">
@@ -1750,7 +2033,5 @@
         </a>
     </div>
 </footer>
-
-{% include 'components/circular-navbar.html.twig' %}
 
 {% endblock %}
