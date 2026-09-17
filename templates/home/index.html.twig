@@ -1384,6 +1384,31 @@
         animation-delay: 0.8s;
     }
 
+    .glitch-cta {
+        position: relative;
+        z-index: 2;
+        margin-top: 1.3rem;
+        display: inline-block;
+        font-family: 'Share Tech Mono', monospace;
+        font-size: 0.62rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: rgba(0, 255, 157, 0.55);
+        border: 1px solid rgba(0, 255, 157, 0.25);
+        padding: 0.45rem 1.1rem;
+        background: transparent;
+        text-decoration: none;
+        transition: color 0.2s, border-color 0.2s, box-shadow 0.2s, background 0.2s;
+        opacity: 0;
+        animation: glitchFadeUp 0.6s ease 0.95s forwards;
+    }
+    .glitch-cta:hover {
+        color: #00ff9d;
+        border-color: rgba(0, 255, 157, 0.6);
+        box-shadow: 0 0 14px rgba(0, 255, 157, 0.12), inset 0 0 14px rgba(0, 255, 157, 0.12);
+        background: rgba(0, 255, 157, 0.05);
+    }
+
     .glitch-statusbar {
         position: relative;
         z-index: 2;
@@ -1392,7 +1417,7 @@
         letter-spacing: 0.14em;
         color: rgba(0, 255, 157, 0.28);
         opacity: 0;
-        animation: glitchFadeIn 1s ease 0.95s forwards;
+        animation: glitchFadeIn 1s ease 1.3s forwards;
         white-space: nowrap;
         overflow-x: auto;
     }
@@ -1446,6 +1471,7 @@
             <div class="glitch-sub">Propreté · claireté · clarté</div>
             <div class="glitch-sub glitch-sub--small">Nettoyage &amp; entretien de vos panneaux photovoltaïques</div>
 
+            <a href="{{ path('app_devis') }}" class="glitch-cta">[ devis ]</a>
             <div class="glitch-statusbar" id="glitchStatus">Un panneau propre, c’est jusqu’à 25 % d’énergie en plus.</div>
         </div>
 
