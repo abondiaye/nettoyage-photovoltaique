@@ -573,9 +573,9 @@
     }
 
     .advantage-card {
-        background: rgba(0, 212, 255, 0.08);
+        background: rgba(0, 255, 157, 0.08);
         backdrop-filter: blur(20px);
-        border: 2px solid rgba(0, 212, 255, 0.3);
+        border: 2px solid rgba(0, 255, 157, 0.3);
 
         border-radius: 16px;
         padding: 40px;
@@ -631,17 +631,17 @@
 
     .advantage-card:hover {
         transform: translateY(-8px) scale(1.01);
-        box-shadow: 0 15px 45px rgba(0, 212, 255, 0.2), 0 0 30px rgba(0, 212, 255, 0.15);
-        border-color: #00d4ff;
+        box-shadow: 0 15px 45px rgba(0, 255, 157, 0.2), 0 0 30px rgba(0, 255, 157, 0.15);
+        border-color: #00ff9d;
         animation: liquidCardPulse 2s ease-in-out;
     }
 
     @keyframes liquidCardPulse {
         0%, 100% {
-            box-shadow: 0 15px 45px rgba(0, 212, 255, 0.2), 0 0 30px rgba(0, 212, 255, 0.15);
+            box-shadow: 0 15px 45px rgba(0, 255, 157, 0.2), 0 0 30px rgba(0, 255, 157, 0.15);
         }
         50% {
-            box-shadow: 0 15px 45px rgba(0, 212, 255, 0.4), 0 0 40px rgba(0, 212, 255, 0.3);
+            box-shadow: 0 15px 45px rgba(0, 255, 157, 0.4), 0 0 40px rgba(0, 255, 157, 0.3);
         }
     }
 
@@ -663,14 +663,15 @@
 
     .advantage-card h3 {
         font-size: 20px;
-        color: var(--vert-fonce);
+        color: #00ff9d;
+        text-shadow: 0 0 8px rgba(0, 255, 157, 0.4);
         margin-bottom: 10px;
         font-family: 'Space Grotesk', sans-serif;
         font-weight: 600;
     }
 
     .advantage-card p {
-        color: #666;
+        color: rgba(0, 255, 157, 0.8);
         font-size: 14px;
         line-height: 1.6;
     }
