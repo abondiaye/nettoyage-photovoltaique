@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Message;
 use App\Repository\MessageRepository;
+use App\Service\EmailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +23,7 @@ class MessageController extends AbstractController
     }
 
     #[Route('/contact/submit', name: 'app_contact_submit', methods: ['POST'])]
-    public function submit(Request $request, EntityManagerInterface $em): Response
+    public function submit(Request $request, EntityManagerInterface $em, EmailService $emailService): Response
     {
         $message = new Message();
         $message->setNom($request->request->get('nom'));
@@ -36,6 +37,8 @@ class MessageController extends AbstractController
 
         $em->persist($message);
         $em->flush();
+
+        $emailService->sendNewContactMessage($message);
 
         return $this->render('message/contact.html.twig', [
             'success' => true,

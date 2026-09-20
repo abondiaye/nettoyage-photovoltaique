@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\Message;
 use App\Entity\Reservation;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
@@ -11,6 +12,30 @@ class EmailService
     public function __construct(
         private MailerInterface $mailer
     ) {}
+
+    /**
+     * Notifier le propriétaire du site qu'un nouveau message est arrivé
+     * depuis le formulaire "Me contacter".
+     */
+    public function sendNewContactMessage(Message $message): void
+    {
+        $destinataire = $_ENV['CONTACT_NOTIFICATION_EMAIL']
+            ?? $_ENV['COMPANY_EMAIL']
+            ?? 'contact@panneauvoltaique.net';
+
+        $email = (new Email())
+            ->from('noreply@panneauvoltaique.net')
+            ->to($destinataire)
+            ->replyTo($message->getEmail())
+            ->subject('📩 Nouveau message depuis le site - ' . $message->getNom())
+            ->html($this->renderNewContactMessage($message));
+
+        try {
+            $this->mailer->send($email);
+        } catch (\Exception $e) {
+            error_log('Email error: ' . $e->getMessage());
+        }
+    }
 
     /**
      * Envoyer email de confirmation de réservation
@@ -104,6 +129,29 @@ class EmailService
     }
 
     // === Email templates ===
+
+    private function renderNewContactMessage(Message $message): string
+    {
+        $datePreferee = $message->getDatePreferee()
+            ? $message->getDatePreferee()->format('d/m/Y')
+            : 'Non précisée';
+        $messageTexte = nl2br(htmlspecialchars($message->getMessage()));
+
+        return <<<HTML
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h2>📩 Nouveau message depuis le site</h2>
+            <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                <p>
+                    👤 Nom: {$message->getNom()}<br>
+                    ✉️ Email: {$message->getEmail()}<br>
+                    📅 Date préférée: {$datePreferee}
+                </p>
+                <p><strong>Message:</strong><br>{$messageTexte}</p>
+            </div>
+            <p style="color: #999; font-size: 12px;">Répondez directement à cet email pour contacter {$message->getNom()}.</p>
+        </div>
+        HTML;
+    }
 
     private function renderConfirmationEmail(Reservation $reservation): string
     {
