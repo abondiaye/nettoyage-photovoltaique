@@ -70,6 +70,7 @@ Conformément à la consigne, voici les **conflits ou risques** que j'ai relevé
 | Identifiants | **UUID v7** (symfony/uid) pour les entités exposées | Non énumérables (`/go/{offerId}`), triables dans le temps, fusion de fiches sans collision | Clé auto-incrémentée : énumération des offres et des clics |
 | Montants | Entier en **centimes** + value object `Money` | Pas d'erreur de flottant, et le calcul du prix total est testable | `float` ou `decimal` string : erreurs d'arrondi et comparaisons fragiles |
 | Arbre des catégories | **Materialized path** (`path` = `/survie/couteaux/`) + `parent_id` + `depth` | Lecture du sous-arbre par `LIKE 'path%'` indexé, URL SEO directe, écritures rares | Nested set (Gedmo) : réécritures massives à chaque déplacement, verrous. `ltree` : dépendance à une extension PG et moins bien pris en charge par Doctrine |
+| Prix par unité | Quantité **déclarée sur le produit** (`unit_quantity`) × multiplicateur de lot **sur l'offre** (`pack_multiplier`), avec l'unité et la base **paramétrées par catégorie** (€/cartouche, €/1 000 kcal, €/L…). Le prix unitaire est calculé par un service pur et stocké en **micro-euros** (`bigint`) pour le tri et l'indexation | Permet de comparer une boîte de 20 et un lot de 100 sans erreur d'arrondi, et de trier directement dans PG et Meilisearch | Un champ `unit_price` libre repris du flux : unités hétérogènes et invérifiables. Un calcul uniquement à l'affichage : impossible de trier ou de filtrer |
 | Caractéristiques | **Hybride** : `Attribute` typé + `ProductAttributeValue` (source de vérité, filtres et contraintes) + **JSONB `specs`** dénormalisé sur `Product` | Les règles légales portent sur des valeurs typées (joules, calibre), et l'affichage comme l'indexation sont rapides | EAV seul : lent à lire. JSONB seul : aucune intégrité sur les seuils légaux |
 | Historique de prix | Table **partitionnée par mois** (partitionnement déclaratif PG en SQL brut dans la migration) ; on stocke **un point par changement de prix**, plus un point de reprise hebdomadaire | Divise le volume par 10 à 50, purge par `DETACH PARTITION` | TimescaleDB : une extension de plus à opérer, souvent absente des PaaS |
 | Rapprochement flou | **pg_trgm** (`similarity()` + index GIN) sur un titre normalisé, avec un scoring pondéré en PHP | Reste en base et transactionnel, suffisant jusqu'à ~1 M de lignes | Meilisearch pour le rapprochement : non déterministe et non transactionnel. ML/embeddings : prématuré (possible en v2 comme signal supplémentaire) |
@@ -143,6 +144,9 @@ erDiagram
         bool indexable
         datetime seo_validated_at
         int lowest_price_cents "cache"
+        decimal unit_quantity "nullable, ex. 20 cartouches, 2400 kcal"
+        string unit_quantity_source "FEED|MANUAL|NULL"
+        bigint lowest_unit_price_micros "cache"
         int offer_count "cache"
         datetime created_at
         datetime updated_at
@@ -174,6 +178,8 @@ erDiagram
         string weapon_category
         string legal_status
         int missed_imports "0..n, >=2 => UNAVAILABLE"
+        int pack_multiplier "défaut 1 (lot de 5 boîtes = 5)"
+        bigint unit_price_micros "nullable, calculé"
         datetime last_seen_at
         datetime price_updated_at
     }
@@ -243,6 +249,9 @@ erDiagram
         int depth
         bool age_gated
         bool default_noindex
+        string unit_type "ROUND|KCAL|PIECE|LITER|KILOGRAM|METER|NULL"
+        int unit_base "1, 100, 1000"
+        string unit_label "cartouche, 1 000 kcal, 100 g"
         text legal_notice
         int position
     }
@@ -397,7 +406,30 @@ erDiagram
 2. **Calcul du prix total.** `total = price + shipping`. Si le port est inconnu, le tri place l'offre **après** les offres au port connu et le prix affiche « + port ». La règle est publiée sur la page Critères de classement. Le calcul est un service pur, testé à 100 %.
 3. **Critères de classement par défaut** (art. D111-7) : 1) prix total croissant ; 2) disponibilité ; 3) fraîcheur de l'offre. Les **annonces sponsorisées sont affichées à part** (bloc « Annonce »), jamais mélangées au classement naturel.
 4. **Offre morte.** `missed_imports` est incrémenté à chaque import qui ne contient pas l'offre. À 2, elle passe en `UNAVAILABLE`. Une fiche sans offre active reste en ligne (« Plus disponible » + alternatives). Elle passe en `noindex` après 180 jours sans offre (paramétrable).
-5. **Cascade de rapprochement** : GTIN exact (après validation du checksum et normalisation GTIN-14) → marque normalisée + MPN normalisé → trigrammes (score ≥ seuil haut : auto ; entre le seuil bas et le seuil haut : `MatchCandidate` ; en dessous : création d'une fiche **en attente**). **Garde-fou :** une fusion automatique entre deux produits de `weaponCategory` différentes est interdite et part en validation manuelle.
+5. **Prix par unité.**
+   - **Formule :** `prix unitaire = prix total / (unit_quantity × pack_multiplier) × unit_base`, calculée en entiers (micro-euros) avec un arrondi bancaire à l'affichage (4 décimales pour les montants inférieurs à 1 €, 2 au-delà).
+   - **Paramétrage par catégorie (admin) :**
+
+     | Catégorie | `unit_type` | `unit_base` | Affichage |
+     |---|---|---|---|
+     | Munitions | `ROUND` | 1 | 0,3140 €/cartouche |
+     | Rations longue conservation | `KCAL` | 1000 | 1,85 €/1 000 kcal |
+     | Piles et accus | `PIECE` | 1 | 0,62 €/pile |
+     | Cartouches de gaz | `KILOGRAM` | 0,1 (100 g) | 2,10 €/100 g |
+     | Stockage d'eau et pastilles | `LITER` | 1 | 0,09 €/L traité |
+     | Paracorde et cordage | `METER` | 1 | 0,27 €/m |
+
+   - **Sources de la quantité, par ordre de confiance :**
+     1. Attributs Google Shopping `unit_pricing_measure` / `unit_pricing_base_measure` ou colonne mappée en admin.
+     2. Extraction du titre par expressions régulières (« boîte de 50 », « x20 », « 2400 kcal »). La valeur extraite part en **modération**, elle n'est jamais publiée automatiquement.
+     3. Saisie manuelle.
+
+     Une quantité inconnue signifie qu'on n'affiche **aucun prix unitaire** : on ne devine jamais.
+   - **`pack_multiplier`** est détecté sur l'offre (« lot de 5 boîtes »). Une offre dont le lot contient plusieurs produits reste rattachée au même `Product`.
+   - **Classement.** Si toutes les offres d'une fiche ont `pack_multiplier = 1`, le tri se fait par prix total. Si les lots diffèrent, le **tri par défaut passe au prix unitaire total** (port compris). Cette règle est publiée sur la page Critères de classement.
+   - **Attributs légaux.** Le prix par unité est un calcul de [NOM DU SITE]. Il est affiché avec la mention « calculé par [NOM DU SITE] » quand le marchand ne le fournit pas. L'obligation d'affichage du prix à l'unité de mesure reste celle du vendeur.
+   - **Tests.** Couverture de 100 % sur `UnitPriceCalculator` et `UnitQuantityExtractor`, avec des cas limites : 0, quantité nulle, lot sans quantité, conversion g → 100 g.
+6. **Cascade de rapprochement** : GTIN exact (après validation du checksum et normalisation GTIN-14) → marque normalisée + MPN normalisé → trigrammes (score ≥ seuil haut : auto ; entre le seuil bas et le seuil haut : `MatchCandidate` ; en dessous : création d'une fiche **en attente**). **Garde-fou :** une fusion automatique entre deux produits de `weaponCategory` différentes est interdite et part en validation manuelle.
 
 ---
 
@@ -432,7 +464,7 @@ erDiagram
 │   │   └── Infrastructure/Adapter/ (FeedAdapterInterface, CsvAdapter, GoogleShoppingXmlAdapter, AwinAdapter…)
 │   ├── Compliance/    (LegalRule, ModerationItem, LegalClassifier, Verdict, AgeGate)
 │   ├── Matching/      (MatchCandidate, Strategy/{Gtin,BrandMpn,Fuzzy}Matcher, MatchingEngine, Normalizer/*)
-│   ├── Pricing/       (PriceHistory, TotalPriceCalculator, OfferRanking, PriceDropDetector)
+│   ├── Pricing/       (PriceHistory, TotalPriceCalculator, UnitPriceCalculator, UnitQuantityExtractor, OfferRanking, PriceDropDetector)
 │   ├── Search/        (MeilisearchIndexer, ProductDocumentBuilder, SearchController API)
 │   ├── Tracking/      (ClickOut, GoController, BotDetector, CpcBilling)
 │   ├── Monetization/  (SponsoredPlacement, CpcBudget)
