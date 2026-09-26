@@ -32,7 +32,7 @@
 |---|---|---|---|
 | Chiens de chasse et de travail | Colliers GPS / repérage, gilets de protection anti-sanglier, sonnailles, laisses et longes, caisses de transport | Portée GPS (km), autonomie (h), taille (tour de cou/poitrail en cm), poids (g), protection (Kevlar, Cordura) | — |
 | Alimentation et stockage | Croquettes haute énergie, pâtées, alimentation lyophilisée, conteneurs hermétiques | Espèce, âge, taux de protéines (%), kcal/kg, DLUO (mois), poids du sac | **€/kg** et €/1 000 kcal |
-| Soins et premiers secours | Trousses de secours canines, bandes cohésives, bottines, couvertures de survie animales | Contenu (nb de pièces), taille | — |
+| Soins et premiers secours (hors médicaments, v1) | Trousses de secours canines, bandes cohésives, bottines, couvertures de survie animales | Contenu (nb de pièces), taille | — |
 | Bivouac avec l'animal | Gamelles pliables, tapis isolants, sacs de couchage, harnais de portage, filtres à eau | Poids, dimensions, capacité (L) | €/L (eau) |
 | Chevaux et bâtés (option) | Sacoches de bât, licols, couvertures | Taille, charge max. (kg) | — |
 
@@ -73,8 +73,8 @@ Conformément à la consigne, voici les **conflits ou risques** que j'ai relevé
 | L10 | **Vision nocturne et thermique** : la détention est libre, mais certains usages à la chasse sont interdits, et certains modèles relèvent du double usage à l'export. | Faible pour un comparateur. | Bandeau informatif configurable sur la catégorie. Aucun blocage. |
 | L11 | **La porte d'âge est déclarative.** | Ce n'est pas une vérification d'âge légale (et ce n'est pas notre rôle). | Le texte de la porte le dit explicitement : « la vérification est effectuée par le vendeur ». Contenu B/C en `noindex` tant que `seoValidatedAt` est nul. |
 | L12 | **Animaux vivants.** La vente en ligne de chiens et de chats est fortement encadrée depuis la loi du 30 novembre 2021 contre la maltraitance animale. | Un flux contenant des animaux vivants (chiots, appelants vivants, furets…). | Règle `REJECT` : **aucun animal vivant n'est indexé**, quelle que soit l'espèce. Mots-clés et catégories marchand détectés à l'import, puis envoi en modération. |
-| L13 | **Médicaments vétérinaires** : leur vente en ligne est réservée à certains professionnels (pharmacies, vétérinaires), et les produits sur ordonnance sont exclus. | Afficher un antiparasitaire soumis à prescription ou vendu par un marchand non habilité. | Attribut `isVeterinaryMedicine`. Une offre concernée part en `MODERATE`, et seuls les marchands avec un flag `veterinaryAuthorized` (validé manuellement, comme `isLicensedDealer`) sont affichés. Les produits sur ordonnance sont en `REJECT`. |
-| L14 | **Pièges et produits de destruction des nuisibles** : l'usage de nombreux pièges est réservé aux piégeurs agréés, et certains rodenticides sont réservés aux professionnels. | Présenter un piège ou un biocide comme en libre usage. | Sous-rayon **désactivé par défaut**. S'il est activé, bandeau « usage réglementé : agrément de piégeur ou usage professionnel requis selon le modèle » et modération obligatoire. |
+| L13 | **Médicaments vétérinaires** : leur vente en ligne est réservée à certains professionnels (pharmacies, vétérinaires), et les produits sur ordonnance sont exclus. | Afficher un médicament vendu par un marchand non habilité ou soumis à prescription. | **Décision : exclus de la v1.** Règle `REJECT` à l'import sur les médicaments vétérinaires (mots-clés, catégorie marchand, code AMM dans le flux). Les **antiparasitaires biocides** (colliers, sprays sans AMM) sont ambigus : ils partent en `MODERATE`. Une réouverture en v2 passerait par un flag `veterinaryAuthorized` sur `Merchant`, pas prévu dans le modèle v1. |
+| L14 | **Pièges et produits de destruction des nuisibles** : l'usage de nombreux pièges est réservé aux piégeurs agréés, et certains rodenticides sont réservés aux professionnels. | Présenter un piège ou un biocide comme en libre usage. | **Décision : exclus de la v1.** Règle `REJECT` à l'import (pièges, cages-pièges, collets, rodenticides, taupicides). Aucun sous-rayon créé. |
 | L15 | **Colliers de dressage** : colliers électriques, anti-aboiement. Leur statut évolue en France et en Europe, et ils sont interdits dans plusieurs pays voisins. | Réglementation susceptible de changer rapidement. | `LegalRule` dédiée, paramétrable (`ACCEPT` avec bandeau, ou `REJECT`), sans changement de code. Colliers **GPS et de repérage** sans électrostimulation : non concernés. |
 | L16 | **Alimentation animale** : étiquetage réglementé (composition, constituants analytiques, DLUO). | Des allégations santé trompeuses dans les titres des flux. | Les descriptions reprises du flux sont affichées comme « Description du vendeur ». Nous ne formulons aucune allégation de santé nous-mêmes. |
 
@@ -208,7 +208,6 @@ erDiagram
         string slug UK
         string website
         bool is_licensed_dealer
-        bool veterinary_authorized "vente de médicaments vétérinaires"
         datetime licensed_verified_at
         uuid licensed_verified_by FK
         date license_expires_at
@@ -520,7 +519,7 @@ erDiagram
 10. Affiliation et consentement : acceptez-vous que le sub-id d'affiliation ne soit transmis qu'après consentement (§3 L9), avec un risque de sous-attribution de commissions ?
 11. Comptes : email et mot de passe seulement, ou connexion Google/Apple en plus ?
 12. Avez-vous un juriste identifié pour valider la matrice légale (§3) ? Je produirai `docs/legal-matrix.md` en phase 3 pour faciliter sa relecture.
-13. Rayon Animaux : faut-il inclure les **médicaments vétérinaires non soumis à ordonnance** (marchands habilités seulement) et le sous-rayon **pièges** (désactivé par défaut), ou les exclure tout à fait pour la v1 ? Je recommande de les exclure en v1.
+13. ~~Rayon Animaux : médicaments vétérinaires et pièges ?~~ **Tranché : exclus de la v1** (règles `REJECT`, cf. L13 et L14).
 
 ---
 
