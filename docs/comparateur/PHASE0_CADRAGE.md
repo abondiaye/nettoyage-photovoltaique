@@ -7,7 +7,7 @@
 
 ## 1. Reformulation du besoin
 
-[NOM DU SITE] est un **comparateur de prix, sans aucune fonction de vente**, pour le marché français de la survie, du bushcraft, de l'outdoor tactique et de l'armurerie légale.
+[NOM DU SITE] est un **comparateur de prix, sans aucune fonction de vente**, pour le marché français de la survie, du bushcraft, de l'outdoor tactique, de l'armurerie légale **et de l'équipement pour animaux** (chiens de chasse et de travail, animaux en autonomie et en bivouac).
 
 | Fait | Ne fait pas |
 |---|---|
@@ -23,6 +23,20 @@
 3. **SEO à grande échelle et contenu soumis à une porte d'âge.** Ces deux objectifs sont en tension (cache, indexation). Ils sont arbitrés au §6.
 
 ---
+
+### 1 bis. Rayon 7 : Animaux (ajouté après le cadrage initial)
+
+**Positionnement :** on ne se bat pas contre les animaleries généralistes (Zooplus, Amazon) sur les croquettes premier prix. Le rayon reste **cohérent avec l'univers du site** : chiens de chasse, chiens de travail, autonomie et bivouac avec un animal.
+
+| Sous-rayon | Exemples | Attributs filtrables | Prix par unité |
+|---|---|---|---|
+| Chiens de chasse et de travail | Colliers GPS / repérage, gilets de protection anti-sanglier, sonnailles, laisses et longes, caisses de transport | Portée GPS (km), autonomie (h), taille (tour de cou/poitrail en cm), poids (g), protection (Kevlar, Cordura) | — |
+| Alimentation et stockage | Croquettes haute énergie, pâtées, alimentation lyophilisée, conteneurs hermétiques | Espèce, âge, taux de protéines (%), kcal/kg, DLUO (mois), poids du sac | **€/kg** et €/1 000 kcal |
+| Soins et premiers secours | Trousses de secours canines, bandes cohésives, bottines, couvertures de survie animales | Contenu (nb de pièces), taille | — |
+| Bivouac avec l'animal | Gamelles pliables, tapis isolants, sacs de couchage, harnais de portage, filtres à eau | Poids, dimensions, capacité (L) | €/L (eau) |
+| Chevaux et bâtés (option) | Sacoches de bât, licols, couvertures | Taille, charge max. (kg) | — |
+
+**Synergies :** le prix par unité (€/kg) est utile pour l'alimentation. Les chasseurs du rayon armes sont aussi propriétaires de chiens de chasse, donc les ventes croisées sont naturelles. Côté monétisation, le rayon n'est pas soumis aux restrictions des régies : **Google Shopping et les réseaux d'affiliation y sont a priori ouverts** (à confirmer programme par programme).
 
 ## 2. Hypothèses de travail (à confirmer ou corriger)
 
@@ -58,6 +72,11 @@ Conformément à la consigne, voici les **conflits ou risques** que j'ai relevé
 | L9 | **Cookies d'affiliation** : le réseau pose ses propres cookies au moment de la redirection. | La CNIL considère que le traçage d'affiliation n'est pas « strictement nécessaire ». | Notre `ClickOut` est journalisé **côté serveur, sans cookie**, avec une IP hachée et un sel rotatif quotidien, sur la base de l'intérêt légitime (facturation CPC). Les paramètres de sous-tracking du réseau (sub-id) ne sont ajoutés qu'avec le consentement « mesure d'audience / affiliation » → **Q10**. |
 | L10 | **Vision nocturne et thermique** : la détention est libre, mais certains usages à la chasse sont interdits, et certains modèles relèvent du double usage à l'export. | Faible pour un comparateur. | Bandeau informatif configurable sur la catégorie. Aucun blocage. |
 | L11 | **La porte d'âge est déclarative.** | Ce n'est pas une vérification d'âge légale (et ce n'est pas notre rôle). | Le texte de la porte le dit explicitement : « la vérification est effectuée par le vendeur ». Contenu B/C en `noindex` tant que `seoValidatedAt` est nul. |
+| L12 | **Animaux vivants.** La vente en ligne de chiens et de chats est fortement encadrée depuis la loi du 30 novembre 2021 contre la maltraitance animale. | Un flux contenant des animaux vivants (chiots, appelants vivants, furets…). | Règle `REJECT` : **aucun animal vivant n'est indexé**, quelle que soit l'espèce. Mots-clés et catégories marchand détectés à l'import, puis envoi en modération. |
+| L13 | **Médicaments vétérinaires** : leur vente en ligne est réservée à certains professionnels (pharmacies, vétérinaires), et les produits sur ordonnance sont exclus. | Afficher un antiparasitaire soumis à prescription ou vendu par un marchand non habilité. | Attribut `isVeterinaryMedicine`. Une offre concernée part en `MODERATE`, et seuls les marchands avec un flag `veterinaryAuthorized` (validé manuellement, comme `isLicensedDealer`) sont affichés. Les produits sur ordonnance sont en `REJECT`. |
+| L14 | **Pièges et produits de destruction des nuisibles** : l'usage de nombreux pièges est réservé aux piégeurs agréés, et certains rodenticides sont réservés aux professionnels. | Présenter un piège ou un biocide comme en libre usage. | Sous-rayon **désactivé par défaut**. S'il est activé, bandeau « usage réglementé : agrément de piégeur ou usage professionnel requis selon le modèle » et modération obligatoire. |
+| L15 | **Colliers de dressage** : colliers électriques, anti-aboiement. Leur statut évolue en France et en Europe, et ils sont interdits dans plusieurs pays voisins. | Réglementation susceptible de changer rapidement. | `LegalRule` dédiée, paramétrable (`ACCEPT` avec bandeau, ou `REJECT`), sans changement de code. Colliers **GPS et de repérage** sans électrostimulation : non concernés. |
+| L16 | **Alimentation animale** : étiquetage réglementé (composition, constituants analytiques, DLUO). | Des allégations santé trompeuses dans les titres des flux. | Les descriptions reprises du flux sont affichées comme « Description du vendeur ». Nous ne formulons aucune allégation de santé nous-mêmes. |
 
 ---
 
@@ -189,6 +208,7 @@ erDiagram
         string slug UK
         string website
         bool is_licensed_dealer
+        bool veterinary_authorized "vente de médicaments vétérinaires"
         datetime licensed_verified_at
         uuid licensed_verified_by FK
         date license_expires_at
@@ -249,7 +269,7 @@ erDiagram
         int depth
         bool age_gated
         bool default_noindex
-        string unit_type "ROUND|KCAL|PIECE|LITER|KILOGRAM|METER|NULL"
+        string unit_type "ROUND|KCAL|PIECE|LITER|KILOGRAM|METER|NULL (KILOGRAM = croquettes)"
         int unit_base "1, 100, 1000"
         string unit_label "cartouche, 1 000 kcal, 100 g"
         text legal_notice
@@ -500,6 +520,7 @@ erDiagram
 10. Affiliation et consentement : acceptez-vous que le sub-id d'affiliation ne soit transmis qu'après consentement (§3 L9), avec un risque de sous-attribution de commissions ?
 11. Comptes : email et mot de passe seulement, ou connexion Google/Apple en plus ?
 12. Avez-vous un juriste identifié pour valider la matrice légale (§3) ? Je produirai `docs/legal-matrix.md` en phase 3 pour faciliter sa relecture.
+13. Rayon Animaux : faut-il inclure les **médicaments vétérinaires non soumis à ordonnance** (marchands habilités seulement) et le sous-rayon **pièges** (désactivé par défaut), ou les exclure tout à fait pour la v1 ? Je recommande de les exclure en v1.
 
 ---
 
@@ -507,7 +528,7 @@ erDiagram
 
 - [ ] Reformulation conforme à l'intention
 - [ ] Hypothèses H1 à H10 validées ou corrigées
-- [ ] Points légaux L1 à L11 lus ; arbitrages Q6 à Q10 tranchés
+- [ ] Points légaux L1 à L16 lus (dont rayon Animaux) ; arbitrages Q6 à Q10 tranchés
 - [ ] Choix techniques du §4 acceptés (ou alternatives demandées)
 - [ ] MCD validé (entités manquantes ou superflues ?)
 - [ ] Arborescence validée
