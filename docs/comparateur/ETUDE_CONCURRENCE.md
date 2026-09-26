@@ -1,4 +1,4 @@
-# Étude de concurrence : [NOM DU SITE]
+# Étude de concurrence : Survivatoor
 
 > Date : 26 septembre 2026. Étude documentaire faite à partir de recherches web publiques.
 > **Limites :** aucune donnée d'audience payante (Similarweb, Semrush) et aucun entretien avec des marchands. Les chiffres cités sont repris des sources indiquées, sans vérification indépendante. Les sources secondaires sont signalées « (source secondaire) ».
@@ -76,7 +76,7 @@
 
 Légende : ✅ oui · ◐ partiel · ❌ non · ? inconnu
 
-| Fonction | **[NOM DU SITE]** (cible) | Gunfinder | NaturaBuy | Jagdpreisvergleich | AmmoSeek | idealo |
+| Fonction | **Survivatoor** (cible) | Gunfinder | NaturaBuy | Jagdpreisvergleich | AmmoSeek | idealo |
 |---|---|---|---|---|---|---|
 | Comparaison multi-marchands d'un même produit neuf | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ |
 | Prix total, port compris | ✅ | ? | ◐ | ? | ◐ | ✅ |

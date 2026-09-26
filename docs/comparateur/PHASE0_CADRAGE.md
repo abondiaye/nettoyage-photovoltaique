@@ -1,4 +1,4 @@
-# Phase 0 — Cadrage du comparateur « [NOM DU SITE] »
+# Phase 0 — Cadrage du comparateur « Survivatoor »
 
 > Statut : proposition, en attente de validation (« OK phase suivante »).
 > Les points juridiques ci-dessous sont une analyse d'ingénierie. **Faites valider la matrice légale (§3) par un avocat en droit des armes et de la consommation avant la mise en production.**
@@ -7,7 +7,7 @@
 
 ## 1. Reformulation du besoin
 
-[NOM DU SITE] est un **comparateur de prix, sans aucune fonction de vente**, pour le marché français de la survie, du bushcraft, de l'outdoor tactique, de l'armurerie légale **et de l'équipement pour animaux** (chiens de chasse et de travail, animaux en autonomie et en bivouac).
+Survivatoor est un **comparateur de prix, sans aucune fonction de vente**, pour le marché français de la survie, du bushcraft, de l'outdoor tactique, de l'armurerie légale **et de l'équipement pour animaux** (chiens de chasse et de travail, animaux en autonomie et en bivouac).
 
 | Fait | Ne fait pas |
 |---|---|
@@ -66,7 +66,7 @@ Conformément à la consigne, voici les **conflits ou risques** que j'ai relevé
 | L3 | **Munitions** : leur catégorie suit celle de l'arme, et l'acheteur doit présenter un justificatif (permis de chasser, licence, autorisation). | Classement erroné d'une munition. | Attribut `caliber` et table de correspondance calibre → catégorie, maintenue en admin. Un calibre inconnu part en `MODERATE`. |
 | L4 | **Air comprimé et airsoft** : les seuils d'énergie en joules déterminent la catégorie (< 2 J pour une réplique, 2 à 20 J pour la D, ≥ 20 J pour la C) et les restrictions pour les mineurs. | Un flux sans énergie renseignée. | Règle sur `energy_joules`. Si la valeur est **absente**, l'offre part en `MODERATE` (jamais `ACCEPT` par défaut). Les seuils sont des paramètres, pas des constantes. |
 | L5 | **Publicité en faveur des armes** : elle est encadrée en France, ce qui pourrait concerner les placements sponsorisés sur les armes B/C. | Un placement « Annonce » sur une carabine pourrait être requalifié. | Par défaut, les `SponsoredPlacement` sont **désactivés** sur les produits `weaponCategory ∈ {B, C}` (flag admin). À valider par un juriste → **Q8**. |
-| L6 | **« Top baisses de prix » et « prix le plus bas constaté »** (directive Omnibus, pratiques commerciales trompeuses) | Présenter comme une « promotion » une variation mesurée par nous. | Libellé « Baisse constatée par [NOM DU SITE] », avec la référence = prix le plus bas des 30 jours précédents, définie publiquement sur la page Critères de classement. Pas de mot « promo ». |
+| L6 | **« Top baisses de prix » et « prix le plus bas constaté »** (directive Omnibus, pratiques commerciales trompeuses) | Présenter comme une « promotion » une variation mesurée par nous. | Libellé « Baisse constatée par Survivatoor », avec la référence = prix le plus bas des 30 jours précédents, définie publiquement sur la page Critères de classement. Pas de mot « promo ». |
 | L7 | **Avis en ligne** (art. L111-7-2 et D111-16 à D111-19 du Code de la consommation) et **DSA** (mécanisme de signalement) | Des avis non modérés de façon transparente. | Page « Comment nous modérons les avis », date de l'expérience, motif de refus notifié, bouton « Signaler », délai de conservation. |
 | L8 | **Scraping** : outre robots.txt, le droit *sui generis* du producteur de base de données s'applique (art. L342-1 du CPI). | Contentieux avec un marchand. | Un `Feed` de type `SCRAPER` ne peut être activé que si un document « accord écrit » est attaché et non expiré (contrainte en base et dans le code). |
 | L9 | **Cookies d'affiliation** : le réseau pose ses propres cookies au moment de la redirection. | La CNIL considère que le traçage d'affiliation n'est pas « strictement nécessaire ». | Notre `ClickOut` est journalisé **côté serveur, sans cookie**, avec une IP hachée et un sel rotatif quotidien, sur la base de l'intérêt légitime (facturation CPC). Les paramètres de sous-tracking du réseau (sub-id) ne sont ajoutés qu'avec le consentement « mesure d'audience / affiliation » → **Q10**. |
@@ -446,7 +446,7 @@ erDiagram
      Une quantité inconnue signifie qu'on n'affiche **aucun prix unitaire** : on ne devine jamais.
    - **`pack_multiplier`** est détecté sur l'offre (« lot de 5 boîtes »). Une offre dont le lot contient plusieurs produits reste rattachée au même `Product`.
    - **Classement.** Si toutes les offres d'une fiche ont `pack_multiplier = 1`, le tri se fait par prix total. Si les lots diffèrent, le **tri par défaut passe au prix unitaire total** (port compris). Cette règle est publiée sur la page Critères de classement.
-   - **Attributs légaux.** Le prix par unité est un calcul de [NOM DU SITE]. Il est affiché avec la mention « calculé par [NOM DU SITE] » quand le marchand ne le fournit pas. L'obligation d'affichage du prix à l'unité de mesure reste celle du vendeur.
+   - **Attributs légaux.** Le prix par unité est un calcul de Survivatoor. Il est affiché avec la mention « calculé par Survivatoor » quand le marchand ne le fournit pas. L'obligation d'affichage du prix à l'unité de mesure reste celle du vendeur.
    - **Tests.** Couverture de 100 % sur `UnitPriceCalculator` et `UnitQuantityExtractor`, avec des cas limites : 0, quantité nulle, lot sans quantité, conversion g → 100 g.
 6. **Cascade de rapprochement** : GTIN exact (après validation du checksum et normalisation GTIN-14) → marque normalisée + MPN normalisé → trigrammes (score ≥ seuil haut : auto ; entre le seuil bas et le seuil haut : `MatchCandidate` ; en dessous : création d'une fiche **en attente**). **Garde-fou :** une fusion automatique entre deux produits de `weaponCategory` différentes est interdite et part en validation manuelle.
 
@@ -455,7 +455,7 @@ erDiagram
 ## 7. Arborescence cible
 
 ```
-[nom-du-site]/
+survivatoor/
 ├── .github/workflows/ci.yaml            # lint, phpstan, tests, build front
 ├── docker/
 │   ├── php/ (Dockerfile, php.ini, opcache.ini)
@@ -508,7 +508,7 @@ erDiagram
 ## 8. Questions (bloquantes en gras)
 
 1. **Dépôt : ce dépôt (`nettoyage-photovoltaique`) contient le site Sirius-Solar, sans lien avec ce projet. Je recommande un nouveau dépôt dédié. Pouvez-vous le créer, ou dois-je initialiser le projet dans un sous-dossier ici ?** (Pour l'instant, seul ce document y est ajouté, dans `docs/comparateur/`.)
-2. **Nom du site et domaine** (utilisés pour le namespace, les emails, les sitemaps, les mentions légales).
+2. ~~Nom du site et domaine~~ **Tranché : Survivatoor.** À faire par le porteur du projet : vérifier et réserver `survivatoor.fr` / `.com`, plus les variantes `survivateur.fr` et `survivator.fr` en redirection ; recherche d'antériorité INPI/EUIPO en classes 35 et 42.
 3. **Hébergement cible (VPS, Clever Cloud ou Platform.sh) ?** Cela oriente le Dockerfile de production dès la phase 1.
 4. Volumétrie : l'hypothèse H2 vous semble-t-elle réaliste ?
 5. Avez-vous déjà des marchands ou des comptes sur des réseaux d'affiliation ? **Un échantillon de flux réel** (même tronqué) rendrait les phases 2 et 3 bien plus solides.
