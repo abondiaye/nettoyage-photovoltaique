@@ -668,76 +668,15 @@
 </head>
 <body>
 
-    <!-- Auth Buttons Top Right -->
-    <style>
-        .auth-buttons-top {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            gap: 15px;
-            z-index: 1000;
-        }
-
-        .auth-btn {
-            padding: 12px 24px;
-            border: 1px solid rgba(0, 255, 157, 0.4);
-            border-radius: 8px;
-            background: rgba(2, 20, 16, 0.55);
-            box-shadow: 0 0 16px rgba(0, 255, 157, 0.15);
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 14px;
-            color: #00ff9d;
-            text-shadow: 0 0 8px rgba(0, 255, 157, 0.4);
-            text-decoration: none;
-            display: inline-block;
-            transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
-        }
-
-        .auth-btn:hover {
-            transform: translateY(-2px);
-            border-color: rgba(0, 255, 157, 0.8);
-            box-shadow: 0 0 26px rgba(0, 255, 157, 0.35);
-        }
-
-        .auth-btn:active {
-            transform: translateY(1px);
-            box-shadow: 0 0 12px rgba(0, 255, 157, 0.2);
-        }
-    </style>
-    <div class="auth-buttons-top">
-        <a href="{{ path('app_login') }}" class="auth-btn">🔐 Connexion</a>
-        <a href="{{ path('app_register') }}" class="auth-btn">✍️ Inscription</a>
-    </div>
-
-    <!-- Hamburger Menu Button -->
-    <button id="hamburger-menu" class="hamburger-btn">
-        <span></span>
-        <span></span>
-        <span></span>
-    </button>
-
-    <!-- Menu Overlay -->
-    <div id="menu-overlay" class="menu-overlay">
-        <ul class="menu-list">
-            <li><a href="{{ path('app_home') }}">Accueil</a></li>
-            <li><a href="#services" onclick="window.runServicesScramble && window.runServicesScramble()">Services</a></li>
-            <li><a href="#avantages" onclick="window.runAvantagesScramble && window.runAvantagesScramble()">Avantages</a></li>
-            <li><a href="/devis">Devis</a></li>
-            <li><a href="#contact" onclick="window.runContactScramble && window.runContactScramble()">Contact</a></li>
-            <li><a href="/about">À propos</a></li>
-            <li><a href="/blog">Blog</a></li>
-        </ul>
-    </div>
-
     <!-- Frosted Glass Gooey Gravity Navigation -->
     {# {% include 'components/gooey-navbar.html.twig' %} #}
 
     <!-- Main Content -->
+    <div class="nav3d-page">
     <main>
         {% block body %}{% endblock %}
     </main>
+    </div>
 
     <!-- Standard navbar (not in admin) -->
     {% if not (app.request.pathInfo|default('')|length > 0 and '/admin' in app.request.pathInfo) %}
@@ -808,195 +747,14 @@
             });
         </script>
     <style>
-        /* Hamburger Menu Styles */
-        .hamburger-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 45px;
-            height: 45px;
-            background: transparent;
-            border: 3px solid #00ff9d;
-            border-radius: 8px;
-            cursor: pointer;
-            z-index: 9999;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 6px;
-            box-shadow: 0 0 14px rgba(0, 255, 157, 0.35);
-        }
-
-        .hamburger-btn span {
-            display: block;
-            width: 24px;
-            height: 3px;
-            background: #00ff9d;
-            border-radius: 2px;
-            transition: 0.3s;
-            box-shadow: 0 0 6px rgba(0, 255, 157, 0.6);
-        }
-
-        .hamburger-btn.active span:nth-child(1) {
-            transform: rotate(45deg) translateY(12px);
-        }
-
-        .hamburger-btn.active span:nth-child(2) {
-            opacity: 0;
-        }
-
-        .hamburger-btn.active span:nth-child(3) {
-            transform: rotate(-45deg) translateY(-12px);
-        }
-
-        .menu-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(2, 20, 16, 0.95);
-            z-index: 9998;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .menu-overlay.show {
-            display: flex !important;
-        }
-
-        .menu-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            text-align: center;
-        }
-
-        .menu-list li {
-            margin: 20px 0;
-        }
-
-        .menu-list a {
-            color: #00ff9d;
-            text-decoration: none;
-            font-size: 24px;
-            font-weight: 600;
-            padding: 10px 30px;
-            display: inline-block;
-            border-radius: 50px;
-            text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
-            transition: 0.3s;
-        }
-
-        .menu-list a:hover {
-            color: #ffffff;
-            background: rgba(0, 255, 157, 0.12);
-            text-shadow: 0 0 16px rgba(0, 255, 157, 0.8);
-        }
-
-        .menu-list li:last-child a {
-            color: #00ff9d;
-        }
-
-        /* Main content alignment */
-        main {
-            padding: 0;
-            margin: 0;
-            width: 100%;
-        }
-
-        /* Desktop: Hide hamburger, show vertical navbar */
-        @media (min-width: 769px) {
-            .hamburger-btn {
-                display: none !important;
-            }
-
-            .menu-overlay:not(.show) {
-                display: none !important;
-            }
-        }
-
-        /* Mobile: Show hamburger, hide vertical navbar if it exists */
-        @media screen and (max-width: 768px) {
-            .hamburger-btn {
-                display: flex !important;
-                width: 45px;
-                height: 45px;
-                top: 20px;
-                right: 20px;
-            }
-
-            .menu-list a {
-                font-size: 20px;
-            }
-
-            /* Hide vertical navbar on mobile */
-            .gooey-navbar,
-            .navbar {
-                display: none !important;
-            }
-
-            /* Hide auth buttons on mobile */
-            .auth-buttons-top {
-                display: none !important;
-                visibility: hidden !important;
-            }
-        }
+        main { padding: 0; margin: 0; width: 100%; }
+        html, body { overflow-x: hidden; } /* nothing may push the page sideways on mobile */
+        /* Padding counted inside widths: blocks with padding + width:100% no longer overflow on mobile. */
+        *, *::before, *::after { box-sizing: border-box; }
     </style>
 
     {% endblock %}
 
-    <script>
-        // Hamburger Menu Handler
-        function initHamburgerMenu() {
-            const hamburger = document.getElementById('hamburger-menu');
-            const menuOverlay = document.getElementById('menu-overlay');
-            const menuLinks = document.querySelectorAll('.menu-list a');
-
-            if (hamburger && menuOverlay) {
-                // Toggle menu on hamburger click
-                hamburger.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    hamburger.classList.toggle('active');
-                    menuOverlay.classList.toggle('show');
-                });
-
-                // Close menu on link click
-                menuLinks.forEach(link => {
-                    link.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        hamburger.classList.remove('active');
-                        menuOverlay.classList.remove('show');
-                        // Navigate after closing menu
-                        const href = this.getAttribute('href');
-                        if (href) {
-                            setTimeout(() => {
-                                window.location.href = href;
-                            }, 100);
-                        }
-                    });
-                });
-
-                // Close menu on overlay click (outside menu)
-                menuOverlay.addEventListener('click', function(e) {
-                    if (e.target === this) {
-                        hamburger.classList.remove('active');
-                        menuOverlay.classList.remove('show');
-                    }
-                });
-            }
-        }
-
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initHamburgerMenu);
-        } else {
-            initHamburgerMenu();
-        }
-    </script>
 
     <script>
     // Hide navbar, circular-nav, and footer on ALL admin pages

@@ -1,0 +1,157 @@
+{# Fond tunnel néon 3D + carte en verre, partagé par la connexion et l'inscription. #}
+<canvas class="auth3d-bg" data-sirius-tunnel aria-hidden="true"></canvas>
+
+<style>
+    body { background: #020a07; }
+
+    .auth3d-bg {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+        z-index: 0;
+        background: radial-gradient(ellipse at center, #06231a 0%, #020a07 70%);
+    }
+
+    .auth3d {
+        position: relative;
+        z-index: 1;
+        min-height: 100vh;
+        min-height: 100svh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 110px 16px 40px;
+        box-sizing: border-box;
+    }
+
+    .auth3d-card {
+        width: 100%;
+        max-width: 420px;
+        box-sizing: border-box;
+        padding: 40px 34px 32px;
+        border-radius: 22px;
+        background: rgba(4, 22, 16, 0.62);
+        border: 1px solid rgba(45, 255, 79, 0.28);
+        backdrop-filter: blur(14px) saturate(1.2);
+        -webkit-backdrop-filter: blur(14px) saturate(1.2);
+        box-shadow: 0 0 40px rgba(45, 255, 79, 0.12), 0 30px 80px rgba(0, 0, 0, 0.55),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        color: #eafff0;
+        text-align: center;
+        animation: auth3dIn 0.7s cubic-bezier(.2, .8, .2, 1) both;
+    }
+
+    @keyframes auth3dIn {
+        from { opacity: 0; transform: translateY(24px) scale(0.97); }
+        to   { opacity: 1; transform: none; }
+    }
+
+    .auth3d-title {
+        margin: 0 0 6px;
+        font-size: 30px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #2dff4f;
+        text-shadow: 0 0 12px rgba(45, 255, 79, 0.7), 0 0 30px rgba(45, 255, 79, 0.35);
+    }
+
+    .auth3d-title .is-gold {
+        color: #ffd21f;
+        text-shadow: 0 0 12px rgba(255, 210, 31, 0.7), 0 0 30px rgba(255, 210, 31, 0.35);
+    }
+
+    .auth3d-sub {
+        margin: 0 0 28px;
+        font-size: 13px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: rgba(234, 255, 240, 0.7);
+    }
+
+    .auth3d-field { text-align: left; margin-bottom: 18px; }
+
+    .auth3d-field label,
+    .auth3d-field .form-label {
+        display: block;
+        margin-bottom: 7px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #2dff4f;
+    }
+
+    .auth3d-field input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 13px 15px;
+        border-radius: 11px;
+        border: 1px solid rgba(45, 255, 79, 0.22);
+        background: rgba(0, 0, 0, 0.35);
+        color: #ffffff;
+        font-size: 16px; /* 16px: iOS does not zoom on focus */
+        outline: none;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .auth3d-field input::placeholder { color: rgba(234, 255, 240, 0.35); }
+
+    .auth3d-field input:focus {
+        border-color: #2dff4f;
+        box-shadow: 0 0 0 3px rgba(45, 255, 79, 0.18), 0 0 18px rgba(45, 255, 79, 0.25);
+    }
+
+    .auth3d-field ul { margin: 6px 0 0; padding: 0; list-style: none; color: #ff8a8a; font-size: 13px; }
+
+    .auth3d-forgot { text-align: right; margin-top: 8px; font-size: 13px; }
+
+    .auth3d-btn {
+        width: 100%;
+        margin-top: 8px;
+        padding: 14px;
+        border: 0;
+        border-radius: 12px;
+        cursor: pointer;
+        font-size: 15px;
+        font-weight: 800;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: #021208;
+        background: linear-gradient(90deg, #2dff4f 0%, #ffd21f 100%);
+        box-shadow: 0 0 22px rgba(45, 255, 79, 0.35), 0 0 40px rgba(255, 210, 31, 0.15);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .auth3d-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 30px rgba(45, 255, 79, 0.55), 0 0 60px rgba(255, 210, 31, 0.25);
+    }
+
+    .auth3d-foot { margin: 22px 0 0; font-size: 14px; color: rgba(234, 255, 240, 0.7); }
+
+    .auth3d a { color: #ffd21f; font-weight: 700; text-decoration: none; }
+    .auth3d a:hover { text-shadow: 0 0 10px rgba(255, 210, 31, 0.6); }
+
+    .auth3d-alert {
+        margin: 0 0 18px;
+        padding: 12px 14px;
+        border-radius: 10px;
+        font-size: 14px;
+        text-align: left;
+    }
+    .auth3d-alert--error { background: rgba(255, 60, 60, 0.12); border: 1px solid rgba(255, 90, 90, 0.4); color: #ffb3b3; }
+    .auth3d-alert--success { background: rgba(45, 255, 79, 0.1); border: 1px solid rgba(45, 255, 79, 0.4); color: #bfffcc; }
+
+    /* Hide the site footer and the old circular menu on these full-screen pages. */
+    body:has(.auth3d) footer,
+    body:has(.auth3d) .circular-nav-container { display: none !important; }
+
+    @media (max-width: 480px) {
+        .auth3d { padding-top: 96px; }
+        .auth3d-card { padding: 30px 20px 26px; border-radius: 18px; }
+        .auth3d-title { font-size: 24px; }
+    }
+</style>

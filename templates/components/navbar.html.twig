@@ -1,124 +1,261 @@
-{# Simple standard navbar — replaces the old circular navigation wheel #}
-<nav class="site-navbar" id="siteNavbar">
-    <a href="{{ path('app_home') }}" class="site-navbar__brand" aria-label="Sirius-Solar, accueil">
-        <span class="site-navbar__logo3d" data-sirius-logo3d="compact"></span>
+{# Navbar 3D : logo néon à gauche, menu burger à droite.
+   Au clic, la page bascule en 3D vers la gauche et le menu apparaît à droite. #}
+{% set home = path('app_home') %}
+<header class="nav3d" id="siteNavbar">
+    <a href="{{ home }}" class="nav3d__brand" aria-label="Sirius-Solar, accueil">
+        <span class="nav3d__logo" data-sirius-logo3d="compact"></span>
     </a>
 
-    <ul class="site-navbar__links">
-        <li><a href="{{ path('app_home') }}">Accueil</a></li>
-        <li><a href="#processus" onclick="window.runProcessusScramble && window.runProcessusScramble()">Processus</a></li>
-        <li><a href="#services" onclick="window.runServicesScramble && window.runServicesScramble()">Services</a></li>
-        <li><a href="#avantages" onclick="window.runAvantagesScramble && window.runAvantagesScramble()">Avantages</a></li>
-        <li><a href="#contact" onclick="window.runContactScramble && window.runContactScramble()">Contact</a></li>
-        <li><a href="/about">À propos</a></li>
-        <li><a href="/blog">Blog</a></li>
+    <div class="nav3d__right">
+        {% if app.user %}
+            <a href="{{ path('app_logout') }}" class="nav3d__pill">Déconnexion</a>
+        {% else %}
+            <a href="{{ path('app_login') }}" class="nav3d__pill">Connexion</a>
+            <a href="{{ path('app_register') }}" class="nav3d__pill nav3d__pill--gold">Inscription</a>
+        {% endif %}
+        <button type="button" class="nav3d__burger" id="nav3dBurger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav3dMenu">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</header>
+
+<div class="nav3d-ghost nav3d-ghost--1" aria-hidden="true"></div>
+<div class="nav3d-ghost nav3d-ghost--2" aria-hidden="true"></div>
+<div class="nav3d-catch" id="nav3dCatch" aria-hidden="true"></div>
+
+<nav class="nav3d-menu" id="nav3dMenu" aria-label="Menu principal">
+    <ul>
+        <li><a href="{{ home }}"><span>01</span>Accueil</a></li>
+        <li><a href="{{ home }}#processus"><span>02</span>Processus</a></li>
+        <li><a href="{{ home }}#services"><span>03</span>Services</a></li>
+        <li><a href="{{ home }}#avantages"><span>04</span>Avantages</a></li>
+        <li><a href="/devis"><span>05</span>Devis</a></li>
+        <li><a href="{{ home }}#contact"><span>06</span>Contact</a></li>
+        <li><a href="/about"><span>07</span>À propos</a></li>
+        <li><a href="/blog"><span>08</span>Blog</a></li>
     </ul>
+    <div class="nav3d-menu__auth">
+        {% if app.user %}
+            <a href="{{ path('app_logout') }}">Déconnexion</a>
+        {% else %}
+            <a href="{{ path('app_login') }}">Connexion</a>
+            <a href="{{ path('app_register') }}" class="is-gold">Inscription</a>
+        {% endif %}
+    </div>
 </nav>
 
 <style>
-    .site-navbar {
+    .nav3d {
         position: fixed;
         top: 0;
         left: 0;
         right: 0;
-        z-index: 900;
+        z-index: 1000;
         display: flex;
         align-items: center;
-        gap: 36px;
-        padding: 8px 220px 8px 24px;
-        /* Fond sombre et flouté : le texte reste lisible sur la photo claire du haut. */
-        background: rgba(3, 18, 14, 0.82);
+        justify-content: space-between;
+        gap: 16px;
+        padding: 6px 20px;
+        background: rgba(3, 18, 14, 0.8);
         backdrop-filter: blur(10px) saturate(1.2);
         -webkit-backdrop-filter: blur(10px) saturate(1.2);
-        border-bottom: 1px solid rgba(45, 255, 79, 0.25);
+        border-bottom: 1px solid rgba(45, 255, 79, 0.22);
         box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+        box-sizing: border-box;
+        transition: background 0.4s ease;
     }
+    body.nav3d-open .nav3d { background: transparent; border-color: transparent; box-shadow: none; backdrop-filter: none; }
 
-    .site-navbar__logo3d {
-        display: block;
-        width: 150px;
-        height: 62px;
-    }
-    .site-navbar__logo3d canvas { display: block; width: 100%; height: 100%; }
+    .nav3d__brand { display: block; line-height: 0; }
+    .nav3d__logo { display: block; width: 150px; height: 62px; }
+    .nav3d__logo canvas { display: block; width: 100%; height: 100%; }
 
-    .site-navbar__brand {
-        display: flex;
-        align-items: center;
-        gap: 10px;
+    .nav3d__right { display: flex; align-items: center; gap: 12px; }
+
+    .nav3d__pill {
+        padding: 9px 16px;
+        border-radius: 999px;
+        border: 1px solid rgba(45, 255, 79, 0.45);
+        color: #eafff0;
+        font: 600 14px/1 system-ui, sans-serif;
         text-decoration: none;
-        font-weight: 700;
-        font-size: 18px;
-        color: #00ff9d;
-        letter-spacing: 0.01em;
         white-space: nowrap;
-        font-family: 'Space Grotesk', sans-serif;
-        text-shadow: 0 0 12px rgba(0, 255, 157, 0.4);
+        transition: box-shadow 0.2s ease, color 0.2s ease;
     }
+    .nav3d__pill:hover { color: #2dff4f; box-shadow: 0 0 16px rgba(45, 255, 79, 0.35); }
+    .nav3d__pill--gold { border-color: rgba(255, 210, 31, 0.6); }
+    .nav3d__pill--gold:hover { color: #ffd21f; box-shadow: 0 0 16px rgba(255, 210, 31, 0.35); }
 
-    .site-navbar__brand-icon {
-        width: 32px;
-        height: 32px;
-        border-radius: 8px;
-        object-fit: cover;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-    }
-
-    .site-navbar__brand-accent {
-        color: #00ff9d;
-    }
-
-    .site-navbar__links {
-        display: flex;
-        align-items: center;
-        gap: 26px;
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        flex-wrap: wrap;
-    }
-
-    .site-navbar__links a {
+    .nav3d__burger {
         position: relative;
+        width: 46px;
+        height: 46px;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        cursor: pointer;
+    }
+    .nav3d__burger span {
+        position: absolute;
+        left: 9px;
+        right: 9px;
+        height: 2px;
+        border-radius: 2px;
+        background: #2dff4f;
+        box-shadow: 0 0 8px rgba(45, 255, 79, 0.8);
+        transition: transform 0.5s cubic-bezier(.7, 0, .3, 1), opacity 0.3s ease, top 0.5s cubic-bezier(.7, 0, .3, 1);
+    }
+    .nav3d__burger span:nth-child(1) { top: 15px; }
+    .nav3d__burger span:nth-child(2) { top: 22px; right: 17px; }
+    .nav3d__burger span:nth-child(3) { top: 29px; }
+    body.nav3d-open .nav3d__burger span:nth-child(1) { top: 22px; transform: rotate(45deg); }
+    body.nav3d-open .nav3d__burger span:nth-child(2) { opacity: 0; transform: translateX(10px); }
+    body.nav3d-open .nav3d__burger span:nth-child(3) { top: 22px; transform: rotate(-45deg); }
+
+    /* The page itself: it tilts back in 3D when the menu opens. */
+    .nav3d-page {
+        position: relative;
+        z-index: 2;
+        transform-origin: 50% var(--nav3d-origin, 50vh);
+        transition: transform 0.7s cubic-bezier(.7, 0, .3, 1), border-radius 0.7s ease, box-shadow 0.7s ease;
+    }
+    body.nav3d-open { overflow: hidden; background: radial-gradient(ellipse at 70% 50%, #06231a 0%, #020a07 70%) fixed; }
+    body.nav3d-open .nav3d-page {
+        transform: perspective(1500px) rotateY(20deg) translateX(-34%) scale(0.62);
+        border-radius: 22px;
+        overflow: hidden;
+        pointer-events: none;
+        box-shadow: 0 0 0 1px rgba(45, 255, 79, 0.35), 0 0 60px rgba(45, 255, 79, 0.25);
+    }
+
+    /* Two faint panels behind the page for depth. */
+    .nav3d-ghost {
+        position: fixed;
+        inset: 0;
+        z-index: 1;
+        border-radius: 22px;
+        pointer-events: none;
+        opacity: 0;
+        transform: none;
+        transition: transform 0.7s cubic-bezier(.7, 0, .3, 1), opacity 0.5s ease;
+    }
+    .nav3d-ghost--1 { background: rgba(45, 255, 79, 0.08); border: 1px solid rgba(45, 255, 79, 0.2); }
+    .nav3d-ghost--2 { background: rgba(255, 210, 31, 0.05); border: 1px solid rgba(255, 210, 31, 0.16); }
+    body.nav3d-open .nav3d-ghost--1 { opacity: 1; transform: perspective(1500px) rotateY(20deg) translateX(-42%) scale(0.56); }
+    body.nav3d-open .nav3d-ghost--2 { opacity: 1; transform: perspective(1500px) rotateY(20deg) translateX(-50%) scale(0.5); transition-delay: 0.05s; }
+
+    /* Click on the tilted page to close. */
+    .nav3d-catch { position: fixed; inset: 0 45% 0 0; z-index: 3; display: none; cursor: pointer; }
+    body.nav3d-open .nav3d-catch { display: block; }
+
+    .nav3d-menu {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 999;
+        width: min(420px, 45vw);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 90px 40px 40px 0;
+        box-sizing: border-box;
+        pointer-events: none;
+        visibility: hidden;
+        transition: visibility 0s linear 0.7s;
+    }
+    body.nav3d-open .nav3d-menu { pointer-events: auto; visibility: visible; transition-delay: 0s; }
+
+    .nav3d-menu ul { list-style: none; margin: 0; padding: 0; }
+    .nav3d-menu li {
+        opacity: 0;
+        transform: translateX(60px);
+        transition: transform 0.5s cubic-bezier(.2, .8, .2, 1), opacity 0.4s ease;
+    }
+    body.nav3d-open .nav3d-menu li { opacity: 1; transform: none; }
+    {% for i in 1..8 %}
+    body.nav3d-open .nav3d-menu li:nth-child({{ i }}) { transition-delay: {{ 0.25 + i * 0.05 }}s; }
+    {% endfor %}
+
+    .nav3d-menu a {
+        display: flex;
+        align-items: baseline;
+        gap: 14px;
+        padding: 7px 0;
         color: #eafff0;
         text-decoration: none;
-        font-size: 14px;
-        font-weight: 500;
-        padding: 4px 0;
-        transition: color 0.2s ease, text-shadow 0.2s ease;
+        font: 700 clamp(22px, 3.2vw, 34px)/1.15 system-ui, sans-serif;
+        letter-spacing: 0.02em;
+        transition: color 0.2s ease, text-shadow 0.2s ease, transform 0.2s ease;
+    }
+    .nav3d-menu a span { font-size: 12px; font-weight: 600; color: #ffd21f; letter-spacing: 0.1em; }
+    .nav3d-menu a:hover { color: #2dff4f; text-shadow: 0 0 14px rgba(45, 255, 79, 0.7); transform: translateX(-6px); }
+
+    .nav3d-menu__auth {
+        display: flex;
+        gap: 18px;
+        margin-top: 28px;
+        opacity: 0;
+        transition: opacity 0.4s ease 0.7s;
+    }
+    body.nav3d-open .nav3d-menu__auth { opacity: 1; }
+    .nav3d-menu__auth a { font-size: 16px; color: #2dff4f; }
+    .nav3d-menu__auth a.is-gold { color: #ffd21f; }
+
+    @media (max-width: 700px) {
+        .nav3d { padding: 4px 10px; }
+        .nav3d__logo { width: 120px; height: 50px; }
+        .nav3d__pill { display: none; }
+        body.nav3d-open .nav3d-page { transform: perspective(1200px) rotateY(24deg) translateX(-62%) scale(0.6); }
+        body.nav3d-open .nav3d-ghost--1 { transform: perspective(1200px) rotateY(24deg) translateX(-70%) scale(0.54); }
+        body.nav3d-open .nav3d-ghost--2 { transform: perspective(1200px) rotateY(24deg) translateX(-78%) scale(0.48); }
+        .nav3d-catch { right: 62%; }
+        .nav3d-menu { width: 62vw; padding-right: 20px; }
+        .nav3d-menu a { font-size: 22px; }
     }
 
-    .site-navbar__links a::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        bottom: -2px;
-        width: 0;
-        height: 1px;
-        background: #2dff4f;
-        transition: width 0.2s ease;
-    }
-
-    .site-navbar__links a:hover {
-        color: #2dff4f;
-        text-shadow: 0 0 10px rgba(45, 255, 79, 0.6);
-    }
-
-    .site-navbar__links a:hover::after {
-        width: 100%;
-    }
-
-    @media (max-width: 1100px) {
-        .site-navbar {
-            padding-right: 32px;
-        }
-        .site-navbar__links {
-            gap: 18px;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .site-navbar {
-            display: none;
-        }
+    @media (prefers-reduced-motion: reduce) {
+        .nav3d-page, .nav3d-ghost, .nav3d-menu li { transition-duration: 0.01s !important; transition-delay: 0s !important; }
     }
 </style>
+
+<script>
+(function () {
+    var body = document.body;
+    var burger = document.getElementById('nav3dBurger');
+    var catcher = document.getElementById('nav3dCatch');
+    var menu = document.getElementById('nav3dMenu');
+    var page = document.querySelector('.nav3d-page');
+    if (!burger || !menu) return;
+
+    function setOpen(open) {
+        if (open && page) {
+            // Tilt around the middle of what is on screen, not the middle of the whole page.
+            page.style.setProperty('--nav3d-origin', (window.scrollY + window.innerHeight / 2) + 'px');
+        }
+        body.classList.toggle('nav3d-open', open);
+        burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+        burger.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
+    }
+
+    burger.addEventListener('click', function () { setOpen(!body.classList.contains('nav3d-open')); });
+    catcher.addEventListener('click', function () { setOpen(false); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
+
+    // Links: close the menu first, then go (or scroll, for an anchor on this page).
+    menu.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', function (e) {
+            var url = new URL(a.href, location.href);
+            e.preventDefault();
+            setOpen(false);
+            setTimeout(function () {
+                if (url.pathname === location.pathname && url.hash) {
+                    var target = document.querySelector(url.hash);
+                    if (target) { target.scrollIntoView({ behavior: 'smooth' }); history.replaceState(null, '', url.hash); return; }
+                }
+                location.href = url.href;
+            }, 650);
+        });
+    });
+})();
+</script>
