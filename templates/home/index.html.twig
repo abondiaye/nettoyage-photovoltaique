@@ -1576,6 +1576,21 @@
         background-size: cover;
         background-position: center;
     }
+    /* Gouttes de pluie animées sur la face avant (même vidéo que le haut du site). */
+    .services-section .layer:first-child { overflow: hidden; }
+    .services-section .layer-rain {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.55;
+        mix-blend-mode: screen;
+        pointer-events: none;
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .services-section .layer-rain { display: none; }
+    }
     .services-section .layer:last-child { box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.6) inset, 0 12px 30px rgba(0, 0, 0, 0.55); }
     .services-section .card-icon {
         width: 76px;
@@ -1782,7 +1797,7 @@
             <h3>Nettoyage Premium</h3>
             <p>Eau osmosée haute pression, résultats garantis et performance maximale</p>
             <a class="btn-learn" href="/devis">En savoir plus</a>
-            <div class="layers" aria-hidden="true"><div class="layer" style="--i: 0"></div><div class="layer" style="--i: 1"></div><div class="layer" style="--i: 2"></div><div class="layer" style="--i: 3"></div><div class="layer" style="--i: 4"></div><div class="layer" style="--i: 5"></div><div class="layer" style="--i: 6"></div><div class="layer" style="--i: 7"></div><div class="layer" style="--i: 8"></div><div class="layer" style="--i: 9"></div></div>
+            <div class="layers" aria-hidden="true"><div class="layer" style="--i: 0"><video class="layer-rain" autoplay muted loop playsinline preload="auto" aria-hidden="true"><source src="{{ asset('media/rain.mp4') }}?v=2" type="video/mp4"></video></div><div class="layer" style="--i: 1"></div><div class="layer" style="--i: 2"></div><div class="layer" style="--i: 3"></div><div class="layer" style="--i: 4"></div><div class="layer" style="--i: 5"></div><div class="layer" style="--i: 6"></div><div class="layer" style="--i: 7"></div><div class="layer" style="--i: 8"></div><div class="layer" style="--i: 9"></div></div>
         </div>
         </div>
 
@@ -1792,7 +1807,7 @@
             <h3>Inspection Complète</h3>
             <p>Diagnostic professionnel avec rapport détaillé de vos installations</p>
             <a class="btn-learn" href="/devis">En savoir plus</a>
-            <div class="layers" aria-hidden="true"><div class="layer" style="--i: 0"></div><div class="layer" style="--i: 1"></div><div class="layer" style="--i: 2"></div><div class="layer" style="--i: 3"></div><div class="layer" style="--i: 4"></div><div class="layer" style="--i: 5"></div><div class="layer" style="--i: 6"></div><div class="layer" style="--i: 7"></div><div class="layer" style="--i: 8"></div><div class="layer" style="--i: 9"></div></div>
+            <div class="layers" aria-hidden="true"><div class="layer" style="--i: 0"><video class="layer-rain" autoplay muted loop playsinline preload="auto" aria-hidden="true"><source src="{{ asset('media/rain.mp4') }}?v=2" type="video/mp4"></video></div><div class="layer" style="--i: 1"></div><div class="layer" style="--i: 2"></div><div class="layer" style="--i: 3"></div><div class="layer" style="--i: 4"></div><div class="layer" style="--i: 5"></div><div class="layer" style="--i: 6"></div><div class="layer" style="--i: 7"></div><div class="layer" style="--i: 8"></div><div class="layer" style="--i: 9"></div></div>
         </div>
         </div>
 
@@ -1802,7 +1817,7 @@
             <h3>Maintenance Régulière</h3>
             <p>Contrats d'entretien personnalisés pour une performance durable</p>
             <a class="btn-learn" href="/devis">En savoir plus</a>
-            <div class="layers" aria-hidden="true"><div class="layer" style="--i: 0"></div><div class="layer" style="--i: 1"></div><div class="layer" style="--i: 2"></div><div class="layer" style="--i: 3"></div><div class="layer" style="--i: 4"></div><div class="layer" style="--i: 5"></div><div class="layer" style="--i: 6"></div><div class="layer" style="--i: 7"></div><div class="layer" style="--i: 8"></div><div class="layer" style="--i: 9"></div></div>
+            <div class="layers" aria-hidden="true"><div class="layer" style="--i: 0"><video class="layer-rain" autoplay muted loop playsinline preload="auto" aria-hidden="true"><source src="{{ asset('media/rain.mp4') }}?v=2" type="video/mp4"></video></div><div class="layer" style="--i: 1"></div><div class="layer" style="--i: 2"></div><div class="layer" style="--i: 3"></div><div class="layer" style="--i: 4"></div><div class="layer" style="--i: 5"></div><div class="layer" style="--i: 6"></div><div class="layer" style="--i: 7"></div><div class="layer" style="--i: 8"></div><div class="layer" style="--i: 9"></div></div>
         </div>
         </div>
     </div>
