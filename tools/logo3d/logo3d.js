@@ -14,7 +14,7 @@ import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
 import fontData from './exo2.json';
 
 const MINT = new Color('#00a86b');
-const MINT_DARK = new Color('#04462f');
+const MINT_DARK = new Color('#0a3a16');
 const GOLD = new Color('#f2b233');
 
 const font = new FontLoader().parse(fontData);
@@ -176,9 +176,9 @@ export function mountSiriusLogo(el) {
 
   const mats = {
     // Neon: the colour comes from the emission, the tubes read as lit glass.
-    mint: new MeshStandardMaterial({ color: new Color('#00a868'), emissive: new Color('#00f096'), emissiveIntensity: 0.7, roughness: 0.3, metalness: 0, envMapIntensity: 0.35 }),
+    mint: new MeshStandardMaterial({ color: new Color('#22c43f'), emissive: new Color('#2dff4f'), emissiveIntensity: 0.7, roughness: 0.3, metalness: 0, envMapIntensity: 0.35 }),
     dark: new MeshPhysicalMaterial({ color: MINT_DARK, metalness: 0.4, roughness: 0.45, clearcoat: 0.6, envMapIntensity: 0.5 }),
-    white: new MeshStandardMaterial({ color: 0xbfffe6, emissive: 0xd9fff0, emissiveIntensity: 0.7, roughness: 0.3 }),
+    white: new MeshStandardMaterial({ color: 0xb8ffc4, emissive: 0xd6ffdc, emissiveIntensity: 0.7, roughness: 0.3 }),
     gold: new MeshStandardMaterial({ color: new Color('#c98600'), emissive: new Color('#ffab00'), emissiveIntensity: 0.75, roughness: 0.3, metalness: 0, envMapIntensity: 0.35 }),
   };
 
@@ -229,7 +229,7 @@ export function mountSiriusLogo(el) {
   const sirius = text('SIRIUS', 1.5, 0.42, mats.mint);
   const siriusGroup = new Group();
   sirius.mesh.position.z = -0.21;
-  siriusGroup.add(sirius.mesh, neonHalo('SIRIUS', 1.5, new Color('#00ffa6')));
+  siriusGroup.add(sirius.mesh, neonHalo('SIRIUS', 1.5, new Color('#2bff4d')));
   siriusGroup.position.set(left - sirius.box.min.x, 0.26 - sirius.box.min.y, 0);
   logo.add(siriusGroup);
 
@@ -252,7 +252,7 @@ export function mountSiriusLogo(el) {
   logo.add(starGlow);
   // A mint glow behind each brush.
   const brushGlows = [top, bottom].map((r) => {
-    const gl = glowSprite(new Color('#00ffa6'), 2.9);
+    const gl = glowSprite(new Color('#2bff4d'), 2.9);
     gl.material.opacity = 0.45;
     gl.position.copy(r.position).add(new Vector3(0, 0, -0.5));
     logo.add(gl);
