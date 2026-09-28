@@ -3,7 +3,14 @@ framework:
     secret: '%env(APP_SECRET)%'
 
     # Note that the session will be started ONLY if you read or write from it.
-    session: true
+    # Sessions are stored inside the project (var/sessions/<env>) rather than in the PHP
+    # default directory: on the Infomaniak hosting the default one did not keep them,
+    # so the user was logged out on the very next page after logging in.
+    session:
+        handler_id: session.handler.native_file
+        save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
+        cookie_secure: auto
+        cookie_samesite: lax
 
     #esi: true
     #fragments: true
