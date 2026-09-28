@@ -740,7 +740,7 @@
                             const element = document.querySelector(hash);
                             if (element) {
                                 // Scroll to the element
-                                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                window.siriusScrollTo(element);
                                 // Update URL without full page reload
                                 window.history.pushState(null, null, hash);
                             }
@@ -788,5 +788,29 @@
     }
     </script>
 
+<script>
+    // Scroll to a section so that its title sits just under the fixed navbar
+    // (sections have a lot of padding on top: aiming at the section itself lands too low).
+    window.siriusScrollTo = function (el, smooth) {
+        if (!el) return;
+        var title = el.matches('h1, h2, h3') ? el : (el.querySelector('h1, h2, .contact-scramble-heading') || el);
+        var nav = document.getElementById('siteNavbar');
+        var navH = nav ? nav.getBoundingClientRect().height : 70;
+        var behavior = smooth === false ? 'auto' : 'smooth';
+        // The page scrolls inside <body> (overflow-x: hidden on html and body), not the window.
+        var b = document.body;
+        if (b.scrollHeight > b.clientHeight + 5 && /(auto|scroll)/.test(getComputedStyle(b).overflowY)) {
+            b.scrollTo({ top: Math.max(0, title.getBoundingClientRect().top + b.scrollTop - navH - 24), behavior: behavior });
+        } else {
+            window.scrollTo({ top: Math.max(0, title.getBoundingClientRect().top + window.pageYOffset - navH - 24), behavior: behavior });
+        }
+    };
+    // Arriving from another page with #section in the address.
+    window.addEventListener('load', function () {
+        if (location.hash.length > 1) {
+            try { var t = document.querySelector(location.hash); if (t) setTimeout(function () { window.siriusScrollTo(t, false); }, 60); } catch (e) {}
+        }
+    });
+</script>
 </body>
 </html>

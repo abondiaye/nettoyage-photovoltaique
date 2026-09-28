@@ -2024,6 +2024,77 @@
 </style>
 
 <!-- Hero Section -->
+<style>
+    /* ===== Lisibilité des titres : cadre néon sombre, lisible sur n'importe quel fond ===== */
+    .processus-title,
+    .services-section .section-title,
+    .advantages-section .section-title,
+    .cta-title,
+    .contact-scramble-heading {
+        width: fit-content;
+        max-width: calc(100% - 16px);
+        margin-left: auto !important;
+        margin-right: auto !important;
+        padding: 14px 30px;
+        border: 2px solid rgba(0, 255, 157, 0.75);
+        border-radius: 18px;
+        background: rgba(3, 18, 14, 0.85) !important;
+        -webkit-background-clip: padding-box !important;
+        background-clip: padding-box !important;
+        -webkit-text-fill-color: currentColor !important;
+        color: #f2fff7;
+        filter: none !important;
+        box-shadow: 0 0 18px rgba(0, 255, 157, 0.35), inset 0 0 14px rgba(0, 255, 157, 0.12), 0 12px 30px rgba(0, 0, 0, 0.45);
+        text-align: center;
+        line-height: 1.2;
+        letter-spacing: 0;
+    }
+    .cta-title { text-shadow: 0 0 12px rgba(0, 255, 157, 0.4); }
+    .contact-scramble-heading { margin-bottom: 18px; }
+    .processus-title .scramble-green,
+    .section-title .scramble-green,
+    .contact-scramble-heading .scramble-green {
+        -webkit-text-fill-color: currentColor;
+        color: #3dffa8;
+        font-size: clamp(26px, 6.6vw, 40px);
+        text-shadow: 0 0 10px rgba(0, 255, 157, 0.55);
+    }
+    /* Words never break in the middle (the scramble puts each letter in its own box). */
+    .scramble-green .word { display: inline-block; white-space: nowrap; }
+    .scramble-green .char.sp { display: inline; }
+    .contact-scramble-heading { flex-direction: row !important; flex-wrap: nowrap !important; }
+
+    /* Dark veil on the photos behind the sections, so text stays readable. */
+    .processus-section {
+        background-image: linear-gradient(180deg, rgba(3, 18, 14, 0.8) 0%, rgba(3, 18, 14, 0.88) 100%), url('/images/lav1.jpeg') !important;
+    }
+    .services-section.has-photo-bg {
+        background: linear-gradient(180deg, rgba(3, 18, 14, 0.55) 0%, rgba(3, 18, 14, 0.75) 100%), url('/images/lav1.jpeg') center / cover no-repeat fixed;
+    }
+    .advantages-section.has-photo-bg {
+        background: linear-gradient(180deg, rgba(3, 18, 14, 0.84) 0%, rgba(3, 18, 14, 0.92) 100%), url('/images/img4.png') center / cover no-repeat fixed;
+    }
+    @media (max-width: 1024px) {
+        /* "fixed" backgrounds are broken on phones (zoomed or blank on iPhone). */
+        .processus-section, .services-section.has-photo-bg, .advantages-section.has-photo-bg { background-attachment: scroll !important; }
+    }
+
+    /* Hero: starts below the navbar instead of underneath it. */
+    .hero-container {
+        height: auto !important;
+        min-height: 100vh;
+        padding: 112px 20px 60px !important;
+        box-sizing: border-box;
+    }
+    @media (max-width: 768px) {
+        .hero-container { padding: 96px 12px 40px !important; }
+    }
+    @media (max-width: 768px) {
+        .processus-title, .services-section .section-title, .advantages-section .section-title, .cta-title, .contact-scramble-heading { padding: 12px 18px; border-radius: 14px; }
+        .cta-title { font-size: 26px !important; }
+    }
+</style>
+
 <section class="hero-container">
     <div class="hero-gradient-bg">
         <img src="{{ asset('images/panneaux-solaires-sous-la-pluie.jpg') }}" fetchpriority="high" alt="Panneaux solaires sous la pluie">
@@ -2163,7 +2234,7 @@
 </section>
 
 <!-- Services Section -->
-<section class="services-section" id="services" style="background-image: url('/images/lav1.jpeg') !important; background-size: cover !important; background-position: center !important; background-attachment: fixed !important; background-repeat: no-repeat !important;">
+<section class="services-section has-photo-bg" id="services">
     <h2 class="section-title"><span class="scramble-green" id="servicesScramble" data-text="Nos Services"></span></h2>
 
     <div class="services-grid">
@@ -2200,7 +2271,7 @@
 </section>
 
 <!-- Advantages Section -->
-<section class="advantages-section" id="avantages" style="background-image: url('/images/img4.png') !important; background-size: cover !important; background-position: center !important; background-attachment: fixed !important; background-repeat: no-repeat !important;">
+<section class="advantages-section has-photo-bg" id="avantages">
     <!-- Animation subtile en arrière-plan -->
     <video class="advantages-bg-video" autoplay muted loop playsinline>
         <source src="{{ asset('media/rain.mp4') }}?v=2" type="video/mp4">
@@ -2669,11 +2740,14 @@
                 };
             });
 
-            el.innerHTML = chars.map(function (c, i) {
-                return c.char === ' '
-                    ? '<span class="char">&nbsp;</span>'
+            // One box per word so a title only wraps between words.
+            var html = '<span class="word">';
+            chars.forEach(function (c, i) {
+                html += c.char === ' '
+                    ? '</span><span class="char sp"> </span><span class="word">'
                     : '<span class="char glitch" data-i="' + i + '">' + contactRand(CHARS) + '</span>';
-            }).join('');
+            });
+            el.innerHTML = html + '</span>';
 
             var spans = el.querySelectorAll('.char');
             var frame = 0;

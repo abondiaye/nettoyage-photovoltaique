@@ -256,7 +256,7 @@
             setTimeout(function () {
                 if (url.pathname === location.pathname && url.hash) {
                     var target = document.querySelector(url.hash);
-                    if (target) { target.scrollIntoView({ behavior: 'smooth' }); history.replaceState(null, '', url.hash); return; }
+                    if (target) { window.siriusScrollTo(target); history.replaceState(null, '', url.hash); return; }
                 }
                 location.href = url.href;
             }, 650);
