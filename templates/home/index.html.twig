@@ -1528,19 +1528,51 @@
         .footer-main > div { width: 100%; }
     }
 
-    /* ===== Cartes « Nos Services » : verre sombre + néon, texte bien lisible ===== */
+    /* ===== Cartes « Nos Services » : dalles 3D façon panneau photovoltaïque =====
+       10 couches empilées en profondeur donnent l'épaisseur ; la carte pivote au survol. */
+    .services-section .services-grid { gap: 48px; padding: 20px 10px 40px; }
+    .services-section .service-card-wrap { perspective: 50em; }
     .services-section .service-card {
-        background: linear-gradient(160deg, rgba(8, 40, 28, 0.88) 0%, rgba(3, 18, 14, 0.92) 100%);
-        border: 1px solid rgba(45, 255, 79, 0.45);
-        box-shadow: 0 0 24px rgba(45, 255, 79, 0.12), 0 18px 40px rgba(0, 0, 0, 0.45),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        --bi: repeating-linear-gradient(0deg, rgba(190, 220, 245, 0.22) 0 1px, transparent 1px 36px),
+              repeating-linear-gradient(90deg, rgba(190, 220, 245, 0.22) 0 1px, transparent 1px 36px),
+              linear-gradient(150deg, #2d6fa6 0%, #16436b 45%, #0b2641 100%);
+        background: none;
+        border: 0;
+        overflow: visible;
+        color: #fff;
+        transform: rotateY(22deg) rotateX(12deg);
+        transform-style: preserve-3d;
+        transition: transform 1s cubic-bezier(.2, .8, .2, 1);
+        animation: none;
+        box-shadow: none;
     }
-    .services-section .service-card::before { background: none; backdrop-filter: none; }
     .services-section .service-card:hover {
-        border-color: #2dff4f;
-        box-shadow: 0 0 34px rgba(45, 255, 79, 0.35), 0 24px 60px rgba(0, 0, 0, 0.5);
+        transform: rotateY(-22deg) rotateX(-12deg);
+        border: 0;
+        box-shadow: none;
         animation: none;
     }
+    .services-section .service-card::before { content: none; }
+    .services-section .service-card > .layers {
+        position: absolute;
+        inset: 0;
+        transform-style: preserve-3d;
+        z-index: -1;
+    }
+    .services-section .layer {
+        position: absolute;
+        inset: 0;
+        border-radius: 16px;
+        background-image: var(--bi);
+        transform: translateZ(calc(var(--i) * -4px));
+        box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.6) inset;
+    }
+    /* Front plate: aluminium frame + a sheen like glass in the sun. */
+    .services-section .layer:first-child {
+        border: 2px solid #c9d6e2;
+        background-image: linear-gradient(120deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0) 38%), var(--bi);
+    }
+    .services-section .layer:last-child { box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.6) inset, 0 12px 30px rgba(0, 0, 0, 0.55); }
     .services-section .card-icon {
         width: 76px;
         height: 76px;
@@ -1549,24 +1581,26 @@
         place-items: center;
         font-size: 38px;
         border-radius: 50%;
-        background: rgba(45, 255, 79, 0.08);
-        border: 1px solid rgba(45, 255, 79, 0.35);
-        box-shadow: 0 0 18px rgba(45, 255, 79, 0.25);
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(201, 214, 226, 0.6);
+        box-shadow: 0 0 18px rgba(120, 190, 255, 0.35);
     }
     .services-section .service-card h3 {
-        color: #2dff4f;
+        color: #ffffff;
         font-size: 23px;
-        text-shadow: 0 0 12px rgba(45, 255, 79, 0.45);
+        text-shadow: 0 2px 10px rgba(0, 20, 40, 0.8), 0 0 14px rgba(120, 190, 255, 0.5);
     }
     .services-section .service-card p {
-        color: rgba(234, 255, 240, 0.85);
+        color: #e3f1ff;
         font-size: 16px;
+        text-shadow: 0 1px 6px rgba(0, 20, 40, 0.9);
     }
     .services-section .btn-learn {
         display: inline-block;
         text-decoration: none;
         border: 1px solid #ffd21f;
         color: #ffd21f;
+        background: rgba(5, 20, 35, 0.55);
         border-radius: 999px;
         padding: 11px 22px;
         text-shadow: 0 0 8px rgba(255, 210, 31, 0.5);
@@ -1577,6 +1611,13 @@
         color: #021208;
         text-shadow: none;
         box-shadow: 0 0 24px rgba(255, 210, 31, 0.55);
+    }
+    @media (max-width: 768px) {
+        .services-section .service-card { transform: rotateY(12deg) rotateX(8deg); }
+        .services-section .service-card:hover { transform: rotateY(-12deg) rotateX(-8deg); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .services-section .service-card, .services-section .service-card:hover { transform: none; }
     }
     @keyframes logo3dFloat {
         0%, 100% { transform: translateY(0); }
@@ -1731,25 +1772,34 @@
     <h2 class="section-title"><span class="scramble-green" id="servicesScramble" data-text="Nos Services"></span></h2>
 
     <div class="services-grid">
+        <div class="service-card-wrap">
         <div class="service-card">
             <div class="card-icon">💧</div>
             <h3>Nettoyage Premium</h3>
             <p>Eau osmosée haute pression, résultats garantis et performance maximale</p>
             <a class="btn-learn" href="/devis">En savoir plus</a>
+            <div class="layers" aria-hidden="true"><div class="layer" style="--i: 0"></div><div class="layer" style="--i: 1"></div><div class="layer" style="--i: 2"></div><div class="layer" style="--i: 3"></div><div class="layer" style="--i: 4"></div><div class="layer" style="--i: 5"></div><div class="layer" style="--i: 6"></div><div class="layer" style="--i: 7"></div><div class="layer" style="--i: 8"></div><div class="layer" style="--i: 9"></div></div>
+        </div>
         </div>
 
+        <div class="service-card-wrap">
         <div class="service-card">
             <div class="card-icon">🔍</div>
             <h3>Inspection Complète</h3>
             <p>Diagnostic professionnel avec rapport détaillé de vos installations</p>
             <a class="btn-learn" href="/devis">En savoir plus</a>
+            <div class="layers" aria-hidden="true"><div class="layer" style="--i: 0"></div><div class="layer" style="--i: 1"></div><div class="layer" style="--i: 2"></div><div class="layer" style="--i: 3"></div><div class="layer" style="--i: 4"></div><div class="layer" style="--i: 5"></div><div class="layer" style="--i: 6"></div><div class="layer" style="--i: 7"></div><div class="layer" style="--i: 8"></div><div class="layer" style="--i: 9"></div></div>
+        </div>
         </div>
 
+        <div class="service-card-wrap">
         <div class="service-card">
             <div class="card-icon">⚡</div>
             <h3>Maintenance Régulière</h3>
             <p>Contrats d'entretien personnalisés pour une performance durable</p>
             <a class="btn-learn" href="/devis">En savoir plus</a>
+            <div class="layers" aria-hidden="true"><div class="layer" style="--i: 0"></div><div class="layer" style="--i: 1"></div><div class="layer" style="--i: 2"></div><div class="layer" style="--i: 3"></div><div class="layer" style="--i: 4"></div><div class="layer" style="--i: 5"></div><div class="layer" style="--i: 6"></div><div class="layer" style="--i: 7"></div><div class="layer" style="--i: 8"></div><div class="layer" style="--i: 9"></div></div>
+        </div>
         </div>
     </div>
 </section>
