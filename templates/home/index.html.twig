@@ -1533,9 +1533,8 @@
     .services-section .services-grid { gap: 48px; padding: 20px 10px 40px; }
     .services-section .service-card-wrap { perspective: 50em; }
     .services-section .service-card {
-        --bi: repeating-linear-gradient(0deg, rgba(190, 220, 245, 0.22) 0 1px, transparent 1px 36px),
-              repeating-linear-gradient(90deg, rgba(190, 220, 245, 0.22) 0 1px, transparent 1px 36px),
-              linear-gradient(150deg, #2d6fa6 0%, #16436b 45%, #0b2641 100%);
+        /* Tranche de la dalle : bleu nuit. La face avant reprend la photo du haut. */
+        --bi: linear-gradient(150deg, #1d4a70 0%, #0b2641 100%);
         background: none;
         border: 0;
         overflow: visible;
@@ -1570,7 +1569,12 @@
     /* Front plate: aluminium frame + a sheen like glass in the sun. */
     .services-section .layer:first-child {
         border: 2px solid #c9d6e2;
-        background-image: linear-gradient(120deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0) 38%), var(--bi);
+        background-image:
+            linear-gradient(120deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 38%),
+            linear-gradient(180deg, rgba(4, 16, 30, 0.35) 0%, rgba(4, 16, 30, 0.7) 100%),
+            url("{{ asset('images/panneaux-solaires-sous-la-pluie.jpg') }}");
+        background-size: cover;
+        background-position: center;
     }
     .services-section .layer:last-child { box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.6) inset, 0 12px 30px rgba(0, 0, 0, 0.55); }
     .services-section .card-icon {
