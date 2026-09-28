@@ -1499,6 +1499,37 @@
         .glitch-statusbar { font-size: 0.5rem; }
     }
 
+
+    /* Logo 3D (Three.js) : sans cadre, posé en haut de la carte. */
+    .hero-logo--3d {
+        position: relative;
+        top: auto;
+        left: auto;
+        transform: none;
+        width: min(560px, 100%);
+        height: auto;
+        aspect-ratio: 2.4;
+        margin: -30px auto 10px;
+        padding: 0;
+        background: none;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+        overflow: visible;
+        animation: logo3dFloat 4s ease-in-out infinite;
+    }
+    .hero-logo--3d::before,
+    .hero-logo--3d::after { display: none; }
+    .hero-logo--3d canvas { display: block; width: 100%; height: 100%; }
+    .hero-card:has(.hero-logo--3d) { padding-top: 30px; }
+    @keyframes logo3dFloat {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-6px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .hero-logo--3d { animation: none; }
+    }
+
 </style>
 
 <!-- Hero Section -->
@@ -1513,11 +1544,7 @@
 
     <div class="hero-card">
         <!-- Logo débordant vers le haut -->
-        <div class="hero-logo">
-            <video autoplay muted loop playsinline>
-                <source src="{{ asset('media/cleaning-brushes-loop.mp4') }}?v=3" type="video/mp4">
-            </video>
-        </div>
+        <div class="hero-logo hero-logo--3d" data-sirius-logo3d role="img" aria-label="Sirius-Solar"></div>
 
         <div class="glitch-intro">
             <div class="glitch-grid"></div>
@@ -2137,4 +2164,5 @@
 })();
 </script>
 
+<script type="module" src="{{ asset('js/sirius-logo3d.js') }}"></script>
 {% endblock %}
