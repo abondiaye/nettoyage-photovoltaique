@@ -466,14 +466,14 @@
     <main class="admin-main">
         <div class="admin-header">
             <div class="admin-title">
-                <h1>👋 Bienvenue Admin!</h1>
+                <h1>👋 Bienvenue {{ app.user ? app.user.prenom|capitalize : 'Admin' }} !</h1>
                 <p>Gérez votre site Sirius-Solar</p>
             </div>
             <div class="admin-user">
-                <div class="admin-avatar">AH</div>
+                <div class="admin-avatar">{{ app.user ? (app.user.prenom|first ~ app.user.nom|first)|upper : 'A' }}</div>
                 <div class="admin-user-info">
-                    <p>Admin Haroun</p>
-                    <p>admin@sirius-solar.ch</p>
+                    <p>{{ app.user ? app.user.prenom|capitalize ~ ' ' ~ app.user.nom|capitalize : 'Administrateur' }}</p>
+                    <p>{{ app.user ? app.user.email : '' }}</p>
                 </div>
             </div>
         </div>

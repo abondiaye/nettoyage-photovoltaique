@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% set routeName = app.request.attributes.get('_route')|default('NOROUTE') %}
-<html lang="fr" data-x="{{ routeName }}" {% if routeName|slice(0, 6) == 'admin_' %}class="is-admin"{% endif %}>
+<html lang="fr" data-x="{{ routeName }}" {% if routeName|slice(0, 6) == 'admin_' or routeName|slice(0, 10) == 'app_admin_' or app.request.pathInfo starts with '/admin' %}class="is-admin"{% endif %}>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -83,6 +83,7 @@
             html.is-admin, html.is-admin body {
                 padding-top: 0 !important;
                 margin-top: 0 !important;
+                background: #03120e !important; /* no white band above the admin pages */
             }
 
             main {
