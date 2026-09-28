@@ -1,8 +1,12 @@
-{# Fond tunnel néon 3D + carte en verre, partagé par la connexion et l'inscription. #}
+{# Fond tunnel néon 3D + bloc « connexion / inscription » à panneau coulissant,
+   aux couleurs de la carte Contact (verre sombre, vert menthe #00ff9d, dégradé #0A3D35 -> #00ff9d).
+   Usage : {% include 'components/_auth3d.html.twig' %} puis un .auth-slide (voir login / register). #}
 <canvas class="auth3d-bg" data-sirius-tunnel aria-hidden="true"></canvas>
 
 <style>
     body { background: #020a07; }
+    body:has(.auth3d) footer,
+    body:has(.auth3d) .circular-nav-container { display: none !important; }
 
     .auth3d-bg {
         position: fixed;
@@ -22,136 +26,246 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 110px 16px 40px;
-        box-sizing: border-box;
+        padding: 100px 16px 40px;
+        perspective: 1200px;
     }
 
-    .auth3d-card {
-        width: 100%;
-        max-width: 420px;
-        box-sizing: border-box;
-        padding: 40px 34px 32px;
+    /* ---- The card ---- */
+    .auth-slide {
+        --mint: #00ff9d;
+        --deep: #0A3D35;
+        position: relative;
+        width: min(900px, 100%);
+        min-height: 600px;
         border-radius: 22px;
-        background: rgba(4, 22, 16, 0.62);
-        border: 1px solid rgba(45, 255, 79, 0.28);
+        overflow: hidden;
+        background: rgba(2, 20, 16, 0.72);
+        border: 1px solid rgba(0, 255, 157, 0.3);
         backdrop-filter: blur(14px) saturate(1.2);
         -webkit-backdrop-filter: blur(14px) saturate(1.2);
-        box-shadow: 0 0 40px rgba(45, 255, 79, 0.12), 0 30px 80px rgba(0, 0, 0, 0.55),
+        box-shadow: 0 0 40px rgba(0, 255, 157, 0.14), 0 30px 80px rgba(0, 0, 0, 0.55),
                     inset 0 1px 0 rgba(255, 255, 255, 0.06);
-        color: #eafff0;
+        color: #fff;
+        transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+        transform-style: preserve-3d;
+        transition: transform 0.25s ease-out;
+    }
+
+    .auth-slide.is-register { min-height: 690px; }
+
+    /* Green panel (welcome) : on the left for login, on the right for sign-up. */
+    .auth-slide__welcome {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 45%;
+        height: 100%;
+        z-index: 3;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 0 36px;
         text-align: center;
-        animation: auth3dIn 0.7s cubic-bezier(.2, .8, .2, 1) both;
+        background: linear-gradient(135deg, var(--deep) 0%, #00a86b 70%, var(--mint) 140%);
+        border-radius: 22px 220px 220px 22px;
+        box-shadow: 10px 0 30px rgba(0, 0, 0, 0.35), inset 5px 5px 25px rgba(255, 255, 255, 0.18),
+                    inset -5px -5px 15px rgba(0, 0, 0, 0.25);
+        transition: left 0.75s cubic-bezier(0.68, -0.55, 0.265, 1.55), border-radius 0.75s ease;
+    }
+    .auth-slide__welcome::before {
+        content: '';
+        position: absolute;
+        inset: -50%;
+        background: radial-gradient(ellipse at top left, rgba(255, 255, 255, 0.16), transparent 45%);
+        pointer-events: none;
+    }
+    .auth-slide__form {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 55%;
+        height: 100%;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 56px;
+        transition: right 0.75s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.4s ease;
     }
 
-    @keyframes auth3dIn {
-        from { opacity: 0; transform: translateY(24px) scale(0.97); }
-        to   { opacity: 1; transform: none; }
-    }
+    .auth-slide.is-register .auth-slide__welcome { left: 55%; border-radius: 220px 22px 22px 220px; }
+    .auth-slide.is-register .auth-slide__welcome::before { background: radial-gradient(ellipse at top right, rgba(255, 255, 255, 0.16), transparent 45%); }
+    .auth-slide.is-register .auth-slide__form { right: 45%; }
 
-    .auth3d-title {
-        margin: 0 0 6px;
-        font-size: 30px;
+    /* Leaving towards the other page: the panel slides across, the form fades. */
+    .auth-slide.is-leaving .auth-slide__form { opacity: 0; }
+    .auth-slide.no-anim * { transition: none !important; }
+
+    .auth-slide__welcome h2 {
+        position: relative;
+        margin: 0 0 8px;
+        font-size: 32px;
         font-weight: 800;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: #2dff4f;
-        text-shadow: 0 0 12px rgba(45, 255, 79, 0.7), 0 0 30px rgba(45, 255, 79, 0.35);
+        text-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
     }
-
-    .auth3d-title .is-gold {
-        color: #ffd21f;
-        text-shadow: 0 0 12px rgba(255, 210, 31, 0.7), 0 0 30px rgba(255, 210, 31, 0.35);
+    .auth-slide__welcome p { position: relative; margin: 0 0 26px; font-size: 15px; color: rgba(255, 255, 255, 0.9); }
+    .auth-slide__toggle {
+        position: relative;
+        display: inline-block;
+        padding: 11px 40px;
+        border-radius: 12px;
+        border: 1.5px solid rgba(255, 255, 255, 0.55);
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        font-weight: 700;
+        text-decoration: none;
+        backdrop-filter: blur(8px);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.25), inset 0 2px 2px rgba(255, 255, 255, 0.35);
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.3s ease, color 0.3s ease;
     }
+    .auth-slide__toggle:hover { background: #fff; color: var(--deep); transform: translateY(-4px); }
 
-    .auth3d-sub {
-        margin: 0 0 28px;
-        font-size: 13px;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: rgba(234, 255, 240, 0.7);
+    .auth-slide__brand {
+        margin: 0 0 6px;
+        font-size: 28px;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        color: var(--mint);
+        text-shadow: 0 0 12px rgba(0, 255, 157, 0.5);
     }
+    .auth-slide__sub { margin: 0 0 26px; font-size: 14px; color: rgba(255, 255, 255, 0.7); }
 
-    .auth3d-field { text-align: left; margin-bottom: 18px; }
+    .auth-slide form { width: 100%; max-width: 340px; }
 
+    .auth3d-field { position: relative; margin-bottom: 16px; text-align: left; }
     .auth3d-field label,
     .auth3d-field .form-label {
         display: block;
-        margin-bottom: 7px;
-        font-size: 12px;
+        margin-bottom: 6px;
+        font-size: 11px;
         font-weight: 700;
         letter-spacing: 0.12em;
         text-transform: uppercase;
-        color: #2dff4f;
+        color: var(--mint);
     }
-
     .auth3d-field input {
         width: 100%;
-        box-sizing: border-box;
-        padding: 13px 15px;
-        border-radius: 11px;
-        border: 1px solid rgba(45, 255, 79, 0.22);
+        padding: 13px 16px;
+        border-radius: 12px;
+        border: 1px solid rgba(0, 255, 157, 0.2);
         background: rgba(0, 0, 0, 0.35);
-        color: #ffffff;
+        color: #fff;
         font-size: 16px; /* 16px: iOS does not zoom on focus */
         outline: none;
-        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        box-shadow: inset 3px 3px 8px rgba(0, 0, 0, 0.45), inset -2px -2px 6px rgba(0, 255, 157, 0.05);
+        transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
     }
-
-    .auth3d-field input::placeholder { color: rgba(234, 255, 240, 0.35); }
-
+    .auth3d-field input::placeholder { color: rgba(255, 255, 255, 0.35); }
     .auth3d-field input:focus {
-        border-color: #2dff4f;
-        box-shadow: 0 0 0 3px rgba(45, 255, 79, 0.18), 0 0 18px rgba(45, 255, 79, 0.25);
+        background: rgba(0, 0, 0, 0.5);
+        border-color: var(--mint);
+        box-shadow: 0 0 0 3px rgba(0, 255, 157, 0.15), 0 0 18px rgba(0, 255, 157, 0.2);
     }
+    .auth3d-field ul { margin: 6px 0 0; padding: 0; list-style: none; color: #ff9b9b; font-size: 13px; }
 
-    .auth3d-field ul { margin: 6px 0 0; padding: 0; list-style: none; color: #ff8a8a; font-size: 13px; }
-
-    .auth3d-forgot { text-align: right; margin-top: 8px; font-size: 13px; }
+    .auth3d-forgot { display: block; margin: -4px 0 18px; text-align: right; font-size: 13px; color: rgba(255, 255, 255, 0.7); text-decoration: none; }
+    .auth3d-forgot:hover { color: var(--mint); }
 
     .auth3d-btn {
         width: 100%;
-        margin-top: 8px;
+        margin-top: 6px;
         padding: 14px;
         border: 0;
         border-radius: 12px;
         cursor: pointer;
-        font-size: 15px;
-        font-weight: 800;
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-        color: #021208;
-        background: linear-gradient(90deg, #2dff4f 0%, #ffd21f 100%);
-        box-shadow: 0 0 22px rgba(45, 255, 79, 0.35), 0 0 40px rgba(255, 210, 31, 0.15);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        font-size: 16px;
+        font-weight: 700;
+        color: #fff;
+        background: linear-gradient(135deg, var(--deep) 0%, #00a86b 60%, var(--mint) 140%);
+        box-shadow: 0 10px 20px rgba(0, 255, 157, 0.2), inset 0 2px 0 rgba(255, 255, 255, 0.35), inset 0 -3px 0 rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
     }
+    .auth3d-btn:hover { transform: translateY(-4px); box-shadow: 0 15px 28px rgba(0, 255, 157, 0.35), inset 0 2px 0 rgba(255, 255, 255, 0.45); }
+    .auth3d-btn:active { transform: translateY(2px); }
 
-    .auth3d-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 0 30px rgba(45, 255, 79, 0.55), 0 0 60px rgba(255, 210, 31, 0.25);
-    }
-
-    .auth3d-foot { margin: 22px 0 0; font-size: 14px; color: rgba(234, 255, 240, 0.7); }
-
-    .auth3d a { color: #ffd21f; font-weight: 700; text-decoration: none; }
-    .auth3d a:hover { text-shadow: 0 0 10px rgba(255, 210, 31, 0.6); }
-
-    .auth3d-alert {
-        margin: 0 0 18px;
-        padding: 12px 14px;
-        border-radius: 10px;
-        font-size: 14px;
-        text-align: left;
-    }
+    .auth3d-alert { width: 100%; max-width: 340px; margin: 0 0 16px; padding: 11px 14px; border-radius: 10px; font-size: 14px; text-align: left; }
+    .auth3d-alert ul { margin: 0; padding: 0; list-style: none; }
     .auth3d-alert--error { background: rgba(255, 60, 60, 0.12); border: 1px solid rgba(255, 90, 90, 0.4); color: #ffb3b3; }
-    .auth3d-alert--success { background: rgba(45, 255, 79, 0.1); border: 1px solid rgba(45, 255, 79, 0.4); color: #bfffcc; }
+    .auth3d-alert--success { background: rgba(0, 255, 157, 0.1); border: 1px solid rgba(0, 255, 157, 0.4); color: #bfffe4; }
 
-    /* Hide the site footer and the old circular menu on these full-screen pages. */
-    body:has(.auth3d) footer,
-    body:has(.auth3d) .circular-nav-container { display: none !important; }
+    /* ---- Phone : welcome band on top, form below, no sliding ---- */
+    @media (max-width: 760px) {
+        .auth3d { padding-top: 84px; align-items: flex-start; }
+        .auth-slide { min-height: 0; display: flex; flex-direction: column; transform: none; }
+        .auth-slide__welcome,
+        .auth-slide.is-register .auth-slide__welcome {
+            position: relative;
+            left: auto;
+            width: 100%;
+            height: auto;
+            padding: 30px 20px 34px;
+            border-radius: 0 0 50% 50% / 0 0 40px 40px;
+        }
+        .auth-slide__welcome h2 { font-size: 24px; }
+        .auth-slide__welcome p { margin-bottom: 16px; }
+        .auth-slide__form,
+        .auth-slide.is-register .auth-slide__form {
+            position: relative;
+            right: auto;
+            width: 100%;
+            height: auto;
+            padding: 26px 20px 30px;
+        }
+    }
 
-    @media (max-width: 480px) {
-        .auth3d { padding-top: 96px; }
-        .auth3d-card { padding: 30px 20px 26px; border-radius: 18px; }
-        .auth3d-title { font-size: 24px; }
+    @media (prefers-reduced-motion: reduce) {
+        .auth-slide, .auth-slide * { transition: none !important; }
     }
 </style>
+
+<script>
+(function () {
+    var card = document.querySelector('[data-auth-slide]');
+    if (!card) return;
+    var registerMode = card.classList.contains('is-register');
+    var wide = function () { return window.matchMedia('(min-width: 761px)').matches; };
+
+    // Arriving from the other page: start from the other side, then slide into place.
+    try {
+        if (sessionStorage.getItem('authSlide') === (registerMode ? 'to-register' : 'to-login') && wide()) {
+            card.classList.add('no-anim');
+            card.classList.toggle('is-register', !registerMode);
+            card.getBoundingClientRect();
+            card.classList.remove('no-anim');
+            requestAnimationFrame(function () { card.classList.toggle('is-register', registerMode); });
+        }
+        sessionStorage.removeItem('authSlide');
+    } catch (e) {}
+
+    // Toggle button: slide across, then open the other page.
+    var toggle = card.querySelector('.auth-slide__toggle');
+    if (toggle) {
+        toggle.addEventListener('click', function (e) {
+            if (!wide()) return;
+            e.preventDefault();
+            try { sessionStorage.setItem('authSlide', registerMode ? 'to-login' : 'to-register'); } catch (err) {}
+            card.classList.add('is-leaving');
+            card.classList.toggle('is-register', !registerMode);
+            setTimeout(function () { location.href = toggle.href; }, 650);
+        });
+    }
+
+    // Gentle 3D tilt following the mouse.
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        window.addEventListener('pointermove', function (e) {
+            if (!wide()) return;
+            var x = e.clientX / window.innerWidth - 0.5;
+            var y = e.clientY / window.innerHeight - 0.5;
+            card.style.setProperty('--ry', (x * 8).toFixed(2) + 'deg');
+            card.style.setProperty('--rx', (-y * 6).toFixed(2) + 'deg');
+        }, { passive: true });
+    }
+})();
+</script>

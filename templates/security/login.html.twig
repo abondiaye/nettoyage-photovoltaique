@@ -3,43 +3,48 @@
 {% block title %}Connexion - Sirius-Solar{% endblock %}
 
 {% block body %}
-{% include 'components/_auth3d.html.twig' %}
-
 <div class="auth3d">
-    <div class="auth3d-card">
-        <h1 class="auth3d-title">Sirius<span class="is-gold">-Solar</span></h1>
-        <p class="auth3d-sub">Accédez à votre espace</p>
+    <div class="auth-slide" data-auth-slide>
+        <div class="auth-slide__welcome">
+            <h2>Bonjour !</h2>
+            <p>Pas encore de compte ?</p>
+            <a href="{{ path('app_register') }}" class="auth-slide__toggle">Créer un compte</a>
+        </div>
 
-        {% for message in app.flashes('success') %}
-            <div class="auth3d-alert auth3d-alert--success">{{ message }}</div>
-        {% endfor %}
+        <div class="auth-slide__form">
+            <h1 class="auth-slide__brand">Connexion</h1>
+            <p class="auth-slide__sub">Accédez à votre espace Sirius-Solar</p>
 
-        {% if error %}
-            <div class="auth3d-alert auth3d-alert--error">
-                {{ error.messageKey|trans(error.messageData, 'security') }}
-            </div>
-        {% endif %}
+            {% for message in app.flashes('success') %}
+                <div class="auth3d-alert auth3d-alert--success">{{ message }}</div>
+            {% endfor %}
 
-        <form method="post" action="{{ path('app_login') }}">
-            <div class="auth3d-field">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" value="{{ last_username }}" placeholder="votre@email.com" autocomplete="email" required autofocus>
-            </div>
+            {% if error %}
+                <div class="auth3d-alert auth3d-alert--error">
+                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                </div>
+            {% endif %}
 
-            <div class="auth3d-field">
-                <label for="password">Mot de passe</label>
-                <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password" required>
-                <div class="auth3d-forgot"><a href="{{ path('app_forgot_password') }}">Mot de passe oublié ?</a></div>
-            </div>
+            <form method="post" action="{{ path('app_login') }}">
+                <div class="auth3d-field">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" value="{{ last_username }}" placeholder="votre@email.com" autocomplete="email" required autofocus>
+                </div>
 
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                <div class="auth3d-field">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password" required>
+                </div>
 
-            <button type="submit" class="auth3d-btn">Se connecter</button>
-        </form>
+                <a href="{{ path('app_forgot_password') }}" class="auth3d-forgot">Mot de passe oublié ?</a>
 
-        <p class="auth3d-foot">
-            Pas encore de compte ? <a href="{{ path('app_register') }}">Créer un compte</a>
-        </p>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <button type="submit" class="auth3d-btn">Se connecter</button>
+            </form>
+        </div>
     </div>
 </div>
+
+{% include 'components/_auth3d.html.twig' %}
 {% endblock %}

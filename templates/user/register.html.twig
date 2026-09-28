@@ -3,58 +3,62 @@
 {% block title %}Inscription - Sirius-Solar{% endblock %}
 
 {% block body %}
-{% include 'components/_auth3d.html.twig' %}
-
 <div class="auth3d">
-    <div class="auth3d-card">
-        <h1 class="auth3d-title">Sirius<span class="is-gold">-Solar</span></h1>
-        <p class="auth3d-sub">Créer votre compte</p>
-
-        {{ form_start(registrationForm, {'attr': {'class': 'register-form'}}) }}
-
-        {% if not registrationForm.vars.valid and registrationForm.vars.errors|length %}
-            <div class="auth3d-alert auth3d-alert--error">{{ form_errors(registrationForm) }}</div>
-        {% endif %}
-
-        <div class="auth3d-field">
-            {{ form_label(registrationForm.prenom, 'Prénom') }}
-            {{ form_widget(registrationForm.prenom, {'attr': {'placeholder': 'Votre prénom', 'autocomplete': 'given-name'}}) }}
-            {{ form_errors(registrationForm.prenom) }}
+    <div class="auth-slide is-register" data-auth-slide>
+        <div class="auth-slide__welcome">
+            <h2>Bon retour !</h2>
+            <p>Vous avez déjà un compte ?</p>
+            <a href="{{ path('app_login') }}" class="auth-slide__toggle">Se connecter</a>
         </div>
 
-        <div class="auth3d-field">
-            {{ form_label(registrationForm.nom, 'Nom') }}
-            {{ form_widget(registrationForm.nom, {'attr': {'placeholder': 'Votre nom', 'autocomplete': 'family-name'}}) }}
-            {{ form_errors(registrationForm.nom) }}
+        <div class="auth-slide__form">
+            <h1 class="auth-slide__brand">Inscription</h1>
+            <p class="auth-slide__sub">Suivez vos devis et vos interventions</p>
+
+            {{ form_start(registrationForm, {'attr': {'class': 'register-form'}}) }}
+
+            {% if not registrationForm.vars.valid and registrationForm.vars.errors|length %}
+                <div class="auth3d-alert auth3d-alert--error">{{ form_errors(registrationForm) }}</div>
+            {% endif %}
+
+            <div class="auth3d-field">
+                {{ form_label(registrationForm.prenom, 'Prénom') }}
+                {{ form_widget(registrationForm.prenom, {'attr': {'placeholder': 'Votre prénom', 'autocomplete': 'given-name'}}) }}
+                {{ form_errors(registrationForm.prenom) }}
+            </div>
+
+            <div class="auth3d-field">
+                {{ form_label(registrationForm.nom, 'Nom') }}
+                {{ form_widget(registrationForm.nom, {'attr': {'placeholder': 'Votre nom', 'autocomplete': 'family-name'}}) }}
+                {{ form_errors(registrationForm.nom) }}
+            </div>
+
+            <div class="auth3d-field">
+                {{ form_label(registrationForm.email, 'Email') }}
+                {{ form_widget(registrationForm.email, {'attr': {'placeholder': 'votre@email.com', 'autocomplete': 'email'}}) }}
+                {{ form_errors(registrationForm.email) }}
+            </div>
+
+            <div class="auth3d-field">
+                {{ form_label(registrationForm.plainPassword.first, 'Mot de passe') }}
+                {{ form_widget(registrationForm.plainPassword.first, {'attr': {'placeholder': 'Minimum 8 caractères', 'autocomplete': 'new-password'}}) }}
+                {{ form_errors(registrationForm.plainPassword.first) }}
+            </div>
+
+            <div class="auth3d-field">
+                {{ form_label(registrationForm.plainPassword.second, 'Confirmer le mot de passe') }}
+                {{ form_widget(registrationForm.plainPassword.second, {'attr': {'placeholder': 'Confirmez votre mot de passe', 'autocomplete': 'new-password'}}) }}
+                {{ form_errors(registrationForm.plainPassword.second) }}
+            </div>
+
+            {{ form_rest(registrationForm) }}
+
+            <button type="submit" class="auth3d-btn">Créer mon compte</button>
+
+            {{ form_end(registrationForm) }}
         </div>
-
-        <div class="auth3d-field">
-            {{ form_label(registrationForm.email, 'Email') }}
-            {{ form_widget(registrationForm.email, {'attr': {'placeholder': 'votre@email.com', 'autocomplete': 'email'}}) }}
-            {{ form_errors(registrationForm.email) }}
-        </div>
-
-        <div class="auth3d-field">
-            {{ form_label(registrationForm.plainPassword.first, 'Mot de passe') }}
-            {{ form_widget(registrationForm.plainPassword.first, {'attr': {'placeholder': 'Minimum 8 caractères', 'autocomplete': 'new-password'}}) }}
-            {{ form_errors(registrationForm.plainPassword.first) }}
-        </div>
-
-        <div class="auth3d-field">
-            {{ form_label(registrationForm.plainPassword.second, 'Confirmer le mot de passe') }}
-            {{ form_widget(registrationForm.plainPassword.second, {'attr': {'placeholder': 'Confirmez votre mot de passe', 'autocomplete': 'new-password'}}) }}
-            {{ form_errors(registrationForm.plainPassword.second) }}
-        </div>
-
-        {{ form_rest(registrationForm) }}
-
-        <button type="submit" class="auth3d-btn">Créer mon compte</button>
-
-        {{ form_end(registrationForm) }}
-
-        <p class="auth3d-foot">
-            Déjà un compte ? <a href="{{ path('app_login') }}">Se connecter</a>
-        </p>
     </div>
 </div>
+
+{% include 'components/_auth3d.html.twig' %}
 {% endblock %}
