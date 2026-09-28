@@ -1,322 +1,133 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/_shell.html.twig' %}
 
 {% block title %}Ajouter une Réalisation - Admin Sirius-Solar{% endblock %}
+{% block page_title %}Ajouter une réalisation{% endblock %}
+{% block page_subtitle %}Partagez un chantier réussi avec ses photos avant / après : il apparaît sur la page Blog{% endblock %}
 
-{% block body %}
+{% set values = values|default({title: '', description: '', location: '', date: 'now'|date('Y-m-d')}) %}
 
-<style>
-    .back-button-wrapper {
-        margin-bottom: 30px;
-        max-width: 900px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .back-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 10px 18px;
-        background: linear-gradient(135deg, rgba(10, 61, 53, 0.1), rgba(192, 192, 192, 0.1));
-        border: 2px solid #a8a8a8;
-        color: #0A3D35;
-        text-decoration: none;
-        border-radius: 6px;
-        font-weight: 600;
-        font-size: 13px;
-        transition: all 0.3s ease;
-        cursor: pointer;
-    }
-
-    .back-btn:hover {
-        background: linear-gradient(135deg, rgba(10, 61, 53, 0.15), rgba(192, 192, 192, 0.15));
-        border-color: #0A3D35;
-        transform: translateX(-3px);
-    }
-
-    .back-arrow {
-        font-size: 16px;
-        transition: transform 0.3s ease;
-    }
-
-    .back-btn:hover .back-arrow {
-        transform: translateX(-2px);
-    }
-
-    .admin-container {
-        max-width: 900px;
-        margin: 40px auto;
-        padding: 40px;
-        background: white;
-        border-radius: 15px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-    }
-
-    .admin-header {
-        margin-bottom: 40px;
-        padding-bottom: 20px;
-        border-bottom: 2px solid #a8a8a8;
-    }
-
-    .admin-header h1 {
-        color: #0A3D35;
-        font-size: 32px;
-        font-weight: 700;
-        font-family: 'Space Grotesk', sans-serif;
-        margin-bottom: 10px;
-    }
-
-    .form-group {
-        margin-bottom: 30px;
-    }
-
-    .form-group label {
-        display: block;
-        margin-bottom: 10px;
-        color: #0A3D35;
-        font-weight: 600;
-        font-size: 14px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .form-group input[type="text"],
-    .form-group input[type="date"],
-    .form-group textarea,
-    .form-group input[type="file"] {
+{% block admin_styles %}
+    .rf { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+    .field { margin-bottom: 18px; }
+    .field label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: 600; color: var(--text); }
+    .field label em { color: var(--gold); font-style: normal; }
+    .field input[type=text], .field input[type=date], .field textarea {
         width: 100%;
-        padding: 12px 15px;
-        border: 2px solid #eee;
-        border-radius: 8px;
-        font-size: 14px;
-        font-family: inherit;
-        transition: border-color 0.3s ease;
+        padding: 12px 14px;
+        border-radius: 10px;
+        border: 1px solid var(--line-strong);
+        background: var(--panel-2);
+        color: var(--text);
+        font: 400 15px/1.5 'Poppins', system-ui, sans-serif;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        color-scheme: dark;
     }
+    html.ds-light .field input, html.ds-light .field textarea { color-scheme: light; }
+    .field textarea { min-height: 170px; resize: vertical; }
+    .field input::placeholder, .field textarea::placeholder { color: var(--muted); opacity: 0.8; }
+    .field input:focus, .field textarea:focus { outline: none; border-color: var(--mint); box-shadow: 0 0 0 3px rgba(45, 255, 79, 0.15); }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .hint { margin: 6px 0 0; font-size: 12px; color: var(--muted); }
 
-    .form-group input:focus,
-    .form-group textarea:focus,
-    .form-group input[type="file"]:focus {
-        outline: none;
-        border-color: #a8a8a8;
-        box-shadow: 0 0 0 3px rgba(160, 160, 160, 0.1);
-    }
-
-    .form-group textarea {
-        resize: vertical;
-        min-height: 120px;
-    }
-
-    .form-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-    }
-
-    .form-actions {
-        display: flex;
-        gap: 15px;
-        margin-top: 40px;
-    }
-
-    .btn {
-        padding: 12px 30px;
-        border: none;
-        border-radius: 8px;
-        font-weight: 600;
-        cursor: pointer;
-        font-size: 14px;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        display: inline-block;
-    }
-
-    .btn-primary {
-        background: linear-gradient(135deg, #0A3D35 0%, #2D6B55 100%);
-        color: #a8a8a8;
-        border: 2px solid #a8a8a8;
-    }
-
-    .btn-primary:hover {
-        box-shadow: 0 10px 30px rgba(160, 160, 160, 0.3);
-        transform: translateY(-2px);
-    }
-
-    .btn-secondary {
-        background: #f0f0f0;
-        color: #0A3D35;
-    }
-
-    .btn-secondary:hover {
-        background: #e0e0e0;
-    }
-
-    .image-preview {
-        margin-top: 15px;
-        display: flex;
-        gap: 15px;
-        flex-wrap: wrap;
-    }
-
-    .preview-item {
+    /* Photo drop zones */
+    .drops { display: grid; gap: 16px; }
+    .drop {
         position: relative;
-        width: 150px;
-        height: 150px;
-        border-radius: 8px;
+        display: grid;
+        place-items: center;
+        aspect-ratio: 16 / 10;
+        border: 2px dashed var(--line-strong);
+        border-radius: 14px;
+        background: var(--panel-2);
         overflow: hidden;
-        border: 2px solid #a8a8a8;
+        cursor: pointer;
+        text-align: center;
+        transition: border-color 0.2s, background 0.2s;
     }
+    .drop:hover, .drop.is-over { border-color: var(--mint); background: rgba(45, 255, 79, 0.06); }
+    .drop input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .drop__txt { padding: 16px; color: var(--muted); font-size: 14px; pointer-events: none; }
+    .drop__txt svg { width: 34px; height: 34px; stroke: var(--mint); fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; display: block; margin: 0 auto 8px; }
+    .drop__txt b { color: var(--text); }
+    .drop img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+    .drop__tag { position: absolute; left: 12px; top: 12px; z-index: 1; padding: 5px 12px; border-radius: 999px; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; pointer-events: none; }
+    .drop--before .drop__tag { background: #ff5d73; color: #fff; }
+    .drop--after .drop__tag { background: #2dff4f; color: #03120e; }
 
-    .preview-item img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
+    .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 6px; }
+    @media (max-width: 1024px) { .rf { grid-template-columns: 1fr; } }
+    @media (max-width: 560px) { .field-row { grid-template-columns: 1fr; } .actions .ds-btn { flex: 1; } }
+{% endblock %}
 
-    .preview-label {
-        position: absolute;
-        top: 5px;
-        left: 5px;
-        background: rgba(0, 0, 0, 0.7);
-        color: white;
-        padding: 3px 8px;
-        border-radius: 3px;
-        font-size: 11px;
-        font-weight: 600;
-    }
-
-    /* Dark mode */
-    body.dark-mode .admin-container {
-        background: #1a1a1a;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-    }
-
-    body.dark-mode .admin-header h1 {
-        color: #a8a8a8;
-    }
-
-    body.dark-mode .form-group label {
-        color: #a8a8a8;
-    }
-
-    body.dark-mode .form-group input,
-    body.dark-mode .form-group textarea {
-        background: #2a2a2a;
-        color: #fff;
-        border-color: #333;
-    }
-
-    body.dark-mode .btn-secondary {
-        background: #333;
-        color: #a8a8a8;
-    }
-
-    /* Mobile */
-    @media (max-width: 768px) {
-        .admin-container {
-            padding: 20px;
-        }
-
-        .form-row {
-            grid-template-columns: 1fr;
-        }
-
-        .form-actions {
-            flex-direction: column;
-        }
-
-        .btn {
-            width: 100%;
-            text-align: center;
-        }
-    }
-</style>
-
-<!-- Back Button -->
-<div class="back-button-wrapper">
-    <a href="{{ path('app_blog') }}" class="back-btn">
-        <span class="back-arrow">←</span>
-        Retour au Blog
-    </a>
-</div>
-
-<div class="admin-container">
-    <div class="admin-header">
-        <h1>✨ Ajouter une Réalisation</h1>
-        <p>Partagez vos projets de nettoyage réussis avec avant/après</p>
-    </div>
-
-    <form method="POST" enctype="multipart/form-data">
-        <div class="form-group">
-            <label for="title">Titre du Projet *</label>
-            <input type="text" id="title" name="title" placeholder="Ex: Nettoyage installation résidentielle" required>
+{% block content %}
+    {% if errors|default([]) is not empty %}
+        <div class="ds-flash ds-flash--error">La réalisation n'a pas été publiée :
+            <ul>{% for e in errors %}<li>{{ e }}</li>{% endfor %}</ul>
+            Les photos doivent être choisies à nouveau.
         </div>
+    {% endif %}
 
-        <div class="form-group">
-            <label for="description">Description *</label>
-            <textarea id="description" name="description" placeholder="Décrivez le projet, les résultats, les conditions..." required></textarea>
-        </div>
+    <form method="post" enctype="multipart/form-data" class="rf">
+        <input type="hidden" name="_token" value="{{ csrf_token('realisation') }}">
 
-        <div class="form-row">
-            <div class="form-group">
-                <label for="location">Localisation *</label>
-                <input type="text" id="location" name="location" placeholder="Ex: Genève, Suisse" required>
+        <section class="ds-card">
+            <div class="ds-card__head"><div><h2>Le projet</h2><p>Les champs marqués <em style="color:var(--gold);font-style:normal">*</em> sont obligatoires</p></div></div>
+
+            <div class="field">
+                <label for="title">Titre du projet <em>*</em></label>
+                <input type="text" id="title" name="title" maxlength="255" value="{{ values.title }}" placeholder="Ex : Nettoyage installation résidentielle 8 kW" required>
             </div>
-
-            <div class="form-group">
-                <label for="date">Date du Projet *</label>
-                <input type="date" id="date" name="date" required>
+            <div class="field">
+                <label for="description">Description <em>*</em></label>
+                <textarea id="description" name="description" placeholder="Décrivez le projet, les résultats, les conditions…" required>{{ values.description }}</textarea>
             </div>
-        </div>
-
-        <div class="form-row">
-            <div class="form-group">
-                <label for="image_before">Photo AVANT *</label>
-                <input type="file" id="image_before" name="image_before" accept="image/*" required>
-                <div class="image-preview" id="preview-before"></div>
+            <div class="field-row">
+                <div class="field">
+                    <label for="location">Localisation <em>*</em></label>
+                    <input type="text" id="location" name="location" maxlength="255" value="{{ values.location }}" placeholder="Ex : Lausanne (VD)" required>
+                </div>
+                <div class="field">
+                    <label for="date">Date du projet <em>*</em></label>
+                    <input type="date" id="date" name="date" value="{{ values.date }}" required>
+                </div>
             </div>
-
-            <div class="form-group">
-                <label for="image_after">Photo APRÈS *</label>
-                <input type="file" id="image_after" name="image_after" accept="image/*" required>
-                <div class="image-preview" id="preview-after"></div>
+            <div class="actions">
+                <button type="submit" class="ds-btn ds-btn--primary">Publier la réalisation</button>
+                <a href="{{ path('app_admin_blog') }}" class="ds-btn ds-btn--ghost">Annuler</a>
             </div>
-        </div>
+        </section>
 
-        <div class="form-actions">
-            <button type="submit" class="btn btn-primary">💾 Publier la Réalisation</button>
-            <a href="{{ path('app_blog') }}" class="btn btn-secondary">❌ Annuler</a>
-        </div>
+        <section class="ds-card">
+            <div class="ds-card__head"><div><h2>Photos</h2><p>JPG, PNG ou WebP, 12 Mo maximum chacune</p></div></div>
+            <div class="drops">
+                {% for key, label in {image_before: 'AVANT', image_after: 'APRÈS'} %}
+                    <label class="drop drop--{{ key == 'image_before' ? 'before' : 'after' }}">
+                        <span class="drop__tag">{{ label }}</span>
+                        <input type="file" name="{{ key }}" accept="image/jpeg,image/png,image/webp,image/gif" required data-preview>
+                        <span class="drop__txt">
+                            <svg viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
+                            <b>Photo {{ label|lower }}</b><br>Cliquez ou glissez une image ici
+                        </span>
+                    </label>
+                {% endfor %}
+            </div>
+        </section>
     </form>
-</div>
 
-<script>
-// Image preview
-document.getElementById('image_before').addEventListener('change', (e) => {
-    showPreview(e.target.files[0], 'preview-before', 'AVANT');
-});
-
-document.getElementById('image_after').addEventListener('change', (e) => {
-    showPreview(e.target.files[0], 'preview-after', 'APRÈS');
-});
-
-function showPreview(file, containerId, label) {
-    const container = document.getElementById(containerId);
-    container.innerHTML = '';
-
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const div = document.createElement('div');
-            div.className = 'preview-item';
-            div.innerHTML = `
-                <img src="${e.target.result}" alt="Preview">
-                <div class="preview-label">${label}</div>
-            `;
-            container.appendChild(div);
-        };
-        reader.readAsDataURL(file);
-    }
-}
-</script>
-
+    <script>
+    document.querySelectorAll('[data-preview]').forEach((input) => {
+        const zone = input.closest('.drop');
+        ['dragenter', 'dragover'].forEach((ev) => zone.addEventListener(ev, () => zone.classList.add('is-over')));
+        ['dragleave', 'drop'].forEach((ev) => zone.addEventListener(ev, () => zone.classList.remove('is-over')));
+        input.addEventListener('change', () => {
+            zone.querySelector('img')?.remove();
+            const file = input.files[0];
+            if (!file) return;
+            const img = document.createElement('img');
+            img.alt = '';
+            img.src = URL.createObjectURL(file);
+            zone.appendChild(img);
+        });
+    });
+    </script>
 {% endblock %}

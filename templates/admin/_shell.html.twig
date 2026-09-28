@@ -1,0 +1,309 @@
+{% extends 'base.html.twig' %}
+{#
+    Admin layout in the spirit of TailGrids DashSpace: fixed sidebar, top bar, content grid of cards.
+    Dark by default in the site colors; the moon/sun button switches to a light theme (remembered per browser).
+    Pages extend this template and fill {% block content %} (plus {% block page_title %}).
+#}
+{% set route = app.request.attributes.get('_route') %}
+
+{% block body %}
+<style>
+    .ds {
+        --bg: #020d0a;
+        --panel: #061a14;
+        --panel-2: #0a241c;
+        --line: rgba(45, 255, 79, 0.12);
+        --line-strong: rgba(45, 255, 79, 0.28);
+        --text: #e8f7ef;
+        --muted: #8fb3a3;
+        --mint: #2dff4f;
+        --gold: #ffd21f;
+        --blue: #3cd6ff;
+        --red: #ff5d73;
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        --map-empty: #0d2a21;
+        --map-line: #03120e;
+        --lake: #0f3b52;
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 264px 1fr;
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'Poppins', 'Segoe UI', system-ui, sans-serif;
+    }
+    html.ds-light .ds {
+        --bg: #f3f6f5;
+        --panel: #ffffff;
+        --panel-2: #f6faf8;
+        --line: #e3ebe7;
+        --line-strong: #cfe0d8;
+        --text: #10231c;
+        --muted: #637a70;
+        --mint: #0a9a3a;
+        --gold: #c79500;
+        --blue: #0b82b3;
+        --shadow: 0 1px 3px rgba(16, 35, 28, 0.08);
+        --map-empty: #e6eeea;
+        --map-line: #ffffff;
+        --lake: #bfe3f2;
+    }
+    html.ds-light, html.ds-light body { background: #f3f6f5 !important; }
+
+    /* ---------- Sidebar ---------- */
+    .ds-side {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+        background: var(--panel);
+        border-right: 1px solid var(--line);
+        padding: 22px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        z-index: 40;
+    }
+    .ds-brand { display: flex; align-items: center; gap: 10px; padding: 4px 10px 22px; text-decoration: none; }
+    .ds-brand svg { width: 38px; height: 38px; flex: none; }
+    .ds-brand b { font: 800 19px/1 'Space Grotesk', system-ui, sans-serif; letter-spacing: 0.03em; color: #2dff4f; text-shadow: 0 0 10px rgba(45, 255, 79, 0.45); }
+    .ds-brand b span { color: #ffd21f; text-shadow: 0 0 10px rgba(255, 210, 31, 0.45); }
+    html.ds-light .ds-brand b { color: #0a9a3a; text-shadow: none; }
+    html.ds-light .ds-brand b span { color: #c79500; text-shadow: none; }
+    .ds-brand small { display: block; margin-top: 4px; font-size: 11px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; }
+    .ds-group { margin: 14px 10px 6px; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+    .ds-link {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: background 0.2s, color 0.2s;
+    }
+    .ds-link svg { width: 19px; height: 19px; flex: none; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .ds-link:hover { background: var(--panel-2); color: var(--text); }
+    .ds-link.is-active { background: rgba(45, 255, 79, 0.12); color: var(--mint); box-shadow: inset 3px 0 0 var(--mint); }
+    .ds-link--cta { margin: 16px 0 4px; justify-content: center; background: var(--mint); color: #03120e; font-weight: 700; }
+    .ds-link--cta:hover { background: var(--gold); color: #03120e; }
+    .ds-side__foot { margin-top: auto; padding-top: 16px; border-top: 1px solid var(--line); }
+
+    /* ---------- Top bar ---------- */
+    .ds-main { min-width: 0; display: flex; flex-direction: column; }
+    .ds-top {
+        position: sticky;
+        top: 0;
+        z-index: 30;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 14px 28px;
+        background: color-mix(in srgb, var(--panel) 88%, transparent);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--line);
+    }
+    .ds-top h1 { margin: 0; font: 700 20px/1.2 'Space Grotesk', system-ui, sans-serif; color: var(--text); }
+    .ds-top p { margin: 2px 0 0; font-size: 13px; color: var(--muted); }
+    .ds-top__right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+    .ds-icon-btn {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        border-radius: 10px;
+        border: 1px solid var(--line);
+        background: var(--panel-2);
+        color: var(--text);
+        cursor: pointer;
+        text-decoration: none;
+    }
+    .ds-icon-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .ds-user { display: flex; align-items: center; gap: 10px; padding-left: 6px; }
+    .ds-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        font-weight: 800;
+        font-size: 14px;
+        color: #03120e;
+        background: linear-gradient(135deg, #2dff4f, #ffd21f);
+    }
+    .ds-user b { display: block; font-size: 14px; color: var(--text); }
+    .ds-user small { font-size: 12px; color: var(--muted); }
+    .ds-burger { display: none; }
+
+    .ds-content { padding: 26px 28px 40px; }
+
+    /* ---------- Shared pieces for the pages ---------- */
+    .ds-card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 22px; box-shadow: var(--shadow); min-width: 0; }
+    .ds-card__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+    .ds-card__head h2 { margin: 0; font: 700 17px/1.3 'Space Grotesk', system-ui, sans-serif; color: var(--text); }
+    .ds-card__head p { margin: 3px 0 0; font-size: 13px; color: var(--muted); }
+    .ds-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 11px 20px;
+        border-radius: 10px;
+        border: 1px solid transparent;
+        font: 600 14px/1 'Poppins', system-ui, sans-serif;
+        text-decoration: none;
+        cursor: pointer;
+        transition: transform 0.15s, background 0.2s;
+    }
+    .ds-btn:active { transform: translateY(1px); }
+    .ds-btn--primary { background: var(--mint); color: #03120e; }
+    .ds-btn--primary:hover { background: var(--gold); }
+    .ds-btn--ghost { background: transparent; color: var(--text); border-color: var(--line-strong); }
+    .ds-btn--ghost:hover { background: var(--panel-2); }
+    .ds-btn--danger { background: transparent; color: var(--red); border-color: rgba(255, 93, 115, 0.4); padding: 8px 12px; font-size: 13px; }
+    .ds-btn--danger:hover { background: rgba(255, 93, 115, 0.1); }
+    .ds-badge { font-style: normal; display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+    .ds-badge--new { background: rgba(60, 214, 255, 0.14); color: var(--blue); }
+    .ds-badge--wip { background: rgba(255, 210, 31, 0.14); color: var(--gold); }
+    .ds-badge--ok { background: rgba(45, 255, 79, 0.14); color: var(--mint); }
+    .ds-badge--ko { background: rgba(255, 93, 115, 0.14); color: var(--red); }
+    .ds-flash { margin-bottom: 20px; padding: 14px 18px; border-radius: 12px; border: 1px solid rgba(45, 255, 79, 0.35); background: rgba(45, 255, 79, 0.1); color: var(--mint); font-weight: 500; }
+    .ds-flash--error { border-color: rgba(255, 93, 115, 0.4); background: rgba(255, 93, 115, 0.1); color: var(--red); }
+    .ds-flash ul { margin: 6px 0 0; padding-left: 20px; }
+    .ds-empty { padding: 30px 10px; text-align: center; color: var(--muted); font-size: 14px; }
+
+    .ds-scrim { display: none; }
+    @media (max-width: 1024px) {
+        .ds { grid-template-columns: 1fr; }
+        .ds-side { position: fixed; left: 0; top: 0; width: 272px; transform: translateX(-100%); transition: transform 0.3s; box-shadow: var(--shadow); }
+        .ds.is-open .ds-side { transform: none; }
+        .ds.is-open .ds-scrim { display: block; position: fixed; inset: 0; z-index: 35; background: rgba(0, 0, 0, 0.5); }
+        .ds-burger { display: grid; }
+        .ds-top { padding: 12px 16px; }
+        .ds-content { padding: 18px 16px 30px; }
+        .ds-user div { display: none; }
+    }
+    @media (max-width: 560px) {
+        .ds-top p { display: none; }
+        .ds-top h1 { font-size: 17px; }
+    }
+    {% block admin_styles %}{% endblock %}
+</style>
+
+{% set u = app.user %}
+{% set initials = u ? ((u.prenom|default('A'))|first ~ (u.nom|default(''))|first)|upper : 'A' %}
+
+<div class="ds" id="ds">
+    <aside class="ds-side" aria-label="Menu administrateur">
+        <a class="ds-brand" href="{{ path('app_admin_dashboard') }}">
+            <svg viewBox="0 0 64 64" aria-hidden="true">
+                <rect width="64" height="64" rx="14" fill="#03140e"/>
+                <circle cx="32" cy="32" r="21" fill="none" stroke="#2dff4f" stroke-width="5"/>
+                <path d="M32 17 L35 29 L47 32 L35 35 L32 47 L29 35 L17 32 L29 29 Z" fill="#ffd21f"/>
+            </svg>
+            <span><b>SIRIUS<span>-SOLAR</span></b><small>Administration</small></span>
+        </a>
+
+        <div class="ds-group">Tableau de bord</div>
+        <a class="ds-link {{ route == 'app_admin_dashboard' ? 'is-active' }}" href="{{ path('app_admin_dashboard') }}">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+            Vue d'ensemble
+        </a>
+
+        <div class="ds-group">Clients</div>
+        <a class="ds-link {{ route == 'app_admin_calendar' ? 'is-active' }}" href="{{ path('app_admin_calendar') }}">
+            <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+            Calendrier
+        </a>
+        <a class="ds-link {{ route == 'app_admin_appointments' ? 'is-active' }}" href="{{ path('app_admin_appointments') }}">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            Rendez-vous
+        </a>
+        <a class="ds-link {{ route == 'app_admin_messages' ? 'is-active' }}" href="{{ path('app_admin_messages') }}">
+            <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            Messages
+        </a>
+        <a class="ds-link {{ route starts with 'admin_customers_' ? 'is-active' }}" href="{{ path('admin_customers_list') }}">
+            <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c1.9.7 3.1 2.4 3.5 5.2"/></svg>
+            Clients
+        </a>
+        <a class="ds-link {{ route == 'app_admin_members' ? 'is-active' }}" href="{{ path('app_admin_members') }}">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>
+            Membres
+        </a>
+
+        <div class="ds-group">Site</div>
+        <a class="ds-link {{ route in ['app_admin_blog', 'app_admin_blog_create'] ? 'is-active' }}" href="{{ path('app_admin_blog') }}">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg>
+            Réalisations
+        </a>
+        <a class="ds-link {{ route == 'app_admin_comments' ? 'is-active' }}" href="{{ path('app_admin_comments') }}">
+            <svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.4A8 8 0 1 1 21 12z"/></svg>
+            Commentaires
+        </a>
+        <a class="ds-link" href="{{ path('app_home') }}" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M3 11 12 4l9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
+            Voir le site
+        </a>
+
+        <a class="ds-link ds-link--cta" href="{{ path('app_admin_blog_create') }}">＋ Ajouter une réalisation</a>
+
+        <div class="ds-side__foot">
+            <a class="ds-link" href="{{ path('app_logout') }}">
+                <svg viewBox="0 0 24 24"><path d="M15 4h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-4M10 17l5-5-5-5M15 12H3"/></svg>
+                Déconnexion
+            </a>
+        </div>
+    </aside>
+    <div class="ds-scrim" data-ds-close></div>
+
+    <div class="ds-main">
+        <header class="ds-top">
+            <button class="ds-icon-btn ds-burger" type="button" aria-label="Ouvrir le menu" data-ds-open>
+                <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+            </button>
+            <div>
+                <h1>{% block page_title %}Administration{% endblock %}</h1>
+                <p>{% block page_subtitle %}{{ 'now'|date('d/m/Y') }}{% endblock %}</p>
+            </div>
+            <div class="ds-top__right">
+                <button class="ds-icon-btn" type="button" aria-label="Changer de thème (clair / sombre)" data-ds-theme>
+                    <svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+                </button>
+                <a class="ds-icon-btn" href="{{ path('app_admin_messages') }}" aria-label="Messages">
+                    <svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg>
+                </a>
+                <div class="ds-user">
+                    <span class="ds-avatar">{{ initials }}</span>
+                    <div>
+                        <b>{{ u ? (u.prenom|default('')|capitalize ~ ' ' ~ u.nom|default('')|capitalize)|trim : 'Admin' }}</b>
+                        <small>{{ u ? u.email : '' }}</small>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="ds-content">
+            {% for message in app.flashes('success') %}
+                <div class="ds-flash">{{ message }}</div>
+            {% endfor %}
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+</div>
+
+<script>
+(() => {
+    const root = document.documentElement;
+    const shell = document.getElementById('ds');
+    try { if (localStorage.getItem('ds-theme') === 'light') root.classList.add('ds-light'); } catch (e) {}
+    document.querySelector('[data-ds-theme]').addEventListener('click', () => {
+        const light = root.classList.toggle('ds-light');
+        try { localStorage.setItem('ds-theme', light ? 'light' : 'dark'); } catch (e) {}
+    });
+    document.querySelector('[data-ds-open]').addEventListener('click', () => shell.classList.add('is-open'));
+    document.querySelector('[data-ds-close]').addEventListener('click', () => shell.classList.remove('is-open'));
+})();
+</script>
+{% endblock %}
