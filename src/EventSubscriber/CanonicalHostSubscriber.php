@@ -32,6 +32,10 @@ class CanonicalHostSubscriber implements EventSubscriberInterface
         }
 
         $request = $event->getRequest();
+        // Let's Encrypt validates every domain on its own: never redirect its challenge.
+        if (str_starts_with($request->getPathInfo(), '/.well-known/')) {
+            return;
+        }
         if (strcasecmp($request->getHost(), $this->canonicalHost) === 0) {
             return;
         }
