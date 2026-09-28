@@ -179,7 +179,7 @@ export function mountSiriusLogo(el) {
     mint: new MeshStandardMaterial({ color: new Color('#22c43f'), emissive: new Color('#2dff4f'), emissiveIntensity: 0.7, roughness: 0.3, metalness: 0, envMapIntensity: 0.35 }),
     dark: new MeshPhysicalMaterial({ color: MINT_DARK, metalness: 0.4, roughness: 0.45, clearcoat: 0.6, envMapIntensity: 0.5 }),
     white: new MeshStandardMaterial({ color: 0xb8ffc4, emissive: 0xd6ffdc, emissiveIntensity: 0.7, roughness: 0.3 }),
-    gold: new MeshStandardMaterial({ color: new Color('#c98600'), emissive: new Color('#ffab00'), emissiveIntensity: 0.75, roughness: 0.3, metalness: 0, envMapIntensity: 0.35 }),
+    gold: new MeshStandardMaterial({ color: new Color('#d9b400'), emissive: new Color('#ffd21f'), emissiveIntensity: 0.75, roughness: 0.3, metalness: 0, envMapIntensity: 0.35 }),
   };
 
   const logo = new Group();
@@ -236,7 +236,7 @@ export function mountSiriusLogo(el) {
   const solarGroup = new Group();
   const solar = text('-SOLAR', 1.5, 0.3, mats.gold);
   solar.mesh.position.z = -0.15;
-  solarGroup.add(solar.mesh, neonHalo('-SOLAR', 1.5, new Color('#ffb400')));
+  solarGroup.add(solar.mesh, neonHalo('-SOLAR', 1.5, new Color('#ffcf1a')));
   solarGroup.position.set(left - solar.box.min.x + 0.05, -0.26 - solar.box.max.y, 0);
   logo.add(solarGroup);
 
@@ -247,7 +247,7 @@ export function mountSiriusLogo(el) {
   const sparkle = new Mesh(new ExtrudeGeometry(star4(0.42, 0.08), { depth: 0.08, bevelEnabled: false }), mats.gold);
   sparkle.position.set(iX + 0.32, 0.26 + 1.5 * 0.72 + 0.42, 0);
   logo.add(sparkle);
-  const starGlow = glowSprite(new Color('#ffc233'), 2.6, true);
+  const starGlow = glowSprite(new Color('#ffd21f'), 2.6, true);
   starGlow.position.copy(sparkle.position).add(new Vector3(0, 0, 0.1));
   logo.add(starGlow);
   // A mint glow behind each brush.
