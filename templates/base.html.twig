@@ -743,6 +743,8 @@
     {% if not (app.request.pathInfo|default('')|length > 0 and '/admin' in app.request.pathInfo) %}
         {% include 'components/navbar.html.twig' %}
     {% endif %}
+    {# Logo 3D Sirius-Solar (navbar + hero de l'accueil) #}
+    <script type="module" src="{{ asset('js/sirius-logo3d.js') }}"></script>
 
     {% block javascripts %}
         {{ encore_entry_script_tags('app') }}

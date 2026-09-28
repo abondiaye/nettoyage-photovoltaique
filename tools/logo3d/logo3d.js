@@ -151,6 +151,8 @@ function buildRoller(mats, face) {
 
 export function mountSiriusLogo(el) {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // data-sirius-logo3d="compact": the small navbar version, calmer and lighter.
+  const compact = el.dataset.siriusLogo3d === 'compact';
   let renderer;
   try {
     renderer = new WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'low-power' });
@@ -281,7 +283,7 @@ export function mountSiriusLogo(el) {
     draw(performance.now());
   };
 
-  const TURN_EVERY = 9; // seconds between two full turns
+  const TURN_EVERY = compact ? 14 : 9; // seconds between two full turns
   const TURN_TIME = 1.8;
   const easeInOut = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
 
@@ -290,8 +292,9 @@ export function mountSiriusLogo(el) {
     if (!reduced) {
       const cycle = t % TURN_EVERY;
       const turn = cycle > TURN_EVERY - TURN_TIME ? easeInOut((cycle - (TURN_EVERY - TURN_TIME)) / TURN_TIME) : 0;
-      logo.rotation.y = Math.sin(t * 0.7) * 0.32 + turn * Math.PI * 2 + pointer.x * 0.25;
-      logo.rotation.x = Math.sin(t * 0.5) * 0.06 - pointer.y * 0.15;
+      const tilt = compact ? 0 : 1;
+      logo.rotation.y = Math.sin(t * 0.7) * (compact ? 0.2 : 0.32) + turn * Math.PI * 2 + pointer.x * 0.25 * tilt;
+      logo.rotation.x = Math.sin(t * 0.5) * 0.06 - pointer.y * 0.15 * tilt;
       logo.position.y = Math.sin(t * 1.3) * 0.08;
       top.userData.spin.rotation.z = -t * 3.2;
       bottom.userData.spin.rotation.z = t * 3.2;
