@@ -64,7 +64,11 @@
         z-index: 40;
     }
     .ds-brand { display: flex; align-items: center; gap: 10px; padding: 4px 10px 22px; text-decoration: none; }
-    .ds-brand svg { width: 38px; height: 38px; flex: none; }
+    .ds-brand svg { width: 26px; height: 50px; flex: none; overflow: visible; }
+    .ds-brush__roll { transform-box: fill-box; transform-origin: center; animation: dsSpin 6s linear infinite; }
+    .ds-brush__roll--b { animation-direction: reverse; }
+    @keyframes dsSpin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { .ds-brush__roll { animation: none; } }
     .ds-brand b { font: 800 19px/1 'Space Grotesk', system-ui, sans-serif; letter-spacing: 0.03em; color: #2dff4f; text-shadow: 0 0 10px rgba(45, 255, 79, 0.45); }
     .ds-brand b span { color: #ffd21f; text-shadow: 0 0 10px rgba(255, 210, 31, 0.45); }
     html.ds-light .ds-brand b { color: #0a9a3a; text-shadow: none; }
@@ -197,10 +201,23 @@
 <div class="ds" id="ds">
     <aside class="ds-side" aria-label="Menu administrateur">
         <a class="ds-brand" href="{{ path('app_admin_dashboard') }}">
-            <svg viewBox="0 0 64 64" aria-hidden="true">
-                <rect width="64" height="64" rx="14" fill="#03140e"/>
-                <circle cx="32" cy="32" r="21" fill="none" stroke="#2dff4f" stroke-width="5"/>
-                <path d="M32 17 L35 29 L47 32 L35 35 L32 47 L29 35 L17 32 L29 29 Z" fill="#ffd21f"/>
+            <svg class="ds-brush" viewBox="16 1 32 62" aria-hidden="true">
+                <defs>
+                    <filter id="dsGlow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="1.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                </defs>
+                <g filter="url(#dsGlow)">
+                    <g class="ds-brush__roll ds-brush__roll--a">
+                        <circle cx="32" cy="17" r="13.5" fill="none" stroke="#2dff4f" stroke-width="4" stroke-dasharray="1.6 1.2"/>
+                        <circle cx="32" cy="17" r="10.5" fill="#062417" stroke="#2dff4f" stroke-width="1.3"/>
+                        <path d="M32 10.5 L33.4 15.6 L38.5 17 L33.4 18.4 L32 23.5 L30.6 18.4 L25.5 17 L30.6 15.6 Z" fill="#d6ffdc"/>
+                    </g>
+                    <g class="ds-brush__roll ds-brush__roll--b">
+                        <circle cx="32" cy="47" r="13.5" fill="none" stroke="#2dff4f" stroke-width="4" stroke-dasharray="1.6 1.2"/>
+                        <circle cx="32" cy="47" r="10.5" fill="#062417" stroke="#2dff4f" stroke-width="1.3"/>
+                        <circle cx="32" cy="47" r="3.6" fill="none" stroke="#d6ffdc" stroke-width="2"/>
+                        <g stroke="#d6ffdc" stroke-width="1.6" stroke-linecap="round"><line x1="32" y1="38.8" x2="32" y2="40.4"/><line x1="32" y1="53.6" x2="32" y2="55.2"/><line x1="23.8" y1="47" x2="25.4" y2="47"/><line x1="38.6" y1="47" x2="40.2" y2="47"/></g>
+                    </g>
+                </g>
             </svg>
             <span><b>SIRIUS<span>-SOLAR</span></b><small>Administration</small></span>
         </a>
