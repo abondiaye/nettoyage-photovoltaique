@@ -1829,6 +1829,70 @@
         .section-title { font-size: 26px; letter-spacing: 0; }
     }
 
+    /* ===== « Promotions du Mois » : coupons néon dorés sur fond nuit =====
+       (#promotions pour passer devant les anciens styles « mode clair » gris) */
+    #promotions {
+        position: relative;
+        background:
+            radial-gradient(ellipse at 15% 20%, rgba(255, 210, 31, 0.14) 0%, transparent 45%),
+            radial-gradient(ellipse at 85% 80%, rgba(60, 214, 255, 0.16) 0%, transparent 50%),
+            repeating-linear-gradient(0deg, rgba(60, 214, 255, 0.05) 0 1px, transparent 1px 48px),
+            repeating-linear-gradient(90deg, rgba(60, 214, 255, 0.05) 0 1px, transparent 1px 48px),
+            linear-gradient(180deg, #04111c 0%, #02080f 100%);
+    }
+    #promotions .section-title { position: relative; }
+    #promotions .promotions-grid { gap: 36px; }
+    #promotions .promo-card {
+        /* Coupon: dark glass, dashed gold edge, round notches on both sides. */
+        background: linear-gradient(160deg, rgba(20, 34, 48, 0.92) 0%, rgba(6, 14, 24, 0.96) 100%);
+        backdrop-filter: none;
+        border: 2px dashed rgba(255, 210, 31, 0.75);
+        border-radius: 18px;
+        box-shadow: 0 0 26px rgba(255, 210, 31, 0.18), 0 20px 50px rgba(0, 0, 0, 0.5);
+        -webkit-mask: radial-gradient(circle 16px at 0 58%, transparent 15px, #000 16px) left / 51% 100% no-repeat,
+                      radial-gradient(circle 16px at 100% 58%, transparent 15px, #000 16px) right / 51% 100% no-repeat;
+                mask: radial-gradient(circle 16px at 0 58%, transparent 15px, #000 16px) left / 51% 100% no-repeat,
+                      radial-gradient(circle 16px at 100% 58%, transparent 15px, #000 16px) right / 51% 100% no-repeat;
+    }
+    #promotions .promo-card::before { background: radial-gradient(circle, rgba(255, 210, 31, 0.16) 0%, transparent 65%); }
+    #promotions .promo-card:hover {
+        transform: translateY(-8px) rotate(-1deg);
+        background: linear-gradient(160deg, rgba(26, 42, 58, 0.95) 0%, rgba(8, 18, 30, 0.98) 100%);
+        border-color: #ffd21f;
+        box-shadow: 0 0 40px rgba(255, 210, 31, 0.35), 0 26px 60px rgba(0, 0, 0, 0.55);
+    }
+    #promotions .promo-badge {
+        background: linear-gradient(135deg, #ffd21f, #ffb800);
+        color: #1a1200;
+        box-shadow: 0 0 18px rgba(255, 210, 31, 0.5);
+    }
+    #promotions .promo-title {
+        background: none;
+        -webkit-text-fill-color: #3cd6ff;
+        color: #3cd6ff;
+        filter: none;
+        text-shadow: 0 0 12px rgba(60, 214, 255, 0.55);
+    }
+    #promotions .promo-desc { color: rgba(230, 246, 255, 0.85); }
+    #promotions .promo-value {
+        font-size: 44px;
+        background: none;
+        -webkit-text-fill-color: #ffd21f;
+        color: #ffd21f;
+        filter: none;
+        text-shadow: 0 0 12px rgba(255, 210, 31, 0.8), 0 0 30px rgba(255, 184, 0, 0.45);
+        /* Dashed tear line under the value, between the notches. */
+        padding-bottom: 14px;
+        border-bottom: 2px dashed rgba(255, 210, 31, 0.35);
+    }
+    #promotions .promo-cta {
+        background: linear-gradient(135deg, #ffd21f, #ffe27a);
+        color: #1a1200;
+        box-shadow: 0 0 16px rgba(255, 210, 31, 0.35);
+    }
+    #promotions .promo-cta:hover { background: #ffd21f; box-shadow: 0 8px 28px rgba(255, 210, 31, 0.6); }
+    #promotions .promo-validity { color: rgba(255, 210, 31, 0.8); }
+
     /* ===== « Prêt à optimiser » : photo des brosses sur les panneaux en fond ===== */
     .cta-section {
         background-image:
