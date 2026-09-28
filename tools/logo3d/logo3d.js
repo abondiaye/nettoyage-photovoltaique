@@ -6,7 +6,7 @@ import {
   MeshPhysicalMaterial, MeshStandardMaterial, MeshBasicMaterial,
   CylinderGeometry, BoxGeometry, TorusGeometry, CircleGeometry, TubeGeometry, ConeGeometry,
   ExtrudeGeometry, PlaneGeometry, Shape, CatmullRomCurve3, Vector3, CanvasTexture,
-  PMREMGenerator, AdditiveBlending, SRGBColorSpace, ACESFilmicToneMapping, DirectionalLight, AmbientLight,
+  PMREMGenerator, AdditiveBlending, SRGBColorSpace, NoToneMapping, Sprite, SpriteMaterial, DirectionalLight, AmbientLight,
 } from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
@@ -58,6 +58,36 @@ function neonHalo(str, size, color) {
   const plane = new Mesh(new PlaneGeometry(w, h), mat);
   plane.position.set(minX - pad + w / 2, minY - pad + h / 2, -0.05);
   return plane;
+}
+
+// A round glow (with an optional four-point flare) that always faces the camera.
+function glowSprite(color, size, flare = false) {
+  const cv = document.createElement('canvas');
+  cv.width = cv.height = 256;
+  const ctx = cv.getContext('2d');
+  const c = `#${color.getHexString()}`;
+  const grad = ctx.createRadialGradient(128, 128, 0, 128, 128, 128);
+  grad.addColorStop(0, 'rgba(255,255,255,1)');
+  grad.addColorStop(0.12, c);
+  grad.addColorStop(0.45, c + '55');
+  grad.addColorStop(1, c + '00');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, 256, 256);
+  if (flare) {
+    ctx.globalCompositeOperation = 'lighter';
+    for (const [w, h] of [[256, 6], [6, 256]]) {
+      const g = ctx.createRadialGradient(128, 128, 0, 128, 128, 128);
+      g.addColorStop(0, 'rgba(255,255,255,0.95)');
+      g.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.fillStyle = g;
+      ctx.fillRect(128 - w / 2, 128 - h / 2, w, h);
+    }
+  }
+  const tex = new CanvasTexture(cv);
+  tex.colorSpace = SRGBColorSpace;
+  const sp = new Sprite(new SpriteMaterial({ map: tex, blending: AdditiveBlending, depthWrite: false, transparent: true }));
+  sp.scale.set(size, size, 1);
+  return sp;
 }
 
 function star4(outer, inner) {
@@ -130,8 +160,7 @@ export function mountSiriusLogo(el) {
   }
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   renderer.outputColorSpace = SRGBColorSpace;
-  renderer.toneMapping = ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 0.9;
+  renderer.toneMapping = NoToneMapping; // keep the neon colours saturated
   renderer.setClearColor(0x000000, 0);
   el.appendChild(renderer.domElement);
 
@@ -146,10 +175,11 @@ export function mountSiriusLogo(el) {
   camera.position.set(0, 0, 21);
 
   const mats = {
-    mint: new MeshPhysicalMaterial({ color: MINT, metalness: 0.55, roughness: 0.18, clearcoat: 1, clearcoatRoughness: 0.05, emissive: MINT, emissiveIntensity: 0.2, envMapIntensity: 1.4 }),
-    dark: new MeshPhysicalMaterial({ color: MINT_DARK, metalness: 0.4, roughness: 0.45, clearcoat: 0.6 }),
-    white: new MeshStandardMaterial({ color: 0xffffff, emissive: 0xffffff, emissiveIntensity: 0.35, roughness: 0.3 }),
-    gold: new MeshPhysicalMaterial({ color: GOLD, metalness: 0.9, roughness: 0.16, clearcoat: 1, clearcoatRoughness: 0.05, emissive: new Color('#d98200'), emissiveIntensity: 0.5, envMapIntensity: 2.2 }),
+    // Neon: the colour comes from the emission, the tubes read as lit glass.
+    mint: new MeshStandardMaterial({ color: new Color('#00a868'), emissive: new Color('#00f096'), emissiveIntensity: 0.7, roughness: 0.3, metalness: 0, envMapIntensity: 0.35 }),
+    dark: new MeshPhysicalMaterial({ color: MINT_DARK, metalness: 0.4, roughness: 0.45, clearcoat: 0.6, envMapIntensity: 0.5 }),
+    white: new MeshStandardMaterial({ color: 0xbfffe6, emissive: 0xd9fff0, emissiveIntensity: 0.7, roughness: 0.3 }),
+    gold: new MeshStandardMaterial({ color: new Color('#c98600'), emissive: new Color('#ffab00'), emissiveIntensity: 0.75, roughness: 0.3, metalness: 0, envMapIntensity: 0.35 }),
   };
 
   const logo = new Group();
@@ -197,8 +227,11 @@ export function mountSiriusLogo(el) {
   // SIRIUS above the pole, -SOLAR below it, both left-aligned after the brushes.
   const left = -2.2;
   const sirius = text('SIRIUS', 1.5, 0.42, mats.mint);
-  sirius.mesh.position.set(left - sirius.box.min.x, 0.26 - sirius.box.min.y, -0.21);
-  logo.add(sirius.mesh);
+  const siriusGroup = new Group();
+  sirius.mesh.position.z = -0.21;
+  siriusGroup.add(sirius.mesh, neonHalo('SIRIUS', 1.5, new Color('#00ffa6')));
+  siriusGroup.position.set(left - sirius.box.min.x, 0.26 - sirius.box.min.y, 0);
+  logo.add(siriusGroup);
 
   const solarGroup = new Group();
   const solar = text('-SOLAR', 1.5, 0.3, mats.gold);
@@ -214,6 +247,17 @@ export function mountSiriusLogo(el) {
   const sparkle = new Mesh(new ExtrudeGeometry(star4(0.42, 0.08), { depth: 0.08, bevelEnabled: false }), mats.gold);
   sparkle.position.set(iX + 0.32, 0.26 + 1.5 * 0.72 + 0.42, 0);
   logo.add(sparkle);
+  const starGlow = glowSprite(new Color('#ffc233'), 2.6, true);
+  starGlow.position.copy(sparkle.position).add(new Vector3(0, 0, 0.1));
+  logo.add(starGlow);
+  // A mint glow behind each brush.
+  const brushGlows = [top, bottom].map((r) => {
+    const gl = glowSprite(new Color('#00ffa6'), 2.9);
+    gl.material.opacity = 0.45;
+    gl.position.copy(r.position).add(new Vector3(0, 0, -0.5));
+    logo.add(gl);
+    return gl;
+  });
 
   // Centre the whole logo.
   logo.children.forEach((c) => { c.position.x -= 0.3; });
@@ -251,11 +295,22 @@ export function mountSiriusLogo(el) {
       logo.position.y = Math.sin(t * 1.3) * 0.08;
       top.userData.spin.rotation.z = -t * 3.2;
       bottom.userData.spin.rotation.z = t * 3.2;
+      // The star twinkles: slow turn, pulsing glow and a sharp sparkle every few seconds.
       sparkle.rotation.z = t * 0.8;
-      // Neon flicker: steady glow with a brief stutter now and then.
+      const tw = Math.pow(Math.max(0, Math.sin(t * 2.1)), 12);
+      const pulse = 0.75 + Math.sin(t * 4.3) * 0.15 + tw * 0.9;
+      starGlow.material.opacity = Math.min(1, pulse);
+      starGlow.scale.setScalar(2.2 + pulse * 1.1);
+      starGlow.material.rotation = t * 0.3;
+      sparkle.scale.setScalar(1 + tw * 0.25);
+      // Neon flicker: steady glow with a brief stutter now and then (not at the same time).
       const f = t % 6 > 5.65 ? (Math.sin(t * 90) > 0 ? 0.35 : 1) : 1;
-      mats.gold.emissiveIntensity = (0.5 + Math.sin(t * 3) * 0.06) * f;
-      solarGroup.children[1].material.opacity = (0.55 + Math.sin(t * 3) * 0.08) * f;
+      const f2 = (t + 2.7) % 7 > 6.75 ? (Math.sin(t * 70) > 0 ? 0.4 : 1) : 1;
+      mats.gold.emissiveIntensity = (0.75 + Math.sin(t * 3) * 0.08) * f;
+      solarGroup.children[1].material.opacity = (0.8 + Math.sin(t * 3) * 0.1) * f;
+      mats.mint.emissiveIntensity = (0.7 + Math.sin(t * 2.4) * 0.07) * f2;
+      siriusGroup.children[1].material.opacity = (0.7 + Math.sin(t * 2.4) * 0.1) * f2;
+      brushGlows.forEach((gl) => { gl.material.opacity = 0.4 * f2; });
     } else {
       logo.rotation.y = -0.18;
     }
