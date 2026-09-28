@@ -13,9 +13,9 @@ import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
 import fontData from './exo2.json';
 
-const MINT = new Color('#00d98b');
-const MINT_DARK = new Color('#065c41');
-const GOLD = new Color('#ffcc4d');
+const MINT = new Color('#00a86b');
+const MINT_DARK = new Color('#04462f');
+const GOLD = new Color('#f2b233');
 
 const font = new FontLoader().parse(fontData);
 
@@ -138,10 +138,10 @@ export function mountSiriusLogo(el) {
   camera.position.set(0, 0, 21);
 
   const mats = {
-    mint: new MeshPhysicalMaterial({ color: MINT, metalness: 0.15, roughness: 0.38, clearcoat: 0.5, clearcoatRoughness: 0.3, emissive: MINT, emissiveIntensity: 0.18, envMapIntensity: 0.55 }),
+    mint: new MeshPhysicalMaterial({ color: MINT, metalness: 0.55, roughness: 0.18, clearcoat: 1, clearcoatRoughness: 0.05, emissive: MINT, emissiveIntensity: 0.2, envMapIntensity: 1.4 }),
     dark: new MeshPhysicalMaterial({ color: MINT_DARK, metalness: 0.4, roughness: 0.45, clearcoat: 0.6 }),
     white: new MeshStandardMaterial({ color: 0xffffff, emissive: 0xffffff, emissiveIntensity: 0.35, roughness: 0.3 }),
-    gold: new MeshPhysicalMaterial({ color: GOLD, metalness: 0.85, roughness: 0.28, clearcoat: 1, clearcoatRoughness: 0.12, emissive: new Color('#e08a00'), emissiveIntensity: 0.4, envMapIntensity: 1.8 }),
+    gold: new MeshPhysicalMaterial({ color: GOLD, metalness: 0.9, roughness: 0.16, clearcoat: 1, clearcoatRoughness: 0.05, emissive: new Color('#d98200'), emissiveIntensity: 0.5, envMapIntensity: 2.2 }),
   };
 
   const logo = new Group();
@@ -246,7 +246,7 @@ export function mountSiriusLogo(el) {
       sparkle.rotation.z = t * 0.8;
       // Neon flicker: steady glow with a brief stutter now and then.
       const f = t % 6 > 5.65 ? (Math.sin(t * 90) > 0 ? 0.35 : 1) : 1;
-      mats.gold.emissiveIntensity = (0.38 + Math.sin(t * 3) * 0.06) * f;
+      mats.gold.emissiveIntensity = (0.5 + Math.sin(t * 3) * 0.06) * f;
       solarGroup.children[1].material.opacity = (0.55 + Math.sin(t * 3) * 0.08) * f;
     } else {
       logo.rotation.y = -0.18;
