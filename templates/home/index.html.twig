@@ -1527,6 +1527,57 @@
         .footer-main { flex-direction: column !important; align-items: center !important; gap: 30px !important; padding: 20px 0 !important; }
         .footer-main > div { width: 100%; }
     }
+
+    /* ===== Cartes « Nos Services » : verre sombre + néon, texte bien lisible ===== */
+    .services-section .service-card {
+        background: linear-gradient(160deg, rgba(8, 40, 28, 0.88) 0%, rgba(3, 18, 14, 0.92) 100%);
+        border: 1px solid rgba(45, 255, 79, 0.45);
+        box-shadow: 0 0 24px rgba(45, 255, 79, 0.12), 0 18px 40px rgba(0, 0, 0, 0.45),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+    .services-section .service-card::before { background: none; backdrop-filter: none; }
+    .services-section .service-card:hover {
+        border-color: #2dff4f;
+        box-shadow: 0 0 34px rgba(45, 255, 79, 0.35), 0 24px 60px rgba(0, 0, 0, 0.5);
+        animation: none;
+    }
+    .services-section .card-icon {
+        width: 76px;
+        height: 76px;
+        margin: 0 auto 20px;
+        display: grid;
+        place-items: center;
+        font-size: 38px;
+        border-radius: 50%;
+        background: rgba(45, 255, 79, 0.08);
+        border: 1px solid rgba(45, 255, 79, 0.35);
+        box-shadow: 0 0 18px rgba(45, 255, 79, 0.25);
+    }
+    .services-section .service-card h3 {
+        color: #2dff4f;
+        font-size: 23px;
+        text-shadow: 0 0 12px rgba(45, 255, 79, 0.45);
+    }
+    .services-section .service-card p {
+        color: rgba(234, 255, 240, 0.85);
+        font-size: 16px;
+    }
+    .services-section .btn-learn {
+        display: inline-block;
+        text-decoration: none;
+        border: 1px solid #ffd21f;
+        color: #ffd21f;
+        border-radius: 999px;
+        padding: 11px 22px;
+        text-shadow: 0 0 8px rgba(255, 210, 31, 0.5);
+        box-shadow: 0 0 14px rgba(255, 210, 31, 0.2);
+    }
+    .services-section .btn-learn:hover {
+        background: #ffd21f;
+        color: #021208;
+        text-shadow: none;
+        box-shadow: 0 0 24px rgba(255, 210, 31, 0.55);
+    }
     @keyframes logo3dFloat {
         0%, 100% { transform: translateY(0); }
         50% { transform: translateY(-6px); }
@@ -1684,21 +1735,21 @@
             <div class="card-icon">💧</div>
             <h3>Nettoyage Premium</h3>
             <p>Eau osmosée haute pression, résultats garantis et performance maximale</p>
-            <button class="btn-learn">En savoir plus</button>
+            <a class="btn-learn" href="/devis">En savoir plus</a>
         </div>
 
         <div class="service-card">
             <div class="card-icon">🔍</div>
             <h3>Inspection Complète</h3>
             <p>Diagnostic professionnel avec rapport détaillé de vos installations</p>
-            <button class="btn-learn">En savoir plus</button>
+            <a class="btn-learn" href="/devis">En savoir plus</a>
         </div>
 
         <div class="service-card">
             <div class="card-icon">⚡</div>
             <h3>Maintenance Régulière</h3>
             <p>Contrats d'entretien personnalisés pour une performance durable</p>
-            <button class="btn-learn">En savoir plus</button>
+            <a class="btn-learn" href="/devis">En savoir plus</a>
         </div>
     </div>
 </section>
