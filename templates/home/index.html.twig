@@ -1567,6 +1567,278 @@
         .footer-main > div { width: 100%; }
     }
 
+
+    /* ===== « Pourquoi Sirius-Solar ? » : vitrines 3D ouvertes avec un objet animé dedans =====
+       Boîte en CSS 3D (fond, côtés, plafond, plancher de la niche) ; le panneau du bas porte le texte,
+       le côté droit une bannière verticale. Tranches bleu néon, objets lumineux. */
+    .why-grid {
+        --w: 250px;   /* largeur */
+        --h: 340px;   /* hauteur */
+        --d: 120px;   /* profondeur */
+        --niche: 165px; /* hauteur de la vitrine ouverte */
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+        gap: 40px 30px;
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 20px 10px 30px;
+        justify-items: center;
+    }
+    .why-box { width: var(--w); height: calc(var(--h) + 30px); perspective: 1100px; }
+    .why-box__scene {
+        position: relative;
+        width: var(--w);
+        height: var(--h);
+        transform-style: preserve-3d;
+        transform: rotateX(-12deg) rotateY(-28deg);
+        transition: transform 0.8s cubic-bezier(.2, .8, .2, 1);
+    }
+    .why-box:hover .why-box__scene { transform: rotateX(-6deg) rotateY(-8deg); }
+
+    .why-face {
+        position: absolute;
+        box-sizing: border-box;
+        border: 1px solid rgba(60, 214, 255, 0.55);
+        box-shadow: inset 0 0 18px rgba(60, 214, 255, 0.12);
+    }
+    .why-face--back {
+        inset: 0;
+        transform: translateZ(calc(var(--d) * -1));
+        background: radial-gradient(ellipse at 50% 35%, var(--glow, rgba(60, 214, 255, 0.35)) 0%, transparent 60%),
+                    linear-gradient(180deg, #0b2438 0%, #061420 100%);
+    }
+    .why-face--left,
+    .why-face--right {
+        top: 0;
+        width: var(--d);
+        height: var(--h);
+        transform-origin: left center;
+        transform: rotateY(90deg);
+        background: linear-gradient(90deg, #0e3150 0%, #081a2b 100%);
+    }
+    /* Left wall only around the open niche: below it, it is hidden behind the text panel anyway
+       (drawing it full height makes Chrome paint it over the panel). */
+    .why-face--left { left: 0; height: var(--niche); }
+    .why-face--right { left: var(--w); background: linear-gradient(90deg, #12406a 0%, #0a2238 100%); }
+    .why-face--top,
+    .why-face--floor,
+    .why-face--bottom {
+        left: 0;
+        width: var(--w);
+        height: var(--d);
+        transform-origin: center top;
+        transform: rotateX(-90deg);
+        background: linear-gradient(180deg, #0d2c47 0%, #07182a 100%);
+    }
+    .why-face--top { top: 0; }
+    .why-face--floor { top: var(--niche); background: linear-gradient(180deg, #16466e 0%, #0b2640 100%); }
+    .why-face--bottom { top: var(--h); box-shadow: 0 0 40px rgba(60, 214, 255, 0.25), 0 30px 60px rgba(0, 0, 0, 0.6); }
+
+    /* Vertical banner on the right side, like the Monopoly utility cards. */
+    .why-banner {
+        position: absolute;
+        left: 50%;
+        top: 58%;
+        transform: translate(-50%, -50%) rotate(-90deg);
+        white-space: nowrap;
+        padding: 8px 14px;
+        border-top: 1px solid rgba(60, 214, 255, 0.7);
+        border-bottom: 1px solid rgba(60, 214, 255, 0.7);
+        font: 700 15px/1 'Space Grotesk', system-ui, sans-serif;
+        letter-spacing: 0.3em;
+        color: #3cd6ff;
+        text-shadow: 0 0 10px rgba(60, 214, 255, 0.7);
+    }
+
+    /* Front panel with the text (lower part of the front; the upper part is the open niche). */
+    .why-face--front {
+        left: 0;
+        top: var(--niche);
+        width: var(--w);
+        height: calc(var(--h) - var(--niche));
+        padding: 18px 18px 14px;
+        background: linear-gradient(180deg, rgba(8, 30, 50, 0.96) 0%, rgba(4, 16, 28, 0.98) 100%);
+        border-color: rgba(60, 214, 255, 0.8);
+        box-shadow: 0 0 22px rgba(60, 214, 255, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        text-align: left;
+        color: #e6f6ff;
+    }
+    .why-face--front h3 {
+        margin: 0 0 8px;
+        padding-left: 38px;
+        font: 700 19px/1.2 'Space Grotesk', system-ui, sans-serif;
+        color: #3cd6ff;
+        text-shadow: 0 0 10px rgba(60, 214, 255, 0.5);
+    }
+    .why-face--front p { margin: 0; font-size: 14px; line-height: 1.5; color: rgba(230, 246, 255, 0.85); }
+    .why-num {
+        position: absolute;
+        left: 16px;
+        top: 16px;
+        width: 28px;
+        height: 28px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        font: 800 14px/1 system-ui, sans-serif;
+        color: #021208;
+        background: #ffd21f;
+        box-shadow: 0 0 14px rgba(255, 210, 31, 0.6);
+    }
+
+    /* Object standing in the middle of the niche. */
+    .why-object {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: var(--w);
+        height: var(--niche);
+        transform: translateZ(calc(var(--d) * -0.5));
+        display: grid;
+        place-items: center;
+    }
+    .why-box--yield { --glow: rgba(255, 210, 31, 0.35); }
+    .why-box--water { --glow: rgba(60, 214, 255, 0.4); }
+    .why-box--eco   { --glow: rgba(45, 255, 79, 0.35); }
+    .why-box--time  { --glow: rgba(255, 210, 31, 0.3); }
+
+    /* 1. Rising bars */
+    .why-bars { position: relative; display: flex; align-items: flex-end; gap: 10px; height: 100px; margin-top: 30px; }
+    .why-bars span {
+        width: 22px;
+        border-radius: 4px 4px 0 0;
+        background: linear-gradient(180deg, #ffe27a 0%, #ffb800 100%);
+        box-shadow: 0 0 14px rgba(255, 210, 31, 0.7);
+        transform-origin: bottom;
+        animation: whyGrow 3s ease-in-out infinite;
+    }
+    .why-bars span:nth-child(1) { height: 35px; }
+    .why-bars span:nth-child(2) { height: 60px; animation-delay: 0.15s; }
+    .why-bars span:nth-child(3) { height: 92px; animation-delay: 0.3s; }
+    .why-arrow {
+        position: absolute;
+        right: -18px;
+        top: -14px;
+        width: 0;
+        height: 0;
+        border-left: 9px solid transparent;
+        border-right: 9px solid transparent;
+        border-bottom: 16px solid #2dff4f;
+        filter: drop-shadow(0 0 6px rgba(45, 255, 79, 0.9));
+        animation: whyUp 3s ease-in-out infinite;
+    }
+    @keyframes whyGrow { 0%, 10% { transform: scaleY(0.15); } 45%, 85% { transform: scaleY(1); } 100% { transform: scaleY(0.15); } }
+    @keyframes whyUp { 0%, 30% { opacity: 0; transform: translateY(10px); } 50%, 85% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; } }
+
+    /* 2. Tap with a falling drop and a ripple */
+    .why-tap {
+        position: absolute;
+        top: 22px;
+        left: 50%;
+        width: 60px;
+        height: 22px;
+        margin-left: -30px;
+        border-radius: 6px 6px 14px 14px;
+        background: linear-gradient(180deg, #d8e6f2 0%, #7b8fa3 100%);
+        box-shadow: 0 0 10px rgba(60, 214, 255, 0.4);
+    }
+    .why-tap::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        bottom: -12px;
+        width: 14px;
+        height: 14px;
+        margin-left: -7px;
+        border-radius: 0 0 5px 5px;
+        background: #9fb3c6;
+    }
+    .why-drop {
+        position: absolute;
+        top: 58px;
+        left: 50%;
+        width: 14px;
+        height: 18px;
+        margin-left: -7px;
+        border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+        background: #8ff4ff;
+        box-shadow: 0 0 12px #3cd6ff, inset 0 0 6px #fff;
+        animation: whyDrip 2.2s ease-in infinite;
+    }
+    .why-ripple {
+        position: absolute;
+        bottom: 12px;
+        left: 50%;
+        width: 90px;
+        height: 20px;
+        margin-left: -45px;
+        border: 2px solid rgba(143, 244, 255, 0.8);
+        border-radius: 50%;
+        opacity: 0;
+        animation: whyRipple 2.2s ease-out infinite;
+    }
+    @keyframes whyDrip { 0% { transform: translateY(0) scale(0.4); opacity: 0; } 15% { transform: translateY(0) scale(1); opacity: 1; } 70% { transform: translateY(70px); opacity: 1; } 72%, 100% { transform: translateY(72px); opacity: 0; } }
+    @keyframes whyRipple { 0%, 68% { transform: scale(0.2); opacity: 0; } 72% { opacity: 1; } 100% { transform: scale(1); opacity: 0; } }
+
+    /* 3. Floating leaf */
+    .why-leaf {
+        font-size: 64px;
+        filter: drop-shadow(0 0 14px rgba(45, 255, 79, 0.8));
+        animation: whyFloat 4s ease-in-out infinite;
+    }
+    @keyframes whyFloat { 0%, 100% { transform: translateY(6px) rotate(-8deg); } 50% { transform: translateY(-10px) rotate(8deg); } }
+
+    /* 4. Clock */
+    .why-clock {
+        position: relative;
+        width: 96px;
+        height: 96px;
+        border-radius: 50%;
+        border: 3px solid #ffd21f;
+        box-shadow: 0 0 18px rgba(255, 210, 31, 0.6), inset 0 0 14px rgba(255, 210, 31, 0.3);
+        display: grid;
+        place-items: center;
+    }
+    .why-clock b { margin-top: 38px; font: 800 13px/1 system-ui, sans-serif; color: #ffd21f; letter-spacing: 0.08em; }
+    .why-hand {
+        position: absolute;
+        left: 50%;
+        bottom: 50%;
+        width: 3px;
+        margin-left: -1.5px;
+        border-radius: 2px;
+        background: #fff;
+        transform-origin: bottom center;
+        box-shadow: 0 0 6px #fff;
+    }
+    .why-hand--h { height: 24px; animation: whySpin 12s linear infinite; }
+    .why-hand--m { height: 36px; background: #3cd6ff; box-shadow: 0 0 8px #3cd6ff; animation: whySpin 2s linear infinite; }
+    @keyframes whySpin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 700px) {
+        .why-grid { grid-template-columns: 1fr; }
+        .why-box__scene { transform: rotateX(-10deg) rotateY(-18deg); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .why-box__scene, .why-box:hover .why-box__scene { transition: none; }
+        .why-bars span, .why-arrow, .why-drop, .why-ripple, .why-leaf, .why-hand { animation: none; }
+    }
+
+    /* Mobile : titres de section sur une ligne (le texte animé est découpé lettre par lettre). */
+    @media (max-width: 480px) {
+        .section-title { font-size: 26px; letter-spacing: 0; }
+    }
+
+    /* ===== « Prêt à optimiser » : photo des brosses sur les panneaux en fond ===== */
+    .cta-section {
+        background-image:
+            linear-gradient(180deg, rgba(3, 18, 14, 0.78) 0%, rgba(3, 18, 14, 0.55) 45%, rgba(3, 18, 14, 0.85) 100%),
+            url("{{ asset('images/brosses-sur-panneaux.jpg') }}");
+        background-size: cover;
+        background-position: center;
+        background-attachment: scroll; /* "fixed" is broken on iPhone */
+    }
+
     /* ===== Cartes « Nos Services » : dalles 3D façon panneau photovoltaïque =====
        20 couches empilées en profondeur donnent l'épaisseur (80 px) ; la carte pivote au survol. */
     .services-section .services-grid { gap: 48px; padding: 20px 10px 40px; }
@@ -1873,30 +2145,84 @@
     <div style="position: relative; z-index: 1;">
         <h2 class="section-title"><span class="scramble-green" id="avantagesScramble" data-text="Pourquoi Sirius-Solar ?"></span></h2>
 
-        <div class="advantages-grid">
-        <div class="advantage-card">
-            <div class="advantage-icon">📈</div>
-            <h3>Rendement +25%</h3>
-            <p>Retrouvez jusqu'à 25% de rendement perdu par la saleté et les dépôts</p>
-        </div>
+        <div class="why-grid">
+            <article class="why-box why-box--yield">
+                <div class="why-box__scene">
+                    <div class="why-face why-face--back"></div>
+                    <div class="why-face why-face--left"></div>
+                    <div class="why-face why-face--right"><span class="why-banner">RENDEMENT</span></div>
+                    <div class="why-face why-face--top"></div>
+                    <div class="why-face why-face--floor"></div>
+                    <div class="why-face why-face--bottom"></div>
+                    <div class="why-object" aria-hidden="true">
+                        <div class="why-bars"><span></span><span></span><span></span><i class="why-arrow"></i></div>
+                    </div>
+                    <div class="why-face why-face--front">
+                        <span class="why-num">1</span>
+                        <h3>Rendement +25%</h3>
+                        <p>Retrouvez jusqu'à 25% de rendement perdu par la saleté et les dépôts</p>
+                    </div>
+                </div>
+            </article>
 
-        <div class="advantage-card">
-            <div class="advantage-icon">💧</div>
-            <h3>Eau Osmosée</h3>
-            <p>Nettoyage avec eau pure, sans résidu, sans trace sur vos panneaux</p>
-        </div>
+            <article class="why-box why-box--water">
+                <div class="why-box__scene">
+                    <div class="why-face why-face--back"></div>
+                    <div class="why-face why-face--left"></div>
+                    <div class="why-face why-face--right"><span class="why-banner">EAU PURE</span></div>
+                    <div class="why-face why-face--top"></div>
+                    <div class="why-face why-face--floor"></div>
+                    <div class="why-face why-face--bottom"></div>
+                    <div class="why-object" aria-hidden="true">
+                        <div class="why-tap"></div>
+                        <div class="why-drop"></div>
+                        <div class="why-ripple"></div>
+                    </div>
+                    <div class="why-face why-face--front">
+                        <span class="why-num">2</span>
+                        <h3>Eau Osmosée</h3>
+                        <p>Nettoyage avec eau pure, sans résidu, sans trace sur vos panneaux</p>
+                    </div>
+                </div>
+            </article>
 
-        <div class="advantage-card">
-            <div class="advantage-icon">🌍</div>
-            <h3>Zéro Chimique</h3>
-            <p>Approach écologique respectueuse de l'environnement et vos installations</p>
-        </div>
+            <article class="why-box why-box--eco">
+                <div class="why-box__scene">
+                    <div class="why-face why-face--back"></div>
+                    <div class="why-face why-face--left"></div>
+                    <div class="why-face why-face--right"><span class="why-banner">ÉCOLOGIQUE</span></div>
+                    <div class="why-face why-face--top"></div>
+                    <div class="why-face why-face--floor"></div>
+                    <div class="why-face why-face--bottom"></div>
+                    <div class="why-object" aria-hidden="true">
+                        <div class="why-leaf">🌿</div>
+                    </div>
+                    <div class="why-face why-face--front">
+                        <span class="why-num">3</span>
+                        <h3>Zéro Chimique</h3>
+                        <p>Approche écologique, respectueuse de l'environnement et de vos installations</p>
+                    </div>
+                </div>
+            </article>
 
-        <div class="advantage-card">
-            <div class="advantage-icon">⏱️</div>
-            <h3>Devis en 48h</h3>
-            <p>Service rapide et efficace, réponse garantie en moins de 2 jours</p>
-        </div>
+            <article class="why-box why-box--time">
+                <div class="why-box__scene">
+                    <div class="why-face why-face--back"></div>
+                    <div class="why-face why-face--left"></div>
+                    <div class="why-face why-face--right"><span class="why-banner">RAPIDE</span></div>
+                    <div class="why-face why-face--top"></div>
+                    <div class="why-face why-face--floor"></div>
+                    <div class="why-face why-face--bottom"></div>
+                    <div class="why-object" aria-hidden="true">
+                        <div class="why-clock"><i class="why-hand why-hand--h"></i><i class="why-hand why-hand--m"></i><b>48h</b></div>
+                    </div>
+                    <div class="why-face why-face--front">
+                        <span class="why-num">4</span>
+                        <h3>Devis en 48h</h3>
+                        <p>Service rapide et efficace, réponse garantie en moins de 2 jours</p>
+                    </div>
+                </div>
+            </article>
         </div>
     </div>
 </section>
