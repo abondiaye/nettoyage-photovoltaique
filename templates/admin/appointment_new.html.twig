@@ -1,0 +1,42 @@
+{% extends 'admin/_shell.html.twig' %}
+
+{% block title %}Nouveau rendez-vous - Admin Sirius-Solar{% endblock %}
+{% block page_title %}Nouveau rendez-vous{% endblock %}
+{% block page_subtitle %}Pour un client qui a appelé ou écrit : le rendez-vous est enregistré comme confirmé{% endblock %}
+
+{% block admin_styles %}
+    .nf { max-width: 760px; }
+    .nf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+    .nf .full { grid-column: 1 / -1; }
+    .field { margin-bottom: 16px; }
+    .field label { display: block; margin-bottom: 7px; font-size: 14px; font-weight: 600; color: var(--text); }
+    .field label em { color: var(--gold); font-style: normal; }
+    .field input, .field textarea { width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--line-strong); background: var(--panel-2); color: var(--text); font: 400 15px/1.5 'Poppins', system-ui, sans-serif; color-scheme: dark; }
+    html.ds-light .field input, html.ds-light .field textarea { color-scheme: light; }
+    .field input:focus, .field textarea:focus { outline: none; border-color: var(--mint); box-shadow: 0 0 0 3px rgba(45, 255, 79, 0.15); }
+    .field textarea { min-height: 110px; resize: vertical; }
+    .actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    @media (max-width: 560px) { .nf-grid { grid-template-columns: 1fr; } .actions .ds-btn { flex: 1; } }
+{% endblock %}
+
+{% block content %}
+    {% if errors is not empty %}
+        <div class="ds-flash ds-flash--error">Le rendez-vous n'a pas été enregistré :<ul>{% for e in errors %}<li>{{ e }}</li>{% endfor %}</ul></div>
+    {% endif %}
+
+    <form method="post" class="ds-card nf">
+        <input type="hidden" name="_token" value="{{ csrf_token('rdv-new') }}">
+        <div class="nf-grid">
+            <div class="field full"><label for="nom">Nom du client <em>*</em></label><input id="nom" name="nom" value="{{ values.nom }}" placeholder="Ex : Martine Rochat" required></div>
+            <div class="field"><label for="telephone">Téléphone</label><input id="telephone" name="telephone" type="tel" value="{{ values.telephone }}" placeholder="079 123 45 67"></div>
+            <div class="field"><label for="email">E-mail</label><input id="email" name="email" type="email" value="{{ values.email }}" placeholder="client@exemple.ch"></div>
+            <div class="field"><label for="date">Date <em>*</em></label><input id="date" name="date" type="date" value="{{ values.date }}" required></div>
+            <div class="field"><label for="heure">Heure</label><input id="heure" name="heure" type="time" step="900" value="{{ values.heure }}"></div>
+            <div class="field full"><label for="notes">Adresse et remarques</label><textarea id="notes" name="notes" placeholder="Adresse de l'installation, nombre de panneaux, accès…">{{ values.notes }}</textarea></div>
+        </div>
+        <div class="actions">
+            <button class="ds-btn ds-btn--primary" type="submit">Enregistrer le rendez-vous</button>
+            <a class="ds-btn ds-btn--ghost" href="{{ path('app_admin_appointments') }}">Annuler</a>
+        </div>
+    </form>
+{% endblock %}

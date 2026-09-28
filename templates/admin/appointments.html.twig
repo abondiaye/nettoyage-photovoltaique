@@ -1,54 +1,230 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/_shell.html.twig' %}
 
-{% block title %}Admin - Rendez-vous - Solar Cleaning{% endblock %}
+{% block title %}Rendez-vous - Admin Sirius-Solar{% endblock %}
+{% block page_title %}Rendez-vous{% endblock %}
+{% block page_subtitle %}Confirmez, déplacez, annulez ou ajoutez des rendez-vous{% endblock %}
 
-{% block body %}
-<div class="container mx-auto px-4 py-8">
-    <h1 class="text-4xl font-bold text-bleu-nuit mb-8">Tous les rendez-vous</h1>
+{% set mois_fr = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'] %}
+{% set badge = {pending: 'wip', proposed: 'new', confirmed: 'ok', done: 'done', refused: 'ko', cancelled: 'ko'} %}
 
-    <div class="bg-white rounded-lg shadow overflow-hidden">
-        <table class="w-full">
-            <thead class="bg-bleu-nuit text-white">
-                <tr>
-                    <th class="px-6 py-3 text-left">Membre</th>
-                    <th class="px-6 py-3 text-left">Date</th>
-                    <th class="px-6 py-3 text-left">Heure</th>
-                    <th class="px-6 py-3 text-left">Statut</th>
-                    <th class="px-6 py-3 text-left">Réservé le</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for appointment in appointments %}
-                    <tr class="border-b hover:bg-gray-50">
-                        <td class="px-6 py-3">{{ appointment.user.firstName }} {{ appointment.user.lastName }}</td>
-                        <td class="px-6 py-3">{{ appointment.date ? appointment.date.format('d/m/Y') : 'N/A' }}</td>
-                        <td class="px-6 py-3">{{ appointment.timeSlot }}</td>
-                        <td class="px-6 py-3">
-                            <span class="px-3 py-1 rounded-full text-white text-sm font-semibold
-                                {% if appointment.status == 'SCHEDULED' %}bg-blue-500
-                                {% elseif appointment.status == 'COMPLETED' %}bg-green-500
-                                {% else %}bg-red-500
-                                {% endif %}">
-                                {{ {'SCHEDULED': 'Prévu', 'COMPLETED': 'Terminé', 'CANCELLED': 'Annulé'}[appointment.status] ?? appointment.status }}
-                            </span>
-                        </td>
-                        <td class="px-6 py-3 text-sm text-gray-500">{{ appointment.createdAt ? appointment.createdAt.format('d/m/Y H:i') : 'N/A' }}</td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="5" class="px-6 py-4 text-center text-gray-500">Aucun rendez-vous trouvé</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+{% block admin_styles %}
+    .rdv-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+    .rdv-sum { display: flex; gap: 10px; flex-wrap: wrap; }
+    .rdv-sum a { text-decoration: none; }
+    .ds-badge--done { background: rgba(143, 179, 163, 0.16); color: var(--muted); }
+
+    /* Calendar */
+    .cal-head { display: flex; align-items: center; gap: 10px; }
+    .cal-head h2 { min-width: 170px; text-align: center; text-transform: capitalize; }
+    .cal-nav { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 10px; border: 1px solid var(--line-strong); color: var(--text); text-decoration: none; font-size: 18px; }
+    .cal-nav:hover { background: var(--panel-2); }
+    .cal { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); border-top: 1px solid var(--line); border-left: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+    .cal__dow { padding: 10px; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); background: var(--panel-2); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); text-align: center; }
+    .cal__day { position: relative; min-height: 104px; padding: 8px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+    .cal__day.is-out { background: color-mix(in srgb, var(--panel-2) 50%, transparent); }
+    .cal__day.is-out .cal__num { opacity: 0.4; }
+    .cal__num { font-size: 13px; font-weight: 600; color: var(--muted); }
+    .cal__day.is-today .cal__num { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--mint); color: #03120e; }
+    .cal__add { position: absolute; top: 6px; right: 6px; width: 24px; height: 24px; display: grid; place-items: center; border-radius: 7px; color: var(--muted); text-decoration: none; opacity: 0; transition: opacity 0.15s; }
+    .cal__day:hover .cal__add { opacity: 1; }
+    .cal__add:hover { background: var(--mint); color: #03120e; }
+    .chip { display: block; padding: 4px 7px; border-radius: 6px; font-size: 12px; line-height: 1.3; text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border-left: 3px solid; }
+    .chip b { font-weight: 700; }
+    .chip--pending { background: rgba(255, 210, 31, 0.12); border-color: var(--gold); color: var(--text); }
+    .chip--proposed { background: rgba(60, 214, 255, 0.12); border-color: var(--blue); color: var(--text); }
+    .chip--confirmed { background: rgba(45, 255, 79, 0.12); border-color: var(--mint); color: var(--text); }
+    .chip--done { background: var(--panel-2); border-color: var(--muted); color: var(--muted); }
+    .cal-legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 14px; font-size: 13px; color: var(--muted); }
+    .cal-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+
+    /* Lists */
+    .rdv-section { margin-top: 26px; }
+    .rdv-section h2 { margin: 0 0 14px; font: 700 18px/1.3 'Space Grotesk', system-ui, sans-serif; color: var(--text); display: flex; align-items: center; gap: 10px; }
+    .rdv-section h2 span { font-size: 13px; font-weight: 600; padding: 2px 10px; border-radius: 999px; background: var(--panel-2); color: var(--muted); }
+    .rdv-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }
+    .rdv { display: flex; flex-direction: column; gap: 12px; scroll-margin-top: 90px; }
+    .rdv:target { outline: 2px solid var(--mint); }
+    .rdv__head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+    .rdv__head h3 { margin: 0; font: 700 16px/1.3 'Space Grotesk', system-ui, sans-serif; color: var(--text); }
+    .rdv__when { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; background: var(--panel-2); font-size: 14px; color: var(--text); }
+    .rdv__when b { font-size: 15px; }
+    .rdv__when small { color: var(--muted); }
+    .rdv__info { display: grid; gap: 5px; font-size: 13px; color: var(--muted); }
+    .rdv__info a { color: var(--text); text-decoration: none; }
+    .rdv__info a:hover { color: var(--mint); }
+    .rdv__note { font-size: 13px; color: var(--muted); padding-left: 10px; border-left: 2px solid var(--line-strong); white-space: pre-line; }
+    .rdv__note b { color: var(--text); font-weight: 600; }
+    .rdv__actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 4px; }
+    .rdv__actions form { margin: 0; }
+    .ds-btn--sm { padding: 8px 12px; font-size: 13px; }
+    .ds-btn--gold { background: transparent; color: var(--gold); border-color: rgba(255, 210, 31, 0.45); }
+    .ds-btn--gold:hover { background: rgba(255, 210, 31, 0.1); }
+    .ds-btn--blue { background: transparent; color: var(--blue); border-color: rgba(60, 214, 255, 0.45); }
+    .ds-btn--blue:hover { background: rgba(60, 214, 255, 0.1); }
+    .rdv details[open] { flex-basis: 100%; }
+    .rdv details > summary { list-style: none; display: inline-flex; }
+    .rdv details > summary::-webkit-details-marker { display: none; }
+    .rdv details[open] > summary { margin-bottom: 10px; }
+    .rdv__form { display: grid; grid-template-columns: 1fr 110px; gap: 8px; padding: 12px; border-radius: 10px; border: 1px solid var(--line-strong); background: var(--panel-2); }
+    .rdv__form label { font-size: 12px; color: var(--muted); display: grid; gap: 4px; }
+    .rdv__form .full { grid-column: 1 / -1; }
+    .rdv__form input, .rdv__form textarea { width: 100%; padding: 9px 10px; border-radius: 8px; border: 1px solid var(--line-strong); background: var(--panel); color: var(--text); font: 400 14px/1.4 'Poppins', system-ui, sans-serif; color-scheme: dark; }
+    html.ds-light .rdv__form input, html.ds-light .rdv__form textarea { color-scheme: light; }
+    .rdv__form textarea { min-height: 60px; resize: vertical; }
+    .rdv-closed > summary { cursor: pointer; list-style: none; }
+    .rdv-closed > summary::-webkit-details-marker { display: none; }
+    .rdv-closed > summary h2::after { content: '▾'; color: var(--muted); font-size: 14px; }
+    .rdv-closed[open] > summary h2::after { content: '▴'; }
+
+    @media (max-width: 800px) {
+        .cal__dow { padding: 8px 2px; font-size: 10px; }
+        .cal__day { min-height: 64px; padding: 4px; }
+        .chip { font-size: 0; padding: 0; height: 7px; border-left-width: 0; border-radius: 4px; }
+        .chip--pending { background: var(--gold); } .chip--proposed { background: var(--blue); } .chip--confirmed { background: var(--mint); } .chip--done { background: var(--muted); }
+        .cal__add { opacity: 1; width: 20px; height: 20px; font-size: 14px; }
+        .cal-head h2 { min-width: 0; font-size: 15px; }
+        .rdv-list { grid-template-columns: 1fr; }
+    }
+{% endblock %}
+
+{% macro when_form(a, action, label, btn_class, month, open_label) %}
+    {% set d = a.confirmedDate ?? a.requestedDate %}
+    <details>
+        <summary class="ds-btn ds-btn--sm {{ btn_class }}">{{ open_label }}</summary>
+        <form class="rdv__form" method="post" action="{{ path(action, {id: a.id}) }}">
+            <input type="hidden" name="_token" value="{{ csrf_token('rdv-' ~ a.id) }}">
+            <input type="hidden" name="mois" value="{{ month|date('Y-m') }}">
+            <label>Date<input type="date" name="date" value="{{ d|date('Y-m-d') }}" required></label>
+            <label>Heure<input type="time" name="heure" value="{{ a.heure|default('09:00') }}" step="900"></label>
+            <label class="full">Note interne (facultatif)<textarea name="adminNotes" placeholder="Ex : accès par le jardin, prévoir échelle">{{ a.adminNotes }}</textarea></label>
+            <button class="ds-btn ds-btn--primary ds-btn--sm full" type="submit">{{ label }}</button>
+        </form>
+    </details>
+{% endmacro %}
+
+{% macro simple(a, action, label, btn_class, month, confirm_text) %}
+    <form method="post" action="{{ path(action, {id: a.id}) }}"{% if confirm_text %} onsubmit="return confirm('{{ confirm_text|e('js') }}');"{% endif %}>
+        <input type="hidden" name="_token" value="{{ csrf_token('rdv-' ~ a.id) }}">
+        <input type="hidden" name="mois" value="{{ month|date('Y-m') }}">
+        <button class="ds-btn ds-btn--sm {{ btn_class }}" type="submit">{{ label }}</button>
+    </form>
+{% endmacro %}
+
+{% macro card(a, quotes, statuses, badge, month, jours) %}
+    {% set d = a.confirmedDate ?? a.requestedDate %}
+    {% set q = quotes[a.clientEmail|lower] ?? null %}
+    <article class="ds-card rdv" id="rdv-{{ a.id }}">
+        <div class="rdv__head">
+            <h3>{{ a.clientName }}</h3>
+            <span class="ds-badge ds-badge--{{ badge[a.status] ?? 'new' }}">{{ statuses[a.status] ?? a.status }}</span>
+        </div>
+        <div class="rdv__when">
+            📅 <span><b>{{ jours[d|date('N') - 1] }} {{ d|date('d/m/Y') }}</b>{% if a.heure %} à <b>{{ a.heure }}</b>{% endif %}
+            {% if a.status == 'pending' %}<br><small>Date souhaitée par le client</small>{% elseif a.status == 'proposed' %}<br><small>Date proposée (souhaitée : {{ a.requestedDate|date('d/m/Y') }})</small>{% endif %}</span>
+        </div>
+        <div class="rdv__info">
+            {% if a.clientPhone %}<span>📞 <a href="tel:{{ a.clientPhone|replace({' ': ''}) }}">{{ a.clientPhone }}</a></span>{% endif %}
+            {% if a.clientEmail %}<span>✉️ <a href="mailto:{{ a.clientEmail }}">{{ a.clientEmail }}</a></span>{% endif %}
+            {% if q %}
+                {% set c = q.client %}
+                {% if c.adresse or c.ville %}<span>📍 <a href="https://maps.google.com/?q={{ (c.adresse ~ ', ' ~ c.codePostal ~ ' ' ~ c.ville)|url_encode }}" target="_blank" rel="noopener">{{ c.adresse }}{{ c.adresse and c.ville ? ', ' }}{{ c.codePostal }} {{ c.ville }}</a></span>{% endif %}
+                {% if q.typeInstallation or q.nombrePanneaux %}<span>☀️ {{ q.typeInstallation|capitalize }}{{ q.typeInstallation and q.nombrePanneaux ? ' · ' }}{{ q.nombrePanneaux ? q.nombrePanneaux ~ ' panneaux' }}</span>{% endif %}
+            {% endif %}
+        </div>
+        {% if a.notes %}<div class="rdv__note"><b>Message du client :</b> {{ a.notes }}</div>{% endif %}
+        {% if a.adminNotes %}<div class="rdv__note"><b>Note interne :</b> {{ a.adminNotes }}</div>{% endif %}
+
+        <div class="rdv__actions">
+            {% if a.status in ['pending', 'proposed'] %}
+                {{ _self.when_form(a, 'app_appointment_accept', 'Confirmer le rendez-vous', 'ds-btn--primary', month, '✓ Confirmer') }}
+                {% if a.status == 'pending' %}{{ _self.when_form(a, 'app_appointment_propose', 'Proposer cette date', 'ds-btn--blue', month, 'Proposer une autre date') }}{% endif %}
+                {{ _self.simple(a, a.status == 'pending' ? 'app_appointment_refuse' : 'app_appointment_cancel', a.status == 'pending' ? 'Refuser' : 'Annuler', 'ds-btn--danger', month, a.status == 'pending' ? 'Refuser la demande de ' ~ a.clientName ~ ' ?' : 'Annuler le rendez-vous de ' ~ a.clientName ~ ' ?') }}
+            {% elseif a.status == 'confirmed' %}
+                {{ _self.simple(a, 'app_appointment_done', '✓ Terminé', 'ds-btn--primary', month, null) }}
+                {{ _self.when_form(a, 'app_appointment_accept', 'Déplacer le rendez-vous', 'ds-btn--gold', month, 'Déplacer') }}
+                {{ _self.simple(a, 'app_appointment_cancel', 'Annuler', 'ds-btn--danger', month, 'Annuler le rendez-vous de ' ~ a.clientName ~ ' ?') }}
+            {% else %}
+                {{ _self.simple(a, 'app_appointment_reopen', 'Remettre à traiter', 'ds-btn--ghost', month, null) }}
+                {{ _self.simple(a, 'app_appointment_delete', 'Supprimer', 'ds-btn--danger', month, 'Supprimer définitivement le rendez-vous de ' ~ a.clientName ~ ' ?') }}
+            {% endif %}
+        </div>
+    </article>
+{% endmacro %}
+
+{% block content %}
+    {% set jours = ['Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.', 'Dim.'] %}
+
+    <div class="rdv-top">
+        <div class="rdv-sum">
+            <a href="#a-traiter" class="ds-badge ds-badge--wip">{{ groups.todo|length }} à traiter</a>
+            <a href="#a-venir" class="ds-badge ds-badge--ok">{{ groups.upcoming|length }} à venir</a>
+        </div>
+        <a class="ds-btn ds-btn--primary" href="{{ path('app_admin_appointment_new') }}">＋ Nouveau rendez-vous</a>
     </div>
-</div>
-{% endblock %}
 
-{% block page_nav_prev %}
-    <a href="{{ path('app_admin_dashboard') }}" class="page-nav-link">← {{ 'pagenav.admin_dashboard'|trans }}</a>
-{% endblock %}
+    <section class="ds-card">
+        <div class="ds-card__head">
+            <div class="cal-head">
+                <a class="cal-nav" href="{{ path('app_admin_appointments', {mois: prev|date('Y-m')}) }}" aria-label="Mois précédent">‹</a>
+                <h2>{{ mois_fr[month|date('n') - 1] }} {{ month|date('Y') }}</h2>
+                <a class="cal-nav" href="{{ path('app_admin_appointments', {mois: next|date('Y-m')}) }}" aria-label="Mois suivant">›</a>
+            </div>
+            {% if month|date('Y-m') != today|date('Y-m') %}<a class="ds-btn ds-btn--ghost ds-btn--sm" href="{{ path('app_admin_appointments') }}">Aujourd'hui</a>{% endif %}
+        </div>
+        <div class="cal">
+            {% for j in ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'] %}<div class="cal__dow">{{ j }}</div>{% endfor %}
+            {% for week in weeks %}
+                {% for day in week %}
+                    <div class="cal__day{{ day.in_month ? '' : ' is-out' }}{{ day.today ? ' is-today' }}">
+                        <span class="cal__num">{{ day.date|date('j') }}</span>
+                        <a class="cal__add" href="{{ path('app_admin_appointment_new', {date: day.date|date('Y-m-d')}) }}" title="Ajouter un rendez-vous le {{ day.date|date('d/m') }}">＋</a>
+                        {% for a in day.items %}
+                            <a class="chip chip--{{ a.status }}" href="#rdv-{{ a.id }}" title="{{ statuses[a.status] ?? a.status }} — {{ a.clientName }}">{% if a.heure %}<b>{{ a.heure }}</b> {% endif %}{{ a.clientName }}</a>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+        <div class="cal-legend">
+            <span><i style="background:var(--gold)"></i>À traiter (date souhaitée)</span>
+            <span><i style="background:var(--blue)"></i>Autre date proposée</span>
+            <span><i style="background:var(--mint)"></i>Confirmé</span>
+            <span><i style="background:var(--muted)"></i>Terminé</span>
+        </div>
+    </section>
 
-{% block page_nav_next %}
-    <a href="{{ path('app_admin_members') }}" class="page-nav-link">{{ 'pagenav.admin_members'|trans }} →</a>
+    <section class="rdv-section" id="a-traiter">
+        <h2>À traiter <span>{{ groups.todo|length }}</span></h2>
+        {% if groups.todo is empty %}<div class="ds-card ds-empty">Aucune demande en attente. 👍</div>{% else %}
+            <div class="rdv-list">{% for a in groups.todo %}{{ _self.card(a, quotes, statuses, badge, month, jours) }}{% endfor %}</div>
+        {% endif %}
+    </section>
+
+    <section class="rdv-section" id="a-venir">
+        <h2>Confirmés à venir <span>{{ groups.upcoming|length }}</span></h2>
+        {% if groups.upcoming is empty %}<div class="ds-card ds-empty">Aucun rendez-vous confirmé à venir.</div>{% else %}
+            <div class="rdv-list">{% for a in groups.upcoming %}{{ _self.card(a, quotes, statuses, badge, month, jours) }}{% endfor %}</div>
+        {% endif %}
+    </section>
+
+    {% if groups.past is not empty %}
+        <details class="rdv-section rdv-closed">
+            <summary><h2>Passés et terminés <span>{{ groups.past|length }}</span></h2></summary>
+            <div class="rdv-list">{% for a in groups.past %}{{ _self.card(a, quotes, statuses, badge, month, jours) }}{% endfor %}</div>
+        </details>
+    {% endif %}
+
+    {% if groups.closed is not empty %}
+        <details class="rdv-section rdv-closed">
+            <summary><h2>Refusés et annulés <span>{{ groups.closed|length }}</span></h2></summary>
+            <div class="rdv-list">{% for a in groups.closed %}{{ _self.card(a, quotes, statuses, badge, month, jours) }}{% endfor %}</div>
+        </details>
+    {% endif %}
+
+    <script>
+    // Open one action form at a time inside a card.
+    document.querySelectorAll('.rdv__actions details').forEach((d) => d.addEventListener('toggle', () => {
+        if (d.open) d.closest('.rdv__actions').querySelectorAll('details[open]').forEach((o) => { if (o !== d) o.open = false; });
+    }));
+    </script>
 {% endblock %}

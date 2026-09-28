@@ -31,6 +31,10 @@ class Appointment
     #[ORM\Column(type: 'date', nullable: true)]
     private ?\DateTimeInterface $confirmedDate = null;
 
+    /** Time of the appointment, "HH:MM" (null = not fixed yet). */
+    #[ORM\Column(length: 5, nullable: true)]
+    private ?string $heure = null;
+
     #[ORM\Column(length: 50)]
     private string $status = 'pending'; // pending, confirmed, refused, proposed
 
@@ -162,6 +166,18 @@ class Appointment
     public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+        return $this;
+    }
+
+    public function getHeure(): ?string
+    {
+        return $this->heure;
+    }
+
+    public function setHeure(?string $heure): self
+    {
+        $this->heure = $heure;
+
         return $this;
     }
 }

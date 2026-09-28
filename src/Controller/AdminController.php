@@ -88,20 +88,11 @@ class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/appointments', name: 'app_admin_appointments')]
-    public function appointments(AppointmentRepository $appointmentRepo): Response
-    {
-        $appointments = $appointmentRepo->findAll();
-
-        return $this->render('admin/appointments.html.twig', [
-            'appointments' => $appointments,
-        ]);
-    }
 
     #[Route('/members', name: 'app_admin_members')]
     public function members(UserRepository $userRepo): Response
     {
-        $members = $userRepo->findByRole('ROLE_MEMBER');
+        $members = $userRepo->findBy([], ['createdAt' => 'DESC']);
 
         return $this->render('admin/members.html.twig', [
             'members' => $members,

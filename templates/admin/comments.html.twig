@@ -1,43 +1,39 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/_shell.html.twig' %}
 
-{% block title %}Admin - Commentaires - Solar Cleaning{% endblock %}
+{% block title %}Commentaires - Admin Sirius-Solar{% endblock %}
+{% block page_title %}Commentaires{% endblock %}
+{% block page_subtitle %}Les avis laissés par les clients{% endblock %}
 
-{% block body %}
-<div class="container mx-auto px-4 py-8">
-    <h1 class="text-4xl font-bold text-bleu-nuit mb-8">Commentaires clients</h1>
-
-    <div class="grid grid-cols-1 gap-6">
-        {% for comment in comments %}
-            <div class="bg-white rounded-lg shadow p-6 border-l-4
-                {% if comment.status == 'PENDING' %}border-yellow-500
-                {% else %}border-green-500
-                {% endif %}">
-                <div class="flex justify-between items-start mb-4">
-                    <div>
-                        <h3 class="text-xl font-bold text-bleu-nuit">{{ comment.user.firstName }} {{ comment.user.lastName }}</h3>
-                        <p class="text-sm text-gray-600">
-                            <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">{{ {'SERVICE_QUALITY': 'Qualité du service', 'TECHNICIAN': 'Technicien', 'SCHEDULING': 'Planification', 'OTHER': 'Autre'}[comment.category] ?? comment.category }}</span>
-                        </p>
-                    </div>
-                    <span class="px-3 py-1 rounded-full text-white text-sm font-semibold
-                        {% if comment.status == 'PENDING' %}bg-yellow-500
-                        {% else %}bg-green-500
-                        {% endif %}">
-                        {{ {'PENDING': 'En attente', 'REVIEWED': 'Examiné'}[comment.status] ?? comment.status }}
-                    </span>
-                </div>
-                <p class="text-gray-700 mb-4">{{ comment.text }}</p>
-                <p class="text-xs text-gray-500">{{ comment.createdAt ? comment.createdAt.format('d/m/Y H:i') : 'N/A' }}</p>
-            </div>
-        {% else %}
-            <div class="bg-gray-100 rounded-lg p-8 text-center">
-                <p class="text-gray-600 text-lg">Aucun commentaire pour le moment</p>
-            </div>
-        {% endfor %}
-    </div>
-</div>
+{% block admin_styles %}
+    .cm { display: grid; gap: 16px; }
+    .cm .ds-card { display: grid; gap: 10px; }
+    .cm__head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+    .cm__head h3 { margin: 0; font: 700 16px/1.3 'Space Grotesk', system-ui, sans-serif; color: var(--text); }
+    .cm__head small { color: var(--muted); font-size: 12px; }
+    .cm p { margin: 0; color: var(--text); font-size: 14px; line-height: 1.6; white-space: pre-line; }
 {% endblock %}
 
-{% block page_nav_prev %}
-    <a href="{{ path('app_admin_members') }}" class="page-nav-link">← {{ 'pagenav.admin_members'|trans }}</a>
+{% block content %}
+    {% set cats = {SERVICE_QUALITY: 'Qualité du service', TECHNICIAN: 'Technicien', SCHEDULING: 'Planification', OTHER: 'Autre'} %}
+    {% if comments is empty %}
+        <div class="ds-card ds-empty">Aucun commentaire pour le moment.</div>
+    {% else %}
+        <div class="cm">
+            {% for c in comments %}
+                <article class="ds-card">
+                    <div class="cm__head">
+                        <div>
+                            <h3>{{ c.user ? (c.user.prenom|default('') ~ ' ' ~ c.user.nom|default(''))|trim : 'Anonyme' }}</h3>
+                            <small>{{ c.createdAt ? c.createdAt|date('d/m/Y H:i') }}{{ c.user ? ' · ' ~ c.user.email }}</small>
+                        </div>
+                        <div style="display:flex;gap:8px;flex-wrap:wrap">
+                            <span class="ds-badge ds-badge--new">{{ cats[c.category] ?? c.category }}</span>
+                            <span class="ds-badge ds-badge--{{ c.status == 'PENDING' ? 'wip' : 'ok' }}">{{ c.status == 'PENDING' ? 'En attente' : 'Examiné' }}</span>
+                        </div>
+                    </div>
+                    <p>{{ c.text }}</p>
+                </article>
+            {% endfor %}
+        </div>
+    {% endif %}
 {% endblock %}
