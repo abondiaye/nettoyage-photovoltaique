@@ -677,6 +677,111 @@
             font-size: 28px;
         }
     }
+
+    /* ===================================================================
+       Thème sombre néon + dalles 3D épaisses (comme la carte de l'accueil)
+       =================================================================== */
+    body { background: #03120e; }
+    .devis-header {
+        padding-top: 130px;
+        background: linear-gradient(135deg, #0A3D35 0%, #046b4c 60%, #03120e 100%);
+        border-bottom: 1px solid rgba(0, 255, 157, 0.25);
+    }
+    .devis-header h1 { color: #fff; text-shadow: 0 0 18px rgba(0, 255, 157, 0.35); }
+
+    .pricing-head h2 {
+        background: linear-gradient(90deg, #ffffff 0%, #00ff9d 60%, #00b377 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        filter: drop-shadow(0 0 14px rgba(0, 255, 157, 0.3));
+    }
+    .pricing-head p,
+    .pricing-mode__label { color: rgba(234, 255, 240, 0.75); }
+
+    /* Shared 3D slab: stacked outlines in depth give a thick mint glass edge. */
+    .slab3d { transform-style: preserve-3d; }
+    .slab3d__layers {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        transform-style: preserve-3d;
+        pointer-events: none;
+    }
+    .slab3d__layers span {
+        position: absolute;
+        inset: -1px;
+        border-radius: 20px;
+        border: 1.5px solid rgba(0, 255, 157, calc(0.75 - var(--i) * 0.03));
+        background: rgba(0, 90, 60, 0.05);
+        transform: translateZ(calc(var(--i) * -4px));
+    }
+    .slab3d__layers span:last-child {
+        background: rgba(2, 14, 10, 0.6);
+        box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55), 0 0 40px rgba(0, 255, 157, 0.12);
+    }
+    .slab3d > :not(.slab3d__layers) { position: relative; z-index: 1; }
+
+    /* Offer cards */
+    .pricing-grid { perspective: 1400px; gap: 44px; padding: 10px; }
+    .pricing-card,
+    .pricing-card.featured,
+    .pricing-card.selected {
+        background: rgba(3, 18, 14, 0.45);
+        border: 0;
+        box-shadow: none;
+        transform: rotateY(-14deg) rotateX(6deg);
+        transition: transform 0.7s cubic-bezier(.2, .8, .2, 1);
+    }
+    .pricing-card.featured { transform: rotateY(-14deg) rotateX(6deg) translateZ(30px); }
+    .pricing-card:hover,
+    .pricing-card.featured:hover,
+    .pricing-card.featured.selected { transform: rotateY(0) rotateX(0) translateZ(40px); box-shadow: none; }
+    .pricing-card.selected .slab3d__layers span { border-color: rgba(255, 210, 31, 0.8); }
+    .pricing-card.selected::before { z-index: 2; background: #ffd21f; color: #021208; }
+    .pricing-card__head { border-bottom-color: rgba(0, 255, 157, 0.2); }
+    .pricing-card__title { color: #00ff9d; text-shadow: 0 0 10px rgba(0, 255, 157, 0.35); }
+    .pricing-card__sub,
+    .pricing-card__period { color: rgba(234, 255, 240, 0.6); }
+    .pricing-card__price { color: #ffd21f; text-shadow: 0 0 14px rgba(255, 210, 31, 0.4); }
+    .pricing-features li { color: rgba(234, 255, 240, 0.9); border-bottom-color: rgba(0, 255, 157, 0.12); }
+    .pricing-features li:before { color: #00ff9d; }
+    .pricing-card__btn { background: linear-gradient(135deg, #ffd21f, #ffe27a); color: #021208; }
+
+    /* Quote form */
+    .devis-container { background: #03120e; perspective: 1600px; }
+    .devis-gradient-bg {
+        background: radial-gradient(ellipse at 30% 20%, rgba(0, 255, 157, 0.12) 0%, transparent 55%),
+                    radial-gradient(ellipse at 80% 90%, rgba(11, 93, 138, 0.25) 0%, transparent 55%),
+                    linear-gradient(135deg, #062a20 0%, #03120e 100%);
+        border: 1px solid rgba(0, 255, 157, 0.12);
+    }
+    .devis-form-card {
+        background: rgba(3, 18, 14, 0.5);
+        backdrop-filter: none;          /* a filter would flatten the 3D */
+        -webkit-backdrop-filter: none;
+        border: 0;
+        box-shadow: none;
+        transform: rotateY(-7deg) rotateX(3deg);
+        animation: none;
+    }
+    .lavage-title,
+    .lavage-name { color: #00ff9d; }
+    .btn-submit {
+        background: linear-gradient(135deg, #ffd21f, #ffe27a);
+        color: #021208;
+        box-shadow: 0 0 22px rgba(255, 210, 31, 0.35);
+    }
+    .lavage-price, .price-value { color: #ffd21f; }
+
+    @media (max-width: 768px) {
+        .devis-header { padding-top: 100px; }
+        .pricing-card, .pricing-card.featured, .pricing-card.selected { transform: rotateY(-7deg) rotateX(4deg); }
+        .devis-form-card { transform: rotateY(-4deg) rotateX(2deg); }
+        .slab3d__layers span { transform: translateZ(calc(var(--i) * -3px)); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .pricing-card, .pricing-card:hover, .devis-form-card { transform: none !important; transition: none; }
+    }
 </style>
 
 <!-- Header -->
@@ -705,7 +810,8 @@
 
     <div class="pricing-grid">
         <!-- PACK BASIQUE -->
-        <div class="pricing-card" data-pack="basique">
+        <div class="pricing-card slab3d" data-pack="basique">
+            <div class="slab3d__layers" aria-hidden="true"><span style="--i: 1"></span><span style="--i: 2"></span><span style="--i: 3"></span><span style="--i: 4"></span><span style="--i: 5"></span><span style="--i: 6"></span><span style="--i: 7"></span><span style="--i: 8"></span><span style="--i: 9"></span><span style="--i: 10"></span><span style="--i: 11"></span><span style="--i: 12"></span><span style="--i: 13"></span><span style="--i: 14"></span><span style="--i: 15"></span><span style="--i: 16"></span><span style="--i: 17"></span><span style="--i: 18"></span></div>
             <header class="pricing-card__head">
                 <h3 class="pricing-card__title">Nettoyage Basique</h3>
                 <p class="pricing-card__sub">Pour petites installations</p>
@@ -725,7 +831,8 @@
         </div>
 
         <!-- PACK STANDARD (Featured) -->
-        <div class="pricing-card featured" data-pack="standard">
+        <div class="pricing-card featured slab3d" data-pack="standard">
+            <div class="slab3d__layers" aria-hidden="true"><span style="--i: 1"></span><span style="--i: 2"></span><span style="--i: 3"></span><span style="--i: 4"></span><span style="--i: 5"></span><span style="--i: 6"></span><span style="--i: 7"></span><span style="--i: 8"></span><span style="--i: 9"></span><span style="--i: 10"></span><span style="--i: 11"></span><span style="--i: 12"></span><span style="--i: 13"></span><span style="--i: 14"></span><span style="--i: 15"></span><span style="--i: 16"></span><span style="--i: 17"></span><span style="--i: 18"></span></div>
             <header class="pricing-card__head">
                 <h3 class="pricing-card__title">⭐ Pack Standard</h3>
                 <p class="pricing-card__sub">Notre offre la plus populaire</p>
@@ -746,7 +853,8 @@
         </div>
 
         <!-- PACK PREMIUM -->
-        <div class="pricing-card" data-pack="premium">
+        <div class="pricing-card slab3d" data-pack="premium">
+            <div class="slab3d__layers" aria-hidden="true"><span style="--i: 1"></span><span style="--i: 2"></span><span style="--i: 3"></span><span style="--i: 4"></span><span style="--i: 5"></span><span style="--i: 6"></span><span style="--i: 7"></span><span style="--i: 8"></span><span style="--i: 9"></span><span style="--i: 10"></span><span style="--i: 11"></span><span style="--i: 12"></span><span style="--i: 13"></span><span style="--i: 14"></span><span style="--i: 15"></span><span style="--i: 16"></span><span style="--i: 17"></span><span style="--i: 18"></span></div>
             <header class="pricing-card__head">
                 <h3 class="pricing-card__title">Nettoyage Premium</h3>
                 <p class="pricing-card__sub">Pour grandes installations</p>
@@ -773,7 +881,8 @@
 <section class="devis-container">
     <div class="devis-gradient-bg"></div>
 
-    <div class="devis-form-card">
+    <div class="devis-form-card slab3d">
+        <div class="slab3d__layers" aria-hidden="true"><span style="--i: 1"></span><span style="--i: 2"></span><span style="--i: 3"></span><span style="--i: 4"></span><span style="--i: 5"></span><span style="--i: 6"></span><span style="--i: 7"></span><span style="--i: 8"></span><span style="--i: 9"></span><span style="--i: 10"></span><span style="--i: 11"></span><span style="--i: 12"></span><span style="--i: 13"></span><span style="--i: 14"></span><span style="--i: 15"></span><span style="--i: 16"></span><span style="--i: 17"></span><span style="--i: 18"></span></div>
         <!-- Welcome Section for Logged In Users -->
         {% if app.user %}
             <div style="
