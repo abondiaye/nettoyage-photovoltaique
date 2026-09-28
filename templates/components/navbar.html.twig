@@ -64,7 +64,10 @@
         box-sizing: border-box;
         transition: background 0.4s ease;
     }
-    body.nav3d-open .nav3d { background: transparent; border-color: transparent; box-shadow: none; backdrop-filter: none; }
+    /* Menu open: the page is tilted, so what shows around it is the <html> canvas, which base.html.twig
+       paints white. Paint it dark instead, otherwise the white menu text is invisible. */
+    html:has(body.nav3d-open) { background: #020a07 !important; }
+    body.nav3d-open .nav3d { background: rgba(2, 10, 7, 0.6); border-color: transparent; box-shadow: none; }
 
     .nav3d__brand { display: block; line-height: 0; }
     .nav3d__logo { display: block; width: 150px; height: 62px; }
@@ -119,7 +122,7 @@
         transform-origin: 50% var(--nav3d-origin, 50vh);
         transition: transform 0.7s cubic-bezier(.7, 0, .3, 1), border-radius 0.7s ease, box-shadow 0.7s ease;
     }
-    body.nav3d-open { overflow: hidden; background: radial-gradient(ellipse at 70% 50%, #06231a 0%, #020a07 70%) fixed; }
+    body.nav3d-open { overflow: hidden; background: radial-gradient(ellipse at 70% 50%, #06231a 0%, #020a07 70%) fixed !important; min-height: 100vh; }
     body.nav3d-open .nav3d-page {
         transform: perspective(1500px) rotateY(20deg) translateX(-34%) scale(0.62);
         border-radius: 22px;
@@ -212,6 +215,8 @@
         .nav3d-catch { right: 62%; }
         .nav3d-menu { width: 62vw; padding-right: 20px; }
         .nav3d-menu a { font-size: 22px; }
+        .nav3d-menu__auth { flex-wrap: wrap; gap: 10px 16px; }
+        .nav3d-menu__auth a { font-size: 15px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
