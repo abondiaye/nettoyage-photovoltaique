@@ -1522,6 +1522,45 @@
     .hero-logo--3d::after { display: none; }
     .hero-logo--3d canvas { display: block; width: 100%; height: 100%; }
     .hero-card:has(.hero-logo--3d) { padding-top: 30px; }
+    /* Carte principale épaisse : 18 contours empilés en profondeur forment une dalle de verre
+       de ~70 px, la carte est légèrement inclinée et suit un peu la souris. */
+    .hero-container { perspective: 1400px; }
+    .hero-card--thick {
+        backdrop-filter: none;          /* un filtre aplatirait la 3D */
+        -webkit-backdrop-filter: none;
+        background: rgba(3, 18, 14, 0.35);
+        transform-style: preserve-3d;
+        transform: rotateX(var(--hx, 7deg)) rotateY(var(--hy, -12deg));
+        transition: transform 0.35s ease-out;
+        overflow: visible;
+    }
+    .hero-card--thick::before { background: rgba(0, 0, 0, 0.12); }
+    .hero-card__layers {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        transform-style: preserve-3d;
+        pointer-events: none;
+    }
+    .hero-card__layers span {
+        position: absolute;
+        inset: -1px;
+        border-radius: 20px;
+        border: 1.5px solid rgba(0, 255, 157, calc(0.75 - var(--i) * 0.025));
+        background: rgba(0, 90, 60, 0.05);
+        transform: translateZ(calc(var(--i) * -4px));
+    }
+    .hero-card__layers span:last-child {
+        background: rgba(2, 14, 10, 0.55);
+        box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55), 0 0 40px rgba(0, 255, 157, 0.15);
+    }
+    @media (max-width: 768px) {
+        .hero-card--thick { transform: rotateX(6deg) rotateY(-8deg); }
+        .hero-card__layers span { transform: translateZ(calc(var(--i) * -3px)); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .hero-card--thick { transform: none; transition: none; }
+    }
     /* Mobile: the footer (knob + columns) stacks and stays centred. */
     @media (max-width: 768px) {
         .footer-main { flex-direction: column !important; align-items: center !important; gap: 30px !important; padding: 20px 0 !important; }
@@ -1658,7 +1697,8 @@
 
     </div>
 
-    <div class="hero-card">
+    <div class="hero-card hero-card--thick">
+        <div class="hero-card__layers" aria-hidden="true"><span style="--i: 1"></span><span style="--i: 2"></span><span style="--i: 3"></span><span style="--i: 4"></span><span style="--i: 5"></span><span style="--i: 6"></span><span style="--i: 7"></span><span style="--i: 8"></span><span style="--i: 9"></span><span style="--i: 10"></span><span style="--i: 11"></span><span style="--i: 12"></span><span style="--i: 13"></span><span style="--i: 14"></span><span style="--i: 15"></span><span style="--i: 16"></span><span style="--i: 17"></span><span style="--i: 18"></span></div>
         <!-- Logo débordant vers le haut -->
         <div class="hero-logo hero-logo--3d" data-sirius-logo3d role="img" aria-label="Sirius-Solar"></div>
 
@@ -2289,4 +2329,19 @@
 })();
 </script>
 
+<script>
+(function () {
+    // The thick hero card leans a little towards the mouse.
+    var card = document.querySelector('.hero-card--thick');
+    if (!card || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var hero = card.closest('.hero-container') || document;
+    hero.addEventListener('pointermove', function (e) {
+        if (window.innerWidth < 769) return;
+        var x = e.clientX / window.innerWidth - 0.5;
+        var y = e.clientY / window.innerHeight - 0.5;
+        card.style.setProperty('--hy', (-12 + x * 12).toFixed(2) + 'deg');
+        card.style.setProperty('--hx', (7 - y * 8).toFixed(2) + 'deg');
+    }, { passive: true });
+})();
+</script>
 {% endblock %}
