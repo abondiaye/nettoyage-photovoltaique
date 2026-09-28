@@ -83,7 +83,7 @@ function buildRoller(mats, face) {
   const tuft = new BoxGeometry(0.07, 0.14, L * 0.96);
   for (let i = 0; i < 44; i++) {
     const a = (i / 44) * Math.PI * 2;
-    const m = new Mesh(tuft, mats.mint);
+    const m = new Mesh(tuft, i % 4 === 0 ? mats.white : mats.mint); // a few light tufts make the spin visible
     m.position.set(Math.cos(a) * R, Math.sin(a) * R, 0);
     m.rotation.z = a + Math.PI / 2;
     spin.add(m);
@@ -98,7 +98,7 @@ function buildRoller(mats, face) {
   if (face === 'star') {
     const st = new Mesh(new ExtrudeGeometry(star4(0.34, 0.07), { depth: 0.06, bevelEnabled: false }), mats.white);
     st.position.z = L / 2 + 0.01;
-    g.add(st); // the star stays upright
+    spin.add(st); // the star turns with the brush
   } else {
     const hub = new Mesh(new TorusGeometry(0.17, 0.06, 12, 40), mats.white);
     hub.position.z = L / 2 + 0.04;
@@ -106,6 +106,14 @@ function buildRoller(mats, face) {
     const dot = new Mesh(new CylinderGeometry(0.06, 0.06, 0.08, 20), mats.dark);
     dot.rotation.x = Math.PI / 2; dot.position.z = L / 2 + 0.05;
     spin.add(dot);
+  }
+  // Notches on the rim so the rotation reads clearly.
+  for (let i = 0; i < 6; i++) {
+    const a = (i / 6) * Math.PI * 2;
+    const n = new Mesh(new BoxGeometry(0.16, 0.06, 0.04), mats.white);
+    n.position.set(Math.cos(a) * R * 0.72, Math.sin(a) * R * 0.72, L / 2 + 0.04);
+    n.rotation.z = a;
+    spin.add(n);
   }
   g.userData.spin = spin;
   return g;
@@ -241,8 +249,8 @@ export function mountSiriusLogo(el) {
       logo.rotation.y = Math.sin(t * 0.7) * 0.32 + turn * Math.PI * 2 + pointer.x * 0.25;
       logo.rotation.x = Math.sin(t * 0.5) * 0.06 - pointer.y * 0.15;
       logo.position.y = Math.sin(t * 1.3) * 0.08;
-      top.userData.spin.rotation.z = -t * 4;
-      bottom.userData.spin.rotation.z = t * 4;
+      top.userData.spin.rotation.z = -t * 3.2;
+      bottom.userData.spin.rotation.z = t * 3.2;
       sparkle.rotation.z = t * 0.8;
       // Neon flicker: steady glow with a brief stutter now and then.
       const f = t % 6 > 5.65 ? (Math.sin(t * 90) > 0 ? 0.35 : 1) : 1;
