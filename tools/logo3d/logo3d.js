@@ -101,7 +101,7 @@ function star4(outer, inner) {
   return s;
 }
 
-function buildRoller(mats, face) {
+function buildRoller(mats) {
   const g = new Group();
   const spin = new Group();
   g.add(spin);
@@ -118,25 +118,28 @@ function buildRoller(mats, face) {
     m.rotation.z = a + Math.PI / 2;
     spin.add(m);
   }
-  // Front face: rim ring, then the star (top brush) or the hub (bottom brush).
+  // Front face: rim ring and a dark disc (the Swiss flag sits on top, see below).
   const rim = new Mesh(new TorusGeometry(R * 0.72, 0.035, 10, 64), mats.mint);
   rim.position.z = L / 2 + 0.01;
   spin.add(rim);
   const disc = new Mesh(new CircleGeometry(R * 0.93, 48), mats.dark);
   disc.position.z = L / 2 + 0.002;
   spin.add(disc);
-  if (face === 'star') {
-    const st = new Mesh(new ExtrudeGeometry(star4(0.34, 0.07), { depth: 0.06, bevelEnabled: false }), mats.white);
-    st.position.z = L / 2 + 0.01;
-    spin.add(st); // the star turns with the brush
-  } else {
-    const hub = new Mesh(new TorusGeometry(0.17, 0.06, 12, 40), mats.white);
-    hub.position.z = L / 2 + 0.04;
-    spin.add(hub);
-    const dot = new Mesh(new CylinderGeometry(0.06, 0.06, 0.08, 20), mats.dark);
-    dot.rotation.x = Math.PI / 2; dot.position.z = L / 2 + 0.05;
-    spin.add(dot);
-  }
+  // Round Swiss flag in the middle of the brush. It is added to the roller, not to the spinning
+  // group, so it stays still while the bristles turn around it.
+  const FR = R * 0.6;
+  const flag = new Group();
+  const red = new Mesh(new CircleGeometry(FR, 48), new MeshBasicMaterial({ color: 0xda291c }));
+  const ring = new Mesh(new TorusGeometry(FR, 0.03, 10, 64), new MeshBasicMaterial({ color: 0xffffff }));
+  const side = FR * 1.3;                    // flag square the cross is drawn in
+  const white = new MeshBasicMaterial({ color: 0xffffff });
+  const armL = side * 0.625; const armW = side * 0.1875;   // official proportions 20/32 and 6/32
+  const h = new Mesh(new PlaneGeometry(armL, armW), white);
+  const v = new Mesh(new PlaneGeometry(armW, armL), white);
+  h.position.z = v.position.z = 0.004;
+  flag.add(red, ring, h, v);
+  flag.position.z = L / 2 + 0.07;
+  g.add(flag);
   // Notches on the rim so the rotation reads clearly.
   for (let i = 0; i < 6; i++) {
     const a = (i / 6) * Math.PI * 2;
@@ -188,9 +191,9 @@ export function mountSiriusLogo(el) {
   scene.add(logo);
 
   // Brushes on the left, one above the other, spinning in opposite directions.
-  const top = buildRoller(mats, 'star');
+  const top = buildRoller(mats);
   top.position.set(-3.55, 0.88, 0);
-  const bottom = buildRoller(mats, 'hub');
+  const bottom = buildRoller(mats);
   bottom.position.set(-3.55, -0.88, 0);
   logo.add(top, bottom);
 

@@ -706,7 +706,7 @@
             window.__siriusLogo3d = true;
             var sc = document.createElement('script');
             sc.type = 'module';
-            sc.src = "{{ asset('js/sirius-logo3d.js') }}";
+            sc.src = "{{ asset('js/sirius-logo3d.js') }}?v=3";
             document.body.appendChild(sc);
         };
         if (!document.documentElement.classList.contains('theme-pro')) window.siriusLoadLogo3d();
