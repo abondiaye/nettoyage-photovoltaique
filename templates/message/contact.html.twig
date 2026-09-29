@@ -10,7 +10,7 @@
 
     .contact-container {
         min-height: 100vh;
-        background: linear-gradient(135deg, #0A3D35, #2D6B55);
+        background: linear-gradient(135deg, var(--vert-fonce), var(--vert-clair));
         display: flex;
         align-items: center;
         justify-content: center;
@@ -83,7 +83,7 @@
     .form-group textarea:focus {
         outline: none;
         background: rgba(255, 255, 255, 0.15);
-        border-color: #ffd700;
+        border-color: var(--or-vif, #ffd700);
         box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
     }
 
@@ -95,8 +95,8 @@
     .btn-submit {
         width: 100%;
         padding: 12px;
-        background: linear-gradient(135deg, #ffd700, #ffed4e);
-        color: #0A3D35;
+        background: linear-gradient(135deg, var(--or-vif, #ffd700), var(--or-vif-2, #ffed4e));
+        color: var(--vert-fonce);
         border: none;
         border-radius: 8px;
         font-weight: 600;
@@ -133,7 +133,7 @@
 
     /* Dark mode */
     body.dark-mode .contact-container {
-        background: linear-gradient(135deg, #1a4d42, #2D6B55);
+        background: linear-gradient(135deg, var(--vert-mid, #1a4d42), var(--vert-clair));
     }
 
     body.dark-mode .contact-card {

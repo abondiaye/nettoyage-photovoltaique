@@ -1,5 +1,5 @@
 {# Fond « liquid glass » (taches de couleur floues qui dérivent) + bloc « connexion / inscription »
-   à panneau coulissant, aux couleurs du site (vert menthe #00ff9d, vert profond #0A3D35, jaune #ffd21f).
+   à panneau coulissant, aux couleurs du site (vert menthe #00ff9d, vert profond var(--vert-fonce), jaune #ffd21f).
    Usage : {% include 'components/_auth3d.html.twig' %} puis un .auth-slide (voir login / register). #}
 <div class="auth3d-bg" aria-hidden="true">
     <div class="auth3d-blob auth3d-blob--1"></div>
@@ -52,7 +52,7 @@
     /* ---- The card ---- */
     .auth-slide {
         --mint: #00ff9d;
-        --deep: #0A3D35;
+        --deep: var(--vert-fonce);
         position: relative;
         width: min(900px, 100%);
         min-height: 600px;

@@ -4,9 +4,13 @@
 <header class="nav3d" id="siteNavbar">
     <a href="{{ home }}" class="nav3d__brand" aria-label="Sirius-Solar, accueil">
         <span class="nav3d__logo" data-sirius-logo3d="compact"></span>
+        {% include 'components/_logo_pro.html.twig' %}
     </a>
 
     <div class="nav3d__right">
+        <button type="button" class="theme-switch" id="themeSwitch" title="Changer le style du site (Pro / Néon)">
+            <i aria-hidden="true"></i><span id="themeSwitchLabel">Style néon</span>
+        </button>
         {% if app.user %}
             <a href="{{ path('app_logout') }}" class="nav3d__pill">Déconnexion</a>
         {% else %}
@@ -236,7 +240,9 @@
     function setOpen(open) {
         if (open && page) {
             // Tilt around the middle of what is on screen, not the middle of the whole page.
-            page.style.setProperty('--nav3d-origin', (window.scrollY + window.innerHeight / 2) + 'px');
+            // The page may scroll inside <body> instead of the window: take whichever has moved.
+            var scrolled = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+            page.style.setProperty('--nav3d-origin', (scrolled + window.innerHeight / 2) + 'px');
         }
         body.classList.toggle('nav3d-open', open);
         burger.setAttribute('aria-expanded', open ? 'true' : 'false');
@@ -261,6 +267,29 @@
                 location.href = url.href;
             }, 650);
         });
+    });
+})();
+</script>
+
+<script>
+(function () {
+    // Button "Style néon / Style pro": the choice is kept in this browser.
+    var root = document.documentElement;
+    var btn = document.getElementById('themeSwitch');
+    var label = document.getElementById('themeSwitchLabel');
+    if (!btn) return;
+    function refresh() {
+        var pro = root.classList.contains('theme-pro');
+        label.textContent = pro ? 'Style néon' : 'Style pro';
+        btn.setAttribute('aria-label', pro ? 'Passer au style néon' : 'Passer au style pro');
+    }
+    refresh();
+    btn.addEventListener('click', function () {
+        var pro = !root.classList.contains('theme-pro');
+        root.classList.toggle('theme-pro', pro);
+        try { localStorage.setItem('sirius-theme', pro ? 'pro' : 'neon'); } catch (e) {}
+        if (!pro && window.siriusLoadLogo3d) window.siriusLoadLogo3d();
+        refresh();
     });
 })();
 </script>

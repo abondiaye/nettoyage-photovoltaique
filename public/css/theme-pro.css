@@ -1,0 +1,548 @@
+/* =====================================================================
+   Sirius-Solar — thème « Pro » (couleur principale du site)
+   Clair : blanc cassé, bleu marine, un seul accent bleu.
+   Actif quand <html> porte la classe .theme-pro (par défaut).
+   Le bouton de la barre du haut bascule vers le style « Néon » d'origine.
+   ===================================================================== */
+
+html.theme-pro {
+    --pro-bg: #f8fafc;
+    --pro-surface: #ffffff;
+    --pro-soft: #f1f5f9;
+    --pro-border: #e2e8f0;
+    --pro-text: #0f172a;
+    --pro-muted: #475569;
+    --pro-faint: #64748b;
+    --pro-accent: #1d4ed8;
+    --pro-accent-dark: #1e3a8a;
+    --pro-accent-soft: #dbeafe;
+    --pro-navy: #0f172a;
+    --pro-shadow: 0 1px 2px rgba(15, 23, 42, 0.06), 0 8px 24px rgba(15, 23, 42, 0.08);
+    color-scheme: light;
+}
+
+html.theme-pro,
+html.theme-pro body {
+    background: var(--pro-bg) !important;
+    color: var(--pro-text);
+}
+html.theme-pro body { font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif; }
+
+/* ---------- Logos : le logo 3D néon est remplacé par un logo plat ---------- */
+.sirius-logo-pro { display: none; }
+html.theme-pro .sirius-logo-pro { display: block; }
+html.theme-pro [data-sirius-logo3d] { display: none !important; }
+.sirius-logo-pro .pl-roll { stroke: var(--pl-a, #1d4ed8); }
+.sirius-logo-pro .pl-hub { fill: var(--pl-hub, #ffffff); stroke: var(--pl-a, #1d4ed8); }
+.sirius-logo-pro .pl-mark { fill: var(--pl-a, #1d4ed8); stroke: var(--pl-a, #1d4ed8); }
+.sirius-logo-pro .pl-pole { stroke: var(--pl-b, #0f172a); }
+.sirius-logo-pro .pl-t1 { fill: var(--pl-b, #0f172a); }
+.sirius-logo-pro .pl-t2 { fill: var(--pl-a, #1d4ed8); }
+.sirius-logo-pro text { font: 700 21px/1 'Space Grotesk', 'Inter', system-ui, sans-serif; letter-spacing: 0.04em; }
+
+/* ---------- Barre du haut ---------- */
+html.theme-pro .nav3d {
+    background: rgba(255, 255, 255, 0.92) !important;
+    border-bottom: 1px solid var(--pro-border) !important;
+    box-shadow: 0 1px 12px rgba(15, 23, 42, 0.06) !important;
+}
+html.theme-pro .nav3d__brand .sirius-logo-pro { width: 150px; height: auto; }
+html.theme-pro .nav3d__pill {
+    background: var(--pro-accent) !important;
+    color: #fff !important;
+    border: 1px solid var(--pro-accent) !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+}
+html.theme-pro .nav3d__pill:hover { background: var(--pro-accent-dark) !important; }
+html.theme-pro .nav3d__pill--gold {
+    background: transparent !important;
+    color: var(--pro-accent) !important;
+}
+html.theme-pro .nav3d__pill--gold:hover { background: var(--pro-accent-soft) !important; }
+html.theme-pro .nav3d__burger { border-color: var(--pro-border) !important; background: #fff !important; box-shadow: none !important; }
+html.theme-pro .nav3d__burger span { background: var(--pro-navy) !important; box-shadow: none !important; }
+
+/* Menu ouvert */
+html.theme-pro body.nav3d-open { background: linear-gradient(135deg, #eef2f7 0%, #dfe7f1 100%) fixed !important; }
+html.theme-pro body.nav3d-open .nav3d-page { box-shadow: 0 0 0 1px var(--pro-border), 0 30px 80px rgba(15, 23, 42, 0.25) !important; background: var(--pro-bg); }
+html.theme-pro .nav3d-ghost--1 { background: rgba(29, 78, 216, 0.06) !important; border-color: rgba(29, 78, 216, 0.15) !important; }
+html.theme-pro .nav3d-ghost--2 { background: rgba(15, 23, 42, 0.04) !important; border-color: rgba(15, 23, 42, 0.1) !important; }
+html.theme-pro .nav3d-menu a { color: var(--pro-text) !important; text-shadow: none !important; font-family: 'Space Grotesk', 'Inter', sans-serif; }
+html.theme-pro .nav3d-menu a:hover { color: var(--pro-accent) !important; }
+html.theme-pro .nav3d-menu a span { color: var(--pro-accent) !important; }
+html.theme-pro .nav3d-menu__auth a { color: var(--pro-accent) !important; }
+html.theme-pro .nav3d-menu__auth a.is-gold { color: var(--pro-text) !important; }
+
+/* ---------- Bouton de changement de style ---------- */
+.theme-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 38px;
+    padding: 0 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(45, 255, 79, 0.45);
+    background: rgba(3, 18, 14, 0.6);
+    color: #eafff0;
+    font: 600 13px/1 'Inter', system-ui, sans-serif;
+    cursor: pointer;
+    white-space: nowrap;
+}
+.theme-switch i {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: conic-gradient(#1d4ed8 0 50%, #2dff4f 0 100%);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);
+}
+html.theme-pro .theme-switch { border-color: var(--pro-border); background: #fff; color: var(--pro-text); }
+html.theme-pro .theme-switch i { box-shadow: 0 0 0 2px var(--pro-border); }
+@media (max-width: 700px) {
+    .theme-switch { padding: 0; width: 38px; justify-content: center; }
+    .theme-switch span { display: none; }
+}
+
+/* =====================================================================
+   Page d'accueil
+   ===================================================================== */
+
+/* Séparateurs métalliques à LED : retirés */
+html.theme-pro .processus-section::before,
+html.theme-pro .services-section::before,
+html.theme-pro .advantages-section::before,
+html.theme-pro .cta-section::before { display: none !important; }
+
+/* Titres de section : sobres, marine, petit trait bleu */
+html.theme-pro .processus-title,
+html.theme-pro .services-section .section-title,
+html.theme-pro .advantages-section .section-title,
+html.theme-pro #promotions .section-title,
+html.theme-pro .cta-title,
+html.theme-pro .contact-scramble-heading {
+    border: 0 !important;
+    background: none !important;
+    box-shadow: none !important;
+    filter: none !important;
+    padding: 0 0 16px !important;
+    color: var(--pro-text) !important;
+    -webkit-text-fill-color: currentColor !important;
+    text-shadow: none !important;
+    font-family: 'Space Grotesk', 'Inter', sans-serif !important;
+    letter-spacing: -0.01em !important;
+    position: relative;
+}
+html.theme-pro .processus-title::after,
+html.theme-pro .services-section .section-title::after,
+html.theme-pro .advantages-section .section-title::after,
+html.theme-pro #promotions .section-title::after,
+html.theme-pro .cta-title::after,
+html.theme-pro .contact-scramble-heading::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 56px;
+    height: 4px;
+    margin-left: -28px;
+    border-radius: 2px;
+    background: var(--pro-accent);
+}
+html.theme-pro .scramble-green {
+    color: inherit !important;
+    -webkit-text-fill-color: currentColor !important;
+    text-shadow: none !important;
+    font-family: 'Space Grotesk', 'Inter', sans-serif !important;
+    letter-spacing: -0.01em !important;
+}
+html.theme-pro .scramble-green .char.glitch { color: var(--pro-faint) !important; }
+
+/* ---------- Haut de page : photo avec voile marine, carte à plat ---------- */
+html.theme-pro .hero-gradient-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.82) 0%, rgba(30, 58, 138, 0.62) 100%);
+}
+html.theme-pro .hero-gradient-bg video { display: none; }
+html.theme-pro .hero-card,
+html.theme-pro .hero-card--thick {
+    transform: none !important;
+    background: rgba(15, 23, 42, 0.55) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    box-shadow: 0 30px 60px rgba(2, 6, 23, 0.45) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    border-radius: 20px !important;
+    animation: none !important;
+}
+html.theme-pro .hero-card::before,
+html.theme-pro .hero-card::after { display: none !important; }
+html.theme-pro .hero-card__layers { display: none !important; }
+html.theme-pro .hero-card .sirius-logo-pro { width: min(320px, 78%); margin: 0 auto 18px; --pl-a: #93c5fd; --pl-b: #ffffff; --pl-hub: #0f172a; }
+html.theme-pro .glitch-intro { background: none !important; border: 0 !important; box-shadow: none !important; }
+html.theme-pro .glitch-grid,
+html.theme-pro .glitch-corner,
+html.theme-pro .glitch-prefix { display: none !important; }
+html.theme-pro .glitch-line {
+    color: #ffffff !important;
+    text-shadow: none !important;
+    font-family: 'Space Grotesk', 'Inter', sans-serif !important;
+    letter-spacing: 0 !important;
+}
+html.theme-pro .glitch-char.is-glitching { color: #93c5fd !important; text-shadow: none !important; }
+html.theme-pro .glitch-divider { background: rgba(255, 255, 255, 0.25) !important; box-shadow: none !important; }
+html.theme-pro .glitch-sub { color: #dbeafe !important; text-shadow: none !important; font-family: 'Inter', sans-serif !important; }
+html.theme-pro .glitch-cta {
+    background: #ffffff !important;
+    color: var(--pro-accent) !important;
+    border: 0 !important;
+    border-radius: 10px !important;
+    box-shadow: 0 8px 24px rgba(2, 6, 23, 0.3) !important;
+    text-shadow: none !important;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 700 !important;
+}
+html.theme-pro .glitch-cta:hover { background: var(--pro-accent-soft) !important; }
+html.theme-pro .glitch-cta::before,
+html.theme-pro .glitch-cta::after { display: none !important; }
+html.theme-pro .glitch-statusbar { color: #cbd5e1 !important; text-shadow: none !important; border-color: rgba(255, 255, 255, 0.15) !important; background: none !important; font-family: 'Inter', sans-serif !important; }
+html.theme-pro .hero-subtitle { color: #e2e8f0 !important; text-shadow: none !important; -webkit-text-fill-color: currentColor !important; background: none !important; }
+html.theme-pro .feature-tag {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+}
+
+/* ---------- Processus ---------- */
+html.theme-pro .processus-section { background: var(--pro-surface) !important; }
+html.theme-pro .processus-video { box-shadow: var(--pro-shadow) !important; border: 1px solid var(--pro-border) !important; }
+html.theme-pro .processus-video video[style*="mix-blend-mode"] { display: none; }
+
+/* ---------- Services : cartes photo à plat ---------- */
+html.theme-pro .services-section,
+html.theme-pro .services-section.has-photo-bg { background: var(--pro-soft) !important; }
+html.theme-pro .services-section .service-card,
+html.theme-pro .services-section .service-card:hover { transform: none !important; }
+html.theme-pro .services-section .service-card-wrap { transition: transform 0.25s ease; }
+html.theme-pro .services-section .service-card-wrap:hover { transform: translateY(-6px); }
+html.theme-pro .services-section .layer { display: none; }
+html.theme-pro .services-section .layer:first-child {
+    display: block;
+    transform: none;
+    border: 0;
+    border-radius: 16px;
+    background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55) 0%, rgba(15, 23, 42, 0.82) 100%), url('/images/panneaux-solaires-sous-la-pluie.jpg');
+    box-shadow: var(--pro-shadow);
+}
+html.theme-pro .services-section .layer-rain { display: none; }
+html.theme-pro .services-section .card-icon { background: rgba(255, 255, 255, 0.12) !important; border-color: rgba(255, 255, 255, 0.35) !important; box-shadow: none !important; }
+html.theme-pro .services-section .service-card h3 { text-shadow: none !important; font-family: 'Space Grotesk', 'Inter', sans-serif; }
+html.theme-pro .services-section .service-card p { color: #e2e8f0 !important; text-shadow: none !important; }
+html.theme-pro .services-section .btn-learn {
+    background: #ffffff !important;
+    color: var(--pro-accent) !important;
+    border: 0 !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+    font-weight: 700;
+}
+html.theme-pro .services-section .btn-learn:hover { background: var(--pro-accent-soft) !important; }
+
+/* ---------- Pourquoi Sirius-Solar : vitrines vues de face, claires ---------- */
+html.theme-pro .advantages-section,
+html.theme-pro .advantages-section.has-photo-bg { background: var(--pro-surface) !important; }
+html.theme-pro .advantages-bg-video { display: none !important; }
+html.theme-pro .why-box__scene,
+html.theme-pro .why-box:hover .why-box__scene { transform: none !important; }
+html.theme-pro .why-face {
+    border-color: var(--pro-border) !important;
+    box-shadow: none !important;
+}
+html.theme-pro .why-face--back {
+    background: linear-gradient(180deg, #eff6ff 0%, #dbeafe 100%) !important;
+    border-radius: 14px 14px 0 0;
+}
+html.theme-pro .why-face--left,
+html.theme-pro .why-face--right,
+html.theme-pro .why-face--top,
+html.theme-pro .why-face--floor,
+html.theme-pro .why-face--bottom { display: none; }
+html.theme-pro .why-face--front {
+    background: var(--pro-surface) !important;
+    border: 1px solid var(--pro-border) !important;
+    border-radius: 0 0 14px 14px;
+    color: var(--pro-text) !important;
+    box-shadow: var(--pro-shadow) !important;
+}
+html.theme-pro .why-face--front h3 { color: var(--pro-text) !important; text-shadow: none !important; font-family: 'Space Grotesk', 'Inter', sans-serif !important; }
+html.theme-pro .why-face--front p { color: var(--pro-muted) !important; }
+html.theme-pro .why-num { background: var(--pro-accent) !important; color: #fff !important; box-shadow: none !important; }
+html.theme-pro .why-bars span { background: linear-gradient(180deg, #60a5fa 0%, #1d4ed8 100%) !important; box-shadow: none !important; }
+html.theme-pro .why-arrow { border-bottom-color: #16a34a !important; filter: none !important; }
+html.theme-pro .why-drop { background: #60a5fa !important; box-shadow: none !important; }
+html.theme-pro .why-ripple { border-color: rgba(29, 78, 216, 0.5) !important; }
+html.theme-pro .why-tap { box-shadow: none !important; }
+html.theme-pro .why-leaf { filter: none !important; }
+html.theme-pro .why-clock { border-color: var(--pro-accent) !important; box-shadow: none !important; }
+html.theme-pro .why-clock b { color: var(--pro-accent) !important; }
+html.theme-pro .why-hand { background: var(--pro-navy) !important; box-shadow: none !important; }
+html.theme-pro .why-hand--m { background: var(--pro-accent) !important; }
+
+/* ---------- Promotions : bons blancs, bordure pointillée bleue ---------- */
+html.theme-pro #promotions { background: var(--pro-bg) !important; }
+html.theme-pro #promotions .promo-card,
+html.theme-pro #promotions .promo-card:hover {
+    background: var(--pro-surface) !important;
+    border: 2px dashed rgba(29, 78, 216, 0.45) !important;
+    box-shadow: var(--pro-shadow) !important;
+}
+html.theme-pro #promotions .promo-card:hover { border-color: var(--pro-accent) !important; }
+html.theme-pro #promotions .promo-card::before { display: none; }
+html.theme-pro #promotions .promo-badge { background: var(--pro-accent-soft) !important; color: var(--pro-accent-dark) !important; box-shadow: none !important; }
+html.theme-pro #promotions .promo-title { color: var(--pro-text) !important; -webkit-text-fill-color: currentColor !important; text-shadow: none !important; }
+html.theme-pro #promotions .promo-desc { color: var(--pro-muted) !important; }
+html.theme-pro #promotions .promo-value {
+    color: var(--pro-accent) !important;
+    -webkit-text-fill-color: currentColor !important;
+    text-shadow: none !important;
+    border-bottom-color: var(--pro-border) !important;
+}
+html.theme-pro #promotions .promo-cta,
+html.theme-pro #promotions .promo-cta:hover { background: var(--pro-accent) !important; color: #fff !important; box-shadow: none !important; }
+html.theme-pro #promotions .promo-cta:hover { background: var(--pro-accent-dark) !important; }
+html.theme-pro #promotions .promo-validity { color: var(--pro-faint) !important; }
+
+/* ---------- « Prêt à optimiser » : bandeau photo marine ---------- */
+html.theme-pro .cta-section {
+    background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.88) 0%, rgba(30, 58, 138, 0.8) 100%), url('/images/brosses-sur-panneaux.jpg') !important;
+}
+html.theme-pro .cta-title { color: #ffffff !important; }
+html.theme-pro .cta-title::after { background: #93c5fd !important; }
+html.theme-pro .cta-text { color: #e2e8f0 !important; text-shadow: none !important; }
+html.theme-pro .detail-item {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    box-shadow: none !important;
+}
+html.theme-pro .detail-item h4 { color: #ffffff !important; text-shadow: none !important; }
+html.theme-pro .detail-item p { color: #cbd5e1 !important; }
+html.theme-pro .btn-cta-white {
+    background: #ffffff !important;
+    color: var(--pro-accent) !important;
+    box-shadow: 0 10px 30px rgba(2, 6, 23, 0.35) !important;
+    text-shadow: none !important;
+}
+
+/* ---------- Pied de page ---------- */
+html.theme-pro .footer { background: var(--pro-navy) !important; color: #cbd5e1 !important; }
+html.theme-pro .footer > div[style*="border-bottom"] { border-bottom-color: rgba(255, 255, 255, 0.1) !important; }
+html.theme-pro .contact-scramble-heading { color: #ffffff !important; }
+html.theme-pro .contact-scramble-heading::after { background: #93c5fd !important; }
+html.theme-pro .info-card { background: #111c33 !important; border-color: #1e293b !important; box-shadow: none !important; }
+html.theme-pro .info-card__text h3 { color: #ffffff !important; text-shadow: none !important; }
+html.theme-pro .info-card__tagline { color: #93c5fd !important; text-shadow: none !important; }
+html.theme-pro .info-card__contact a { color: #e2e8f0 !important; }
+html.theme-pro .info-card__contact a:hover { color: #93c5fd !important; }
+html.theme-pro .info-card__tags { color: #94a3b8 !important; }
+html.theme-pro .info-card__banner { background: linear-gradient(135deg, #1d4ed8 0%, #1e3a8a 100%) !important; }
+html.theme-pro .footer p[style*="191, 0, 255"],
+html.theme-pro .footer p[style*="191, 0, 255"] a { color: #93c5fd !important; text-shadow: none !important; }
+html.theme-pro .footer-column h3 { color: #ffffff !important; text-shadow: none !important; }
+html.theme-pro .footer-column p { color: #94a3b8 !important; text-shadow: none !important; }
+html.theme-pro .footer-column p[style*="0, 255, 157"] { color: #93c5fd !important; }
+html.theme-pro .footer-column a { color: #cbd5e1 !important; }
+html.theme-pro .footer-column a:hover { color: #ffffff !important; }
+html.theme-pro .footer-bottom { border-top-color: rgba(255, 255, 255, 0.1) !important; color: #94a3b8 !important; }
+
+/* ---------- Retouches ---------- */
+html.theme-pro .glitch-cta { padding: 12px 30px !important; font-size: 15px !important; letter-spacing: 0.04em !important; }
+html.theme-pro .why-box { perspective: none !important; }
+html.theme-pro .footer-bottom p { color: #94a3b8 !important; text-shadow: none !important; }
+html.theme-pro .footer a[style*="border-radius: 50%"] {
+    background: #1e293b !important;
+    border: 1px solid #334155 !important;
+    color: #cbd5e1 !important;
+    box-shadow: none !important;
+}
+html.theme-pro .footer a[style*="border-radius: 50%"]:hover { background: var(--pro-accent) !important; }
+html.theme-pro .rotary-indicator { color: #ffffff !important; background: #1e293b !important; border-color: #334155 !important; text-shadow: none !important; box-shadow: none !important; }
+html.theme-pro .rotary-knob-label { color: #94a3b8 !important; text-shadow: none !important; }
+html.theme-pro .hero-container { background: #0f172a; }
+
+/* =====================================================================
+   Autres pages : les couleurs de base du site sont remplacées
+   (vert foncé → marine, vert clair → bleu foncé, « doré » gris → bleu)
+   ===================================================================== */
+html.theme-pro {
+    --vert-fonce: #0f172a;
+    --vert-clair: #1e3a8a;
+    --dore: #1d4ed8;
+    --dore-clair: #3b82f6;
+    --noir: #0f172a;
+    --gris-clair: #f1f5f9;
+    --gris-moyen: #64748b;
+}
+html.theme-pro {
+    --vert-mid: #172554;
+    --or-vif: #ffffff;
+    --or-vif-2: #e0e7ff;
+    --mint: #1d4ed8;
+    --deep: #1e3a8a;
+}
+/* Boutons "dorés" (dégradé bleu en style Pro) : texte blanc lisible */
+html.theme-pro .btn-service-cta,
+html.theme-pro .pricing-card__btn,
+html.theme-pro .btn-submit,
+html.theme-pro .btn-primary { color: #ffffff !important; text-shadow: none !important; }
+
+/* ---------- Page Services ---------- */
+html.theme-pro .services-container { background: var(--pro-bg) !important; }
+html.theme-pro .service-full-card {
+    background: var(--pro-surface) !important;
+    border: 1px solid var(--pro-border) !important;
+    box-shadow: var(--pro-shadow) !important;
+    backdrop-filter: none !important;
+}
+html.theme-pro .service-full-card:hover { border-color: var(--pro-accent) !important; }
+html.theme-pro .service-full-card h3 { color: var(--pro-text) !important; }
+html.theme-pro .service-description,
+html.theme-pro .service-features li { color: var(--pro-muted) !important; }
+html.theme-pro .service-features { border-top-color: var(--pro-border) !important; }
+html.theme-pro .pricing-card { background: var(--pro-surface) !important; border-color: var(--pro-border) !important; box-shadow: var(--pro-shadow) !important; }
+
+/* ---------- Blog ---------- */
+html.theme-pro .blog-hero { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%) !important; }
+html.theme-pro .scramble-blue,
+html.theme-pro .realisations-h1 { color: #ffffff !important; text-shadow: none !important; -webkit-text-fill-color: currentColor !important; }
+html.theme-pro .back-btn { background: var(--pro-surface) !important; border: 1px solid var(--pro-border) !important; color: var(--pro-text) !important; }
+html.theme-pro .back-btn:hover { color: var(--pro-accent) !important; border-color: var(--pro-accent) !important; }
+html.theme-pro .project-card {
+    background: var(--pro-surface) !important;
+    border: 1px solid var(--pro-border) !important;
+    box-shadow: var(--pro-shadow) !important;
+}
+html.theme-pro .project-card:hover { border-color: var(--pro-accent) !important; }
+html.theme-pro .project-title { color: var(--pro-text) !important; text-shadow: none !important; }
+html.theme-pro .project-description { color: var(--pro-muted) !important; }
+html.theme-pro .project-meta { color: var(--pro-faint) !important; border-top-color: var(--pro-border) !important; }
+html.theme-pro .project-badge { background: var(--pro-accent-soft) !important; color: var(--pro-accent-dark) !important; }
+
+/* ---------- Connexion / Inscription ---------- */
+html.theme-pro:has(.auth3d), html.theme-pro body:has(.auth3d) { background: var(--pro-soft) !important; }
+html.theme-pro .auth3d-bg { background: linear-gradient(135deg, #eef2f7 0%, #dfe7f1 100%) !important; }
+html.theme-pro .auth3d-blob--1 { background: #93c5fd !important; opacity: 0.5; }
+html.theme-pro .auth3d-blob--2 { background: #1d4ed8 !important; opacity: 0.25; }
+html.theme-pro .auth3d-blob--3 { background: #cbd5e1 !important; opacity: 0.5; }
+html.theme-pro .auth-slide {
+    background: #ffffff !important;
+    border: 1px solid var(--pro-border) !important;
+    box-shadow: 0 30px 70px rgba(15, 23, 42, 0.15) !important;
+    color: var(--pro-text) !important;
+    backdrop-filter: none !important;
+}
+html.theme-pro .auth-slide::before, html.theme-pro .auth-slide::after { display: none !important; }
+html.theme-pro .auth-slide__welcome { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 70%, #1d4ed8 130%) !important; }
+html.theme-pro .auth-slide__toggle:hover { color: var(--pro-accent) !important; }
+html.theme-pro .auth-slide__brand { color: var(--pro-text) !important; text-shadow: none !important; }
+html.theme-pro .auth-slide__sub { color: var(--pro-muted) !important; }
+html.theme-pro .auth3d-field label,
+html.theme-pro .auth3d-field .form-label { color: var(--pro-text) !important; text-shadow: none !important; }
+html.theme-pro .auth3d-field input {
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    color: var(--pro-text) !important;
+    box-shadow: none !important;
+}
+html.theme-pro .auth3d-field input::placeholder { color: #94a3b8 !important; }
+html.theme-pro .auth3d-field input:focus { border-color: var(--pro-accent) !important; box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.15) !important; }
+html.theme-pro .auth3d-forgot { color: var(--pro-muted) !important; }
+html.theme-pro .auth3d-forgot:hover { color: var(--pro-accent) !important; }
+html.theme-pro .auth3d-btn { background: var(--pro-accent) !important; box-shadow: none !important; }
+html.theme-pro .auth3d-btn:hover { background: var(--pro-accent-dark) !important; box-shadow: 0 10px 24px rgba(29, 78, 216, 0.3) !important; }
+html.theme-pro .auth3d-alert--error { background: #fef2f2 !important; border-color: #fecaca !important; color: #b91c1c !important; }
+html.theme-pro .auth3d-alert--success { background: #eff6ff !important; border-color: #bfdbfe !important; color: #1e40af !important; }
+
+/* ---------- Devis ---------- */
+html.theme-pro:has(.devis-container), html.theme-pro body:has(.devis-container) { background: var(--pro-bg) !important; }
+html.theme-pro .devis-header { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%) !important; }
+html.theme-pro .devis-header h1 { text-shadow: none !important; }
+html.theme-pro .pricing-wrap { background: var(--pro-bg) !important; }
+html.theme-pro .pricing-head h2 { color: var(--pro-text) !important; -webkit-text-fill-color: currentColor !important; background: none !important; text-shadow: none !important; filter: none !important; }
+html.theme-pro .pricing-head p,
+html.theme-pro .pricing-mode__label { color: var(--pro-muted) !important; }
+html.theme-pro .slab3d__layers { display: none !important; }
+html.theme-pro .pricing-card,
+html.theme-pro .pricing-card.featured,
+html.theme-pro .pricing-card.selected,
+html.theme-pro .pricing-card.featured.selected,
+html.theme-pro .pricing-card:hover {
+    transform: none !important;
+    background: var(--pro-surface) !important;
+    border: 1px solid var(--pro-border) !important;
+    box-shadow: var(--pro-shadow) !important;
+}
+html.theme-pro .pricing-card.featured { border: 2px solid var(--pro-accent) !important; }
+html.theme-pro .pricing-card.selected { border: 2px solid var(--pro-accent) !important; box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.15), var(--pro-shadow) !important; }
+html.theme-pro .pricing-card.selected::before { background: var(--pro-accent) !important; color: #fff !important; }
+html.theme-pro .pricing-card__head { border-bottom-color: var(--pro-border) !important; }
+html.theme-pro .pricing-card__title { color: var(--pro-text) !important; text-shadow: none !important; }
+html.theme-pro .pricing-card__sub,
+html.theme-pro .pricing-card__period { color: var(--pro-faint) !important; }
+html.theme-pro .pricing-card__price { color: var(--pro-accent) !important; text-shadow: none !important; }
+html.theme-pro .pricing-features li { color: var(--pro-muted) !important; border-bottom-color: var(--pro-border) !important; }
+html.theme-pro .pricing-features li:before { color: var(--pro-accent) !important; }
+html.theme-pro .pricing-card__btn { background: var(--pro-accent) !important; box-shadow: none !important; }
+html.theme-pro .pricing-card__btn:hover { background: var(--pro-accent-dark) !important; }
+html.theme-pro .devis-container { background: var(--pro-soft) !important; }
+html.theme-pro .devis-gradient-bg { display: none !important; }
+html.theme-pro .devis-form-card {
+    transform: none !important;
+    background: var(--pro-surface) !important;
+    border: 1px solid var(--pro-border) !important;
+    box-shadow: var(--pro-shadow) !important;
+    color: var(--pro-text) !important;
+    backdrop-filter: none !important;
+}
+html.theme-pro .devis-form-card .slab3d__layers { display: none !important; }
+html.theme-pro .form-title { color: var(--pro-text) !important; text-shadow: none !important; -webkit-text-fill-color: currentColor !important; background: none !important; }
+html.theme-pro .form-subtitle { color: var(--pro-muted) !important; }
+html.theme-pro .devis-form-card .form-group label { color: var(--pro-text) !important; text-shadow: none !important; }
+html.theme-pro .devis-form-card .form-group input,
+html.theme-pro .devis-form-card .form-group textarea,
+html.theme-pro .devis-form-card .form-group select {
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    color: var(--pro-text) !important;
+    box-shadow: none !important;
+    color-scheme: light;
+}
+html.theme-pro .devis-form-card .form-group input::placeholder,
+html.theme-pro .devis-form-card .form-group textarea::placeholder { color: #94a3b8 !important; }
+html.theme-pro .devis-form-card .form-group input:focus,
+html.theme-pro .devis-form-card .form-group textarea:focus,
+html.theme-pro .devis-form-card .form-group select:focus { border-color: var(--pro-accent) !important; box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.15) !important; }
+html.theme-pro .devis-info-box { background: #eff6ff !important; border-color: #bfdbfe !important; color: #1e3a8a !important; }
+html.theme-pro .lavage-section { background: var(--pro-soft) !important; border-color: var(--pro-border) !important; }
+html.theme-pro .lavage-title { color: var(--pro-text) !important; text-shadow: none !important; }
+html.theme-pro .lavage-card-label { background: #ffffff !important; border-color: var(--pro-border) !important; box-shadow: none !important; }
+html.theme-pro .lavage-card input[type="checkbox"]:checked + .lavage-card-label { border-color: var(--pro-accent) !important; background: #eff6ff !important; }
+html.theme-pro .lavage-name { color: var(--pro-text) !important; text-shadow: none !important; }
+html.theme-pro .lavage-price,
+html.theme-pro .price-value { color: var(--pro-accent) !important; text-shadow: none !important; }
+html.theme-pro .price-summary { background: #ffffff !important; border-color: var(--pro-border) !important; }
+html.theme-pro .price-label { color: var(--pro-text) !important; }
+html.theme-pro .btn-submit { background: var(--pro-accent) !important; box-shadow: none !important; }
+html.theme-pro .btn-submit:hover { background: var(--pro-accent-dark) !important; }
+html.theme-pro .btn-reset { background: #ffffff !important; color: var(--pro-text) !important; border: 1px solid var(--pro-border) !important; }
+html.theme-pro .auth-slide__welcome h2,
+html.theme-pro .auth-slide__welcome p { color: #ffffff !important; text-shadow: none !important; -webkit-text-fill-color: currentColor !important; }
+html.theme-pro .auth-slide__toggle { color: #ffffff !important; border-color: rgba(255, 255, 255, 0.6) !important; }
+
+/* ---------- À propos ---------- */
+html.theme-pro .about-hero,
+html.theme-pro [class*="about-header"] { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%) !important; }
+html.theme-pro .scramble-blue .char.glitch { color: #93c5fd !important; }

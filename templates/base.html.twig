@@ -23,6 +23,16 @@
     <title>{% block title %}Sirius-Solar — Nettoyage & Entretien de Panneaux Photovoltaïques{% endblock %}</title>
 
     {# Icône d'onglet : brosse néon verte + étoile dorée, lisible même en 16 px #}
+    <script>
+        // Site style: "pro" (default) or "neon", chosen with the button in the top bar.
+        (function () {
+            var t = null;
+            try { t = localStorage.getItem('sirius-theme'); } catch (e) {}
+            var root = document.documentElement;
+            if (t !== 'neon' && !root.classList.contains('is-admin')) root.classList.add('theme-pro');
+        })();
+    </script>
+    <link rel="stylesheet" href="{{ asset('css/theme-pro.css') }}?v=2">
     <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="48x48">
     <link rel="icon" type="image/svg+xml" href="{{ asset('images/icon/icon.svg') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/icon/icon-32.png') }}">
@@ -689,7 +699,18 @@
         {% include 'components/navbar.html.twig' %}
     {% endif %}
     {# Logo 3D Sirius-Solar (navbar + hero de l'accueil) #}
-    <script type="module" src="{{ asset('js/sirius-logo3d.js') }}"></script>
+    <script>
+        // The 3D neon logo (three.js) is only loaded for the neon style.
+        window.siriusLoadLogo3d = function () {
+            if (window.__siriusLogo3d) return;
+            window.__siriusLogo3d = true;
+            var sc = document.createElement('script');
+            sc.type = 'module';
+            sc.src = "{{ asset('js/sirius-logo3d.js') }}";
+            document.body.appendChild(sc);
+        };
+        if (!document.documentElement.classList.contains('theme-pro')) window.siriusLoadLogo3d();
+    </script>
 
     {% block javascripts %}
         {{ encore_entry_script_tags('app') }}
@@ -754,7 +775,7 @@
         </script>
     <style>
         main { padding: 0; margin: 0; width: 100%; }
-        html, body { overflow-x: hidden; } /* nothing may push the page sideways on mobile */
+        html, body { overflow-x: clip; } /* nothing may push the page sideways on mobile; clip (not hidden) keeps the window as the scroller */
         /* Padding counted inside widths: blocks with padding + width:100% no longer overflow on mobile. */
         *, *::before, *::after { box-sizing: border-box; }
     </style>
@@ -797,12 +818,17 @@
         var nav = document.getElementById('siteNavbar');
         var navH = nav ? nav.getBoundingClientRect().height : 70;
         var behavior = smooth === false ? 'auto' : 'smooth';
+        // Position from the layout (offsetTop), not from the screen: it stays right even while the
+        // page is still coming back from its tilted "menu open" state.
+        var y = 0;
+        for (var e = title; e; e = e.offsetParent) { y += e.offsetTop; }
+        y = Math.max(0, y - navH - 24);
         // The page scrolls inside <body> (overflow-x: hidden on html and body), not the window.
         var b = document.body;
         if (b.scrollHeight > b.clientHeight + 5 && /(auto|scroll)/.test(getComputedStyle(b).overflowY)) {
-            b.scrollTo({ top: Math.max(0, title.getBoundingClientRect().top + b.scrollTop - navH - 24), behavior: behavior });
+            b.scrollTo({ top: y, behavior: behavior });
         } else {
-            window.scrollTo({ top: Math.max(0, title.getBoundingClientRect().top + window.pageYOffset - navH - 24), behavior: behavior });
+            window.scrollTo({ top: y, behavior: behavior });
         }
     };
     // Arriving from another page with #section in the address.
@@ -811,6 +837,37 @@
             try { var t = document.querySelector(location.hash); if (t) setTimeout(function () { window.siriusScrollTo(t, false); }, 60); } catch (e) {}
         }
     });
+</script>
+<a href="#" class="to-top" id="toTop" aria-label="Revenir en haut de la page">↑</a>
+<style>
+    .to-top {
+        position: fixed; right: 16px; bottom: 18px; z-index: 900;
+        width: 46px; height: 46px; border-radius: 50%;
+        display: grid; place-items: center;
+        font: 700 20px/1 system-ui, sans-serif; text-decoration: none;
+        color: #03120e; background: #2dff4f; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+        opacity: 0; transform: translateY(12px); pointer-events: none;
+        transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    .to-top.is-visible { opacity: 1; transform: none; pointer-events: auto; }
+    html.theme-pro .to-top { color: #ffffff; background: #1d4ed8; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.3); }
+    html.is-admin .to-top, body.nav3d-open .to-top { display: none; }
+</style>
+<script>
+(function () {
+    var b = document.getElementById('toTop');
+    if (!b) return;
+    function y() { return window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0; }
+    function refresh() { b.classList.toggle('is-visible', y() > 600); }
+    window.addEventListener('scroll', refresh, { passive: true });
+    document.body.addEventListener('scroll', refresh, { passive: true });
+    refresh();
+    b.addEventListener('click', function (e) {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        document.body.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+})();
 </script>
 </body>
 </html>

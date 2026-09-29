@@ -14,7 +14,7 @@
     }
 
     main {
-        background: linear-gradient(135deg, #0A3D35 0%, #2D6B55 100%);
+        background: linear-gradient(135deg, var(--vert-fonce) 0%, var(--vert-clair) 100%);
         min-height: calc(100vh - 140px);
         display: flex;
         align-items: center;
@@ -286,8 +286,8 @@
 
     /* CSS Variables */
     :root {
-        --vert-fonce: #0A3D35;
-        --vert-clair: #2D6B55;
+        --vert-fonce: var(--vert-fonce);
+        --vert-clair: var(--vert-clair);
         --dore: #a8a8a8;
         --dore-clair: #e8e8e8;
     }

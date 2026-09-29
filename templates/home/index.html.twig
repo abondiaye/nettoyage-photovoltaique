@@ -8,8 +8,8 @@
     html {
         margin: 0 !important;
         padding: 0 !important;
-        overflow-x: hidden !important;
-        overflow-y: auto !important;
+        overflow-x: clip !important;   /* clip, not hidden: the window keeps scrolling (hidden made <body> the scroller) */
+        overflow-y: visible !important;
         width: 100% !important;
     }
 
@@ -17,8 +17,8 @@
         padding-top: 0 !important;
         padding: 0 !important;
         margin: 0 !important;
-        overflow-x: hidden !important;
-        overflow-y: auto !important;
+        overflow-x: clip !important;
+        overflow-y: visible !important;
         width: 100% !important;
         box-sizing: border-box;
     }
@@ -2095,6 +2095,27 @@
     }
 </style>
 
+<style>
+    /* ===== Carte d'accueil plus compacte ===== */
+    .hero-card { max-width: 600px !important; padding: 26px 36px 30px !important; }
+    .hero-card:has(.hero-logo--3d) { padding-top: 26px !important; }
+    .hero-logo--3d { width: min(440px, 100%) !important; margin: -24px auto 0 !important; }
+    .glitch-intro { padding-top: 14px !important; padding-bottom: 14px !important; }
+    .hero-subtitle { margin: 14px 0 16px !important; }
+    .hero-features { margin: 0 !important; gap: 8px !important; flex-wrap: wrap; justify-content: center; }
+    @media (max-width: 768px) {
+        .hero-container { align-items: flex-start !important; }
+        .hero-card { max-width: calc(100% - 24px) !important; margin: 0 auto !important; padding: 18px 16px 20px !important; }
+        .hero-card:has(.hero-logo--3d) { padding-top: 18px !important; }
+        .hero-logo--3d { margin: -12px auto 0 !important; }
+        .hero-features { display: flex !important; flex-direction: row !important; }
+        .feature-tag { padding: 6px 10px !important; font-size: 12px !important; }
+        .hero-subtitle { font-size: 13px !important; }
+    }
+    /* No white strip around the photo */
+    .hero-container { background: #03120e; }
+</style>
+
 <section class="hero-container">
     <div class="hero-gradient-bg">
         <img src="{{ asset('images/panneaux-solaires-sous-la-pluie.jpg') }}" fetchpriority="high" alt="Panneaux solaires sous la pluie">
@@ -2108,6 +2129,7 @@
         <div class="hero-card__layers" aria-hidden="true"><span style="--i: 1"></span><span style="--i: 2"></span><span style="--i: 3"></span><span style="--i: 4"></span><span style="--i: 5"></span><span style="--i: 6"></span><span style="--i: 7"></span><span style="--i: 8"></span><span style="--i: 9"></span><span style="--i: 10"></span><span style="--i: 11"></span><span style="--i: 12"></span><span style="--i: 13"></span><span style="--i: 14"></span><span style="--i: 15"></span><span style="--i: 16"></span><span style="--i: 17"></span><span style="--i: 18"></span></div>
         <!-- Logo débordant vers le haut -->
         <div class="hero-logo hero-logo--3d" data-sirius-logo3d role="img" aria-label="Sirius-Solar"></div>
+        {% include 'components/_logo_pro.html.twig' %}
 
         <div class="glitch-intro">
             <div class="glitch-grid"></div>
