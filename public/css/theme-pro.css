@@ -349,8 +349,6 @@ html.theme-pro .info-card__contact a { color: #e2e8f0 !important; }
 html.theme-pro .info-card__contact a:hover { color: #93c5fd !important; }
 html.theme-pro .info-card__tags { color: #94a3b8 !important; }
 html.theme-pro .info-card__banner { background: linear-gradient(135deg, #1d4ed8 0%, #1e3a8a 100%) !important; }
-html.theme-pro .footer p[style*="191, 0, 255"],
-html.theme-pro .footer p[style*="191, 0, 255"] a { color: #93c5fd !important; text-shadow: none !important; }
 html.theme-pro .footer-column h3 { color: #ffffff !important; text-shadow: none !important; }
 html.theme-pro .footer-column p { color: #94a3b8 !important; text-shadow: none !important; }
 html.theme-pro .footer-column p[style*="0, 255, 157"] { color: #93c5fd !important; }

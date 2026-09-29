@@ -2595,8 +2595,21 @@
         </div>
         {% else %}
         <!-- Message pour non-connectés -->
-        <p style="text-align: center; margin-top: 30px; color: rgba(191, 0, 255, 0.85); text-shadow: 0 0 8px rgba(191, 0, 255, 0.5); font-size: 13px; letter-spacing: 0.5px;">
-            <a href="{{ path('app_login') }}" style="color: #bf00ff; text-shadow: 0 0 10px rgba(191, 0, 255, 0.7); text-decoration: underline;">Connectez-vous</a> pour voir les options de contact
+        <style>
+    /* "Connectez-vous pour voir les options de contact" : couleurs du site (vert néon / bleu en style Pro) */
+    .contact-login-hint { text-align: center; margin-top: 30px; font-size: 14px; letter-spacing: 0.3px; color: rgba(234, 255, 240, 0.8); }
+    .contact-login-hint a {
+        display: inline-block; margin-right: 4px; padding: 6px 16px; border-radius: 999px;
+        color: #03120e; background: #2dff4f; font-weight: 700; text-decoration: none;
+        box-shadow: 0 0 14px rgba(45, 255, 79, 0.45); transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .contact-login-hint a:hover { transform: translateY(-2px); box-shadow: 0 0 22px rgba(45, 255, 79, 0.7); }
+    html.theme-pro .contact-login-hint { color: #cbd5e1; }
+    html.theme-pro .contact-login-hint a { color: #ffffff; background: #1d4ed8; box-shadow: none; }
+    html.theme-pro .contact-login-hint a:hover { background: #3b82f6; }
+</style>
+        <p class="contact-login-hint">
+            <a href="{{ path('app_login') }}">Connectez-vous</a> pour voir les options de contact
         </p>
         {% endif %}
     </div>
