@@ -30,8 +30,8 @@ html.theme-pro body { font-family: 'Inter', system-ui, -apple-system, 'Segoe UI'
 
 /* ---------- Logos : le logo 3D néon est remplacé par un logo plat ---------- */
 .sirius-logo-pro { display: none; }
-html.theme-pro .sirius-logo-pro { display: block; }
-html.theme-pro [data-sirius-logo3d] { display: none !important; }
+/* The 3D logo is used in both styles (blue colours in Pro); the flat logo only replaces it if WebGL is unavailable. */
+[data-sirius-logo3d].is-static + .sirius-logo-pro { display: block; }
 .sirius-logo-pro .pl-roll { stroke: var(--pl-a, #1d4ed8); }
 .sirius-logo-pro .pl-hub { fill: var(--pl-hub, #ffffff); stroke: var(--pl-a, #1d4ed8); }
 .sirius-logo-pro .pl-mark { fill: var(--pl-a, #1d4ed8); stroke: var(--pl-a, #1d4ed8); }

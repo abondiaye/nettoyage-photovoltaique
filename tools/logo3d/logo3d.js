@@ -264,6 +264,31 @@ export function mountSiriusLogo(el) {
     return gl;
   });
 
+  // --- Colours: green neon style, or the blue "Pro" style of the site -------------------------
+  // In the Pro style the logo keeps its thickness and rotation but loses the neon glow.
+  // Navbar (compact, on white glass): navy + blue. Hero (on the dark blue card): light blue + white.
+  const halos = [siriusGroup.children[1], solarGroup.children[1]];
+  const glows = [starGlow, ...brushGlows];
+  const PALETTES = {
+    neon: { a: ['#2fb865', '#3fd47a', 0.5], b: ['#d4ac1c', '#f2c230', 0.55], dark: '#0a3a16', white: ['#b8ffc4', '#d6ffdc', 0.7], glow: true },
+    proLight: { a: ['#1d4ed8', '#1d4ed8', 0.12], b: ['#0f172a', '#0f172a', 0.05], dark: '#1e3a8a', white: ['#e2e8f0', '#ffffff', 0.25], glow: false },
+    proDark: { a: ['#60a5fa', '#3b82f6', 0.35], b: ['#f1f5f9', '#ffffff', 0.3], dark: '#172554', white: ['#e2e8f0', '#ffffff', 0.4], glow: false },
+  };
+  let pal = PALETTES.neon;
+  function applyPalette() {
+    const pro = document.documentElement.classList.contains('theme-pro');
+    pal = pro ? (compact ? PALETTES.proLight : PALETTES.proDark) : PALETTES.neon;
+    mats.mint.color.set(pal.a[0]); mats.mint.emissive.set(pal.a[1]); mats.mint.emissiveIntensity = pal.a[2];
+    mats.gold.color.set(pal.b[0]); mats.gold.emissive.set(pal.b[1]); mats.gold.emissiveIntensity = pal.b[2];
+    mats.dark.color.set(pal.dark);
+    mats.white.color.set(pal.white[0]); mats.white.emissive.set(pal.white[1]); mats.white.emissiveIntensity = pal.white[2];
+    halos.forEach((h) => { h.visible = pal.glow; });
+    glows.forEach((g) => { g.visible = pal.glow; });
+  }
+  applyPalette();
+  new MutationObserver(() => { applyPalette(); draw(performance.now()); })
+    .observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
   // Centre the whole logo.
   logo.children.forEach((c) => { c.position.x -= 0.3; });
 
@@ -312,9 +337,9 @@ export function mountSiriusLogo(el) {
       // Neon flicker: steady glow with a brief stutter now and then (not at the same time).
       const f = t % 6 > 5.65 ? (Math.sin(t * 90) > 0 ? 0.35 : 1) : 1;
       const f2 = (t + 2.7) % 7 > 6.75 ? (Math.sin(t * 70) > 0 ? 0.4 : 1) : 1;
-      mats.gold.emissiveIntensity = (0.55 + Math.sin(t * 3) * 0.06) * f;
+      mats.gold.emissiveIntensity = pal.glow ? (pal.b[2] + Math.sin(t * 3) * 0.06) * f : pal.b[2];
       solarGroup.children[1].material.opacity = (0.8 + Math.sin(t * 3) * 0.1) * f;
-      mats.mint.emissiveIntensity = (0.5 + Math.sin(t * 2.4) * 0.05) * f2;
+      mats.mint.emissiveIntensity = pal.glow ? (pal.a[2] + Math.sin(t * 2.4) * 0.05) * f2 : pal.a[2];
       siriusGroup.children[1].material.opacity = (0.7 + Math.sin(t * 2.4) * 0.1) * f2;
       brushGlows.forEach((gl) => { gl.material.opacity = 0.25 * f2; });
     } else {
