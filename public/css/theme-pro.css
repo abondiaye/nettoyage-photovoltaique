@@ -560,3 +560,7 @@ html.theme-pro .services-section .layer-rain { display: block; opacity: 0.5; mix
 }
 
 html.theme-pro .nav3d-menu__style { background: #ffffff !important; border-color: var(--pro-border) !important; color: var(--pro-text) !important; }
+
+/* Menu open: the page canvas behind the menu must be light in the Pro style
+   (navbar.html.twig paints it dark for the neon style), otherwise the navy menu links are invisible. */
+html.theme-pro:has(body.nav3d-open) { background: #e8eef6 !important; }
