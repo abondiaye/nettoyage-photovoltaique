@@ -60,11 +60,12 @@
         justify-content: space-between;
         gap: 16px;
         padding: 6px 20px;
-        background: rgba(3, 18, 14, 0.8);
-        backdrop-filter: blur(10px) saturate(1.2);
-        -webkit-backdrop-filter: blur(10px) saturate(1.2);
-        border-bottom: 1px solid rgba(45, 255, 79, 0.22);
-        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+        /* Translucent green glass: the page shows through, blurred. */
+        background: linear-gradient(180deg, rgba(6, 60, 38, 0.42) 0%, rgba(3, 30, 20, 0.32) 100%);
+        backdrop-filter: blur(14px) saturate(1.5);
+        -webkit-backdrop-filter: blur(14px) saturate(1.5);
+        border-bottom: 1px solid rgba(45, 255, 79, 0.3);
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
         box-sizing: border-box;
         transition: background 0.4s ease;
     }

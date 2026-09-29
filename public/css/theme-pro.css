@@ -42,9 +42,12 @@ html.theme-pro [data-sirius-logo3d] { display: none !important; }
 
 /* ---------- Barre du haut ---------- */
 html.theme-pro .nav3d {
-    background: rgba(255, 255, 255, 0.92) !important;
-    border-bottom: 1px solid var(--pro-border) !important;
-    box-shadow: 0 1px 12px rgba(15, 23, 42, 0.06) !important;
+    /* Translucent white glass */
+    background: rgba(255, 255, 255, 0.55) !important;
+    backdrop-filter: blur(14px) saturate(1.6) !important;
+    -webkit-backdrop-filter: blur(14px) saturate(1.6) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.6) !important;
+    box-shadow: 0 1px 12px rgba(15, 23, 42, 0.08), inset 0 -1px 0 rgba(15, 23, 42, 0.06) !important;
 }
 html.theme-pro .nav3d__brand .sirius-logo-pro { width: 150px; height: auto; }
 html.theme-pro .nav3d__pill {
@@ -60,7 +63,7 @@ html.theme-pro .nav3d__pill--gold {
     color: var(--pro-accent) !important;
 }
 html.theme-pro .nav3d__pill--gold:hover { background: var(--pro-accent-soft) !important; }
-html.theme-pro .nav3d__burger { border-color: var(--pro-border) !important; background: #fff !important; box-shadow: none !important; }
+html.theme-pro .nav3d__burger { border-color: rgba(255, 255, 255, 0.7) !important; background: rgba(255, 255, 255, 0.45) !important; box-shadow: none !important; }
 html.theme-pro .nav3d__burger span { background: var(--pro-navy) !important; box-shadow: none !important; }
 
 /* Menu ouvert */
