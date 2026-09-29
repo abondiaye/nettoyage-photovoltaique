@@ -298,7 +298,7 @@
         if (e) e.preventDefault();
         var pro = !root.classList.contains('theme-pro');
         root.classList.toggle('theme-pro', pro);
-        try { localStorage.setItem('sirius-theme', pro ? 'pro' : 'neon'); } catch (err) {}
+        try { localStorage.setItem('sirius-style', pro ? 'pro' : 'neon'); } catch (err) {}
         if (!pro && window.siriusLoadLogo3d) window.siriusLoadLogo3d();
         refresh();
     }
