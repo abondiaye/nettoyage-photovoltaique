@@ -165,7 +165,6 @@ html.theme-pro .hero-gradient-bg::after {
     z-index: 3;
     background: linear-gradient(135deg, rgba(15, 23, 42, 0.82) 0%, rgba(30, 58, 138, 0.62) 100%);
 }
-html.theme-pro .hero-gradient-bg video { display: none; }
 html.theme-pro .hero-card,
 html.theme-pro .hero-card--thick {
     transform: none !important;
@@ -220,7 +219,6 @@ html.theme-pro .feature-tag {
 /* ---------- Processus ---------- */
 html.theme-pro .processus-section { background: var(--pro-surface) !important; }
 html.theme-pro .processus-video { box-shadow: var(--pro-shadow) !important; border: 1px solid var(--pro-border) !important; }
-html.theme-pro .processus-video video[style*="mix-blend-mode"] { display: none; }
 
 /* ---------- Services : cartes photo à plat ---------- */
 html.theme-pro .services-section,
@@ -238,7 +236,6 @@ html.theme-pro .services-section .layer:first-child {
     background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.55) 0%, rgba(15, 23, 42, 0.82) 100%), url('/images/panneaux-solaires-sous-la-pluie.jpg');
     box-shadow: var(--pro-shadow);
 }
-html.theme-pro .services-section .layer-rain { display: none; }
 html.theme-pro .services-section .card-icon { background: rgba(255, 255, 255, 0.12) !important; border-color: rgba(255, 255, 255, 0.35) !important; box-shadow: none !important; }
 html.theme-pro .services-section .service-card h3 { text-shadow: none !important; font-family: 'Space Grotesk', 'Inter', sans-serif; }
 html.theme-pro .services-section .service-card p { color: #e2e8f0 !important; text-shadow: none !important; }
@@ -552,3 +549,11 @@ html.theme-pro .scramble-blue .char.glitch { color: #93c5fd !important; }
 .sirius-logo-pro .pl-spin--b { animation-direction: reverse; }
 @keyframes plSpin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .sirius-logo-pro .pl-spin { animation: none; } }
+
+/* Gouttes de pluie animées aussi en style Pro (haut de page et cartes Services) */
+html.theme-pro .hero-gradient-bg video { display: block; z-index: 4 !important; opacity: 0.55 !important; mix-blend-mode: screen !important; }
+html.theme-pro .services-section .layer:first-child { overflow: hidden; }
+html.theme-pro .services-section .layer-rain { display: block; opacity: 0.5; mix-blend-mode: screen; }
+@media (prefers-reduced-motion: reduce) {
+    html.theme-pro .hero-gradient-bg video, html.theme-pro .services-section .layer-rain { display: none; }
+}
