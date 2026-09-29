@@ -546,3 +546,9 @@ html.theme-pro .auth-slide__toggle { color: #ffffff !important; border-color: rg
 html.theme-pro .about-hero,
 html.theme-pro [class*="about-header"] { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%) !important; }
 html.theme-pro .scramble-blue .char.glitch { color: #93c5fd !important; }
+
+/* Logo plat : les brosses tournent (sens opposés), le drapeau suisse reste fixe */
+.sirius-logo-pro .pl-spin { transform-box: fill-box; transform-origin: center; animation: plSpin 5s linear infinite; }
+.sirius-logo-pro .pl-spin--b { animation-direction: reverse; }
+@keyframes plSpin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .sirius-logo-pro .pl-spin { animation: none; } }
