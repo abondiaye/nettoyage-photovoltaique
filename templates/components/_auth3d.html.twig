@@ -43,9 +43,9 @@
         min-height: 100vh;
         min-height: 100svh;
         display: flex;
-        align-items: center;
+        align-items: flex-start;   /* card near the top, not in the middle of a tall screen */
         justify-content: center;
-        padding: 30px 16px 40px; /* base.html.twig already adds 80px above the page for the navbar */
+        padding: 16px 16px 40px; /* base.html.twig already adds 80px above the page for the navbar */
         perspective: 1200px;
     }
 
@@ -243,7 +243,7 @@
 
     /* ---- Phone : welcome band on top, form below, no sliding ---- */
     @media (max-width: 760px) {
-        .auth3d { padding-top: 16px; align-items: flex-start; }
+        .auth3d { padding-top: 6px; align-items: flex-start; }
         .auth-slide { min-height: 0; display: flex; flex-direction: column; transform: none; }
         .auth3d-blob { filter: blur(70px); }
         .auth-slide__welcome,

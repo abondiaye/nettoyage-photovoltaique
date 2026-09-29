@@ -3,201 +3,92 @@
 {% block title %}Envoyer un message - Sirius-Solar{% endblock %}
 
 {% block body %}
+{# Same liquid-glass card as the login page: green panel with our details on the left, form on the right. #}
+<div class="auth3d">
+    <div class="auth-slide is-contact" data-auth-slide>
+        <div class="auth-slide__welcome">
+            <h2>Contact</h2>
+            <p>Une question, un devis ?<br>Nous répondons sous 48 h.</p>
+            <ul class="contact-info">
+                <li>📞 <a href="tel:0779096413">077 909 64 13</a></li>
+                <li>✉️ <a href="mailto:ndiayeharouna1991@gmail.com">ndiayeharouna1991@gmail.com</a></li>
+                <li>📍 Route des dragons 7<br>1033 Cheseaux-sur-Lausanne</li>
+            </ul>
+            <a href="{{ path('app_devis') }}" class="contact-devis">Demander un devis</a>
+        </div>
 
-<style>
-    .gooey-navbar { display: flex !important; visibility: visible !important; height: 80px !important; margin: 0 !important; padding: 0 40px !important; }
-    .circular-nav-container { display: block !important; visibility: visible !important; height: 280px !important; width: 280px !important; margin: unset !important; padding: unset !important; }
+        <div class="auth-slide__form">
+            <h1 class="auth-slide__brand">Envoyer un message</h1>
+            <p class="auth-slide__sub">Laissez-nous un message, nous vous recontactons au plus tôt</p>
 
-    .contact-container {
-        min-height: 100vh;
-        background: linear-gradient(135deg, var(--vert-fonce), var(--vert-clair));
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-        margin-top: 70px;
-    }
+            {% if success %}
+                <div class="auth3d-alert auth3d-alert--success">✅ Votre message a bien été reçu. Nous vous recontacterons bientôt.</div>
+            {% endif %}
 
-    .contact-card {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 20px;
-        padding: 50px 40px;
-        max-width: 550px;
-        width: 100%;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    }
-
-    .contact-card h1 {
-        font-size: 32px;
-        color: white;
-        margin: 0 0 10px 0;
-        text-align: center;
-    }
-
-    .contact-card p {
-        color: rgba(255, 255, 255, 0.8);
-        text-align: center;
-        margin-bottom: 30px;
-        font-size: 14px;
-    }
-
-    .form-group {
-        margin-bottom: 20px;
-    }
-
-    .form-group label {
-        display: block;
-        color: rgba(255, 255, 255, 0.9);
-        margin-bottom: 8px;
-        font-weight: 600;
-        font-size: 14px;
-    }
-
-    .form-group input[type="text"],
-    .form-group input[type="email"],
-    .form-group input[type="date"],
-    .form-group textarea {
-        width: 100%;
-        padding: 12px 15px;
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 8px;
-        color: white;
-        font-size: 14px;
-        font-family: inherit;
-        transition: all 0.3s ease;
-    }
-
-    .form-group input[type="text"]::placeholder,
-    .form-group input[type="email"]::placeholder,
-    .form-group input[type="date"]::placeholder,
-    .form-group textarea::placeholder {
-        color: rgba(255, 255, 255, 0.5);
-    }
-
-    .form-group input[type="text"]:focus,
-    .form-group input[type="email"]:focus,
-    .form-group input[type="date"]:focus,
-    .form-group textarea:focus {
-        outline: none;
-        background: rgba(255, 255, 255, 0.15);
-        border-color: var(--or-vif, #ffd700);
-        box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
-    }
-
-    .form-group textarea {
-        resize: vertical;
-        min-height: 120px;
-    }
-
-    .btn-submit {
-        width: 100%;
-        padding: 12px;
-        background: linear-gradient(135deg, var(--or-vif, #ffd700), var(--or-vif-2, #ffed4e));
-        color: var(--vert-fonce);
-        border: none;
-        border-radius: 8px;
-        font-weight: 600;
-        font-size: 14px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        margin-top: 20px;
-    }
-
-    .btn-submit:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
-    }
-
-    .success-message {
-        background: rgba(76, 175, 80, 0.2);
-        border: 1px solid rgba(76, 175, 80, 0.4);
-        color: #a8d5ba;
-        padding: 12px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-        font-size: 13px;
-    }
-
-    .error-message {
-        background: rgba(220, 53, 69, 0.2);
-        border: 1px solid rgba(220, 53, 69, 0.4);
-        color: #ffc9d4;
-        padding: 12px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-        font-size: 13px;
-    }
-
-    /* Dark mode */
-    body.dark-mode .contact-container {
-        background: linear-gradient(135deg, var(--vert-mid, #1a4d42), var(--vert-clair));
-    }
-
-    body.dark-mode .contact-card {
-        background: rgba(30, 30, 30, 0.8);
-        border-color: rgba(255, 255, 255, 0.1);
-    }
-
-    /* Mobile */
-    @media (max-width: 600px) {
-        .contact-card {
-            padding: 30px 20px;
-        }
-
-        .contact-card h1 {
-            font-size: 24px;
-        }
-    }
-
-    /* Date input styling */
-    input[type="date"] {
-        cursor: pointer;
-    }
-
-    input[type="date"]::-webkit-calendar-picker-indicator {
-        filter: invert(1) brightness(1.2);
-        cursor: pointer;
-    }
-</style>
-
-<div class="contact-container">
-    <div class="contact-card">
-        <h1>📧 Envoyer un message</h1>
-        <p>Laissez-nous un message et nous vous recontacterons au plus tôt</p>
-
-        {% if success %}
-            <div class="success-message">
-                ✅ Votre message a été reçu avec succès! Nous vous recontacterons bientôt.
-            </div>
-        {% endif %}
-
-        <form method="POST" action="{{ path('app_contact_submit') }}">
-            <div class="form-group">
-                <label for="nom">Votre nom *</label>
-                <input type="text" id="nom" name="nom" placeholder="Jean Dupont" required>
-            </div>
-
-            <div class="form-group">
-                <label for="email">Votre email *</label>
-                <input type="email" id="email" name="email" placeholder="jean@example.com" required>
-            </div>
-
-            <div class="form-group">
-                <label for="message">Votre message *</label>
-                <textarea id="message" name="message" placeholder="Décrivez votre demande ici..." required></textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="datePreferee">Date préférée d'intervention</label>
-                <input type="date" id="datePreferee" name="datePreferee">
-            </div>
-
-            <button type="submit" class="btn-submit">Envoyer le message</button>
-        </form>
+            <form method="POST" action="{{ path('app_contact_submit') }}">
+                <div class="auth3d-field">
+                    <label for="nom">Votre nom *</label>
+                    <input type="text" id="nom" name="nom" placeholder="Jean Dupont" autocomplete="name" required>
+                </div>
+                <div class="auth3d-field">
+                    <label for="email">Votre e-mail *</label>
+                    <input type="email" id="email" name="email" placeholder="jean@example.com" autocomplete="email" required>
+                </div>
+                <div class="auth3d-field">
+                    <label for="message">Votre message *</label>
+                    <textarea id="message" name="message" rows="4" placeholder="Décrivez votre demande ici..." required></textarea>
+                </div>
+                <div class="auth3d-field">
+                    <label for="datePreferee">Date préférée d'intervention</label>
+                    <input type="date" id="datePreferee" name="datePreferee">
+                </div>
+                <button type="submit" class="auth3d-btn">Envoyer le message</button>
+            </form>
+        </div>
     </div>
 </div>
 
+<style>
+    .auth-slide.is-contact { min-height: 640px; }
+    .auth3d-field textarea {
+        width: 100%;
+        padding: 13px 16px;
+        border-radius: 12px;
+        border: 1px solid rgba(0, 255, 157, 0.2);
+        background: rgba(0, 0, 0, 0.35);
+        color: #fff;
+        font: inherit;
+        font-size: 15px;
+        resize: vertical;
+        min-height: 110px;
+        outline: none;
+        box-sizing: border-box;
+    }
+    .auth3d-field textarea::placeholder { color: rgba(255, 255, 255, 0.35); }
+    .auth3d-field textarea:focus { background: rgba(0, 0, 0, 0.5); border-color: #00ff9d; box-shadow: 0 0 0 3px rgba(0, 255, 157, 0.15); }
+    .auth3d-field input[type="date"] { color-scheme: dark; }
+    .contact-info { position: relative; list-style: none; margin: 0 0 22px; padding: 0; display: grid; gap: 10px; font-size: 14px; color: rgba(255, 255, 255, 0.92); }
+    .contact-info a { color: #fff; text-decoration: none; word-break: break-all; }
+    .contact-info a:hover { text-decoration: underline; }
+    .contact-devis {
+        position: relative;
+        display: inline-block;
+        padding: 12px 26px;
+        border-radius: 12px;
+        border: 1.5px solid rgba(255, 255, 255, 0.55);
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        font-weight: 700;
+        text-decoration: none;
+        transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+    }
+    .contact-devis:hover { background: #fff; color: #0A3D35; transform: translateY(-3px); }
+    html.theme-pro .auth3d-field textarea { background: #fff !important; border: 1px solid #cbd5e1 !important; color: #0f172a !important; }
+    html.theme-pro .auth3d-field textarea::placeholder { color: #94a3b8 !important; }
+    html.theme-pro .auth3d-field input[type="date"] { color-scheme: light; }
+    html.theme-pro .contact-info, html.theme-pro .contact-info a { color: #ffffff !important; }
+    html.theme-pro .contact-devis:hover { color: #1d4ed8; }
+</style>
+
+{% include 'components/_auth3d.html.twig' %}
 {% endblock %}

@@ -560,3 +560,5 @@ html.theme-pro .services-section .layer-rain { display: block; opacity: 0.5; mix
 @media (prefers-reduced-motion: reduce) {
     html.theme-pro .hero-gradient-bg video, html.theme-pro .services-section .layer-rain { display: none; }
 }
+
+html.theme-pro .nav3d-menu__style { background: #ffffff !important; border-color: var(--pro-border) !important; color: var(--pro-text) !important; }

@@ -8,8 +8,8 @@
     </a>
 
     <div class="nav3d__right">
-        <button type="button" class="theme-switch" id="themeSwitch" title="Changer le style du site (Pro / Néon)">
-            <i aria-hidden="true"></i><span id="themeSwitchLabel">Style néon</span>
+        <button type="button" class="theme-switch" id="themeSwitch" data-theme-switch title="Changer la couleur du site (vert / bleu)">
+            <i aria-hidden="true"></i><span id="themeSwitchLabel" data-theme-label>Style bleu</span>
         </button>
         {% if app.user %}
             <a href="{{ path('app_logout') }}" class="nav3d__pill">Déconnexion</a>
@@ -38,6 +38,9 @@
         <li><a href="/about"><span>07</span>À propos</a></li>
         <li><a href="/blog"><span>08</span>Blog</a></li>
     </ul>
+    <button type="button" class="nav3d-menu__style" data-theme-switch>
+        <i aria-hidden="true"></i><span data-theme-label>Style bleu</span>
+    </button>
     <div class="nav3d-menu__auth">
         {% if app.user %}
             <a href="{{ path('app_logout') }}">Déconnexion</a>
@@ -199,6 +202,15 @@
     .nav3d-menu a span { font-size: 12px; font-weight: 600; color: #ffd21f; letter-spacing: 0.1em; }
     .nav3d-menu a:hover { color: #2dff4f; text-shadow: 0 0 14px rgba(45, 255, 79, 0.7); transform: translateX(-6px); }
 
+    .nav3d-menu__style {
+        display: inline-flex; align-items: center; gap: 10px;
+        margin-top: 22px; padding: 10px 16px; border-radius: 999px;
+        border: 1px solid rgba(45, 255, 79, 0.45); background: rgba(3, 18, 14, 0.5);
+        color: #eafff0; font: 600 15px/1 system-ui, sans-serif; cursor: pointer;
+        opacity: 0; transition: opacity 0.4s ease 0.65s;
+    }
+    body.nav3d-open .nav3d-menu__style { opacity: 1; }
+    .nav3d-menu__style i { width: 20px; height: 20px; border-radius: 50%; background: conic-gradient(#1d4ed8 0 50%, #2dff4f 0 100%); }
     .nav3d-menu__auth {
         display: flex;
         gap: 18px;
@@ -274,23 +286,23 @@
 
 <script>
 (function () {
-    // Button "Style néon / Style pro": the choice is kept in this browser.
+    // Colour switch (top bar + burger menu): green neon by default, blue "Pro" as second choice.
+    // The choice is kept in this browser.
     var root = document.documentElement;
-    var btn = document.getElementById('themeSwitch');
-    var label = document.getElementById('themeSwitchLabel');
-    if (!btn) return;
     function refresh() {
         var pro = root.classList.contains('theme-pro');
-        label.textContent = pro ? 'Style néon' : 'Style pro';
-        btn.setAttribute('aria-label', pro ? 'Passer au style néon' : 'Passer au style pro');
+        document.querySelectorAll('[data-theme-label]').forEach(function (l) { l.textContent = pro ? 'Style vert' : 'Style bleu'; });
+        document.querySelectorAll('[data-theme-switch]').forEach(function (b) { b.setAttribute('aria-label', pro ? 'Passer au style vert' : 'Passer au style bleu'); });
     }
-    refresh();
-    btn.addEventListener('click', function () {
+    function toggle(e) {
+        if (e) e.preventDefault();
         var pro = !root.classList.contains('theme-pro');
         root.classList.toggle('theme-pro', pro);
-        try { localStorage.setItem('sirius-theme', pro ? 'pro' : 'neon'); } catch (e) {}
+        try { localStorage.setItem('sirius-theme', pro ? 'pro' : 'neon'); } catch (err) {}
         if (!pro && window.siriusLoadLogo3d) window.siriusLoadLogo3d();
         refresh();
-    });
+    }
+    document.querySelectorAll('[data-theme-switch]').forEach(function (b) { b.addEventListener('click', toggle); });
+    refresh();
 })();
 </script>
