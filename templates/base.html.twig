@@ -35,7 +35,8 @@
         "image": "https://sirius-solar.ch/images/panneaux-solaires-sous-la-pluie.jpg",
         "address": { "@type": "PostalAddress", "streetAddress": "Route des dragons 7", "postalCode": "1033", "addressLocality": "Cheseaux-sur-Lausanne", "addressRegion": "VD", "addressCountry": "CH" },
         "areaServed": ["Vaud", "Genève", "Fribourg", "Valais", "Neuchâtel", "Jura"],
-        "priceRange": "CHF"
+        "priceRange": "CHF",
+        "identifier": { "@type": "PropertyValue", "propertyID": "IDE", "value": "CHE-463.807.720" }
     }
     </script>
     <title>{% block title %}Sirius-Solar — Nettoyage & Entretien de Panneaux Photovoltaïques{% endblock %}</title>
@@ -50,7 +51,7 @@
             if (t !== 'neon' && !root.classList.contains('is-admin')) root.classList.add('theme-pro');
         })();
     </script>
-    <link rel="stylesheet" href="{{ asset('css/theme-pro.css') }}?v=10">
+    <link rel="stylesheet" href="{{ asset('css/theme-pro.css') }}?v=11">
     <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="48x48">
     <link rel="icon" type="image/svg+xml" href="{{ asset('images/icon/icon.svg') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/icon/icon-32.png') }}">
@@ -724,7 +725,7 @@
             window.__siriusLogo3d = true;
             var sc = document.createElement('script');
             sc.type = 'module';
-            sc.src = "{{ asset('js/sirius-logo3d.js') }}?v=5";
+            sc.src = "{{ asset('js/sirius-logo3d.js') }}?v=6";
             document.body.appendChild(sc);
         };
         window.siriusLoadLogo3d();   // green or blue colours, the logo follows the site style

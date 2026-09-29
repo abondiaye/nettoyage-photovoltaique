@@ -184,7 +184,6 @@ html.theme-pro .hero-card::after { display: none !important; }
 html.theme-pro .hero-card__layers { display: none !important; }
 html.theme-pro .hero-card .sirius-logo-pro { width: min(320px, 78%); margin: 0 auto 18px; --pl-a: #93c5fd; --pl-b: #ffffff; --pl-hub: #0f172a; }
 html.theme-pro .glitch-intro { background: none !important; border: 0 !important; box-shadow: none !important; }
-html.theme-pro .glitch-grid,
 html.theme-pro .glitch-corner,
 html.theme-pro .glitch-prefix { display: none !important; }
 html.theme-pro .glitch-line {
@@ -196,17 +195,6 @@ html.theme-pro .glitch-line {
 html.theme-pro .glitch-char.is-glitching { color: #93c5fd !important; text-shadow: none !important; }
 html.theme-pro .glitch-divider { background: rgba(255, 255, 255, 0.25) !important; box-shadow: none !important; }
 html.theme-pro .glitch-sub { color: #dbeafe !important; text-shadow: none !important; font-family: 'Inter', sans-serif !important; }
-html.theme-pro .glitch-cta {
-    background: #ffffff !important;
-    color: var(--pro-accent) !important;
-    border: 0 !important;
-    border-radius: 10px !important;
-    box-shadow: 0 8px 24px rgba(2, 6, 23, 0.3) !important;
-    text-shadow: none !important;
-    font-family: 'Inter', sans-serif !important;
-    font-weight: 700 !important;
-}
-html.theme-pro .glitch-cta:hover { background: var(--pro-accent-soft) !important; }
 html.theme-pro .glitch-cta::before,
 html.theme-pro .glitch-cta::after { display: none !important; }
 html.theme-pro .glitch-statusbar { color: #cbd5e1 !important; text-shadow: none !important; border-color: rgba(255, 255, 255, 0.15) !important; background: none !important; font-family: 'Inter', sans-serif !important; }
@@ -357,7 +345,6 @@ html.theme-pro .footer-column a:hover { color: #ffffff !important; }
 html.theme-pro .footer-bottom { border-top-color: rgba(255, 255, 255, 0.1) !important; color: #94a3b8 !important; }
 
 /* ---------- Retouches ---------- */
-html.theme-pro .glitch-cta { padding: 12px 30px !important; font-size: 15px !important; letter-spacing: 0.04em !important; }
 html.theme-pro .why-box { perspective: none !important; }
 html.theme-pro .footer-bottom p { color: #94a3b8 !important; text-shadow: none !important; }
 html.theme-pro .footer a[style*="border-radius: 50%"] {

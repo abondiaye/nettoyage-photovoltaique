@@ -2116,6 +2116,56 @@
     .hero-container { background: #03120e; }
 </style>
 
+<style>
+    /* ===== Carte d'accueil : motif de cellules photovoltaïques (cellules bleues, joints argentés, busbars) ===== */
+    .hero-card .pv-cells {
+        position: absolute; inset: 0; z-index: 0; border-radius: inherit; pointer-events: none;
+        background-image:
+            linear-gradient(90deg, rgba(214, 226, 240, 0.34) 2px, transparent 2px),
+            linear-gradient(0deg, rgba(214, 226, 240, 0.34) 2px, transparent 2px),
+            linear-gradient(90deg, transparent 15px, rgba(214, 226, 240, 0.16) 15px, rgba(214, 226, 240, 0.16) 16px, transparent 16px,
+                                   transparent 31px, rgba(214, 226, 240, 0.16) 31px, rgba(214, 226, 240, 0.16) 32px, transparent 32px),
+            linear-gradient(0deg, transparent 23px, rgba(214, 226, 240, 0.07) 23px, rgba(214, 226, 240, 0.07) 24px, transparent 24px),
+            linear-gradient(160deg, rgba(40, 90, 150, 0.55) 0%, rgba(12, 38, 72, 0.6) 55%, rgba(8, 26, 52, 0.65) 100%);
+        background-size: 48px 48px, 48px 48px, 48px 48px, 48px 48px, 100% 100%;
+        background-position: 1px 1px;
+        -webkit-mask: radial-gradient(ellipse at 50% 45%, rgba(0, 0, 0, 0.55) 0%, #000 75%);
+                mask: radial-gradient(ellipse at 50% 45%, rgba(0, 0, 0, 0.55) 0%, #000 75%);
+    }
+    .hero-card .pv-cells::after {       /* reflet du soleil sur le verre */
+        content: ''; position: absolute; inset: 0; border-radius: inherit;
+        background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.12) 42%, transparent 52%);
+    }
+    .hero-card > :not(.pv-cells):not(.hero-card__layers) { position: relative; z-index: 1; }
+    .glitch-intro::before, .glitch-grid { display: none !important; }   /* old scanlines and grid */
+
+    /* ===== Bouton [ DEVIS ] en 3D (touche épaisse qui s'enfonce) ===== */
+    .glitch-cta {
+        margin-top: 1.4rem !important;
+        padding: 12px 30px !important;
+        border: 0 !important;
+        border-radius: 12px !important;
+        font: 700 15px/1 'Inter', system-ui, sans-serif !important;
+        letter-spacing: 0.12em !important;
+        color: #042014 !important;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+        background: linear-gradient(180deg, #7ef0b8 0%, #3ddc97 55%, #2cc184 100%) !important;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset, 0 6px 0 #16734d, 0 7px 0 #0f5a3b, 0 14px 22px rgba(0, 0, 0, 0.45) !important;
+        transform: translateY(0);
+        transition: transform 0.12s ease, box-shadow 0.12s ease !important;
+    }
+    .glitch-cta:hover { transform: translateY(-2px); box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset, 0 8px 0 #16734d, 0 9px 0 #0f5a3b, 0 18px 26px rgba(0, 0, 0, 0.45) !important; }
+    .glitch-cta:active { transform: translateY(6px); box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4) inset, 0 1px 0 #16734d, 0 2px 0 #0f5a3b, 0 5px 10px rgba(0, 0, 0, 0.4) !important; }
+    html.theme-pro .glitch-cta {
+        color: #ffffff !important;
+        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25) !important;
+        background: linear-gradient(180deg, #60a5fa 0%, #2563eb 55%, #1d4ed8 100%) !important;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.45) inset, 0 6px 0 #1e3a8a, 0 7px 0 #172554, 0 14px 22px rgba(2, 6, 23, 0.5) !important;
+    }
+    html.theme-pro .glitch-cta:hover { background: linear-gradient(180deg, #7db6fb 0%, #3b82f6 55%, #2563eb 100%) !important; box-shadow: 0 1px 0 rgba(255, 255, 255, 0.45) inset, 0 8px 0 #1e3a8a, 0 9px 0 #172554, 0 18px 26px rgba(2, 6, 23, 0.5) !important; }
+    html.theme-pro .glitch-cta:active { box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4) inset, 0 1px 0 #1e3a8a, 0 2px 0 #172554, 0 5px 10px rgba(2, 6, 23, 0.4) !important; }
+</style>
+
 <section class="hero-container">
     <div class="hero-gradient-bg">
         <img src="{{ asset('images/panneaux-solaires-sous-la-pluie.jpg') }}" fetchpriority="high" alt="Panneaux solaires sous la pluie">
@@ -2126,6 +2176,7 @@
     </div>
 
     <div class="hero-card hero-card--thick">
+        <div class="pv-cells" aria-hidden="true"></div>
         <div class="hero-card__layers" aria-hidden="true"><span style="--i: 1"></span><span style="--i: 2"></span><span style="--i: 3"></span><span style="--i: 4"></span><span style="--i: 5"></span><span style="--i: 6"></span><span style="--i: 7"></span><span style="--i: 8"></span><span style="--i: 9"></span><span style="--i: 10"></span><span style="--i: 11"></span><span style="--i: 12"></span><span style="--i: 13"></span><span style="--i: 14"></span><span style="--i: 15"></span><span style="--i: 16"></span><span style="--i: 17"></span><span style="--i: 18"></span></div>
         <!-- Logo débordant vers le haut -->
         <div class="hero-logo hero-logo--3d" data-sirius-logo3d role="img" aria-label="Sirius-Solar"></div>
@@ -2678,7 +2729,7 @@
     <!-- End Footer Flex Container -->
 
     <div class="footer-bottom">
-        <p style="color: rgba(61, 220, 151, 0.7); text-shadow: 0 0 6px rgba(61, 220, 151, 0.3);">&copy; {{ 'now'|date('Y') }} Sirius-Solar. Tous droits réservés. | Spécialiste du nettoyage de panneaux photovoltaïques en Suisse Romande.</p>
+        <p style="color: rgba(61, 220, 151, 0.7); text-shadow: 0 0 6px rgba(61, 220, 151, 0.3);">&copy; {{ 'now'|date('Y') }} Sirius-Solar · IDE CHE-463.807.720. Tous droits réservés. | Spécialiste du nettoyage de panneaux photovoltaïques en Suisse Romande.</p>
     </div>
 
     <!-- Auth Buttons Section -->

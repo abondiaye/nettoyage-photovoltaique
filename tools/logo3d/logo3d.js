@@ -249,7 +249,8 @@ export function mountSiriusLogo(el) {
   const g = fontData.glyphs;
   const scale = 1.5 / fontData.resolution;
   const iX = left - sirius.box.min.x + (g.S.ha + (g.I.x_min + g.I.x_max) / 2) * scale;
-  const sparkle = new Mesh(new ExtrudeGeometry(star4(0.42, 0.08), { depth: 0.08, bevelEnabled: false }), mats.gold);
+  mats.star = new MeshStandardMaterial({ color: new Color('#d4ac1c'), emissive: new Color('#f2c230'), emissiveIntensity: 0.6, roughness: 0.3, metalness: 0 });
+  const sparkle = new Mesh(new ExtrudeGeometry(star4(0.42, 0.08), { depth: 0.08, bevelEnabled: false }), mats.star);
   sparkle.position.set(iX + 0.32, 0.26 + 1.5 * 0.72 + 0.42, 0);
   logo.add(sparkle);
   const starGlow = glowSprite(new Color('#ffd21f'), 2.6, true);
@@ -268,11 +269,11 @@ export function mountSiriusLogo(el) {
   // In the Pro style the logo keeps its thickness and rotation but loses the neon glow.
   // Navbar (compact, on white glass): navy + blue. Hero (on the dark blue card): light blue + white.
   const halos = [siriusGroup.children[1], solarGroup.children[1]];
-  const glows = [starGlow, ...brushGlows];
+  const glows = brushGlows;   // the star keeps its sparkle in every style
   const PALETTES = {
-    neon: { a: ['#2fb865', '#3fd47a', 0.5], b: ['#d4ac1c', '#f2c230', 0.55], dark: '#0a3a16', white: ['#b8ffc4', '#d6ffdc', 0.7], glow: true },
-    proLight: { a: ['#1d4ed8', '#1d4ed8', 0.12], b: ['#0f172a', '#0f172a', 0.05], dark: '#1e3a8a', white: ['#e2e8f0', '#ffffff', 0.25], glow: false },
-    proDark: { a: ['#60a5fa', '#3b82f6', 0.35], b: ['#f1f5f9', '#ffffff', 0.3], dark: '#172554', white: ['#e2e8f0', '#ffffff', 0.4], glow: false },
+    neon: { a: ['#2fb865', '#3fd47a', 0.5], b: ['#d4ac1c', '#f2c230', 0.55], star: ['#d4ac1c', '#f2c230', 0.6], starGlow: '#ffd21f', dark: '#0a3a16', white: ['#b8ffc4', '#d6ffdc', 0.7], glow: true },
+    proLight: { a: ['#1d4ed8', '#1d4ed8', 0.12], b: ['#0f172a', '#0f172a', 0.05], star: ['#f59e0b', '#fbbf24', 0.9], starGlow: '#fbbf24', dark: '#1e3a8a', white: ['#e2e8f0', '#ffffff', 0.25], glow: false },
+    proDark: { a: ['#60a5fa', '#3b82f6', 0.35], b: ['#f1f5f9', '#ffffff', 0.3], star: ['#fde68a', '#ffd21f', 1.0], starGlow: '#ffe27a', dark: '#172554', white: ['#e2e8f0', '#ffffff', 0.4], glow: false },
   };
   let pal = PALETTES.neon;
   function applyPalette() {
@@ -282,6 +283,7 @@ export function mountSiriusLogo(el) {
     mats.gold.color.set(pal.b[0]); mats.gold.emissive.set(pal.b[1]); mats.gold.emissiveIntensity = pal.b[2];
     mats.dark.color.set(pal.dark);
     mats.white.color.set(pal.white[0]); mats.white.emissive.set(pal.white[1]); mats.white.emissiveIntensity = pal.white[2];
+    mats.star.color.set(pal.star[0]); mats.star.emissive.set(pal.star[1]); mats.star.emissiveIntensity = pal.star[2];
     halos.forEach((h) => { h.visible = pal.glow; });
     glows.forEach((g) => { g.visible = pal.glow; });
   }
