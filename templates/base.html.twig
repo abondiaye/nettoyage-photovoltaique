@@ -32,7 +32,7 @@
             if (t === 'pro' && !root.classList.contains('is-admin')) root.classList.add('theme-pro');
         })();
     </script>
-    <link rel="stylesheet" href="{{ asset('css/theme-pro.css') }}?v=6">
+    <link rel="stylesheet" href="{{ asset('css/theme-pro.css') }}?v=7">
     <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="48x48">
     <link rel="icon" type="image/svg+xml" href="{{ asset('images/icon/icon.svg') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/icon/icon-32.png') }}">
@@ -714,7 +714,7 @@
 
     {% block javascripts %}
         {{ encore_entry_script_tags('app') }}
-        <script src="{{ asset('js/rotary-knob.js') }}"></script>
+        <script src="{{ asset('js/rotary-knob.js') }}?v=2"></script>
         <script>
 
             // Theme Toggle

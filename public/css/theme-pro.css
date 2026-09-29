@@ -338,7 +338,7 @@ html.theme-pro .btn-cta-white {
 }
 
 /* ---------- Pied de page ---------- */
-html.theme-pro .footer { background: var(--pro-navy) !important; color: #cbd5e1 !important; }
+html.theme-pro .footer { background: var(--pro-navy); color: #cbd5e1 !important; }
 html.theme-pro .footer > div[style*="border-bottom"] { border-bottom-color: rgba(255, 255, 255, 0.1) !important; }
 html.theme-pro .contact-scramble-heading { color: #ffffff !important; }
 html.theme-pro .contact-scramble-heading::after { background: #93c5fd !important; }
@@ -367,7 +367,7 @@ html.theme-pro .footer a[style*="border-radius: 50%"] {
     box-shadow: none !important;
 }
 html.theme-pro .footer a[style*="border-radius: 50%"]:hover { background: var(--pro-accent) !important; }
-html.theme-pro .rotary-indicator { color: #ffffff !important; background: #1e293b !important; border-color: #334155 !important; text-shadow: none !important; box-shadow: none !important; }
+html.theme-pro .rotary-indicator { color: #ffffff !important; text-shadow: none !important; }
 html.theme-pro .rotary-knob-label { color: #94a3b8 !important; text-shadow: none !important; }
 html.theme-pro .hero-container { background: #0f172a; }
 
