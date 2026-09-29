@@ -1,0 +1,32 @@
+{% extends 'legal/_layout.html.twig' %}
+
+{% block title %}Mentions légales - Sirius-Solar{% endblock %}
+
+{% block legal %}
+<h1>Mentions légales</h1>
+<p class="legal__date">Dernière mise à jour : {{ 'now'|date('d.m.Y') }}</p>
+
+<h2>Éditeur du site</h2>
+<p>
+    <strong>Sirius-Solar</strong> — nettoyage et entretien de panneaux photovoltaïques<br>
+    Responsable : Harouna N'diaye<br>
+    Route des dragons 7, 1033 Cheseaux-sur-Lausanne, Suisse<br>
+    Téléphone / WhatsApp : <a href="tel:+41779096413">077 909 64 13</a><br>
+    E-mail : <a href="mailto:ndiayeharouna1991@gmail.com">ndiayeharouna1991@gmail.com</a>
+</p>
+
+<h2>Hébergement</h2>
+<p>Infomaniak Network SA, Rue Eugène-Marziano 25, 1227 Les Acacias (GE), Suisse — <a href="https://www.infomaniak.com" target="_blank" rel="noopener">infomaniak.com</a></p>
+
+<h2>Réalisation du site</h2>
+<p>GeniusPro360°</p>
+
+<h2>Propriété intellectuelle</h2>
+<p>Les textes, photos, logos et éléments graphiques de ce site appartiennent à Sirius-Solar ou sont utilisés avec autorisation. Toute reproduction sans accord écrit préalable est interdite.</p>
+
+<h2>Responsabilité</h2>
+<p>Les informations de ce site sont données à titre indicatif et peuvent évoluer. Les prix affichés sont indicatifs ; seul le devis remis au client fait foi. Sirius-Solar ne peut être tenue responsable des contenus des sites externes vers lesquels renvoient des liens.</p>
+
+<h2>Données personnelles</h2>
+<p>Voir notre <a href="{{ path('app_legal_privacy') }}">politique de confidentialité</a>.</p>
+{% endblock %}

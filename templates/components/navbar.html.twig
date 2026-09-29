@@ -67,7 +67,7 @@
         background: linear-gradient(180deg, rgba(6, 60, 38, 0.42) 0%, rgba(3, 30, 20, 0.32) 100%);
         backdrop-filter: blur(14px) saturate(1.5);
         -webkit-backdrop-filter: blur(14px) saturate(1.5);
-        border-bottom: 1px solid rgba(45, 255, 79, 0.3);
+        border-bottom: 1px solid rgba(74, 222, 128, 0.3);
         box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
         box-sizing: border-box;
         transition: background 0.4s ease;
@@ -86,14 +86,14 @@
     .nav3d__pill {
         padding: 9px 16px;
         border-radius: 999px;
-        border: 1px solid rgba(45, 255, 79, 0.45);
+        border: 1px solid rgba(74, 222, 128, 0.45);
         color: #eafff0;
         font: 600 14px/1 system-ui, sans-serif;
         text-decoration: none;
         white-space: nowrap;
         transition: box-shadow 0.2s ease, color 0.2s ease;
     }
-    .nav3d__pill:hover { color: #2dff4f; box-shadow: 0 0 16px rgba(45, 255, 79, 0.35); }
+    .nav3d__pill:hover { color: #4ade80; box-shadow: 0 0 16px rgba(74, 222, 128, 0.35); }
     .nav3d__pill--gold { border-color: rgba(255, 210, 31, 0.6); }
     .nav3d__pill--gold:hover { color: #ffd21f; box-shadow: 0 0 16px rgba(255, 210, 31, 0.35); }
 
@@ -112,8 +112,8 @@
         right: 9px;
         height: 2px;
         border-radius: 2px;
-        background: #2dff4f;
-        box-shadow: 0 0 8px rgba(45, 255, 79, 0.8);
+        background: #4ade80;
+        box-shadow: 0 0 8px rgba(74, 222, 128, 0.8);
         transition: transform 0.5s cubic-bezier(.7, 0, .3, 1), opacity 0.3s ease, top 0.5s cubic-bezier(.7, 0, .3, 1);
     }
     .nav3d__burger span:nth-child(1) { top: 15px; }
@@ -136,7 +136,7 @@
         border-radius: 22px;
         overflow: hidden;
         pointer-events: none;
-        box-shadow: 0 0 0 1px rgba(45, 255, 79, 0.35), 0 0 60px rgba(45, 255, 79, 0.25);
+        box-shadow: 0 0 0 1px rgba(74, 222, 128, 0.35), 0 0 60px rgba(74, 222, 128, 0.25);
     }
 
     /* Two faint panels behind the page for depth. */
@@ -150,7 +150,7 @@
         transform: none;
         transition: transform 0.7s cubic-bezier(.7, 0, .3, 1), opacity 0.5s ease;
     }
-    .nav3d-ghost--1 { background: rgba(45, 255, 79, 0.08); border: 1px solid rgba(45, 255, 79, 0.2); }
+    .nav3d-ghost--1 { background: rgba(74, 222, 128, 0.08); border: 1px solid rgba(74, 222, 128, 0.2); }
     .nav3d-ghost--2 { background: rgba(255, 210, 31, 0.05); border: 1px solid rgba(255, 210, 31, 0.16); }
     body.nav3d-open .nav3d-ghost--1 { opacity: 1; transform: perspective(1500px) rotateY(20deg) translateX(-42%) scale(0.56); }
     body.nav3d-open .nav3d-ghost--2 { opacity: 1; transform: perspective(1500px) rotateY(20deg) translateX(-50%) scale(0.5); transition-delay: 0.05s; }
@@ -200,17 +200,17 @@
         transition: color 0.2s ease, text-shadow 0.2s ease, transform 0.2s ease;
     }
     .nav3d-menu a span { font-size: 12px; font-weight: 600; color: #ffd21f; letter-spacing: 0.1em; }
-    .nav3d-menu a:hover { color: #2dff4f; text-shadow: 0 0 14px rgba(45, 255, 79, 0.7); transform: translateX(-6px); }
+    .nav3d-menu a:hover { color: #4ade80; text-shadow: 0 0 14px rgba(74, 222, 128, 0.7); transform: translateX(-6px); }
 
     .nav3d-menu__style {
         display: inline-flex; align-items: center; gap: 10px;
         margin-top: 22px; padding: 10px 16px; border-radius: 999px;
-        border: 1px solid rgba(45, 255, 79, 0.45); background: rgba(3, 18, 14, 0.5);
+        border: 1px solid rgba(74, 222, 128, 0.45); background: rgba(3, 18, 14, 0.5);
         color: #eafff0; font: 600 15px/1 system-ui, sans-serif; cursor: pointer;
         opacity: 0; transition: opacity 0.4s ease 0.65s;
     }
     body.nav3d-open .nav3d-menu__style { opacity: 1; }
-    .nav3d-menu__style i { width: 20px; height: 20px; border-radius: 50%; background: conic-gradient(#1d4ed8 0 50%, #2dff4f 0 100%); }
+    .nav3d-menu__style i { width: 20px; height: 20px; border-radius: 50%; background: conic-gradient(#1d4ed8 0 50%, #4ade80 0 100%); }
     .nav3d-menu__auth {
         display: flex;
         gap: 18px;
@@ -219,7 +219,7 @@
         transition: opacity 0.4s ease 0.7s;
     }
     body.nav3d-open .nav3d-menu__auth { opacity: 1; }
-    .nav3d-menu__auth a { font-size: 16px; color: #2dff4f; }
+    .nav3d-menu__auth a { font-size: 16px; color: #4ade80; }
     .nav3d-menu__auth a.is-gold { color: #ffd21f; }
 
     @media (max-width: 700px) {

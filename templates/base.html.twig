@@ -13,26 +13,44 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="Sirius-Solar — Nettoyage & Entretien de Panneaux Photovoltaïques">
     <meta property="og:description" content="Retrouvez jusqu'à 25% de rendement perdu. Eau osmosée, zéro produit chimique. Devis gratuit en 48h.">
-    <meta property="og:image" content="{{ asset('images/panneaux-solaires-sous-la-pluie.jpg') }}">
+    <meta property="og:image" content="https://sirius-solar.ch/images/panneaux-solaires-sous-la-pluie.jpg">
+    <meta property="og:url" content="https://sirius-solar.ch{{ app.request.pathInfo }}">
+    <meta property="og:locale" content="fr_CH">
+    <link rel="canonical" href="https://sirius-solar.ch{{ app.request.pathInfo }}">
 
     <!-- Theme Color -->
     <meta name="theme-color" content="#0A3D35">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "Sirius-Solar",
+        "description": "Nettoyage et entretien de panneaux photovoltaïques à l'eau osmosée, en Suisse romande.",
+        "url": "https://sirius-solar.ch",
+        "telephone": "+41779096413",
+        "email": "ndiayeharouna1991@gmail.com",
+        "image": "https://sirius-solar.ch/images/panneaux-solaires-sous-la-pluie.jpg",
+        "address": { "@type": "PostalAddress", "streetAddress": "Route des dragons 7", "postalCode": "1033", "addressLocality": "Cheseaux-sur-Lausanne", "addressRegion": "VD", "addressCountry": "CH" },
+        "areaServed": ["Vaud", "Genève", "Fribourg", "Valais", "Neuchâtel", "Jura"],
+        "priceRange": "CHF"
+    }
+    </script>
     <title>{% block title %}Sirius-Solar — Nettoyage & Entretien de Panneaux Photovoltaïques{% endblock %}</title>
 
     {# Icône d'onglet : brosse néon verte + étoile dorée, lisible même en 16 px #}
     <script>
-        // Site style: "neon" (green, default) or "pro" (blue), chosen with the button in the top bar.
+        // Site style: "pro" (blue, default) or "neon" (green), chosen with the button in the top bar.
         (function () {
             var t = null;
             try { t = localStorage.getItem('sirius-theme'); } catch (e) {}
             var root = document.documentElement;
-            if (t === 'pro' && !root.classList.contains('is-admin')) root.classList.add('theme-pro');
+            if (t !== 'neon' && !root.classList.contains('is-admin')) root.classList.add('theme-pro');
         })();
     </script>
-    <link rel="stylesheet" href="{{ asset('css/theme-pro.css') }}?v=7">
+    <link rel="stylesheet" href="{{ asset('css/theme-pro.css') }}?v=8">
     <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="48x48">
     <link rel="icon" type="image/svg+xml" href="{{ asset('images/icon/icon.svg') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/icon/icon-32.png') }}">
@@ -706,7 +724,7 @@
             window.__siriusLogo3d = true;
             var sc = document.createElement('script');
             sc.type = 'module';
-            sc.src = "{{ asset('js/sirius-logo3d.js') }}?v=3";
+            sc.src = "{{ asset('js/sirius-logo3d.js') }}?v=4";
             document.body.appendChild(sc);
         };
         if (!document.documentElement.classList.contains('theme-pro')) window.siriusLoadLogo3d();
@@ -838,6 +856,31 @@
         }
     });
 </script>
+<a href="https://wa.me/41779096413?text=Bonjour%20Sirius-Solar%2C%20je%20souhaite%20un%20renseignement%20pour%20le%20nettoyage%20de%20mes%20panneaux%20solaires."
+   class="wa-float" target="_blank" rel="noopener" aria-label="Écrire sur WhatsApp au 077 909 64 13">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3C8.8 3 3 8.6 3 15.6c0 2.5.8 4.9 2.1 6.9L3.6 29l6.7-1.7c1.8.9 3.8 1.4 5.7 1.4 7.2 0 13-5.6 13-12.6S23.2 3 16 3z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M11.6 9.8c.3-.6.6-.6 1-.6h.8c.3 0 .6.1.8.6l1.1 2.6c.1.3.1.6-.1.9l-.8 1c-.2.2-.2.5 0 .8.6 1 1.4 1.9 2.4 2.6.9.6 1.5.9 2 1.1.3.1.6 0 .8-.2l1-1.2c.2-.3.5-.3.8-.2l2.5 1.2c.3.2.5.4.4.8-.1 1.2-1.1 2.4-2.4 2.6-1.4.2-3.2-.3-5.4-1.7-2.4-1.5-4.3-3.8-5.1-5.9-.7-1.9-.3-3.4.2-4.4z" fill="currentColor"/></svg>
+    <span>WhatsApp</span>
+</a>
+<style>
+    .wa-float {
+        position: fixed; right: 16px; bottom: 18px; z-index: 901;
+        display: inline-flex; align-items: center; gap: 8px;
+        height: 50px; padding: 0 18px 0 14px; border-radius: 999px;
+        background: #25d366; color: #ffffff; text-decoration: none;
+        font: 700 15px/1 system-ui, -apple-system, 'Segoe UI', sans-serif;
+        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .wa-float svg { width: 26px; height: 26px; }
+    .wa-float:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35); }
+    .to-top { bottom: 80px !important; }
+    html.is-admin .wa-float, body.nav3d-open .wa-float { display: none; }
+    @media (max-width: 560px) {
+        .wa-float { width: 54px; height: 54px; padding: 0; justify-content: center; }
+        .wa-float span { display: none; }
+        .wa-float svg { width: 30px; height: 30px; }
+    }
+</style>
 <a href="#" class="to-top" id="toTop" aria-label="Revenir en haut de la page">↑</a>
 <style>
     .to-top {
@@ -845,7 +888,7 @@
         width: 46px; height: 46px; border-radius: 50%;
         display: grid; place-items: center;
         font: 700 20px/1 system-ui, sans-serif; text-decoration: none;
-        color: #03120e; background: #2dff4f; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+        color: #03120e; background: #4ade80; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
         opacity: 0; transform: translateY(12px); pointer-events: none;
         transition: opacity 0.25s ease, transform 0.25s ease;
     }

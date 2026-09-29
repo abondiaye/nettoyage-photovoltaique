@@ -85,7 +85,7 @@ html.theme-pro .nav3d-menu__auth a.is-gold { color: var(--pro-text) !important; 
     height: 38px;
     padding: 0 12px;
     border-radius: 999px;
-    border: 1px solid rgba(45, 255, 79, 0.45);
+    border: 1px solid rgba(74, 222, 128, 0.45);
     background: rgba(3, 18, 14, 0.6);
     color: #eafff0;
     font: 600 13px/1 'Inter', system-ui, sans-serif;
@@ -96,7 +96,7 @@ html.theme-pro .nav3d-menu__auth a.is-gold { color: var(--pro-text) !important; 
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    background: conic-gradient(#1d4ed8 0 50%, #2dff4f 0 100%);
+    background: conic-gradient(#1d4ed8 0 50%, #4ade80 0 100%);
     box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);
 }
 html.theme-pro .theme-switch { border-color: var(--pro-border); background: #fff; color: var(--pro-text); }

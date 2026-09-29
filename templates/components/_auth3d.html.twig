@@ -1,5 +1,5 @@
 {# Fond « liquid glass » (taches de couleur floues qui dérivent) + bloc « connexion / inscription »
-   à panneau coulissant, aux couleurs du site (vert menthe #00ff9d, vert profond var(--vert-fonce), jaune #ffd21f).
+   à panneau coulissant, aux couleurs du site (vert menthe #3ddc97, vert profond var(--vert-fonce), jaune #ffd21f).
    Usage : {% include 'components/_auth3d.html.twig' %} puis un .auth-slide (voir login / register). #}
 <div class="auth3d-bg" aria-hidden="true">
     <div class="auth3d-blob auth3d-blob--1"></div>
@@ -51,7 +51,7 @@
 
     /* ---- The card ---- */
     .auth-slide {
-        --mint: #00ff9d;
+        --mint: #3ddc97;
         --deep: var(--vert-fonce);
         position: relative;
         width: min(900px, 100%);
@@ -111,7 +111,7 @@
         justify-content: center;
         padding: 0 36px;
         text-align: center;
-        background: linear-gradient(135deg, rgba(10, 61, 53, 0.78) 0%, rgba(0, 168, 107, 0.6) 70%, rgba(0, 255, 157, 0.45) 140%);
+        background: linear-gradient(135deg, rgba(10, 61, 53, 0.78) 0%, rgba(0, 168, 107, 0.6) 70%, rgba(61, 220, 151, 0.45) 140%);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         border-radius: 22px 220px 220px 22px;
@@ -179,7 +179,7 @@
         font-weight: 800;
         letter-spacing: 0.06em;
         color: var(--mint);
-        text-shadow: 0 0 12px rgba(0, 255, 157, 0.5);
+        text-shadow: 0 0 12px rgba(61, 220, 151, 0.5);
     }
     .auth-slide__sub { margin: 0 0 26px; font-size: 14px; color: rgba(255, 255, 255, 0.7); }
 
@@ -200,19 +200,19 @@
         width: 100%;
         padding: 13px 16px;
         border-radius: 12px;
-        border: 1px solid rgba(0, 255, 157, 0.2);
+        border: 1px solid rgba(61, 220, 151, 0.2);
         background: rgba(0, 0, 0, 0.35);
         color: #fff;
         font-size: 16px; /* 16px: iOS does not zoom on focus */
         outline: none;
-        box-shadow: inset 3px 3px 8px rgba(0, 0, 0, 0.45), inset -2px -2px 6px rgba(0, 255, 157, 0.05);
+        box-shadow: inset 3px 3px 8px rgba(0, 0, 0, 0.45), inset -2px -2px 6px rgba(61, 220, 151, 0.05);
         transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
     }
     .auth3d-field input::placeholder { color: rgba(255, 255, 255, 0.35); }
     .auth3d-field input:focus {
         background: rgba(0, 0, 0, 0.5);
         border-color: var(--mint);
-        box-shadow: 0 0 0 3px rgba(0, 255, 157, 0.15), 0 0 18px rgba(0, 255, 157, 0.2);
+        box-shadow: 0 0 0 3px rgba(61, 220, 151, 0.15), 0 0 18px rgba(61, 220, 151, 0.2);
     }
     .auth3d-field ul { margin: 6px 0 0; padding: 0; list-style: none; color: #ff9b9b; font-size: 13px; }
 
@@ -230,16 +230,16 @@
         font-weight: 700;
         color: #fff;
         background: linear-gradient(135deg, var(--deep) 0%, #00a86b 60%, var(--mint) 140%);
-        box-shadow: 0 10px 20px rgba(0, 255, 157, 0.2), inset 0 2px 0 rgba(255, 255, 255, 0.35), inset 0 -3px 0 rgba(0, 0, 0, 0.2);
+        box-shadow: 0 10px 20px rgba(61, 220, 151, 0.2), inset 0 2px 0 rgba(255, 255, 255, 0.35), inset 0 -3px 0 rgba(0, 0, 0, 0.2);
         transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
     }
-    .auth3d-btn:hover { transform: translateY(-4px); box-shadow: 0 15px 28px rgba(0, 255, 157, 0.35), inset 0 2px 0 rgba(255, 255, 255, 0.45); }
+    .auth3d-btn:hover { transform: translateY(-4px); box-shadow: 0 15px 28px rgba(61, 220, 151, 0.35), inset 0 2px 0 rgba(255, 255, 255, 0.45); }
     .auth3d-btn:active { transform: translateY(2px); }
 
     .auth3d-alert { width: 100%; max-width: 340px; margin: 0 0 16px; padding: 11px 14px; border-radius: 10px; font-size: 14px; text-align: left; }
     .auth3d-alert ul { margin: 0; padding: 0; list-style: none; }
     .auth3d-alert--error { background: rgba(255, 60, 60, 0.12); border: 1px solid rgba(255, 90, 90, 0.4); color: #ffb3b3; }
-    .auth3d-alert--success { background: rgba(0, 255, 157, 0.1); border: 1px solid rgba(0, 255, 157, 0.4); color: #bfffe4; }
+    .auth3d-alert--success { background: rgba(61, 220, 151, 0.1); border: 1px solid rgba(61, 220, 151, 0.4); color: #bfffe4; }
 
     /* ---- Phone : welcome band on top, form below, no sliding ---- */
     @media (max-width: 760px) {

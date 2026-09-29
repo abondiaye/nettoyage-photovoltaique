@@ -181,10 +181,10 @@ export function mountSiriusLogo(el) {
 
   const mats = {
     // Neon: the colour comes from the emission, the tubes read as lit glass.
-    mint: new MeshStandardMaterial({ color: new Color('#22c43f'), emissive: new Color('#2dff4f'), emissiveIntensity: 0.7, roughness: 0.3, metalness: 0, envMapIntensity: 0.35 }),
+    mint: new MeshStandardMaterial({ color: new Color('#2fb865'), emissive: new Color('#3fd47a'), emissiveIntensity: 0.5, roughness: 0.3, metalness: 0, envMapIntensity: 0.35 }),
     dark: new MeshPhysicalMaterial({ color: MINT_DARK, metalness: 0.4, roughness: 0.45, clearcoat: 0.6, envMapIntensity: 0.5 }),
     white: new MeshStandardMaterial({ color: 0xb8ffc4, emissive: 0xd6ffdc, emissiveIntensity: 0.7, roughness: 0.3 }),
-    gold: new MeshStandardMaterial({ color: new Color('#d9b400'), emissive: new Color('#ffd21f'), emissiveIntensity: 0.75, roughness: 0.3, metalness: 0, envMapIntensity: 0.35 }),
+    gold: new MeshStandardMaterial({ color: new Color('#d4ac1c'), emissive: new Color('#f2c230'), emissiveIntensity: 0.55, roughness: 0.3, metalness: 0, envMapIntensity: 0.35 }),
   };
 
   const logo = new Group();
@@ -257,7 +257,7 @@ export function mountSiriusLogo(el) {
   logo.add(starGlow);
   // A mint glow behind each brush.
   const brushGlows = [top, bottom].map((r) => {
-    const gl = glowSprite(new Color('#2bff4d'), 2.9);
+    const gl = glowSprite(new Color('#3fd47a'), 2.4);
     gl.material.opacity = 0.45;
     gl.position.copy(r.position).add(new Vector3(0, 0, -0.5));
     logo.add(gl);
@@ -312,11 +312,11 @@ export function mountSiriusLogo(el) {
       // Neon flicker: steady glow with a brief stutter now and then (not at the same time).
       const f = t % 6 > 5.65 ? (Math.sin(t * 90) > 0 ? 0.35 : 1) : 1;
       const f2 = (t + 2.7) % 7 > 6.75 ? (Math.sin(t * 70) > 0 ? 0.4 : 1) : 1;
-      mats.gold.emissiveIntensity = (0.75 + Math.sin(t * 3) * 0.08) * f;
+      mats.gold.emissiveIntensity = (0.55 + Math.sin(t * 3) * 0.06) * f;
       solarGroup.children[1].material.opacity = (0.8 + Math.sin(t * 3) * 0.1) * f;
-      mats.mint.emissiveIntensity = (0.7 + Math.sin(t * 2.4) * 0.07) * f2;
+      mats.mint.emissiveIntensity = (0.5 + Math.sin(t * 2.4) * 0.05) * f2;
       siriusGroup.children[1].material.opacity = (0.7 + Math.sin(t * 2.4) * 0.1) * f2;
-      brushGlows.forEach((gl) => { gl.material.opacity = 0.4 * f2; });
+      brushGlows.forEach((gl) => { gl.material.opacity = 0.25 * f2; });
     } else {
       logo.rotation.y = -0.18;
     }
