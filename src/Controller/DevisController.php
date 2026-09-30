@@ -14,6 +14,14 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class DevisController extends AbstractController
 {
+    /** Options facultatives du formulaire (prix HT en CHF). */
+    private const OPTIONS = [
+        'haute_pression' => ['Haute pression', 150],
+        'inspection' => ['Inspection', 80],
+        'protection' => ['Protection', 200],
+        'analyse' => ['Analyse de performance', 120],
+    ];
+
     #[Route('/devis', name: 'app_devis')]
     public function index(Request $request, EntityManagerInterface $em): Response
     {
@@ -40,6 +48,34 @@ class DevisController extends AbstractController
             $message = $form->get('message')->getData();
             $requestedDate = $form->get('requestedDate')->getData();
 
+            // --- Estimation : surface × tarif au m² + options ---
+            $surface = (float) $devis->getSurface();
+            $tarif = Devis::tarifM2($surface);
+            $base = round($surface * $tarif, 2);
+            $chosen = array_values(array_intersect(array_keys(self::OPTIONS), (array) $request->request->all('lavage_types')));
+            $optionsTotal = 0;
+            $optionsTxt = [];
+            foreach ($chosen as $key) {
+                [$label, $prix] = self::OPTIONS[$key];
+                $optionsTotal += $prix;
+                $optionsTxt[] = $label . ' (CHF ' . $prix . '.–)';
+            }
+            $devis->setPrixEstime($base + $optionsTotal);
+
+            $chf = fn (float $n) => 'CHF ' . number_format($n, 2, '.', "'");
+            $resume = sprintf(
+                "Demande de devis : %s m² × %s/m² = %s HT\nToit : %s, %s\nEau / électricité : %s%s\nEstimation totale : %s HT",
+                rtrim(rtrim(number_format($surface, 1, '.', ''), '0'), '.'),
+                $chf($tarif),
+                $chf($base),
+                $devis->getToitTypeLabel(),
+                mb_strtolower((string) $devis->getToitAccesLabel()),
+                $devis->getAccesEauElecLabel(),
+                $optionsTxt ? "\nOptions : " . implode(', ', $optionsTxt) : '',
+                $chf($base + $optionsTotal)
+            );
+            $notes = $resume . ($message ? "\n\nMessage : " . $message : '');
+
             $client = new Client();
             $client->setNom($clientNom);
             $client->setPrenom($clientPrenom);
@@ -55,7 +91,7 @@ class DevisController extends AbstractController
             $appointment->setClientName("$clientPrenom $clientNom");
             $appointment->setClientEmail($clientEmail);
             $appointment->setClientPhone($clientTelephone);
-            $appointment->setNotes($message);
+            $appointment->setNotes($notes);
             $appointment->setRequestedDate($requestedDate ?? new \DateTime());
             $appointment->setStatus('pending');
 

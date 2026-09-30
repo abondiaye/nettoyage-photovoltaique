@@ -179,7 +179,7 @@
                                 <tr style="border-bottom: 1px solid rgba(160, 160, 160, 0.2);">
                                     <td style="color: rgba(255,255,255, 0.8); padding: 15px 0;">{{ d.dateCreation|date('d/m/Y') }}</td>
                                     <td style="color: rgba(255,255,255, 0.8); padding: 15px 0;">{{ d.typeInstallation }}</td>
-                                    <td style="color: rgba(255,255,255, 0.8); padding: 15px 0;">{{ d.nombrePanneaux }}</td>
+                                    <td style="color: rgba(255,255,255, 0.8); padding: 15px 0;">{{ d.surface ? d.surface ~ ' m²' : d.nombrePanneaux }}</td>
                                     <td style="padding: 15px 0;">
                                         <span style="
                                             padding: 6px 12px;

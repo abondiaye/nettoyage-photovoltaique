@@ -8,6 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -71,11 +72,37 @@ class DevisType extends AbstractType
                 'constraints' => [new Assert\NotBlank(message: 'Veuillez sélectionner un type d\'installation.')],
             ])
             ->add('nombrePanneaux', IntegerType::class, [
-                'label' => 'Nombre de panneaux (approximatif)',
+                'label' => 'Nombre de panneaux (si connu)',
+                'required' => false,
+                'constraints' => [new Assert\Positive(message: 'Le nombre de panneaux doit être positif.')],
+            ])
+            ->add('surface', NumberType::class, [
+                'label' => 'Surface des panneaux (m²)',
+                'html5' => true,
+                'scale' => 1,
                 'constraints' => [
-                    new Assert\NotBlank(message: 'Veuillez indiquer un nombre de panneaux.'),
-                    new Assert\Positive(message: 'Le nombre de panneaux doit être positif.'),
+                    new Assert\NotBlank(message: 'Veuillez indiquer la surface en m².'),
+                    new Assert\Positive(message: 'La surface doit être positive.'),
+                    new Assert\LessThan(value: 100000, message: 'Surface trop grande, contactez-nous directement.'),
                 ],
+            ])
+            ->add('toitType', ChoiceType::class, [
+                'label' => 'Type de toit',
+                'choices' => array_flip(Devis::TOIT_TYPES),
+                'expanded' => true,
+                'constraints' => [new Assert\NotBlank(message: 'Indiquez si le toit est plat ou incliné.')],
+            ])
+            ->add('toitAcces', ChoiceType::class, [
+                'label' => 'Accès au toit',
+                'choices' => array_flip(Devis::TOIT_ACCES),
+                'expanded' => true,
+                'constraints' => [new Assert\NotBlank(message: 'Indiquez si le toit est facile d\'accès.')],
+            ])
+            ->add('accesEauElec', ChoiceType::class, [
+                'label' => 'Accès à l\'eau et à l\'électricité',
+                'choices' => array_flip(Devis::EAU_ELEC),
+                'expanded' => true,
+                'constraints' => [new Assert\NotBlank(message: 'Indiquez l\'accès à l\'eau et à l\'électricité.')],
             ])
             ->add('message', TextareaType::class, [
                 'label' => 'Informations complémentaires',

@@ -782,6 +782,34 @@
     @media (prefers-reduced-motion: reduce) {
         .pricing-card, .pricing-card:hover, .devis-form-card { transform: none !important; transition: none; }
     }
+    /* ===== Onglets devis (toit / accès / eau & électricité) ===== */
+    .field-hint { display: block; margin-top: 6px; font-size: 12px; color: rgba(255, 255, 255, 0.6); }
+    .devis-tabs { border: 0; padding: 0; margin: 0 0 22px; min-width: 0; }
+    .devis-tabs legend { padding: 0; margin-bottom: 10px; font-weight: 600; font-size: 14px; color: #fff; }
+    .devis-tabs .req { color: var(--dore); }
+    .seg { display: grid; gap: 8px; padding: 6px; border-radius: 14px; background: rgba(0, 0, 0, 0.28); border: 1px solid rgba(255, 255, 255, 0.14); }
+    .seg--2 { grid-template-columns: repeat(2, 1fr); }
+    .seg--4 { grid-template-columns: repeat(4, 1fr); }
+    .seg input { position: absolute; opacity: 0; pointer-events: none; }
+    .seg label { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 64px; padding: 10px 8px; border-radius: 10px; cursor: pointer; text-align: center; font-weight: 600; font-size: 14px; color: rgba(255, 255, 255, 0.82); border: 1px solid transparent; transition: background .2s, color .2s, box-shadow .2s, transform .2s; }
+    .seg label small { font-weight: 400; font-size: 11.5px; opacity: .75; }
+    .seg label svg { width: 40px; height: 24px; }
+    .seg__ico { font-size: 20px; line-height: 1; }
+    .seg label:hover { background: rgba(255, 255, 255, 0.06); }
+    .seg input:focus-visible + label { outline: 2px solid #5ee0a8; outline-offset: 2px; }
+    .seg input:checked + label { background: linear-gradient(180deg, rgba(94, 224, 168, 0.28), rgba(94, 224, 168, 0.12)); border-color: rgba(94, 224, 168, 0.8); color: #fff; box-shadow: 0 0 16px rgba(94, 224, 168, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2); transform: translateY(-1px); }
+    .tabs-note { margin: -8px 0 22px; padding: 10px 14px; border-radius: 10px; font-size: 13px; background: rgba(255, 193, 7, 0.12); border: 1px solid rgba(255, 193, 7, 0.45); color: #ffe7a3; }
+    .estimate-lines { display: grid; gap: 6px; margin-top: 20px; font-size: 14px; color: rgba(255, 255, 255, 0.85); }
+    .estimate-lines div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 0 4px; }
+    .estimate-lines div > b { white-space: nowrap; }
+    .price-label small { font-size: 11px; opacity: .7; margin-left: 4px; }
+    .pricing-note { max-width: 900px; margin: 22px auto 0; text-align: center; font-size: 13px; color: rgba(255, 255, 255, 0.7); padding: 0 16px; }
+    .pricing-example { font-style: italic; }
+    .pricing-card.is-current { outline: 3px solid #5ee0a8; outline-offset: 4px; }
+    @media (max-width: 640px) {
+        .seg--4 { grid-template-columns: repeat(2, 1fr); }
+        .seg label { min-height: 58px; font-size: 13px; }
+    }
 </style>
 
 <!-- Header -->
@@ -809,72 +837,67 @@
     </div>
 
     <div class="pricing-grid">
-        <!-- PACK BASIQUE -->
-        <div class="pricing-card slab3d" data-pack="basique">
+        <div class="pricing-card slab3d" data-pack="s" data-tier="s">
             <div class="slab3d__layers" aria-hidden="true"><span style="--i: 1"></span><span style="--i: 2"></span><span style="--i: 3"></span><span style="--i: 4"></span><span style="--i: 5"></span><span style="--i: 6"></span><span style="--i: 7"></span><span style="--i: 8"></span><span style="--i: 9"></span><span style="--i: 10"></span><span style="--i: 11"></span><span style="--i: 12"></span><span style="--i: 13"></span><span style="--i: 14"></span><span style="--i: 15"></span><span style="--i: 16"></span><span style="--i: 17"></span><span style="--i: 18"></span><span style="--i: 19"></span><span style="--i: 20"></span><span style="--i: 21"></span><span style="--i: 22"></span><span style="--i: 23"></span><span style="--i: 24"></span><span style="--i: 25"></span><span style="--i: 26"></span><span style="--i: 27"></span><span style="--i: 28"></span></div>
             <header class="pricing-card__head">
-                <h3 class="pricing-card__title">Nettoyage Basique</h3>
-                <p class="pricing-card__sub">Pour petites installations</p>
+                <h3 class="pricing-card__title">Petite installation</h3>
+                <p class="pricing-card__sub">Jusqu'à 30 m²</p>
             </header>
 
-            <div class="pricing-card__price" data-price-ht="150">CHF 150.–</div>
-            <p class="pricing-card__period">par intervention • HT</p>
+            <div class="pricing-card__price" data-price-ht="7">CHF 7.–</div>
+            <p class="pricing-card__period">par m² • HT</p>
 
             <ul class="pricing-features">
-                <li>Jusqu'à 10 panneaux</li>
+                <li>Idéal pour une maison individuelle</li>
                 <li>Nettoyage à l'eau osmosée</li>
                 <li>Séchage sans traces</li>
-                <li>Devis valide 30 jours</li>
+                <li class="pricing-example">Ex. 20 m² → <b data-example="20">CHF 140.–</b></li>
             </ul>
 
-            <button class="pricing-card__btn">Sélectionner</button>
+            <button class="pricing-card__btn" type="button">Calculer mon prix</button>
         </div>
 
-        <!-- PACK STANDARD (Featured) -->
-        <div class="pricing-card featured slab3d" data-pack="standard">
+        <div class="pricing-card featured slab3d" data-pack="m" data-tier="m">
             <div class="slab3d__layers" aria-hidden="true"><span style="--i: 1"></span><span style="--i: 2"></span><span style="--i: 3"></span><span style="--i: 4"></span><span style="--i: 5"></span><span style="--i: 6"></span><span style="--i: 7"></span><span style="--i: 8"></span><span style="--i: 9"></span><span style="--i: 10"></span><span style="--i: 11"></span><span style="--i: 12"></span><span style="--i: 13"></span><span style="--i: 14"></span><span style="--i: 15"></span><span style="--i: 16"></span><span style="--i: 17"></span><span style="--i: 18"></span><span style="--i: 19"></span><span style="--i: 20"></span><span style="--i: 21"></span><span style="--i: 22"></span><span style="--i: 23"></span><span style="--i: 24"></span><span style="--i: 25"></span><span style="--i: 26"></span><span style="--i: 27"></span><span style="--i: 28"></span></div>
             <header class="pricing-card__head">
-                <h3 class="pricing-card__title">⭐ Pack Standard</h3>
-                <p class="pricing-card__sub">Notre offre la plus populaire</p>
+                <h3 class="pricing-card__title">⭐ Installation moyenne</h3>
+                <p class="pricing-card__sub">De 30 à 60 m²</p>
             </header>
 
-            <div class="pricing-card__price" data-price-ht="280">CHF 280.–</div>
-            <p class="pricing-card__period">par intervention • HT</p>
+            <div class="pricing-card__price" data-price-ht="6">CHF 6.–</div>
+            <p class="pricing-card__period">par m² • HT</p>
 
             <ul class="pricing-features">
-                <li>Jusqu'à 25 panneaux</li>
-                <li>Nettoyage complet premium</li>
-                <li>Inspection technique gratuite</li>
-                <li>Rapport d'intervention</li>
-                <li>Devis valide 60 jours</li>
+                <li>Tarif dégressif</li>
+                <li>Nettoyage à l'eau osmosée</li>
+                <li>Séchage sans traces</li>
+                <li class="pricing-example">Ex. 45 m² → <b data-example="45">CHF 270.–</b></li>
             </ul>
 
-            <button class="pricing-card__btn">Sélectionner</button>
+            <button class="pricing-card__btn" type="button">Calculer mon prix</button>
         </div>
 
-        <!-- PACK PREMIUM -->
-        <div class="pricing-card slab3d" data-pack="premium">
+        <div class="pricing-card slab3d" data-pack="l" data-tier="l">
             <div class="slab3d__layers" aria-hidden="true"><span style="--i: 1"></span><span style="--i: 2"></span><span style="--i: 3"></span><span style="--i: 4"></span><span style="--i: 5"></span><span style="--i: 6"></span><span style="--i: 7"></span><span style="--i: 8"></span><span style="--i: 9"></span><span style="--i: 10"></span><span style="--i: 11"></span><span style="--i: 12"></span><span style="--i: 13"></span><span style="--i: 14"></span><span style="--i: 15"></span><span style="--i: 16"></span><span style="--i: 17"></span><span style="--i: 18"></span><span style="--i: 19"></span><span style="--i: 20"></span><span style="--i: 21"></span><span style="--i: 22"></span><span style="--i: 23"></span><span style="--i: 24"></span><span style="--i: 25"></span><span style="--i: 26"></span><span style="--i: 27"></span><span style="--i: 28"></span></div>
             <header class="pricing-card__head">
-                <h3 class="pricing-card__title">Nettoyage Premium</h3>
-                <p class="pricing-card__sub">Pour grandes installations</p>
+                <h3 class="pricing-card__title">Grande installation</h3>
+                <p class="pricing-card__sub">Plus de 60 m²</p>
             </header>
 
-            <div class="pricing-card__price" data-price-ht="450">CHF 450.–</div>
-            <p class="pricing-card__period">par intervention • HT</p>
+            <div class="pricing-card__price" data-price-ht="5">CHF 5.–</div>
+            <p class="pricing-card__period">par m² • HT</p>
 
             <ul class="pricing-features">
-                <li>Plus de 25 panneaux</li>
-                <li>Nettoyage haute pression</li>
-                <li>Sealant de protection</li>
-                <li>Diagnostic performance</li>
-                <li>Suivi trimestriel inclus</li>
-                <li>Devis valide 90 jours</li>
+                <li>Agricole, industriel, tertiaire</li>
+                <li>Meilleur tarif au m²</li>
+                <li>Planning sur mesure</li>
+                <li class="pricing-example">Ex. 100 m² → <b data-example="100">CHF 500.–</b></li>
             </ul>
 
-            <button class="pricing-card__btn">Sélectionner</button>
+            <button class="pricing-card__btn" type="button">Calculer mon prix</button>
         </div>
     </div>
+    <p class="pricing-note">Prix au m² de surface de panneaux. Un toit difficile d'accès ou sans eau / électricité sur place peut entraîner un supplément, toujours annoncé dans le devis.</p>
 </div>
 
 <!-- Form Section -->
@@ -885,7 +908,7 @@
         <div class="slab3d__layers" aria-hidden="true"><span style="--i: 1"></span><span style="--i: 2"></span><span style="--i: 3"></span><span style="--i: 4"></span><span style="--i: 5"></span><span style="--i: 6"></span><span style="--i: 7"></span><span style="--i: 8"></span><span style="--i: 9"></span><span style="--i: 10"></span><span style="--i: 11"></span><span style="--i: 12"></span><span style="--i: 13"></span><span style="--i: 14"></span><span style="--i: 15"></span><span style="--i: 16"></span><span style="--i: 17"></span><span style="--i: 18"></span><span style="--i: 19"></span><span style="--i: 20"></span><span style="--i: 21"></span><span style="--i: 22"></span><span style="--i: 23"></span><span style="--i: 24"></span><span style="--i: 25"></span><span style="--i: 26"></span><span style="--i: 27"></span><span style="--i: 28"></span></div>
         <!-- Welcome Section for Logged In Users -->
         {% if app.user %}
-            <div style="
+            <div class="devis-welcome" style="
                 background: linear-gradient(135deg, rgba(168, 168, 168, 0.1) 0%, rgba(168, 168, 168, 0.05) 100%);
                 border: 1px solid rgba(160, 160, 160, 0.3);
                 border-radius: 12px;
@@ -893,10 +916,10 @@
                 margin-bottom: 30px;
                 text-align: center;
             ">
-                <p style="color: rgba(255, 255, 255, 0.9); font-size: 16px; margin-bottom: 5px;">
+                <p class="devis-welcome__title" style="color: rgba(255, 255, 255, 0.9); font-size: 16px; margin-bottom: 5px;">
                     👋 Bienvenue, <strong>{{ app.user.prenom }} {{ app.user.nom }}</strong>!
                 </p>
-                <p style="color: rgba(255, 255, 255, 0.7); font-size: 14px;">
+                <p class="devis-welcome__text" style="color: rgba(255, 255, 255, 0.7); font-size: 14px;">
                     Remplissez le formulaire ci-dessous pour demander votre devis. Nous vous répondrons sous 48h.
                 </p>
             </div>
@@ -1002,11 +1025,55 @@
                 </select>
             </div>
 
-            <!-- Nombre de Panneaux -->
-            <div class="form-group required">
-                <label for="nombrePanneaux">Nombre de Panneaux (approximatif)</label>
-                <input type="number" id="nombrePanneaux" name="devis[nombrePanneaux]" placeholder="8" min="1" required>
+            <!-- Surface & panneaux -->
+            <div class="form-row">
+                <div class="form-group required">
+                    <label for="surface">Surface des panneaux (m²)</label>
+                    <input type="number" id="surface" name="devis[surface]" placeholder="ex. 40" min="1" step="0.5" inputmode="decimal" required>
+                    <small class="field-hint" id="surfaceHint">1 panneau ≈ 1,7 m²</small>
+                </div>
+                <div class="form-group">
+                    <label for="nombrePanneaux">Nombre de panneaux (si connu)</label>
+                    <input type="number" id="nombrePanneaux" name="devis[nombrePanneaux]" placeholder="ex. 24" min="1">
+                    <small class="field-hint">La surface se calcule toute seule</small>
+                </div>
             </div>
+
+            <!-- Onglets : toit / accès / eau & électricité -->
+            <fieldset class="devis-tabs">
+                <legend>🏠 Type de toit <span class="req">*</span></legend>
+                <div class="seg seg--2">
+                    <input type="radio" id="toit_plat" name="devis[toitType]" value="plat" required>
+                    <label for="toit_plat"><svg viewBox="0 0 40 24" aria-hidden="true"><path d="M4 10h32v10H4z" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M8 6h24v4H8z" fill="currentColor" opacity=".35"/></svg>Toit plat</label>
+                    <input type="radio" id="toit_incline" name="devis[toitType]" value="incline">
+                    <label for="toit_incline"><svg viewBox="0 0 40 24" aria-hidden="true"><path d="M4 22V12L20 3l16 9v10z" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M9 11l11-6 11 6" stroke="currentColor" stroke-width="4" opacity=".35" fill="none"/></svg>Toit incliné</label>
+                </div>
+            </fieldset>
+
+            <fieldset class="devis-tabs">
+                <legend>🪜 Accès au toit <span class="req">*</span></legend>
+                <div class="seg seg--2">
+                    <input type="radio" id="acces_facile" name="devis[toitAcces]" value="facile" required>
+                    <label for="acces_facile"><span class="seg__ico">✅</span>Facile<small>Échelle simple, accès dégagé</small></label>
+                    <input type="radio" id="acces_difficile" name="devis[toitAcces]" value="difficile">
+                    <label for="acces_difficile"><span class="seg__ico">⚠️</span>Difficile<small>Hauteur, forte pente, nacelle…</small></label>
+                </div>
+            </fieldset>
+
+            <fieldset class="devis-tabs">
+                <legend>🚰 Accès à l'eau et à l'électricité <span class="req">*</span></legend>
+                <div class="seg seg--4">
+                    <input type="radio" id="ee_les_deux" name="devis[accesEauElec]" value="les_deux" required>
+                    <label for="ee_les_deux"><span class="seg__ico">💧⚡</span>Les deux</label>
+                    <input type="radio" id="ee_eau" name="devis[accesEauElec]" value="eau">
+                    <label for="ee_eau"><span class="seg__ico">💧</span>Eau seulement</label>
+                    <input type="radio" id="ee_elec" name="devis[accesEauElec]" value="electricite">
+                    <label for="ee_elec"><span class="seg__ico">⚡</span>Électricité seulement</label>
+                    <input type="radio" id="ee_aucun" name="devis[accesEauElec]" value="aucun">
+                    <label for="ee_aucun"><span class="seg__ico">🚫</span>Aucun</label>
+                </div>
+            </fieldset>
+            <p class="tabs-note" id="tabsNote" hidden>ℹ️ Un accès difficile ou sans eau / électricité peut entraîner un supplément : nous vous l'indiquerons clairement dans le devis.</p>
 
             <!-- Date souhaitée -->
             <div class="form-group">
@@ -1017,29 +1084,11 @@
             <!-- Types de Lavage -->
             <div class="lavage-section">
                 <div class="lavage-title">
-                    🧹 Types de Lavage (Sélectionnez un ou plusieurs)
+                    ➕ Options (facultatif)
                 </div>
 
                 <div class="lavage-grid">
-                    <!-- Nettoyage Standard -->
-                    <div class="lavage-card">
-                        <input type="checkbox" id="lavage_standard" name="lavage_types[]" value="standard" data-price="120">
-                        <label for="lavage_standard" class="lavage-card-label">
-                            <span class="lavage-icon">💧</span>
-                            <span class="lavage-name">Standard</span>
-                            <span class="lavage-price">CHF 120</span>
-                        </label>
-                    </div>
 
-                    <!-- Nettoyage Premium -->
-                    <div class="lavage-card">
-                        <input type="checkbox" id="lavage_premium" name="lavage_types[]" value="premium" data-price="180">
-                        <label for="lavage_premium" class="lavage-card-label">
-                            <span class="lavage-icon">⭐</span>
-                            <span class="lavage-name">Premium</span>
-                            <span class="lavage-price">CHF 180</span>
-                        </label>
-                    </div>
 
                     <!-- Haute Pression -->
                     <div class="lavage-card">
@@ -1082,8 +1131,12 @@
                     </div>
                 </div>
 
+                <div class="estimate-lines">
+                    <div><span>Nettoyage <b id="estSurface">—</b></span><b id="estBase">—</b></div>
+                    <div><span>Options</span><b id="estOptions">CHF 0.00</b></div>
+                </div>
                 <div class="price-summary">
-                    <span class="price-label">💰 Prix Total Estimé</span>
+                    <span class="price-label">💰 Estimation <small id="estMode">HT</small></span>
                     <span class="price-value" id="totalPrice">CHF 0</span>
                 </div>
             </div>
@@ -1091,7 +1144,7 @@
             <!-- Message -->
             <div class="form-group">
                 <label for="message">Message additionnel</label>
-                <textarea id="message" name="message" placeholder="Décrivez votre installation solaire, nombre de panneaux, etc..."></textarea>
+                <textarea id="message" name="devis[message]" placeholder="Emplacement, hauteur, salissures (mousse, fientes…), contraintes particulières…"></textarea>
             </div>
 
             <!-- Submit -->
@@ -1116,97 +1169,82 @@
         return toggle ? toggle.checked : false;
     };
 
+    const tarifM2 = m2 => (m2 > 60 ? 5 : (m2 > 30 ? 6 : 7));
+    const withTax = n => (isTTC() ? n * (1 + TVARATE) : n);
+
     function updatePricingDisplay() {
-        const pricingCards = document.querySelectorAll('.pricing-card');
-
-        pricingCards.forEach(card => {
+        const mode = isTTC() ? 'TTC' : 'HT';
+        document.querySelectorAll('.pricing-card').forEach(card => {
             const priceHT = parseFloat(card.querySelector('[data-price-ht]').getAttribute('data-price-ht'));
-            const priceElement = card.querySelector('.pricing-card__price');
-            const periodElement = card.querySelector('.pricing-card__period');
-
-            if (isTTC()) {
-                const priceTTC = priceHT * (1 + TVARATE);
-                priceElement.textContent = euro(priceTTC);
-                periodElement.textContent = 'par intervention • TTC';
-            } else {
-                priceElement.textContent = euro(priceHT);
-                periodElement.textContent = 'par intervention • HT';
-            }
+            card.querySelector('.pricing-card__price').textContent = euro(withTax(priceHT));
+            card.querySelector('.pricing-card__period').textContent = 'par m² • ' + mode;
+            card.querySelectorAll('[data-example]').forEach(el => {
+                const m2 = parseFloat(el.dataset.example);
+                el.textContent = euro(withTax(m2 * tarifM2(m2)));
+            });
         });
+        updateTotalPrice();
     }
 
-    // Add toggle listener
     document.getElementById('ttcToggle').addEventListener('change', updatePricingDisplay);
 
-    // ===== CALCULATE TOTAL PRICE FOR LAVAGE TYPES =====
+    // ===== ESTIMATION : surface × tarif au m² + options =====
+    const surfaceInput = document.getElementById('surface');
+    const panelsInput = document.getElementById('nombrePanneaux');
+
     function updateTotalPrice() {
-        let total = 0;
-        const checkboxes = document.querySelectorAll('input[name="lavage_types[]"]');
+        const m2 = parseFloat((surfaceInput.value || '').replace(',', '.')) || 0;
+        const rate = tarifM2(m2);
+        const base = m2 > 0 ? m2 * rate : 0;
+        let options = 0;
+        document.querySelectorAll('input[name="lavage_types[]"]:checked').forEach(cb => { options += parseFloat(cb.dataset.price) || 0; });
 
-        checkboxes.forEach(checkbox => {
-            if (checkbox.checked) {
-                const price = parseInt(checkbox.getAttribute('data-price'));
-                total += price;
-            }
-        });
+        document.getElementById('estSurface').textContent = m2 > 0 ? (m2 + ' m² × ' + euro(withTax(rate)) + '/m²') : '—';
+        document.getElementById('estBase').textContent = m2 > 0 ? euro(withTax(base)) : '—';
+        document.getElementById('estOptions').textContent = euro(withTax(options));
+        document.getElementById('estMode').textContent = isTTC() ? 'TTC' : 'HT';
+        document.getElementById('totalPrice').textContent = euro(withTax(base + options));
 
-        const totalPriceElement = document.getElementById('totalPrice');
-        if (total === 0) {
-            totalPriceElement.textContent = 'CHF 0';
-        } else {
-            totalPriceElement.textContent = 'CHF ' + total;
-        }
+        // Highlight the matching tier card.
+        const tier = m2 <= 0 ? '' : (m2 > 60 ? 'l' : (m2 > 30 ? 'm' : 's'));
+        document.querySelectorAll('.pricing-card[data-tier]').forEach(c => c.classList.toggle('is-current', c.dataset.tier === tier));
     }
 
-    // Add event listeners to all checkboxes
-    document.querySelectorAll('input[name="lavage_types[]"]').forEach(checkbox => {
-        checkbox.addEventListener('change', updateTotalPrice);
+    // Panels → surface (1 panel ≈ 1.7 m²), as long as the client has not typed a surface himself.
+    panelsInput.addEventListener('input', () => {
+        const n = parseInt(panelsInput.value, 10);
+        if (!surfaceInput.value || surfaceInput.dataset.auto === '1') {
+            surfaceInput.value = n > 0 ? (Math.round(n * 1.7 * 2) / 2) : '';
+            surfaceInput.dataset.auto = n > 0 ? '1' : '';
+            document.getElementById('surfaceHint').textContent = n > 0 ? ('≈ ' + n + ' panneaux × 1,7 m² — modifiable') : '1 panneau ≈ 1,7 m²';
+        }
+        updateTotalPrice();
     });
+    surfaceInput.addEventListener('input', () => { surfaceInput.dataset.auto = ''; updateTotalPrice(); });
+    document.querySelectorAll('input[name="lavage_types[]"]').forEach(cb => cb.addEventListener('change', updateTotalPrice));
+
+    // Supplement notice when the roof is hard to reach or there is no water/electricity.
+    function updateTabsNote() {
+        const hard = document.getElementById('acces_difficile').checked;
+        const ee = document.querySelector('input[name="devis[accesEauElec]"]:checked');
+        document.getElementById('tabsNote').hidden = !(hard || (ee && ee.value !== 'les_deux'));
+    }
+    document.querySelectorAll('.devis-tabs input').forEach(r => r.addEventListener('change', updateTabsNote));
+    document.querySelector('.devis-form-card form').addEventListener('reset', () => setTimeout(() => { surfaceInput.dataset.auto = ''; updateTotalPrice(); updateTabsNote(); }, 0));
 
     // ===== PACK SELECTION =====
     function initPackSelection() {
-        try {
-            document.querySelectorAll('.pricing-card__btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.preventDefault();
-
-                    const card = btn.closest('.pricing-card');
-                    const packName = card.getAttribute('data-pack');
-                    const isSelected = card.classList.contains('selected');
-
-                    if (isSelected) {
-                        // Deselect this card
-                        card.classList.remove('selected');
-                        btn.textContent = 'Sélectionner';
-                    } else {
-                        // Remove selected class from all cards
-                        document.querySelectorAll('.pricing-card').forEach(c => {
-                            c.classList.remove('selected');
-                            c.querySelector('.pricing-card__btn').textContent = 'Sélectionner';
-                        });
-
-                        // Add selected class to clicked card
-                        card.classList.add('selected');
-                        btn.textContent = '✓ Sélectionné';
-
-                        // Smooth scroll to form
-                        setTimeout(() => {
-                            const formSection = document.querySelector('.devis-form-card');
-                            if (formSection) {
-                                formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                            }
-                        }, 300);
-                    }
-                });
+        document.querySelectorAll('.pricing-card__btn').forEach(btn => {
+            btn.addEventListener('click', e => {
+                e.preventDefault();
+                (window.siriusScrollTo ? window.siriusScrollTo(surfaceInput) : surfaceInput.scrollIntoView({ behavior: 'smooth', block: 'center' }));
+                setTimeout(() => surfaceInput.focus({ preventScroll: true }), 500);
             });
-        } catch (err) {
-            console.error('Error initializing pack selection:', err);
-        }
+        });
     }
 
     // Initialize on page load
     try {
-        updateTotalPrice();
         updatePricingDisplay();
     } catch (err) {
         console.error('Error in pricing display:', err);

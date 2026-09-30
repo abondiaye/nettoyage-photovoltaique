@@ -510,6 +510,9 @@ html.theme-pro .devis-form-card .form-group textarea::placeholder { color: #94a3
 html.theme-pro .devis-form-card .form-group input:focus,
 html.theme-pro .devis-form-card .form-group textarea:focus,
 html.theme-pro .devis-form-card .form-group select:focus { border-color: var(--pro-accent) !important; box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.15) !important; }
+html.theme-pro .devis-welcome { background: #eff6ff !important; border-color: #bfdbfe !important; }
+html.theme-pro .devis-welcome__title { color: var(--pro-text) !important; }
+html.theme-pro .devis-welcome__text { color: var(--pro-muted) !important; }
 html.theme-pro .devis-info-box { background: #eff6ff !important; border-color: #bfdbfe !important; color: #1e3a8a !important; }
 html.theme-pro .lavage-section { background: var(--pro-soft) !important; border-color: var(--pro-border) !important; }
 html.theme-pro .lavage-title { color: var(--pro-text) !important; text-shadow: none !important; }
@@ -551,3 +554,16 @@ html.theme-pro .nav3d-menu__style { background: #ffffff !important; border-color
 /* Menu open: the page canvas behind the menu must be light in the Pro style
    (navbar.html.twig paints it dark for the neon style), otherwise the navy menu links are invisible. */
 html.theme-pro:has(body.nav3d-open) { background: #e8eef6 !important; }
+
+/* Devis : onglets toit / accès / eau & électricité (thème bleu) */
+html.theme-pro .devis-tabs legend { color: var(--pro-text) !important; }
+html.theme-pro .field-hint { color: var(--pro-muted) !important; }
+html.theme-pro .seg { background: #eef2f7 !important; border-color: var(--pro-border) !important; }
+html.theme-pro .seg label { color: #334155 !important; }
+html.theme-pro .seg label:hover { background: #ffffff !important; }
+html.theme-pro .seg input:checked + label { background: #ffffff !important; border-color: var(--pro-accent) !important; color: var(--pro-accent) !important; box-shadow: 0 2px 10px rgba(29, 78, 216, 0.18) !important; }
+html.theme-pro .seg input:focus-visible + label { outline-color: var(--pro-accent) !important; }
+html.theme-pro .tabs-note { background: #fffbeb !important; border-color: #fcd34d !important; color: #92400e !important; }
+html.theme-pro .estimate-lines { color: var(--pro-text) !important; }
+html.theme-pro .pricing-note { color: var(--pro-muted) !important; }
+html.theme-pro .pricing-card.is-current { outline-color: var(--pro-accent) !important; }

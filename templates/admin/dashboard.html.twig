@@ -200,7 +200,7 @@
                             <tr>
                                 <td>{{ cl ? (cl.prenom ~ ' ' ~ cl.nom)|trim : '—' }}<small>{{ cl ? cl.email }}</small></td>
                                 <td>{{ cl ? cl.ville : '—' }}<small>{{ cl ? cl.codePostal }}</small></td>
-                                <td>{{ d.typeInstallation|default('—')|capitalize }}<small>{{ d.nombrePanneaux ? d.nombrePanneaux ~ ' panneaux' }}</small></td>
+                                <td>{{ d.typeInstallation|default('—')|capitalize }}<small>{{ d.surface ? d.surface ~ ' m²' : (d.nombrePanneaux ? d.nombrePanneaux ~ ' panneaux') }}{{ d.toitType ? ' · ' ~ d.toitTypeLabel|lower }}{{ d.prixEstime ? ' · CHF ' ~ d.prixEstime|number_format(0, '.', "'") }}</small></td>
                                 <td>
                                     {% set st = {nouveau: ['Nouveau', 'new'], en_cours: ['En cours', 'wip'], accepte: ['Accepté', 'ok'], refuse: ['Refusé', 'ko']}[d.statut]|default([d.statut, 'new']) %}
                                     <span class="ds-badge ds-badge--{{ st[1] }}">{{ st[0] }}</span>

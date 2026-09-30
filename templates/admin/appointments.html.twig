@@ -128,7 +128,10 @@
             {% if q %}
                 {% set c = q.client %}
                 {% if c.adresse or c.ville %}<span>📍 <a href="https://maps.google.com/?q={{ (c.adresse ~ ', ' ~ c.codePostal ~ ' ' ~ c.ville)|url_encode }}" target="_blank" rel="noopener">{{ c.adresse }}{{ c.adresse and c.ville ? ', ' }}{{ c.codePostal }} {{ c.ville }}</a></span>{% endif %}
-                {% if q.typeInstallation or q.nombrePanneaux %}<span>☀️ {{ q.typeInstallation|capitalize }}{{ q.typeInstallation and q.nombrePanneaux ? ' · ' }}{{ q.nombrePanneaux ? q.nombrePanneaux ~ ' panneaux' }}</span>{% endif %}
+                {% if q.typeInstallation or q.nombrePanneaux or q.surface %}<span>☀️ {{ q.typeInstallation|capitalize }}{% if q.surface %} · <b>{{ q.surface }} m²</b>{% endif %}{% if q.nombrePanneaux %} · {{ q.nombrePanneaux }} panneaux{% endif %}</span>{% endif %}
+                {% if q.toitType %}<span>🏠 {{ q.toitTypeLabel }} · {{ q.toitAccesLabel }}</span>{% endif %}
+                {% if q.accesEauElec %}<span>🚰 {{ q.accesEauElecLabel }}</span>{% endif %}
+                {% if q.prixEstime %}<span>💰 Estimation <b>CHF {{ q.prixEstime|number_format(2, '.', "'") }}</b> HT</span>{% endif %}
             {% endif %}
         </div>
         {% if a.notes %}<div class="rdv__note"><b>Message du client :</b> {{ a.notes }}</div>{% endif %}

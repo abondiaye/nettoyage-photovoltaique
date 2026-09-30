@@ -104,8 +104,8 @@
                                 <p style="color: white; font-size: 14px;">{{ d.dateCreation|date('d/m/Y') }}</p>
                             </div>
                             <div>
-                                <p style="color: rgba(255,255,255, 0.6); font-size: 12px; text-transform: uppercase; margin-bottom: 5px;">Nombre de Panneaux</p>
-                                <p style="color: white; font-size: 14px;">{{ d.nombrePanneaux }} panneaux</p>
+                                <p style="color: rgba(255,255,255, 0.6); font-size: 12px; text-transform: uppercase; margin-bottom: 5px;">Installation</p>
+                                <p style="color: white; font-size: 14px;">{{ d.surface ? d.surface ~ ' m²' : d.nombrePanneaux ~ ' panneaux' }}{{ d.prixEstime ? ' · env. CHF ' ~ d.prixEstime|number_format(0, '.', "'") ~ ' HT' }}</p>
                             </div>
                             <div>
                                 <p style="color: rgba(255,255,255, 0.6); font-size: 12px; text-transform: uppercase; margin-bottom: 5px;">Contact</p>

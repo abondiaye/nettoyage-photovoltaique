@@ -29,8 +29,28 @@ class Devis
     #[ORM\Column(length: 100)]
     private ?string $typeInstallation = null; // résidentiel, agricole, industriel...
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $nombrePanneaux = null;
+
+    /** Surface des panneaux en m² (base du tarif). */
+    #[ORM\Column(nullable: true)]
+    private ?float $surface = null;
+
+    /** plat | incline */
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $toitType = null;
+
+    /** facile | difficile */
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $toitAcces = null;
+
+    /** les_deux | eau | electricite | aucun */
+    #[ORM\Column(length: 30, nullable: true)]
+    private ?string $accesEauElec = null;
+
+    /** Estimation HT calculée au moment de la demande (CHF). */
+    #[ORM\Column(nullable: true)]
+    private ?float $prixEstime = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $message = null;
@@ -78,7 +98,7 @@ class Devis
         return $this->nombrePanneaux;
     }
 
-    public function setNombrePanneaux(int $nombrePanneaux): static
+    public function setNombrePanneaux(?int $nombrePanneaux): static
     {
         $this->nombrePanneaux = $nombrePanneaux;
         return $this;
@@ -121,4 +141,43 @@ class Devis
         $this->user = $user;
         return $this;
     }
+
+    public const TOIT_TYPES = ['plat' => 'Toit plat', 'incline' => 'Toit incliné'];
+    public const TOIT_ACCES = ['facile' => 'Accès facile', 'difficile' => 'Accès difficile'];
+    public const EAU_ELEC = [
+        'les_deux' => 'Eau et électricité sur place',
+        'eau' => 'Eau seulement',
+        'electricite' => 'Électricité seulement',
+        'aucun' => 'Ni eau ni électricité',
+    ];
+
+    /** Tarif HT par m² : 7.– jusqu'à 30 m², 6.– au-delà de 30 m², 5.– au-delà de 60 m². */
+    public static function tarifM2(float $surface): float
+    {
+        if ($surface > 60) {
+            return 5.0;
+        }
+        if ($surface > 30) {
+            return 6.0;
+        }
+        return 7.0;
+    }
+
+    public function getSurface(): ?float { return $this->surface; }
+    public function setSurface(?float $surface): static { $this->surface = $surface; return $this; }
+
+    public function getToitType(): ?string { return $this->toitType; }
+    public function setToitType(?string $toitType): static { $this->toitType = $toitType; return $this; }
+    public function getToitTypeLabel(): ?string { return self::TOIT_TYPES[$this->toitType] ?? $this->toitType; }
+
+    public function getToitAcces(): ?string { return $this->toitAcces; }
+    public function setToitAcces(?string $toitAcces): static { $this->toitAcces = $toitAcces; return $this; }
+    public function getToitAccesLabel(): ?string { return self::TOIT_ACCES[$this->toitAcces] ?? $this->toitAcces; }
+
+    public function getAccesEauElec(): ?string { return $this->accesEauElec; }
+    public function setAccesEauElec(?string $accesEauElec): static { $this->accesEauElec = $accesEauElec; return $this; }
+    public function getAccesEauElecLabel(): ?string { return self::EAU_ELEC[$this->accesEauElec] ?? $this->accesEauElec; }
+
+    public function getPrixEstime(): ?float { return $this->prixEstime; }
+    public function setPrixEstime(?float $prixEstime): static { $this->prixEstime = $prixEstime; return $this; }
 }
