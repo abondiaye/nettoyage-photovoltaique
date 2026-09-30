@@ -567,3 +567,9 @@ html.theme-pro .tabs-note { background: #fffbeb !important; border-color: #fcd34
 html.theme-pro .estimate-lines { color: var(--pro-text) !important; }
 html.theme-pro .pricing-note { color: var(--pro-muted) !important; }
 html.theme-pro .pricing-card.is-current { outline-color: var(--pro-accent) !important; }
+
+/* Grille tarifaire (thème bleu) */
+html.theme-pro .pricing-conditions { background: #eff6ff !important; border-color: #bfdbfe !important; color: #1e293b !important; }
+html.theme-pro .pricing-conditions strong { color: var(--pro-accent) !important; }
+html.theme-pro .estimate-note { color: var(--pro-muted) !important; }
+html.theme-pro .tarif-price { color: var(--pro-accent) !important; }

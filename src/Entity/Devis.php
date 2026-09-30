@@ -151,16 +151,27 @@ class Devis
         'aucun' => 'Ni eau ni électricité',
     ];
 
-    /** Tarif HT par m² : 7.– jusqu'à 30 m², 6.– au-delà de 30 m², 5.– au-delà de 60 m². */
+    /** Minimum facturé (HT), déplacement compris dans la zone habituelle. */
+    public const MINIMUM_FACTURATION = 150.0;
+    /** Supplément de déplacement hors zone (HT). */
+    public const SUPPLEMENT_HORS_ZONE = 90.0;
+
+    /**
+     * Tarif HT par m² : 6.– moins de 30 m², 5.– de 30 à moins de 60 m²,
+     * 4.50 de 60 à moins de 90 m², 4.– dès 90 m².
+     */
     public static function tarifM2(float $surface): float
     {
-        if ($surface > 60) {
+        if ($surface >= 90) {
+            return 4.0;
+        }
+        if ($surface >= 60) {
+            return 4.5;
+        }
+        if ($surface >= 30) {
             return 5.0;
         }
-        if ($surface > 30) {
-            return 6.0;
-        }
-        return 7.0;
+        return 6.0;
     }
 
     public function getSurface(): ?float { return $this->surface; }

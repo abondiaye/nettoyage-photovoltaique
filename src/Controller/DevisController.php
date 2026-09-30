@@ -60,11 +60,12 @@ class DevisController extends AbstractController
                 $optionsTotal += $prix;
                 $optionsTxt[] = $label . ' (CHF ' . $prix . '.–)';
             }
-            $devis->setPrixEstime($base + $optionsTotal);
+            $total = max($base + $optionsTotal, Devis::MINIMUM_FACTURATION);
+            $devis->setPrixEstime($total);
 
             $chf = fn (float $n) => 'CHF ' . number_format($n, 2, '.', "'");
             $resume = sprintf(
-                "Demande de devis : %s m² × %s/m² = %s HT\nToit : %s, %s\nEau / électricité : %s%s\nEstimation totale : %s HT",
+                "Demande de devis : %s m² × %s/m² = %s HT\nToit : %s, %s\nEau / électricité : %s%s\nEstimation totale : %s HT%s\nHors zone habituelle : + %s HT de déplacement si applicable",
                 rtrim(rtrim(number_format($surface, 1, '.', ''), '0'), '.'),
                 $chf($tarif),
                 $chf($base),
@@ -72,7 +73,9 @@ class DevisController extends AbstractController
                 mb_strtolower((string) $devis->getToitAccesLabel()),
                 $devis->getAccesEauElecLabel(),
                 $optionsTxt ? "\nOptions : " . implode(', ', $optionsTxt) : '',
-                $chf($base + $optionsTotal)
+                $chf($total),
+                $total > $base + $optionsTotal ? ' (minimum de facturation)' : '',
+                $chf(Devis::SUPPLEMENT_HORS_ZONE)
             );
             $notes = $resume . ($message ? "\n\nMessage : " . $message : '');
 

@@ -2307,6 +2307,16 @@
 </section>
 
 <!-- Services Section -->
+<style>
+    /* Cartes services visibles sur iPhone : Safari trie les calques 3D par profondeur, pas par z-index.
+       Le texte passe donc devant la face avant (translateZ), et la vidéo de pluie est coupée sur mobile. */
+    .services-section .service-card > :not(.layers) { position: relative; transform: translateZ(6px); }
+    html.theme-pro .services-section .service-card { transform-style: flat; isolation: isolate; }
+    html.theme-pro .services-section .service-card > :not(.layers) { transform: none; z-index: 1; }
+    @media (max-width: 768px) {
+        .services-section .layer-rain { display: none !important; }
+    }
+</style>
 <section class="services-section has-photo-bg" id="services">
     <h2 class="section-title"><span class="scramble-green" id="servicesScramble" data-text="Nos Services"></span></h2>
 

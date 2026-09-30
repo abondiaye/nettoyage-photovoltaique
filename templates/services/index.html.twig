@@ -300,6 +300,16 @@
             font-size: 28px;
         }
     }
+    /* ===== Grille tarifaire ===== */
+    .tarif-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    @media (max-width: 1000px) { .tarif-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 520px) { .tarif-grid { grid-template-columns: 1fr; } }
+    .tarif-grid .pricing-card { padding: 30px 20px; }
+    .tarif-price { color: var(--vert-fonce); font-size: 34px; font-weight: 800; margin: 10px 0 6px; font-family: 'Space Grotesk', sans-serif; }
+    .tarif-price small { font-size: 16px; font-weight: 600; opacity: .8; }
+    .tarif-conditions { max-width: 760px; margin: 40px auto 0; text-align: center; line-height: 1.7; }
+    .tarif-conditions p { margin: 0 0 6px; }
+    .tarif-conditions .btn-service-cta { margin-top: 18px; display: inline-block; }
 </style>
 
 <!-- Header -->
@@ -413,42 +423,36 @@
 </section>
 
 <!-- Pricing Section -->
-<section class="pricing-section">
-    <h2 class="pricing-title">Tarification Transparente</h2>
+<section class="pricing-section" id="tarifs">
+    <h2 class="pricing-title">Nos Tarifs</h2>
 
-    <div class="pricing-grid">
+    <div class="pricing-grid tarif-grid">
         <div class="pricing-card">
-            <div class="pricing-title-card">Résidentiel</div>
-            <p class="pricing-note">Installation < 15 panneaux</p>
-            <p class="pricing-description">
-                Solution idéale pour les petites installations résidentielles avec nettoyage régulier compris.
-            </p>
-            <p style="color: var(--dore); font-size: 24px; font-weight: bold; margin-bottom: 20px;">À partir de CHF 120</p>
-            <p style="color: #999; font-size: 12px; margin-bottom: 20px;">par intervention</p>
-            <a href="{{ path('app_devis') }}" class="btn-service-cta">Demander un devis</a>
+            <div class="pricing-title-card">Moins de 30 m²</div>
+            <p class="tarif-price">CHF 6.–<small> / m²</small></p>
+            <p class="pricing-note">HT, surface de panneaux</p>
         </div>
+        <div class="pricing-card">
+            <div class="pricing-title-card">De 30 à moins de 60 m²</div>
+            <p class="tarif-price">CHF 5.–<small> / m²</small></p>
+            <p class="pricing-note">HT, surface de panneaux</p>
+        </div>
+        <div class="pricing-card">
+            <div class="pricing-title-card">De 60 à moins de 90 m²</div>
+            <p class="tarif-price">CHF 4.50<small> / m²</small></p>
+            <p class="pricing-note">HT, surface de panneaux</p>
+        </div>
+        <div class="pricing-card">
+            <div class="pricing-title-card">Dès 90 m²</div>
+            <p class="tarif-price">CHF 4.–<small> / m²</small></p>
+            <p class="pricing-note">HT, surface de panneaux</p>
+        </div>
+    </div>
 
-        <div class="pricing-card">
-            <div class="pricing-title-card">Professionnel</div>
-            <p class="pricing-note">Installation 15-50 panneaux</p>
-            <p class="pricing-description">
-                Pack complet avec maintenance régulière et support prioritaire pour installations plus importantes.
-            </p>
-            <p style="color: var(--dore); font-size: 24px; font-weight: bold; margin-bottom: 20px;">À partir de CHF 250</p>
-            <p style="color: #999; font-size: 12px; margin-bottom: 20px;">par intervention</p>
-            <a href="{{ path('app_devis') }}" class="btn-service-cta">Demander un devis</a>
-        </div>
-
-        <div class="pricing-card">
-            <div class="pricing-title-card">Entreprise</div>
-            <p class="pricing-note">Installation > 50 panneaux</p>
-            <p class="pricing-description">
-                Solution premium avec contrat annuel, maintenance planifiée et équipe dédiée pour votre site.
-            </p>
-            <p style="color: var(--dore); font-size: 24px; font-weight: bold; margin-bottom: 20px;">Devis sur mesure</p>
-            <p style="color: #999; font-size: 12px; margin-bottom: 20px;">Contactez-nous</p>
-            <a href="{{ path('app_devis') }}" class="btn-service-cta">Demander un devis</a>
-        </div>
+    <div class="tarif-conditions">
+        <p><strong>Minimum de facturation : CHF 150.–</strong>, déplacement compris dans notre zone habituelle.</p>
+        <p>Hors zone, un supplément de <strong>CHF 90.–</strong> pour le déplacement s'applique.</p>
+        <a href="{{ path('app_devis') }}" class="btn-service-cta">Calculer mon prix</a>
     </div>
 </section>
 
