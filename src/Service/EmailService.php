@@ -21,10 +21,10 @@ class EmailService
     {
         $destinataire = $_ENV['CONTACT_NOTIFICATION_EMAIL']
             ?? $_ENV['COMPANY_EMAIL']
-            ?? 'contact@panneauvoltaique.net';
+            ?? 'info@sirius-solar.ch';
 
         $email = (new Email())
-            ->from('noreply@panneauvoltaique.net')
+            ->from('info@sirius-solar.ch')
             ->to($destinataire)
             ->replyTo($message->getEmail())
             ->subject('📩 Nouveau message depuis le site - ' . $message->getNom())
@@ -43,7 +43,7 @@ class EmailService
     public function sendConfirmationEmail(Reservation $reservation): void
     {
         $email = (new Email())
-            ->from('noreply@sirius-solar.ch')
+            ->from('info@sirius-solar.ch')
             ->to($reservation->getCustomer()->getEmail())
             ->subject('✅ Votre intervention a été confirmée - Sirius-Solar')
             ->html($this->renderConfirmationEmail($reservation));
@@ -62,7 +62,7 @@ class EmailService
     public function sendRefusalEmail(Reservation $reservation, string $raison): void
     {
         $email = (new Email())
-            ->from('noreply@sirius-solar.ch')
+            ->from('info@sirius-solar.ch')
             ->to($reservation->getCustomer()->getEmail())
             ->subject('❌ Votre demande de nettoyage - Sirius-Solar')
             ->html($this->renderRefusalEmail($reservation, $raison));
@@ -80,7 +80,7 @@ class EmailService
     public function sendRescheduleEmail(Reservation $reservation): void
     {
         $email = (new Email())
-            ->from('noreply@sirius-solar.ch')
+            ->from('info@sirius-solar.ch')
             ->to($reservation->getCustomer()->getEmail())
             ->subject('📅 Votre intervention a été reportée - Sirius-Solar')
             ->html($this->renderRescheduleEmail($reservation));
@@ -98,7 +98,7 @@ class EmailService
     public function sendCancellationEmail(Reservation $reservation, string $motif): void
     {
         $email = (new Email())
-            ->from('noreply@sirius-solar.ch')
+            ->from('info@sirius-solar.ch')
             ->to($reservation->getCustomer()->getEmail())
             ->subject('🚫 Votre intervention a été annulée - Sirius-Solar')
             ->html($this->renderCancellationEmail($reservation, $motif));
@@ -116,7 +116,7 @@ class EmailService
     public function sendCompletionEmail(Reservation $reservation): void
     {
         $email = (new Email())
-            ->from('noreply@sirius-solar.ch')
+            ->from('info@sirius-solar.ch')
             ->to($reservation->getCustomer()->getEmail())
             ->subject('✨ Votre intervention a été réalisée - Sirius-Solar')
             ->html($this->renderCompletionEmail($reservation));
@@ -174,7 +174,7 @@ class EmailService
 
             <p>Merci de choisir Sirius-Solar pour l'entretien de vos panneaux solaires!</p>
             <p>Cordialement,<br><strong>Équipe Sirius-Solar</strong></p>
-            <p style="color: #999; font-size: 12px;">077 909 64 13 | ndiayeharouna1991@gmail.com</p>
+            <p style="color: #999; font-size: 12px;">077 909 64 13 | info@sirius-solar.ch</p>
         </div>
         HTML;
     }
@@ -194,7 +194,7 @@ class EmailService
 
             <p>N'hésitez pas à nous contacter pour discuter d'autres options.</p>
             <p>Cordialement,<br><strong>Équipe Sirius-Solar</strong></p>
-            <p style="color: #999; font-size: 12px;">077 909 64 13 | ndiayeharouna1991@gmail.com</p>
+            <p style="color: #999; font-size: 12px;">077 909 64 13 | info@sirius-solar.ch</p>
         </div>
         HTML;
     }
@@ -213,7 +213,7 @@ class EmailService
             </div>
 
             <p>Cordialement,<br><strong>Équipe Sirius-Solar</strong></p>
-            <p style="color: #999; font-size: 12px;">077 909 64 13 | ndiayeharouna1991@gmail.com</p>
+            <p style="color: #999; font-size: 12px;">077 909 64 13 | info@sirius-solar.ch</p>
         </div>
         HTML;
     }
@@ -233,7 +233,7 @@ class EmailService
 
             <p>N'hésitez pas à prendre contact pour toute question.</p>
             <p>Cordialement,<br><strong>Équipe Sirius-Solar</strong></p>
-            <p style="color: #999; font-size: 12px;">077 909 64 13 | ndiayeharouna1991@gmail.com</p>
+            <p style="color: #999; font-size: 12px;">077 909 64 13 | info@sirius-solar.ch</p>
         </div>
         HTML;
     }
@@ -252,7 +252,7 @@ class EmailService
 
             <p>Merci de faire confiance à Sirius-Solar!</p>
             <p>Cordialement,<br><strong>Équipe Sirius-Solar</strong></p>
-            <p style="color: #999; font-size: 12px;">077 909 64 13 | ndiayeharouna1991@gmail.com</p>
+            <p style="color: #999; font-size: 12px;">077 909 64 13 | info@sirius-solar.ch</p>
         </div>
         HTML;
     }

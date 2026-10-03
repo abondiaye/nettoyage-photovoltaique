@@ -69,7 +69,7 @@ class SecurityController extends AbstractController
                     $resetLink = $this->generateUrl('app_reset_password', ['token' => $token], 0);
                     $resetUrl = $request->getSchemeAndHttpHost() . $resetLink;
 
-                    $fromEmail = getenv('MAILER_FROM_ADDRESS') ?: 'noreply@sirius-solar.ch';
+                    $fromEmail = getenv('MAILER_FROM_ADDRESS') ?: 'info@sirius-solar.ch';
 
                     $emailMessage = (new Email())
                         ->from($fromEmail)
